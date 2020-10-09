@@ -1,44 +1,69 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# High-Performance Teams Game
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+### System Requirements
 
-### `yarn start`
+- [git][git] v2.13 or greater
+- [NodeJS][node] `^10.13 || 12 || 14`
+- [npm][npm] v6 or greater
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+All of these must be available in your `PATH`. To verify things are set up
+properly, you can run this:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```shell
+git --version
+node --version
+npm --version
+```
 
-### `yarn test`
+If you have trouble with any of these, learn more about the PATH environment
+variable and how to fix it here for [windows][win-path] or
+[mac/linux][mac-path].
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Set up the project locally
 
-### `yarn build`
+```shell
+git clone git@github.com:Xiphe/high-performance-teams-game.git
+cd high-performance-teams-game
+npm install
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Recommended development environment
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+It's recommended to use [Visual Studio Code](https://code.visualstudio.com/)
+and have these extensions installed:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `editorconfig.editorconfig`
+- `dbaeumer.vscode-eslint`
+- `esbenp.prettier-vscode`
+- `shinnn.stylelint`
+- `ms-vsliveshare.vsliveshare` (for pairing)
 
-### `yarn eject`
+### Starting a development-server
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+In the project directory, run:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```shell
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This should directly open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Starting the test environment
 
-## Learn More
+In the project directory, run:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```shell
+npm test
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This will open up [cypress](https://www.cypress.io/) allowing you to select which
+specs to run.
+
+## Good resources to learn about everything used here:
+
+- [JavaScript to Know for React](https://kentcdodds.com/blog/javascript-to-know-for-react)
+- [Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
+- [Write your first cypress test](https://docs.cypress.io/guides/getting-started/writing-your-first-test.html#Write-your-first-test)
+- [Introduction to testing library](https://testing-library.com/docs/dom-testing-library/intro)
