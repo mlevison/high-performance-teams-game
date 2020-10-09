@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "test": "cross-env BROWSER=none cross-env REACT_APP_ENV=test cross-env PORT=$(get-port 8765) concurrently -n app,cypress npm:start npm:start:cypress",
+    "test": "cross-env BROWSER=none cross-env REACT_APP_ENV=test cross-env PORT=\"$(get-port 8765)\" concurrently -n app,cypress npm:start npm:start:cypress",
     "build": "react-scripts build",
     "test:jest": "react-scripts test",
     "start:cypress": "npm run wait:server && cross-env CYPRESS_BASE_URL=http://localhost:$PORT cypress open",
