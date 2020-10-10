@@ -37,7 +37,7 @@ and have these extensions installed:
 - `editorconfig.editorconfig`
 - `dbaeumer.vscode-eslint`
 - `esbenp.prettier-vscode`
-- `shinnn.stylelint`
+- `stylelint.vscode-stylelint`
 - `ms-vsliveshare.vsliveshare` (for pairing)
 
 ### Starting a development-server
