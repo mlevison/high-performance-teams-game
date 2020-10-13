@@ -3,6 +3,7 @@ import { storySucceeds } from './lib';
 
 type GameAction = {
   effect: number;
+  cost: number;
 };
 
 type RoundState = {
@@ -74,9 +75,10 @@ export default function App() {
           <button onClick={() => dispatch({
             type: 'ADD_GAME_ACTION',
             payload: {
-              effect: 1
+              effect: 1,
+              cost: 2 // TODO - want to use this cost to display on the button
             }
-          })}>BuildServer</button>
+          })}>BuildServer Cost</button>
           <p>Capacity: {capacity}</p>
           <h2>Round {round} of 6</h2>
           <button onClick={() => dispatch({ type: 'NEXT_ROUND' })}>Complete Round</button>
