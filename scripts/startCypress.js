@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const getPort = require('get-port');
 const concurrently = require('concurrently');
 
@@ -35,7 +33,7 @@ const concurrently = require('concurrently');
 })().catch((err) => {
   if (
     Array.isArray(err) &&
-    !err.some(({ exitCode }) => ![0, 'SIGTERM'].includes(exitCode))
+    err.every(({ exitCode }) => exitCode === 0 || exitCode === 'SIGTERM')
   ) {
     process.exit(0);
     return;

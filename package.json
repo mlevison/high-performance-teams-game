@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "test": "./scripts/startCypress.js",
+    "test": "node scripts/startCypress.js",
     "build": "react-scripts build",
     "test:jest": "react-scripts test"
   },
