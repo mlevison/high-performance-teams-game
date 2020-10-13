@@ -44,3 +44,17 @@ describe('high performance team game', () => {
     cy.findByText(/Completed 30 user stories/i).should('be.visible');
   });
 });
+
+describe("Two rounds two actions", () => {
+  it.only('Actual Impl', () => {
+    cy.visit("/");
+    cy.hptg().then(({ setStorySucceeds }) => {
+      setStorySucceeds(() => true);
+    });
+
+    cy.findByText("Capacity: 10").should('be.visible');
+    cy.findByRole("button", { name: /BuildServer/i }).click();
+    cy.findByRole('button', { name: /Complete Round/i }).click();
+    cy.findByText("Capacity: 11").should('be.visible');
+  });
+});
