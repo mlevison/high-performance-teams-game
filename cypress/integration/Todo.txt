@@ -1,0 +1,7 @@
+- Cost of an action should reduce the number of Stories complete in the current round
+- Limit the number of gameActions that can be selected per round
+- gameActions only affect future capacity not current capacity
+- someActions require a previous action to have been implemented before they can take effect (ex all of UnitTesting, TDD, BDD - require a build server)
+- gameActions only available in a specific round
+- gameActions are listed in array/list/etc. game iterates over the list to display what is available for the current round - reason - this makes it easier to introduce a new gameAction
+- After each round is completed a log is displayed at the bottom of the screen describing actions taken.

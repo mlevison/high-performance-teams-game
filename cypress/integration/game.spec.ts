@@ -1,5 +1,5 @@
 describe('high performance team game', () => {
-  it('completes 60 user stories in 6 rounds when all succeed and no actions are taken', () => {
+  it.skip('completes 60 user stories in 6 rounds when all succeed and no actions are taken', () => {
     cy.visit('/');
     cy.hptg().then(({ setStorySucceeds }) => {
       setStorySucceeds(() => true);
@@ -29,7 +29,7 @@ describe('high performance team game', () => {
     cy.findByText(/Completed 60 user stories/i).should('be.visible');
   });
 
-  it('completes 30 user stories in 6 rounds when 50% succeed and no actions are taken', () => {
+  it.skip('completes 30 user stories in 6 rounds when 50% succeed and no actions are taken', () => {
     cy.visit('/');
     cy.hptg().then(({ setStorySucceeds }) => {
       let i = 0;
@@ -45,8 +45,8 @@ describe('high performance team game', () => {
   });
 });
 
-describe("Two rounds two actions", () => {
-  it.only('Actual Impl', () => {
+describe("Build Server Action", () => {
+  it('Action Impl', () => {
     cy.visit("/");
     cy.hptg().then(({ setStorySucceeds }) => {
       setStorySucceeds(() => true);
@@ -56,5 +56,14 @@ describe("Two rounds two actions", () => {
     cy.findByRole("button", { name: /BuildServer/i }).click();
     cy.findByRole('button', { name: /Complete Round/i }).click();
     cy.findByText("Capacity: 11").should('be.visible');
+  });
+
+  // TODO Failing test since I can't find how to paramterize text display for buttons
+  it('Actions have Cost', () => {
+    cy.visit("/");
+    cy.hptg().then(({ setStorySucceeds }) => {
+      setStorySucceeds(() => true);
+    });
+    cy.findByRole("button", { name: /BuildServer/i }).contains("Cost: 2");
   });
 });
