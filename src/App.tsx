@@ -10,13 +10,18 @@ type RoundState = {
   selectedGameActions: GameAction[];
   round: number;
   capacity: number;
+  actionCostThisRound: number;
+  /* TODO don't love the name - really  stories that could still be completed this round */
+  // storiesCompletedThisRound: number;
   storiesCompleted: number;
 };
 const INITIAL_STATE: RoundState = {
   selectedGameActions: [],
   round: 1,
-  storiesCompleted: 0,
-  capacity: 10
+  capacity: 10,
+  actionCostThisRound: 0,
+  // storiesCompletedThisRound: 0,
+  storiesCompleted: 0
 };
 const RESULTS_ROUND = 7;
 
@@ -34,6 +39,16 @@ function sumUpEffects(gameActions: GameAction[]): number {
   return totalEffects;
 }
 
+function sumUpCosts(gameActions: GameAction[]): number {
+  let totalCosts = 0;
+
+  gameActions.forEach(({ cost }) => {
+    totalCosts += cost;
+  });
+
+  return totalCosts;
+}
+
 export default function App() {
   const [state, dispatch] = useReducer(
     (state: RoundState, action: Action) => {
@@ -49,7 +64,10 @@ export default function App() {
         case 'NEXT_ROUND':
           return {
             ...state,
+            actionCostThisRound: sumUpCosts(state.selectedGameActions),
+            // storiesCompletedThisRound: capacity - state.actionCostThisRound,
             capacity: state.capacity + sumUpEffects(state.selectedGameActions),
+
             selectedGameActions: [],
             round: state.round + 1,
             storiesCompleted:
@@ -60,7 +78,8 @@ export default function App() {
     },
     INITIAL_STATE,
   );
-  const { round, storiesCompleted, capacity } = state;
+  // I don't understand this declaration its like magic.
+  const { round, storiesCompleted, capacity, actionCostThisRound } = state;
 
   return (
     <>
@@ -72,6 +91,8 @@ export default function App() {
         </>
       ) : (
         <>
+        <p>Round: {round - 1} results</p>
+         <p>Action Cost: {actionCostThisRound} </p>
           <button onClick={() => dispatch({
             type: 'ADD_GAME_ACTION',
             payload: {
