@@ -68,11 +68,11 @@ describe('GameSamplePlays', () => {
     it('Adding a BuildServer eliminates Drag Effect and has no positive effect on capacity', () => {
       let oneRoundOneAction = INTIAL_ROUND;
       // TODO Really this should be typed as buildServer and then we could detect that in completeSprint and
-      oneRoundOneAction.selectedGameActions[0] = { effect: 0, cost: 1}
+      oneRoundOneAction.selectedGameActions[0] = { effect: 0, cost: 2}
       let gameExample = INITIAL_GAME;
       gameExample.rounds[0] =  oneRoundOneAction;
 
-      expect(roundActionCost(gameExample.rounds[0])).toEqual(1);
+      expect(roundActionCost(gameExample.rounds[0])).toEqual(2);
 
       gameExample = completeSprint(gameExample);
       expect(gameExample.currentRound).toEqual(2);
