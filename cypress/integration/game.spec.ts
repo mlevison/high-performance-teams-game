@@ -60,10 +60,23 @@ describe("Build Server Action", () => {
 
   // TODO Failing test since I can't find how to paramterize text display for buttons
   it('Actions have Cost', () => {
+    // TODO How to hoist common code
     cy.visit("/");
     cy.hptg().then(({ setStorySucceeds }) => {
       setStorySucceeds(() => true);
     });
     cy.findByRole("button", { name: /BuildServer/i }).contains("Cost: 2");
+  });
+
+  it('Actions Cost Reduces Stories Implemented this Round', () => {
+    cy.visit("/");
+    cy.hptg().then(({ setStorySucceeds }) => {
+      setStorySucceeds(() => true);
+    });
+    cy.findByRole("button", { name: /BuildServer/i }).click();
+    cy.findByRole('button', { name: /Complete Round/i }).click();
+    // Ideadlly these would be regex or contains
+    cy.findByText("Round: 1 results");
+    cy.findByText("Action Cost: 2");
   });
 });
