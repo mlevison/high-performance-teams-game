@@ -1,5 +1,6 @@
 import reducer from './reducer';
 import { INITIAL_STATE } from './initialState';
+import { GameAction } from './types';
 
 describe('GameState reducer', () => {
   describe('adding a game action', () => {
