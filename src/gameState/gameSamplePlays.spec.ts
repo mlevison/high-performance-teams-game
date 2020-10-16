@@ -1,6 +1,11 @@
 // If I eliminate all imports Typescript gets angry this is odd
 import { GameAction } from './types';
 
+enum PracticeType {
+  EngineeringPractice,
+  CommunicationPractice,
+  NoSpecificType,
+}
 class CoreAction {
   // TODO how to make const?
   _createdRound: number;
@@ -27,12 +32,16 @@ class CoreAction {
   actionDescription(): String {
     return '';
   }
+
+  practiceType(): PracticeType {
+    return PracticeType.NoSpecificType;
+  }
 }
 
 // TODO How to indicate this is intended to be a baseclass and never instatiated except for test
 class EngineeringAction extends CoreAction {
-  isEngineeringImprovement(): Boolean {
-    return true;
+  practiceType(): PracticeType {
+    return PracticeType.EngineeringPractice;
   }
 }
 class BuilderServerAction extends EngineeringAction {
@@ -70,7 +79,7 @@ class TeamMembersOnSameFloor extends CoreAction {
 }
 
 class TechnicalDebtDrag extends CoreAction {
-  // TODO Find a way to tell this class it no longer has effect
+  // TODO I'm really bugged that I can't find a way to disable the action without resorting to a variable
   _effect: number;
   constructor() {
     super(1);
@@ -116,7 +125,7 @@ class Round {
   }
 
   addCoreAction(coreAction: CoreAction) {
-    if (coreAction.isEngineeringImprovement()) {
+    if (coreAction.practiceType() === PracticeType.EngineeringPractice) {
       this._selectedGameActions.forEach((existingAction) =>
         existingAction instanceof TechnicalDebtDrag
           ? existingAction.disable()
@@ -177,7 +186,9 @@ class Game {
 describe('GameSamplePlays', () => {
   describe('Demonstrate Drag Effect if the team make no engineering improvement', () => {
     it('no Enginerring Improvement', () => {
-      /* TDOD ideally if understood the functional style these would const or perhaps chained */
+      /* TDOD ideally if understood the functional style these would const or perhaps chained - therefore:
+      - Should completedSprint() and addCoreAction() return gameExample to allow chaining?
+      */
       let gameExample = new Game();
       // Ideally Stated as a precondition
       expect(gameExample.getCurrentRound()).toEqual(1);
