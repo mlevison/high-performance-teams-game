@@ -7,8 +7,7 @@ enum PracticeType {
   NoSpecificType,
 }
 class CoreAction {
-  // TODO how to make const?
-  _createdRound: number;
+  readonly _createdRound: number;
   constructor(createdRound: number) {
     this._createdRound = createdRound;
   }
@@ -19,10 +18,6 @@ class CoreAction {
   }
   getEffect(currentRound: number) {
     return 0;
-  }
-
-  isEngineeringImprovement(): Boolean {
-    return false;
   }
 
   actionName(): String {
@@ -91,7 +86,6 @@ class TechnicalDebtDrag extends CoreAction {
   }
 
   disable() {
-    console.log('Technical Debt disabled');
     this._effect = 0;
   }
 }
@@ -208,7 +202,6 @@ describe('GameSamplePlays', () => {
 
     it('Adding a BuildServer eliminates Drag Effect and has no positive effect on capacity', () => {
       let gameExample = new Game();
-      // TODO Really this should be typed as buildServer and then we could detect that in completeSprint and
       gameExample.addCoreAction(new BuilderServerAction(1));
 
       expect(gameExample.currentRoundCost()).toEqual(2);
@@ -230,9 +223,10 @@ describe('GameSamplePlays', () => {
   describe('Team members on the same floor improve communication', () => {
     it('Prove that the action takes effect over many rounds', () => {
       let gameExample = new Game();
-      // TODO Really this should be typed as TeamMembersOnSameFloor and then we could detect that in completeSprint and
-      gameExample.addCoreAction(new EngineeringAction(1));
       gameExample.addCoreAction(new TeamMembersOnSameFloor(1));
+
+      // Note FakeEngineering action added to eliminate drag effect without having another effect. This just used to ensure we test only the action that matters.
+      gameExample.addCoreAction(new EngineeringAction(1));
 
       expect(gameExample.currentRoundCost()).toEqual(3);
 
@@ -256,6 +250,8 @@ describe('GameSamplePlays', () => {
     it('Social Time only Avialble in Round 2', () => {
       // Should we test for this explicitly or simply enforce by convention --- only make
     });
-    it('Unit Testing Only Avialble if the BuildServer was implemented', () => {});
+    it('Unit Testing Only Avialble if the BuildServer was implemented', () => {
+      //
+    });
   });
 });
