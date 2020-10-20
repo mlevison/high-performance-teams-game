@@ -87,9 +87,10 @@ describe('GameSamplePlays', () => {
     it('Unit Testing Only Avialble if the BuildServer was implemented', () => {
       let gameExample = new Game();
       gameExample.completeSprint();
-      // Added in the 2nd Sprint -- yet it should throw an exception
-      // **Problem #1 I can't catch the thrown exce
-      expect(gameExample.addCoreAction(new UnitTesting(2))).toThrow();
+
+      expect(() =>
+        gameExample.addCoreAction(new UnitTesting(2)),
+      ).toThrowErrorMatchingInlineSnapshot(`"UnitTest before BuildServer"`);
 
       // #3 I really wanted something more like this
       // gameExample.hasActionTypeAlreadyBeenAdded(instanceof of BuilderServerAction);
