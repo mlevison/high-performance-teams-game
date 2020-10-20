@@ -2,6 +2,7 @@ import {
   BuilderServerAction,
   EngineeringAction,
   TeamMembersOnSameFloor,
+  UnitTesting,
 } from './CoreAction';
 import { Game } from './Game';
 
@@ -84,7 +85,16 @@ describe('GameSamplePlays', () => {
       // Should we test for this explicitly or simply enforce by convention --- only make
     });
     it('Unit Testing Only Avialble if the BuildServer was implemented', () => {
-      //
+      let gameExample = new Game();
+      gameExample.completeSprint();
+      // Added in the 2nd Sprint -- yet it should throw an exception
+      // **Problem #1 I can't catch the thrown exce
+      expect(gameExample.addCoreAction(new UnitTesting(2))).toThrow();
+
+      // #3 I really wanted something more like this
+      // gameExample.hasActionTypeAlreadyBeenAdded(instanceof of BuilderServerAction);
+      // only if it responded yes would the UnitTest be added.
+      // further - only the action itself should need to know what its andecendant is
     });
   });
 });

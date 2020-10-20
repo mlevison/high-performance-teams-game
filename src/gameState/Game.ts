@@ -1,8 +1,8 @@
 import { CoreAction, PracticeType, TechnicalDebtDrag } from './CoreAction';
 
 export class Round {
-  _selectedGameActions: Set<CoreAction>;
-  _round: number;
+  readonly _selectedGameActions: Set<CoreAction>;
+  readonly _round: number;
   constructor(round: number) {
     this._round = round;
     this._selectedGameActions = new Set<CoreAction>();
@@ -40,14 +40,13 @@ export class Round {
   }
 }
 export class Game {
-  _roundList: Round[];
+  readonly _roundList: Round[];
   _currentRound: number;
   _currentCapacity: number;
   // Vastly less important than capacity
   _totalStoriesCompleted: number;
 
   constructor() {
-    // TODO ugghh plural to indicate array
     this._roundList = [new Round(1)];
     this._roundList[0].addCoreAction(new TechnicalDebtDrag());
     this._currentRound = 1;
@@ -65,6 +64,8 @@ export class Game {
 
     this._currentCapacity += capacityChange;
     this._currentRound++;
+
+    this._roundList.push(new Round(this._currentRound));
   }
 
   addCoreAction(coreAction: CoreAction) {

@@ -16,6 +16,7 @@ export abstract class CoreAction {
   getCost() {
     return 0;
   }
+
   getEffect(currentRound: number) {
     return 0;
   }
@@ -98,7 +99,13 @@ export class TechnicalDebtDrag extends CoreAction {
   }
 }
 
-export class UnitTesting extends CoreAction {
+export class UnitTesting extends EngineeringAction {
+  constructor(createdRound: number) {
+    super(createdRound);
+    // TODO Do JavaScripties create subclasses of error?
+    throw new Error('UnitTest before BuildServer');
+  }
+
   actionName(): String {
     throw new Error('Method not implemented.');
   }
