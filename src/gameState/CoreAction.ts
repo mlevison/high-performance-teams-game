@@ -4,7 +4,9 @@ export enum PracticeType {
   NoSpecificType,
 }
 
-export class CoreAction {
+// TODO - in an ideal world the CoreAction would provide all the information we need to post in the UI
+//    Further in the same world this file would declare a list of actions available by Sprint making the game of populating the UI a matter of iterating over an array
+export abstract class CoreAction {
   readonly _createdRound: number;
   constructor(createdRound: number) {
     this._createdRound = createdRound;
@@ -18,13 +20,9 @@ export class CoreAction {
     return 0;
   }
 
-  actionName(): String {
-    return '';
-  }
+  abstract actionName(): String;
 
-  actionDescription(): String {
-    return '';
-  }
+  abstract actionDescription(): String;
 
   practiceType(): PracticeType {
     return PracticeType.NoSpecificType;
@@ -33,6 +31,12 @@ export class CoreAction {
 
 // TODO How to indicate this is intended to be a baseclass and never instatiated except for test
 export class EngineeringAction extends CoreAction {
+  actionName(): String {
+    return '';
+  }
+  actionDescription(): String {
+    return '';
+  }
   practiceType(): PracticeType {
     return PracticeType.EngineeringPractice;
   }
@@ -72,6 +76,12 @@ export class TeamMembersOnSameFloor extends CoreAction {
 }
 
 export class TechnicalDebtDrag extends CoreAction {
+  actionName(): String {
+    throw new Error('Method not implemented.');
+  }
+  actionDescription(): String {
+    throw new Error('Method not implemented.');
+  }
   // TODO I'm really bugged that I can't find a way to disable the action without resorting to a variable
   _effect: number;
   constructor() {
@@ -86,4 +96,14 @@ export class TechnicalDebtDrag extends CoreAction {
   disable() {
     this._effect = 0;
   }
+}
+
+export class UnitTesting extends CoreAction {
+  actionName(): String {
+    throw new Error('Method not implemented.');
+  }
+  actionDescription(): String {
+    throw new Error('Method not implemented.');
+  }
+  // TODO first goal to find a way to elegant to stop this being enable before the BuildServer is installed
 }

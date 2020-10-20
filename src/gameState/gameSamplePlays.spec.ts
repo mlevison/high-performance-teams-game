@@ -1,4 +1,3 @@
-// If I eliminate all imports Typescript gets angry this is odd
 import {
   BuilderServerAction,
   EngineeringAction,
@@ -6,6 +5,11 @@ import {
 } from './CoreAction';
 import { Game } from './Game';
 
+/* TODO In some ideal world I would find a more expressive style for most of these tests.
+
+There will be a bunch of tests - SomeAction has effects [a, b, c, d, e]. I could refactor so that the unit tests all have a common body and I just pass in the array, but then the stacktrace/error message might get weird. Is there an elegant BDD style that is easily available? If not I will just refactor
+
+*/
 describe('GameSamplePlays', () => {
   describe('Demonstrate Drag Effect if the team make no engineering improvement', () => {
     it('no Enginerring Improvement', () => {
