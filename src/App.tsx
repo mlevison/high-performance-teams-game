@@ -1,27 +1,41 @@
 import React, { useReducer } from 'react';
-import gameReducer, { INITIAL_STATE } from './gameState';
-
-const RESULTS_ROUND = 7;
+import { INITIAL_STATE, gameReducer, ClosedRound } from './state';
+import { TOTAL_ROUNDS } from './constants';
+import { sumByProp } from 'lib';
 
 export default function App() {
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
+  const pastRound: ClosedRound | undefined =
+    state.pastRounds[state.pastRounds.length - 1];
 
   return (
     <>
       <h1>High-Performance Team Game </h1>
-      {state.round === RESULTS_ROUND ? (
+      {state.pastRounds.length === TOTAL_ROUNDS ? (
         <>
           <h2>Results</h2>
-          <p>Completed {state.storiesCompleted} user stories</p>
+          <p>
+            Completed {sumByProp(state.pastRounds, 'storiesCompleted')} user
+            stories
+          </p>
         </>
       ) : (
         <>
-          <p>Round: {state.round - 1} results</p>
-          <p>Action Cost: {state.actionCostThisRound} </p>
+          {pastRound && (
+            <>
+              <p>Round: {state.pastRounds.length} results</p>
+              <p>Action Cost: {pastRound.costs}</p>
+              <p>
+                Stories Completed: {pastRound.storiesCompleted}/
+                {pastRound.storiesAttempted}
+              </p>
+            </>
+          )}
+          <h2>Round {state.pastRounds.length + 1} of 6</h2>
           <button
             onClick={() =>
               dispatch({
-                type: 'ADD_GAME_ACTION',
+                type: 'ROUND_ADD_GAME_ACTION',
                 payload: {
                   effect: 1,
                   cost: 2, // TODO - want to use this cost to display on the button
@@ -32,8 +46,7 @@ export default function App() {
             BuildServer Cost
           </button>
           <p>Capacity: {state.capacity}</p>
-          <h2>Round {state.round} of 6</h2>
-          <button onClick={() => dispatch({ type: 'NEXT_ROUND' })}>
+          <button onClick={() => dispatch({ type: 'GAME_NEXT_ROUND' })}>
             Complete Round
           </button>
         </>

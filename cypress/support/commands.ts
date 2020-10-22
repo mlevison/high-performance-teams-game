@@ -18,6 +18,7 @@ declare global {
     interface Chainable<Subject = any> {
       times: typeof times;
       hptg: () => Cypress.Chainable<HPTG>;
+      completeRound: () => Cypress.Chainable<JQuery>;
     }
   }
 }
@@ -27,4 +28,11 @@ Cypress.Commands.add('hptg', () => {
   cy.window().waitUntil((win) => (win as any).__HPTG, {
     errorMsg: 'Could not find __BB on window',
   });
+});
+Cypress.Commands.add('completeRound', () => {
+  return cy
+    .findByRole('button', {
+      name: /Complete Round/i,
+    })
+    .click();
 });
