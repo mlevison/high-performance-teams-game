@@ -14,13 +14,19 @@ export type GameState = {
   currentRound: Round;
   pastRounds: ClosedRound[];
 };
-
 export type SelectGameActionAction = {
   type: 'SELECT_GAME_ACTION';
   payload: GameActionId;
 };
 export type NextRoundAction = { type: 'NEXT_ROUND' };
 export type Action = NextRoundAction | SelectGameActionAction;
+
+export const INITIAL_STATE: GameState = {
+  currentRound: {
+    selectedGameActionIds: [],
+  },
+  pastRounds: [],
+};
 
 export function getRoundCapacity(pastRounds: Round[]) {
   const roundAmounts = pastRounds.length;
