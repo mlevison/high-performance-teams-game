@@ -1,12 +1,25 @@
 import React, { useReducer } from 'react';
-import { INITIAL_STATE, gameReducer, ClosedRound } from './state';
+import {
+  INITIAL_STATE,
+  gameReducer,
+  getRoundCapacity,
+  getCosts,
+  getAvailableGameActions,
+} from './state';
 import { TOTAL_ROUNDS } from './constants';
-import { sumByProp } from 'lib';
+import { concatByProp, sumByProp } from 'lib';
 
 export default function App() {
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
-  const pastRound: ClosedRound | undefined =
-    state.pastRounds[state.pastRounds.length - 1];
+  const pastRound = state.pastRounds[state.pastRounds.length - 1];
+  const roundCapacity = getRoundCapacity(state.pastRounds);
+  const costs = getCosts(state.currentRound);
+  const capacityAvailable = roundCapacity - costs;
+  const availableGameActions = getAvailableGameActions(
+    state.pastRounds.length + 1,
+    concatByProp(state.pastRounds, 'selectedGameActionIds'),
+    state.currentRound.selectedGameActionIds,
+  );
 
   return (
     <>
@@ -24,29 +37,36 @@ export default function App() {
           {pastRound && (
             <>
               <p>Round: {state.pastRounds.length} results</p>
-              <p>Action Cost: {pastRound.costs}</p>
+              {/* <p>Action Cost: {pastRound.costs}</p>
               <p>
                 Stories Completed: {pastRound.storiesCompleted}/
                 {pastRound.storiesAttempted}
-              </p>
+              </p> */}
             </>
           )}
           <h2>Round {state.pastRounds.length + 1} of 6</h2>
-          <button
-            onClick={() =>
-              dispatch({
-                type: 'ROUND_ADD_GAME_ACTION',
-                payload: {
-                  effect: 1,
-                  cost: 2, // TODO - want to use this cost to display on the button
-                },
-              })
-            }
-          >
-            BuildServer Cost
-          </button>
-          <p>Capacity: {state.capacity}</p>
-          <button onClick={() => dispatch({ type: 'GAME_NEXT_ROUND' })}>
+          {availableGameActions.map((gameAction) => (
+            <div key={gameAction.id}>
+              <h3>{gameAction.name}</h3>
+              <p>{gameAction.description}</p>
+              <p>Cost: {gameAction.cost}</p>
+              <button
+                onClick={() =>
+                  dispatch({
+                    type: 'SELECT_GAME_ACTION',
+                    payload: gameAction.id,
+                  })
+                }
+              >
+                Commit
+              </button>
+            </div>
+          ))}
+
+          <p>
+            Capacity: {capacityAvailable} / {roundCapacity}
+          </p>
+          <button onClick={() => dispatch({ type: 'NEXT_ROUND' })}>
             Complete Round
           </button>
         </>

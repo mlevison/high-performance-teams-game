@@ -1,9 +1,7 @@
 import { GameState } from './game';
-
 export const INITIAL_STATE: GameState = {
   currentRound: {
-    selectedGameActions: [],
+    selectedGameActionIds: [],
   },
   pastRounds: [],
-  capacity: 10,
 };

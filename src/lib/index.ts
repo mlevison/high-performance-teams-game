@@ -1,2 +1,2 @@
 export * from './storySucceeds';
-export * from './sumByProp';
+export * from './byProp';

@@ -1,43 +1,45 @@
 import { storySucceeds, sumByProp } from '../lib';
-import { GameAction } from './gameActions';
+import { findGameActionById, GameActionId, getEffect } from './gameActions';
 
 export type Round = {
-  selectedGameActions: GameAction[];
+  selectedGameActionIds: GameActionId[];
 };
 export type ClosedRound = Round & {
-  storiesAttempted: number;
   storiesCompleted: number;
-  effects: number;
-  costs: number;
 };
 
-export type RoundAddGameActionAction = {
-  type: 'ROUND_ADD_GAME_ACTION';
-  payload: GameAction;
-};
-export type RoundAction = RoundAddGameActionAction;
+export function createRound(): Round {
+  return {
+    selectedGameActionIds: [],
+  };
+}
 
-export function roundReducer(round: Round, action: RoundAction): Round {
-  switch (action.type) {
-    case 'ROUND_ADD_GAME_ACTION': {
-      return {
-        ...round,
-        selectedGameActions: [...round.selectedGameActions, action.payload],
-      };
-    }
-  }
+export function getEffects(
+  round: Round,
+  age: number,
+  finishedActionIds: GameActionId[],
+) {
+  return round.selectedGameActionIds.map((id) =>
+    getEffect(id, age, finishedActionIds),
+  );
+}
+
+export function getCosts(round: Round) {
+  return sumByProp(round.selectedGameActionIds.map(findGameActionById), 'cost');
 }
 
 export function closeRound(round: Round, totalCapacity: number): ClosedRound {
-  const effects = sumByProp(round.selectedGameActions, 'effect');
-  const costs = sumByProp(round.selectedGameActions, 'cost');
+  const selectedGameActions = round.selectedGameActionIds.map(
+    findGameActionById,
+  );
+  const costs = sumByProp(selectedGameActions, 'cost');
   const storiesAttempted = totalCapacity - costs;
+
   return {
     ...round,
-    effects,
-    costs,
-    storiesAttempted,
-    storiesCompleted: Array(storiesAttempted).fill('').filter(storySucceeds)
-      .length,
+    storiesCompleted:
+      storiesAttempted <= 0
+        ? 0
+        : Array(storiesAttempted).fill('').filter(storySucceeds).length,
   };
 }

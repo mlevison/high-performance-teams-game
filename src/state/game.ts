@@ -1,30 +1,63 @@
-import { Round, ClosedRound } from './round';
-import { roundReducer, RoundAction, closeRound } from './round';
+import {
+  Round,
+  ClosedRound,
+  createRound,
+  closeRound,
+  getEffects,
+  getCosts,
+} from './round';
+import { concatByProp, sumByProp } from '../lib';
+import { BASE_CAPACITY } from '../constants';
+import { GameActionId } from './gameActions';
 
 export type GameState = {
   currentRound: Round;
   pastRounds: ClosedRound[];
-  capacity: number;
 };
 
-export type GameNextRoundAction = { type: 'GAME_NEXT_ROUND' };
-export type Action = GameNextRoundAction | RoundAction;
+export type SelectGameActionAction = {
+  type: 'SELECT_GAME_ACTION';
+  payload: GameActionId;
+};
+export type NextRoundAction = { type: 'NEXT_ROUND' };
+export type Action = NextRoundAction | SelectGameActionAction;
 
-export function gameReducer(state: GameState, action: Action) {
+export function getRoundCapacity(pastRounds: Round[]) {
+  const roundAmounts = pastRounds.length;
+  const allActionIds = concatByProp(pastRounds, 'selectedGameActionIds');
+  return pastRounds.reduce((capacity, round, i) => {
+    const age = i + 1 - roundAmounts;
+    const roundEffects = getEffects(round, age, allActionIds);
+
+    return capacity + sumByProp(roundEffects, 'capacity');
+  }, BASE_CAPACITY);
+}
+
+export function gameReducer(state: GameState, action: Action): GameState {
   switch (action.type) {
-    case 'ROUND_ADD_GAME_ACTION': {
+    case 'SELECT_GAME_ACTION': {
       return {
         ...state,
-        currentRound: roundReducer(state.currentRound, action),
+        currentRound: {
+          ...state.currentRound,
+          selectedGameActionIds: [
+            ...state.currentRound.selectedGameActionIds,
+            action.payload,
+          ],
+        },
       };
     }
-    case 'GAME_NEXT_ROUND': {
-      const currentRound = closeRound(state.currentRound, state.capacity);
+    case 'NEXT_ROUND': {
       return {
         ...state,
-        capacity: state.capacity + currentRound.effects,
-        pastRounds: [...state.pastRounds, currentRound],
-        currentRound: { selectedGameActions: [] },
+        pastRounds: [
+          ...state.pastRounds,
+          closeRound(
+            state.currentRound,
+            getRoundCapacity(state.pastRounds) - getCosts(state.currentRound),
+          ),
+        ],
+        currentRound: createRound(),
       };
     }
   }
