@@ -1,0 +1,14 @@
+I'm designing a game to help teams understand the continuing trade-off between doing work and growing skills to become more effective. If they do only work eventually complexity and inertia  will grind them to a halt. If they focus only on growing skills they will become unemployed as their boss believes they get nothing done. The game has existed in a paper based form https://agilepainrelief.com/blog/welcome-to-the-high-performance-teams-game.html for some years. However the accounting is pain and I'm tweaking some of the actions.
+
+I'm rewriting the game as a browser based game. However layout and simple visual design bedevil me. I'm looking for other online games that handle displaying choices and their effects well.
+
+The game is turn-based. Each turn they get access to some more choices. Choices this round have effects starting next round and sometimes for several rounds.
+
+The game needs to display:
+- Multiple actions, their descriptions, and costs. Each round the list of choices grows longer. (Maybe 15 choices max).
+- Basic game instructions
+- Per round instructions
+- Per round notes from management ;-)
+- Effects of actions from the previous round
+
+Can you point me to games that have done this well?
