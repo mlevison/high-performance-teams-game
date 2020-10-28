@@ -5,7 +5,7 @@ export type GameActionId =
   | 'GAME_ACTION_BUILD_SERVER'
   | 'GAME_ACTION_TEAMS_ON_SAME_FLOOR'
   | 'GAME_ACTION_UNIT_TESTING'
-  | 'GAME_ACTION_INFORMAL_CROSS_TRAING'
+  | 'GAME_ACTION_INFORMAL_CROSS_TRAINING'
   | 'PROTECTED_FROM_OUTSIDE_DISTRACTION'
   | 'WORKING_AGREEMENTS'
   | 'ELIMINATE_LONG_LIVED_FEATURE_BRANCHES';
@@ -65,7 +65,7 @@ export const gameActionList: GameActionList = {
     cost: 2,
     effect: () => ({ capacity: 2 }),
   },
-  GAME_ACTION_INFORMAL_CROSS_TRAING: {
+  GAME_ACTION_INFORMAL_CROSS_TRAINING: {
     name: 'Informal Cross Training',
     available: combine([unique(), fromRound(3)]),
     description:
