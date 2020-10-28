@@ -8,6 +8,7 @@ export type AvailabilityCheck = (
   id: GameActionId,
 ) => boolean;
 type GameActionImplementation = {
+  type?: 'ENGINEERING';
   available: AvailabilityCheck;
   effect: (age: number, finishedActionIds: GameActionId[]) => Effect;
   name: string;

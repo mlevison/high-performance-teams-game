@@ -6,9 +6,10 @@ import {
   getEffects,
   getCosts,
 } from './round';
+import { Effect, gameEffectList } from './effects';
 import { concatByProp, sumByProp } from '../lib';
 import { BASE_CAPACITY } from '../constants';
-import { GameActionId } from './gameActions';
+import { findGameActionById, GameActionId } from './gameActions';
 
 export type GameState = {
   currentRound: Round;
@@ -28,14 +29,38 @@ export const INITIAL_STATE: GameState = {
   pastRounds: [],
 };
 
-export function getRoundCapacity(pastRounds: Round[]) {
+export function getAllSelectedGameActions(rounds: Round[]) {
+  return concatByProp(rounds, 'selectedGameActionIds').map(findGameActionById);
+}
+
+export function getRoundEffects(pastRounds: Round[]) {
+  if (!pastRounds.length) {
+    return [];
+  }
+
   const roundAmounts = pastRounds.length;
   const allActionIds = concatByProp(pastRounds, 'selectedGameActionIds');
-  return pastRounds.reduce((capacity, round, i) => {
+  const actionEffects = pastRounds.reduce((allEffects, round, i) => {
     const age = i + 1 - roundAmounts;
     const roundEffects = getEffects(round, age, allActionIds);
 
-    return capacity + sumByProp(roundEffects, 'capacity');
+    return allEffects.concat(roundEffects);
+  }, [] as Effect[]);
+
+  const gameEffects = gameEffectList
+    .map((gameEffect) => {
+      return gameEffect(pastRounds);
+    })
+    .filter(
+      (gameEffectOrNull): gameEffectOrNull is Effect =>
+        gameEffectOrNull !== null,
+    );
+  return actionEffects.concat(gameEffects);
+}
+
+export function getCapacity(effects: Effect[]) {
+  return effects.reduce((capacity, effect) => {
+    return capacity + effect.capacity;
   }, BASE_CAPACITY);
 }
 
@@ -60,7 +85,8 @@ export function gameReducer(state: GameState, action: Action): GameState {
           ...state.pastRounds,
           closeRound(
             state.currentRound,
-            getRoundCapacity(state.pastRounds) - getCosts(state.currentRound),
+            getCapacity(getRoundEffects(state.pastRounds)) -
+              getCosts(state.currentRound),
           ),
         ],
         currentRound: createRound(),

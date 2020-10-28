@@ -28,6 +28,7 @@ export const gameActionList: GameActionList = {
     effect: () => ({ capacity: 1 }),
   },
   ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
+    type: 'ENGINEERING',
     name: 'All Work is done on Main or Trunk',
     available: unique(),
     description:
@@ -36,6 +37,7 @@ export const gameActionList: GameActionList = {
     effect: () => ({ capacity: 1 }),
   },
   GAME_ACTION_BUILD_SERVER: {
+    type: 'ENGINEERING',
     name: 'Build Server',
     available: unique(),
     description:
@@ -52,6 +54,7 @@ export const gameActionList: GameActionList = {
     effect: (age) => ({ capacity: age < 5 ? 1 : 5 }),
   },
   GAME_ACTION_UNIT_TESTING: {
+    type: 'ENGINEERING',
     name: 'Unit Testing',
     available: combine([
       unique(),
