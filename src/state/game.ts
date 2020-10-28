@@ -7,9 +7,9 @@ import {
   getCosts,
 } from './round';
 import { Effect, gameEffectList } from './effects';
-import { concatByProp, sumByProp } from '../lib';
+import { concatByProp } from '../lib';
 import { BASE_CAPACITY } from '../constants';
-import { findGameActionById, GameActionId } from './gameActions';
+import { GameActionId } from './gameActions';
 
 export type GameState = {
   currentRound: Round;
@@ -28,10 +28,6 @@ export const INITIAL_STATE: GameState = {
   },
   pastRounds: [],
 };
-
-export function getAllSelectedGameActions(rounds: Round[]) {
-  return concatByProp(rounds, 'selectedGameActionIds').map(findGameActionById);
-}
 
 export function getRoundEffects(pastRounds: Round[]) {
   if (!pastRounds.length) {
