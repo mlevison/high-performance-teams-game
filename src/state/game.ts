@@ -37,7 +37,7 @@ export function getRoundEffects(pastRounds: Round[]) {
   const roundAmounts = pastRounds.length;
   const allActionIds = concatByProp(pastRounds, 'selectedGameActionIds');
   const actionEffects = pastRounds.reduce((allEffects, round, i) => {
-    const age = i + 1 - roundAmounts;
+    const age = roundAmounts - (i + 1);
     const roundEffects = getEffects(round, age, allActionIds);
 
     return allEffects.concat(roundEffects);

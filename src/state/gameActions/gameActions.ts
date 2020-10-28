@@ -51,7 +51,7 @@ export const gameActionList: GameActionList = {
     description:
       "Getting Team Members on the same floor reduces the cost of communication as they don't have to go far to ask questions",
     cost: 3,
-    effect: (age) => ({ capacity: age < 5 ? 1 : 5 }),
+    effect: (age) => ({ capacity: age < 5 ? age + 1 : 5 }),
   },
   GAME_ACTION_UNIT_TESTING: {
     type: 'ENGINEERING',
