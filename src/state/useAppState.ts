@@ -5,7 +5,7 @@ import { getAvailableGameActions, GameAction } from './gameActions';
 
 import { getCosts } from './round';
 
-type AppState = {
+export type AppState = {
   availableGameActions: GameAction[];
   currentRound: {
     number: number;
