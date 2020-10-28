@@ -28,13 +28,10 @@ export function getCosts(round: Round) {
   return sumByProp(round.selectedGameActionIds.map(findGameActionById), 'cost');
 }
 
-export function closeRound(round: Round, totalCapacity: number): ClosedRound {
-  const selectedGameActions = round.selectedGameActionIds.map(
-    findGameActionById,
-  );
-  const costs = sumByProp(selectedGameActions, 'cost');
-  const storiesAttempted = totalCapacity - costs;
-
+export function closeRound(
+  round: Round,
+  storiesAttempted: number,
+): ClosedRound {
   return {
     ...round,
     storiesCompleted:
