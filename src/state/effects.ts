@@ -3,7 +3,7 @@ import { Round } from './round';
 
 export type Effect = {
   capacity: number;
-  title?: string;
+  title: string;
   description?: string;
 };
 

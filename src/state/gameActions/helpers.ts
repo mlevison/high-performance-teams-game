@@ -28,9 +28,6 @@ export function combine(checks: AvailabilityCheck[]): AvailabilityCheck {
 }
 
 /** --- EFFECTS --- */
-const NO_EFFECT = {
-  capacity: 0,
-};
 export function hasNoEffect() {
-  return NO_EFFECT;
+  return null;
 }

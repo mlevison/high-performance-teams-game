@@ -25,7 +25,7 @@ export const gameActionList: GameActionList = {
     description: 'Create Team Working Agreements',
     cost: 1,
     // TODO - the effect is different in that it effects the success die roll
-    effect: () => ({ capacity: 1 }),
+    effect: () => ({ capacity: 1, title: 'TODO: Working Agreements active' }),
   },
   ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
     type: 'ENGINEERING',
@@ -34,7 +34,10 @@ export const gameActionList: GameActionList = {
     description:
       'When teams use Feature Branches – then they’re not really using Continuous integration. Feature branching optimizes for the individual while harming the Team',
     cost: 2,
-    effect: () => ({ capacity: 1 }),
+    effect: () => ({
+      capacity: 1,
+      title: 'TODO: All Work is done on Main or Trunk active',
+    }),
   },
   GAME_ACTION_BUILD_SERVER: {
     type: 'ENGINEERING',
@@ -51,7 +54,19 @@ export const gameActionList: GameActionList = {
     description:
       "Getting Team Members on the same floor reduces the cost of communication as they don't have to go far to ask questions",
     cost: 3,
-    effect: (age) => ({ capacity: age < 5 ? age + 1 : 5 }),
+    effect: (age) => {
+      if (age < 5) {
+        return {
+          capacity: age + 1,
+          title: `TODO: Team on same floor since ${age + 1} rounds`,
+        };
+      }
+
+      return {
+        capacity: 5,
+        title: `TODO: Team on same floor since 5 or more rounds`,
+      };
+    },
   },
   GAME_ACTION_UNIT_TESTING: {
     type: 'ENGINEERING',
@@ -63,7 +78,7 @@ export const gameActionList: GameActionList = {
     ]),
     description: 'TODO: SOME DESCRIPTION',
     cost: 2,
-    effect: () => ({ capacity: 2 }),
+    effect: () => ({ capacity: 2, title: 'TODO: Unit Testing active' }),
   },
   GAME_ACTION_INFORMAL_CROSS_TRAINING: {
     name: 'Informal Cross Training',
@@ -71,6 +86,9 @@ export const gameActionList: GameActionList = {
     description:
       'Informal cross-training for existing team members in an area the team is weak. (Testing anyone?)',
     cost: 1,
-    effect: () => ({ capacity: 1 }),
+    effect: () => ({
+      capacity: 1,
+      title: 'TODO: Informal Cross Training active',
+    }),
   },
 };

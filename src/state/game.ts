@@ -41,17 +41,18 @@ export function getRoundEffects(pastRounds: Round[]) {
     const roundEffects = getEffects(round, age, allActionIds);
 
     return allEffects.concat(roundEffects);
-  }, [] as Effect[]);
+  }, [] as (Effect | null)[]);
 
-  const gameEffects = gameEffectList
-    .map((gameEffect) => {
-      return gameEffect(pastRounds);
-    })
+  const gameEffects = gameEffectList.map((gameEffect) => {
+    return gameEffect(pastRounds);
+  });
+
+  return actionEffects
+    .concat(gameEffects)
     .filter(
       (gameEffectOrNull): gameEffectOrNull is Effect =>
         gameEffectOrNull !== null,
     );
-  return actionEffects.concat(gameEffects);
 }
 
 export function getCapacity(effects: Effect[]) {

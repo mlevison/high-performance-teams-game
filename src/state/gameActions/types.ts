@@ -10,7 +10,7 @@ export type AvailabilityCheck = (
 type GameActionImplementation = {
   type?: 'ENGINEERING';
   available: AvailabilityCheck;
-  effect: (age: number, finishedActionIds: GameActionId[]) => Effect;
+  effect: (age: number, finishedActionIds: GameActionId[]) => Effect | null;
   name: string;
   description: string;
   cost: number;
