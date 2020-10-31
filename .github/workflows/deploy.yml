@@ -1,0 +1,72 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - uses: actions/cache@v2
+        id: npm-v1
+        with:
+          path: |
+            ~/.npm
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: npm install
+        if: steps.npm-v1.outputs.cache-hit != 'true'
+        run: |
+          npm ci
+
+      - name: test
+        run: npm test -- --coverage
+
+      - uses: codecov/codecov-action@v1
+
+      - name: build
+        run: |
+          npm run build
+          touch build/.nojekyll
+          echo hptg.xiphe.net > build/CNAME
+
+      - name: deploy gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REF=$([ -z "$GITHUB_HEAD_REF" ] && echo $GITHUB_REF || echo $GITHUB_HEAD_REF)
+          BRANCH=${REF##*/}
+          DEST=$([ "$BRANCH" == "main" ] && echo "." || echo "preview/$BRANCH")
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/mlevison/high-performance-teams-game.git
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          npx gh-pages-clean
+          npx --no-install gh-pages\
+              --branch gh-pages\
+              --dist build\
+              --dest $DEST\
+              --before-add cleanup-gh-pages-previews\
+              --add\
+              --dotfiles
+
+      - name: decorate PR
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REF=$([ -z "$GITHUB_HEAD_REF" ] && echo $GITHUB_REF || echo $GITHUB_HEAD_REF)
+          BRANCH=${REF##*/}
+          npx --no-install decorate-gh-pr -r -c "<a href=\"https://hptg.xiphe.net/preview/${BRANCH}\"><img src=\"https://img.shields.io/badge/published-gh--pages-green\" alt=\"published to gh-pages\" /></a><hr />"
