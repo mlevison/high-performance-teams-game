@@ -1,5 +1,8 @@
 # High-Performance Teams Game
 
+![deploy](https://github.com/mlevison/high-performance-teams-game/workflows/deploy/badge.svg)
+[![codecov](https://codecov.io/gh/mlevison/high-performance-teams-game/branch/main/graph/badge.svg)](https://codecov.io/gh/mlevison/high-performance-teams-game)
+
 ## Getting Started
 
 ### System Requirements
