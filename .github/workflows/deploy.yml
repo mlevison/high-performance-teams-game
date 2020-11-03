@@ -41,7 +41,7 @@ jobs:
         run: |
           npm run build
           touch build/.nojekyll
-          echo hptg.xiphe.net > build/CNAME
+          echo teamsgame.agilepainrelief.com > build/CNAME
 
       - name: deploy gh-pages
         env:
