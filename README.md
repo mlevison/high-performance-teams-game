@@ -53,7 +53,7 @@ npm start
 
 This should directly open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Starting the test environment
+### Starting unit tests
 
 In the project directory, run:
 
@@ -61,14 +61,13 @@ In the project directory, run:
 npm test
 ```
 
-This will open up [cypress](https://www.cypress.io/) allowing you to select which
-specs to run.
+This will open a [jest](https://jestjs.io/) session in the terminal.
 
 ## Good resources to learn about everything used here:
 
 - [JavaScript to Know for React](https://kentcdodds.com/blog/javascript-to-know-for-react)
 - [Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
-- [Write your first cypress test](https://docs.cypress.io/guides/getting-started/writing-your-first-test.html#Write-your-first-test)
+- [Getting started with Jest](https://jestjs.io/docs/en/getting-started)
 - [Introduction to testing library](https://testing-library.com/docs/dom-testing-library/intro)
 
 <!-- prettier-ignore-start -->
