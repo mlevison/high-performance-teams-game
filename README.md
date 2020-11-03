@@ -1,7 +1,8 @@
 # High-Performance Teams Game
 
-![deploy](https://github.com/mlevison/high-performance-teams-game/workflows/deploy/badge.svg)
+[![deploy](https://github.com/mlevison/high-performance-teams-game/workflows/deploy/badge.svg)](https://github.com/mlevison/high-performance-teams-game/actions?query=branch%3Amain)
 [![codecov](https://codecov.io/gh/mlevison/high-performance-teams-game/branch/main/graph/badge.svg)](https://codecov.io/gh/mlevison/high-performance-teams-game)
+[![published](https://img.shields.io/badge/published-gh--pages-green)](http://teamsgame.agilepainrelief.com/)
 
 ## Getting Started
 
