@@ -10,6 +10,7 @@ import { Effect, gameEffectList, isEffect } from './effects';
 import { concatByProp } from '../lib';
 import { getRoundDescriptionEffects } from './roundDescriptions';
 import { GameActionId } from './gameActions';
+import { GremlinId } from './gremlins';
 
 export type GameState = {
   currentRound: Round;
@@ -19,7 +20,7 @@ export type SelectGameActionAction = {
   type: 'SELECT_GAME_ACTION';
   payload: GameActionId;
 };
-export type NextRoundAction = { type: 'NEXT_ROUND' };
+export type NextRoundAction = { type: 'NEXT_ROUND'; gremlin?: GremlinId };
 export type Action = NextRoundAction | SelectGameActionAction;
 
 export const INITIAL_STATE: GameState = {

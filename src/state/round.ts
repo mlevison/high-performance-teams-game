@@ -1,11 +1,13 @@
 import { storySucceeds, sumByProp } from '../lib';
 import { findGameActionById, GameActionId, getEffect } from './gameActions';
+import { GremlinId } from './gremlins';
 
 export type Round = {
   selectedGameActionIds: GameActionId[];
 };
 export type ClosedRound = Round & {
   storiesCompleted: number;
+  gremlin?: GremlinId;
 };
 
 export function createRound(): Round {
@@ -31,9 +33,11 @@ export function getCosts(round: Round) {
 export function closeRound(
   round: Round,
   storiesAttempted: number,
+  gremlin?: GremlinId,
 ): ClosedRound {
   return {
     ...round,
+    gremlin,
     storiesCompleted:
       storiesAttempted <= 0
         ? 0
