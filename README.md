@@ -70,3 +70,9 @@ specs to run.
 - [Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
 - [Write your first cypress test](https://docs.cypress.io/guides/getting-started/writing-your-first-test.html#Write-your-first-test)
 - [Introduction to testing library](https://testing-library.com/docs/dom-testing-library/intro)
+
+<!-- prettier-ignore-start -->
+[npm]: https://www.npmjs.com/
+[node]: https://nodejs.org
+[git]: https://git-scm.com/
+<!-- prettier-ignore-end -->
