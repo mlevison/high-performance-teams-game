@@ -12,13 +12,8 @@ type GameEffect = (rounds: Round[]) => Effect | null;
 export const gameEffectList: GameEffect[] = [
   function technicalDebtDrag(rounds) {
     let roundsWithoutEngAction = 0;
-    let hadEngineeringAction = false;
 
-    rounds.forEach((round) => {
-      if (hadEngineeringAction) {
-        return;
-      }
-
+    for (const round of rounds) {
       const roundsGameActions = round.selectedGameActionIds.map(
         findGameActionById,
       );
@@ -26,12 +21,12 @@ export const gameEffectList: GameEffect[] = [
         ({ type }) => type === 'ENGINEERING',
       );
 
-      if (!engineeringAction) {
-        roundsWithoutEngAction += 1;
-      } else {
-        hadEngineeringAction = true;
+      if (engineeringAction) {
+        break;
       }
-    });
+
+      roundsWithoutEngAction += 1;
+    }
 
     if (roundsWithoutEngAction === 0) {
       return null;
