@@ -29,6 +29,14 @@
     "test": "react-scripts test",
     "build": "react-scripts build"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx}",
+      "!**/*.d.ts",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
