@@ -26,6 +26,7 @@ export default function App() {
             </>
           )}
           <h2>Round {state.currentRound.number} of 6</h2>
+          {state.currentRound.description}
           <p>
             Capacity: {state.currentRound.capacity.available} /{' '}
             {state.currentRound.capacity.total}

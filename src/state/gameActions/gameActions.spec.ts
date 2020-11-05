@@ -3,8 +3,16 @@ import useAppState from '../useAppState';
 import { GameActionId } from './gameActions';
 
 /* disable game effect to only tests single actions */
-jest.mock('../effects', () => ({
+jest.mock('../effects/effects', () => ({
   gameEffectList: [],
+}));
+jest.mock('../roundDescriptions/roundDescriptions', () => ({
+  roundDescriptions: {
+    1: {
+      description: null,
+      effect: () => ({ capacity: 10 }),
+    },
+  },
 }));
 
 describe('GameActions', () => {

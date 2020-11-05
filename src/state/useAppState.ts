@@ -1,6 +1,6 @@
-import { Dispatch, useReducer } from 'react';
+import { Dispatch, ReactElement, useReducer } from 'react';
 import { concatByProp, sumByProp } from '../lib';
-import { Effect } from './effects';
+import { isVisibleEffect, VisibleEffect } from './effects';
 import {
   Action,
   gameReducer,
@@ -11,16 +11,18 @@ import {
 import { getAvailableGameActions, GameAction } from './gameActions';
 
 import { getCosts } from './round';
+import { roundDescriptions } from './roundDescriptions/roundDescriptions';
 
 export type AppState = {
   availableGameActions: GameAction[];
   currentRound: {
     number: number;
+    description?: ReactElement;
     capacity: {
       available: number;
       total: number;
     };
-    activeEffects: Effect[];
+    activeEffects: VisibleEffect[];
   };
   result: {
     storiesCompleted: number;
@@ -32,27 +34,32 @@ export type AppState = {
 
 export default function useAppState(): [AppState, Dispatch<Action>] {
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
-  // const pastRound = state.pastRounds[state.pastRounds.length - 1];
+
   const effects = getRoundEffects(state.pastRounds);
   const roundCapacity = getCapacity(effects);
+  const visibleEffects = effects.filter(isVisibleEffect);
   const costs = getCosts(state.currentRound);
   const capacityAvailable = roundCapacity - costs;
+  const currentRoundNumber = state.pastRounds.length + 1;
   const availableGameActions = getAvailableGameActions(
-    state.pastRounds.length + 1,
+    currentRoundNumber,
     concatByProp(state.pastRounds, 'selectedGameActionIds'),
     state.currentRound.selectedGameActionIds,
   );
+  const currentRoundDescription =
+    roundDescriptions[currentRoundNumber]?.description;
 
   return [
     {
       availableGameActions,
       currentRound: {
-        number: state.pastRounds.length + 1,
+        description: currentRoundDescription,
+        number: currentRoundNumber,
         capacity: {
           available: capacityAvailable,
           total: roundCapacity,
         },
-        activeEffects: effects,
+        activeEffects: visibleEffects,
       },
       result: {
         storiesCompleted: sumByProp(state.pastRounds, 'storiesCompleted'),
