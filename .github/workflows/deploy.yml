@@ -41,8 +41,8 @@ jobs:
         run: |
           REF=$([ -z "$GITHUB_HEAD_REF" ] && echo $GITHUB_REF || echo $GITHUB_HEAD_REF)
           BRANCH=${REF##*/}
-          DEST=$([ "$BRANCH" == "main" ] && echo "/" || echo "preview/$BRANCH/")
-          PUBLIC_URL="https://teamsgame.agilepainrelief.com$DEST"
+          DEST=$([ "$BRANCH" == "main" ] && echo "/" || echo "/preview/$BRANCH/")
+          export PUBLIC_URL="https://teamsgame.agilepainrelief.com$DEST"
           npm run build
           touch build/.nojekyll
           echo teamsgame.agilepainrelief.com > build/CNAME
