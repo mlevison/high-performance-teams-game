@@ -9,15 +9,8 @@ jest.mock('./effects/effects', () => ({
 }));
 
 describe('Gremlins', () => {
-  let result: HookResult<ReturnType<typeof useAppState>>;
-  const nextRound = (gremlin?: GremlinId) => {
-    act(() => {
-      result.current[1]({ type: 'NEXT_ROUND', gremlin });
-    });
-  };
-  const selectGameAction = (gameActionId: GameActionId) => {
-    act(() => {
-      result.current[1]({ type: 'SELECT_GAME_ACTION', payload: gameActionId });
-    });
-  };
+  // describe('emergency on another team', () => {
+  //   it('reduces capacity for 3 rounds', () => {
+  //   })
+  // })
 });
