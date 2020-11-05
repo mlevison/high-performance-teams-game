@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.44faff29.chunk.css",
-    "main.js": "/static/js/main.f5191d50.chunk.js",
-    "main.js.map": "/static/js/main.f5191d50.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.e9f40e79.js",
-    "runtime-main.js.map": "/static/js/runtime-main.e9f40e79.js.map",
-    "static/js/2.68365f46.chunk.js": "/static/js/2.68365f46.chunk.js",
-    "static/js/2.68365f46.chunk.js.map": "/static/js/2.68365f46.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/main.44faff29.chunk.css.map": "/static/css/main.44faff29.chunk.css.map",
-    "static/js/2.68365f46.chunk.js.LICENSE.txt": "/static/js/2.68365f46.chunk.js.LICENSE.txt"
+    "main.css": "https://teamsgame.agilepainrelief.compreview/test-round-3/static/css/main.44faff29.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.compreview/test-round-3/static/js/main.f5191d50.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.compreview/test-round-3/static/js/main.f5191d50.chunk.js.map",
+    "runtime-main.js": "https://teamsgame.agilepainrelief.compreview/test-round-3/static/js/runtime-main.d157ee73.js",
+    "runtime-main.js.map": "https://teamsgame.agilepainrelief.compreview/test-round-3/static/js/runtime-main.d157ee73.js.map",
+    "static/js/2.68365f46.chunk.js": "https://teamsgame.agilepainrelief.compreview/test-round-3/static/js/2.68365f46.chunk.js",
+    "static/js/2.68365f46.chunk.js.map": "https://teamsgame.agilepainrelief.compreview/test-round-3/static/js/2.68365f46.chunk.js.map",
+    "index.html": "https://teamsgame.agilepainrelief.compreview/test-round-3/index.html",
+    "static/css/main.44faff29.chunk.css.map": "https://teamsgame.agilepainrelief.compreview/test-round-3/static/css/main.44faff29.chunk.css.map",
+    "static/js/2.68365f46.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.compreview/test-round-3/static/js/2.68365f46.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.e9f40e79.js",
+    "static/js/runtime-main.d157ee73.js",
     "static/js/2.68365f46.chunk.js",
     "static/css/main.44faff29.chunk.css",
     "static/js/main.f5191d50.chunk.js"
