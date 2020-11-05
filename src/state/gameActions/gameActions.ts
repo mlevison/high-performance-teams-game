@@ -1,4 +1,4 @@
-import { GameActionList } from './types';
+import { GameActionList, GameAction } from './types';
 import { unique, hasNoEffect, combine, fromRound, requires } from './helpers';
 
 export type GameActionId =
@@ -104,3 +104,7 @@ export const gameActionList: GameActionList = {
     }),
   },
 };
+
+export const gameActions: GameAction[] = Object.entries(
+  gameActionList,
+).map(([id, action]) => ({ ...action, id: id as GameActionId }));

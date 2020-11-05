@@ -1,5 +1,10 @@
 import { storySucceeds, sumByProp } from '../lib';
-import { findGameActionById, GameActionId, getEffect } from './gameActions';
+import {
+  findGameActionById,
+  GameActionId,
+  getCost,
+  getEffect,
+} from './gameActions';
 import { GremlinId } from './gremlins';
 
 export type Round = {
@@ -27,7 +32,12 @@ export function getEffects(
 }
 
 export function getCosts(round: Round) {
-  return sumByProp(round.selectedGameActionIds.map(findGameActionById), 'cost');
+  return sumByProp(
+    round.selectedGameActionIds.map((id) => ({
+      cost: getCost(findGameActionById(id)),
+    })),
+    'cost',
+  );
 }
 
 export function closeRound(
