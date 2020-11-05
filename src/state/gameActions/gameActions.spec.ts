@@ -1,6 +1,4 @@
-import { renderHook, act, HookResult } from '@testing-library/react-hooks';
-import useAppState from '../useAppState';
-import { GameActionId } from './gameActions';
+import { getGame } from '../../lib/testHelpers';
 
 /* disable game effect to only tests single actions */
 jest.mock('../effects/effects', () => ({
@@ -16,55 +14,40 @@ jest.mock('../roundDescriptions/roundDescriptions', () => ({
 }));
 
 describe('GameActions', () => {
-  let result: HookResult<ReturnType<typeof useAppState>>;
-  const nextRound = () => {
-    act(() => {
-      result.current[1]({ type: 'NEXT_ROUND' });
-    });
-  };
-  const selectGameAction = (gameActionId: GameActionId) => {
-    act(() => {
-      result.current[1]({ type: 'SELECT_GAME_ACTION', payload: gameActionId });
-    });
-  };
-  const getAvailableActionIds = () => {
-    return result.current[0].availableGameActions.map(({ id }) => id);
-  };
-
   describe('Teams on same floor', () => {
     it('increases capacity over many rounds', () => {
-      result = renderHook(() => useAppState()).result;
+      const game = getGame();
 
-      selectGameAction('GAME_ACTION_TEAMS_ON_SAME_FLOOR');
-      nextRound();
+      game.selectAction('GAME_ACTION_TEAMS_ON_SAME_FLOOR');
+      game.nextRound();
 
-      expect(result.current[0].currentRound.number).toEqual(2);
-      expect(result.current[0].currentRound.capacity.total).toEqual(11);
+      expect(game.state.currentRound.number).toEqual(2);
+      expect(game.state.currentRound.capacity.total).toEqual(11);
 
-      nextRound();
-      expect(result.current[0].currentRound.capacity.total).toEqual(12);
-      nextRound();
-      expect(result.current[0].currentRound.capacity.total).toEqual(13);
-      nextRound();
-      expect(result.current[0].currentRound.capacity.total).toEqual(14);
-      nextRound();
-      expect(result.current[0].currentRound.capacity.total).toEqual(15);
+      game.nextRound();
+      expect(game.state.currentRound.capacity.total).toEqual(12);
+      game.nextRound();
+      expect(game.state.currentRound.capacity.total).toEqual(13);
+      game.nextRound();
+      expect(game.state.currentRound.capacity.total).toEqual(14);
+      game.nextRound();
+      expect(game.state.currentRound.capacity.total).toEqual(15);
     });
   });
 
   describe('Informal Cross Training', () => {
     it('is only available from round 3 on', () => {
-      result = renderHook(() => useAppState()).result;
+      const game = getGame();
 
-      expect(getAvailableActionIds()).not.toContain(
+      expect(game.availableActionIds).not.toContain(
         'GAME_ACTION_INFORMAL_CROSS_TRAINING',
       );
-      nextRound();
-      expect(getAvailableActionIds()).not.toContain(
+      game.nextRound();
+      expect(game.availableActionIds).not.toContain(
         'GAME_ACTION_INFORMAL_CROSS_TRAINING',
       );
-      nextRound();
-      expect(getAvailableActionIds()).toContain(
+      game.nextRound();
+      expect(game.availableActionIds).toContain(
         'GAME_ACTION_INFORMAL_CROSS_TRAINING',
       );
     });
@@ -72,16 +55,16 @@ describe('GameActions', () => {
 
   describe('Unit Testing', () => {
     it('is only available if the BuildServer was implemented', () => {
-      result = renderHook(() => useAppState()).result;
+      const game = getGame();
 
-      expect(getAvailableActionIds()).not.toContain('GAME_ACTION_UNIT_TESTING');
+      expect(game.availableActionIds).not.toContain('GAME_ACTION_UNIT_TESTING');
 
-      nextRound();
-      expect(getAvailableActionIds()).not.toContain('GAME_ACTION_UNIT_TESTING');
+      game.nextRound();
+      expect(game.availableActionIds).not.toContain('GAME_ACTION_UNIT_TESTING');
 
-      selectGameAction('GAME_ACTION_BUILD_SERVER');
-      nextRound();
-      expect(getAvailableActionIds()).toContain('GAME_ACTION_UNIT_TESTING');
+      game.selectAction('GAME_ACTION_BUILD_SERVER');
+      game.nextRound();
+      expect(game.availableActionIds).toContain('GAME_ACTION_UNIT_TESTING');
     });
   });
 });
