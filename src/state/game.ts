@@ -6,9 +6,9 @@ import {
   getEffects,
   getCosts,
 } from './round';
-import { Effect, gameEffectList } from './effects';
+import { Effect, gameEffectList, isEffect } from './effects';
 import { concatByProp } from '../lib';
-import { BASE_CAPACITY } from '../constants';
+import { getRoundDescriptionEffects } from './roundDescriptions';
 import { GameActionId } from './gameActions';
 
 export type GameState = {
@@ -29,12 +29,13 @@ export const INITIAL_STATE: GameState = {
   pastRounds: [],
 };
 
-export function getRoundEffects(pastRounds: Round[]) {
+export function getRoundEffects(pastRounds: ClosedRound[]) {
+  const roundAmounts = pastRounds.length;
+  const roundDescriptionEffects = getRoundDescriptionEffects(pastRounds);
   if (!pastRounds.length) {
-    return [];
+    return roundDescriptionEffects.filter(isEffect);
   }
 
-  const roundAmounts = pastRounds.length;
   const allActionIds = concatByProp(pastRounds, 'selectedGameActionIds');
   const actionEffects = pastRounds.reduce((allEffects, round, i) => {
     const age = roundAmounts - (i + 1);
@@ -47,18 +48,16 @@ export function getRoundEffects(pastRounds: Round[]) {
     return gameEffect(pastRounds);
   });
 
-  return actionEffects
+  return roundDescriptionEffects
+    .concat(actionEffects)
     .concat(gameEffects)
-    .filter(
-      (gameEffectOrNull): gameEffectOrNull is Effect =>
-        gameEffectOrNull !== null,
-    );
+    .filter(isEffect);
 }
 
 export function getCapacity(effects: Effect[]) {
   return effects.reduce((capacity, effect) => {
     return capacity + effect.capacity;
-  }, BASE_CAPACITY);
+  }, 0);
 }
 
 export function gameReducer(state: GameState, action: Action): GameState {

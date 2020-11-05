@@ -1,13 +1,5 @@
-import { findGameActionById } from './gameActions';
-import { Round } from './round';
-
-export type Effect = {
-  capacity: number;
-  title: string;
-  description?: string;
-};
-
-type GameEffect = (rounds: Round[]) => Effect | null;
+import { findGameActionById } from '../gameActions';
+import { GameEffect } from './types';
 
 export const gameEffectList: GameEffect[] = [
   function technicalDebtDrag(rounds) {

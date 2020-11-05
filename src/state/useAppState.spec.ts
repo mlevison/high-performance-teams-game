@@ -1,22 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useAppState, { AppState } from './useAppState';
+import useAppState from './useAppState';
+
+jest.mock('./roundDescriptions/roundDescriptions', () => ({
+  roundDescriptions: {
+    1: {
+      description: null,
+      effect: () => ({ capacity: 10 }),
+    },
+  },
+}));
 
 describe('AppState', () => {
-  it('starts with capacity 10/10 in round 1', () => {
-    const { result } = renderHook(() => useAppState());
-
-    const expectedCurrentRound: AppState['currentRound'] = {
-      capacity: {
-        total: 10,
-        available: 10,
-      },
-      number: 1,
-      activeEffects: [],
-    };
-
-    expect(result.current[0].currentRound).toEqual(expectedCurrentRound);
-  });
-
   it('starts with no past rounds', () => {
     const { result } = renderHook(() => useAppState());
 
