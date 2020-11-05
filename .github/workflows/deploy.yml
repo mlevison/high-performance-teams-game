@@ -39,6 +39,10 @@ jobs:
 
       - name: build
         run: |
+          REF=$([ -z "$GITHUB_HEAD_REF" ] && echo $GITHUB_REF || echo $GITHUB_HEAD_REF)
+          BRANCH=${REF##*/}
+          DEST=$([ "$BRANCH" == "main" ] && echo "/" || echo "preview/$BRANCH/")
+          PUBLIC_URL="https://teamsgame.agilepainrelief.com$DEST"
           npm run build
           touch build/.nojekyll
           echo teamsgame.agilepainrelief.com > build/CNAME
@@ -69,4 +73,4 @@ jobs:
         run: |
           REF=$([ -z "$GITHUB_HEAD_REF" ] && echo $GITHUB_REF || echo $GITHUB_HEAD_REF)
           BRANCH=${REF##*/}
-          npx --no-install decorate-gh-pr -r -c "<a href=\"http://teamsgame.agilepainrelief.com/preview/${BRANCH}\"><img src=\"https://img.shields.io/badge/published-gh--pages-green\" alt=\"published to gh-pages\" /></a><hr />"
+          npx --no-install decorate-gh-pr -r -c "<a href=\"https://teamsgame.agilepainrelief.com/preview/${BRANCH}\"><img src=\"https://img.shields.io/badge/published-gh--pages-green\" alt=\"published to gh-pages\" /></a><hr />"
