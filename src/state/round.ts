@@ -2,10 +2,10 @@ import { storySucceeds, sumByProp } from '../lib';
 import {
   findGameActionById,
   GameActionId,
-  getCost,
-  getEffect,
+  getCost as getActionCost,
+  getEffect as getActionEffect,
 } from './gameActions';
-import { GremlinId } from './gremlins';
+import { getGremlinEffect, GremlinId } from './gremlins';
 
 export type Round = {
   selectedGameActionIds: GameActionId[];
@@ -22,19 +22,19 @@ export function createRound(): Round {
 }
 
 export function getEffects(
-  round: Round,
+  round: ClosedRound,
   age: number,
   finishedActionIds: GameActionId[],
 ) {
-  return round.selectedGameActionIds.map((id) =>
-    getEffect(id, age, finishedActionIds),
-  );
+  return round.selectedGameActionIds
+    .map((id) => getActionEffect(id, age, finishedActionIds))
+    .concat(getGremlinEffect(round.gremlin, age, finishedActionIds));
 }
 
 export function getCosts(round: Round) {
   return sumByProp(
     round.selectedGameActionIds.map((id) => ({
-      cost: getCost(findGameActionById(id)),
+      cost: getActionCost(findGameActionById(id)),
     })),
     'cost',
   );

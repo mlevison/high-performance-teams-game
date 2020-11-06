@@ -20,7 +20,10 @@ export type SelectGameActionAction = {
   type: 'SELECT_GAME_ACTION';
   payload: GameActionId;
 };
-export type NextRoundAction = { type: 'NEXT_ROUND'; gremlin?: GremlinId };
+export type NextRoundAction = {
+  type: 'NEXT_ROUND';
+  payload?: { gremlin?: GremlinId };
+};
 export type Action = NextRoundAction | SelectGameActionAction;
 
 export const INITIAL_STATE: GameState = {
@@ -84,6 +87,7 @@ export function gameReducer(state: GameState, action: Action): GameState {
             state.currentRound,
             getCapacity(getRoundEffects(state.pastRounds)) -
               getCosts(state.currentRound),
+            action.payload?.gremlin,
           ),
         ],
         currentRound: createRound(),

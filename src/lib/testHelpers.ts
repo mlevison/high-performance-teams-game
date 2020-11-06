@@ -15,7 +15,7 @@ export function getGame() {
     },
     nextRound: (gremlin?: GremlinId) => {
       act(() => {
-        wrapper.result.current[1]({ type: 'NEXT_ROUND', gremlin });
+        wrapper.result.current[1]({ type: 'NEXT_ROUND', payload: { gremlin } });
       });
     },
     selectAction: (gameActionId: GameActionId) => {

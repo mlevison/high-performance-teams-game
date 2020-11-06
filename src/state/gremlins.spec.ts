@@ -1,6 +1,6 @@
 import { getGame } from '../lib/testHelpers';
 
-/* disable game effect to only tests gremlin effects */
+/* Disable roundDescription, game and action effects */
 jest.mock('./roundDescriptions/roundDescriptions', () => ({
   roundDescriptions: {
     1: {
@@ -12,6 +12,7 @@ jest.mock('./roundDescriptions/roundDescriptions', () => ({
 jest.mock('./effects/effects', () => ({
   gameEffectList: [],
 }));
+jest.mock('./gameActions/getEffect', () => ({ getEffect: () => null }));
 
 describe('Gremlins', () => {
   describe('emergency on another team', () => {
