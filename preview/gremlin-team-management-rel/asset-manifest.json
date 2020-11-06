@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/static/css/main.44faff29.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/static/js/main.7d6f4927.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/static/js/main.7d6f4927.chunk.js.map",
+    "runtime-main.js": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/static/js/runtime-main.4cca1167.js",
+    "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/static/js/runtime-main.4cca1167.js.map",
+    "static/js/2.ca328f74.chunk.js": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/static/js/2.ca328f74.chunk.js",
+    "static/js/2.ca328f74.chunk.js.map": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/static/js/2.ca328f74.chunk.js.map",
+    "index.html": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/index.html",
+    "static/css/main.44faff29.chunk.css.map": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/static/css/main.44faff29.chunk.css.map",
+    "static/js/2.ca328f74.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/preview/gremlin-team-management-rel/static/js/2.ca328f74.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4cca1167.js",
+    "static/js/2.ca328f74.chunk.js",
+    "static/css/main.44faff29.chunk.css",
+    "static/js/main.7d6f4927.chunk.js"
+  ]
+}
