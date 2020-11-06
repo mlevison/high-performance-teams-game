@@ -9,9 +9,8 @@ import {
   INITIAL_STATE,
 } from './game';
 import { getAvailableGameActions, GameAction } from './gameActions';
-
 import { getCosts } from './round';
-import { roundDescriptions } from './roundDescriptions/roundDescriptions';
+import { roundDescriptions } from './roundDescriptions';
 
 export type AppState = {
   availableGameActions: GameAction[];

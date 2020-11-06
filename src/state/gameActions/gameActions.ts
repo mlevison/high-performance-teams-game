@@ -1,4 +1,4 @@
-import { GameActionList } from './types';
+import { GameActionList, GameAction } from './types';
 import { unique, hasNoEffect, combine, fromRound, requires } from './helpers';
 
 export type GameActionId =
@@ -6,6 +6,7 @@ export type GameActionId =
   | 'GAME_ACTION_TEAMS_ON_SAME_FLOOR'
   | 'GAME_ACTION_UNIT_TESTING'
   | 'GAME_ACTION_INFORMAL_CROSS_TRAINING'
+  | 'GAME_ACTION_FORMAL_CROSS_TRAINING'
   | 'PROTECTED_FROM_OUTSIDE_DISTRACTION'
   | 'WORKING_AGREEMENTS'
   | 'ELIMINATE_LONG_LIVED_FEATURE_BRANCHES';
@@ -91,4 +92,19 @@ export const gameActionList: GameActionList = {
       title: 'TODO: Informal Cross Training active',
     }),
   },
+  GAME_ACTION_FORMAL_CROSS_TRAINING: {
+    name: 'Formal Cross-Training',
+    available: combine([unique(), fromRound(3)]),
+    description:
+      'Formal cross-training for existing team members in an area the team is weak. (Testing anyone?)',
+    cost: 3,
+    effect: () => ({
+      capacity: 3,
+      title: 'TODO: Informal Cross Training active',
+    }),
+  },
 };
+
+export const gameActions: GameAction[] = Object.entries(
+  gameActionList,
+).map(([id, action]) => ({ ...action, id: id as GameActionId }));

@@ -54,7 +54,10 @@ describe('App UI', () => {
     fireEvent.click(screen.getByRole('button', { name: /Complete Round/i }));
 
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
-    expect(dispatchSpy).toHaveBeenCalledWith({ type: 'NEXT_ROUND' });
+    expect(dispatchSpy).toHaveBeenCalledWith({
+      type: 'NEXT_ROUND',
+      payload: { gremlin: undefined },
+    });
   });
 });
 
@@ -63,6 +66,7 @@ jest.mock('./state', () => {
   let dispatch: Dispatch<Action> | null = null;
 
   return {
+    getGremlin() {},
     setState(newState: AppState) {
       state = newState;
     },

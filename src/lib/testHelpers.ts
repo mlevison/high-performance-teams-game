@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import useAppState from '../state/useAppState';
 import { GameActionId } from '../state/gameActions';
+import { GremlinId } from '../state/gremlins';
 
 export function getGame() {
   const wrapper = renderHook(() => useAppState());
@@ -12,9 +13,9 @@ export function getGame() {
     get availableActionIds() {
       return wrapper.result.current[0].availableGameActions.map(({ id }) => id);
     },
-    nextRound: () => {
+    nextRound: (gremlin?: GremlinId) => {
       act(() => {
-        wrapper.result.current[1]({ type: 'NEXT_ROUND' });
+        wrapper.result.current[1]({ type: 'NEXT_ROUND', payload: { gremlin } });
       });
     },
     selectAction: (gameActionId: GameActionId) => {

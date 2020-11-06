@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppState } from './state';
+import { useAppState, getGremlin } from './state';
 import { TOTAL_ROUNDS } from './constants';
 
 export default function App() {
@@ -43,7 +43,14 @@ export default function App() {
               ))}
             </>
           )}
-          <button onClick={() => dispatch({ type: 'NEXT_ROUND' })}>
+          <button
+            onClick={() =>
+              dispatch({
+                type: 'NEXT_ROUND',
+                payload: { gremlin: getGremlin(state) },
+              })
+            }
+          >
             Complete Round
           </button>
 
