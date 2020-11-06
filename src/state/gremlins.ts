@@ -1,19 +1,20 @@
 import { Effect } from './effects';
 import { GameActionId } from './gameActions';
+import { AppState } from './useAppState';
 
 export type GremlinId = 'EMERGENCY_ON_ANOTHER_TEAM';
-type Gremlin = {
-  title: string;
+type GremlinImplementation = {
   occurs: () => boolean;
   effect: (age: number, finishedActionIds: GameActionId[]) => null | Effect;
 };
-type GremlinList = { [k in GremlinId]: Gremlin };
+type Gremlin = GremlinImplementation & { id: GremlinId };
+type GremlinList = { [k in GremlinId]: GremlinImplementation };
 
 export const gremlinList: GremlinList = {
   EMERGENCY_ON_ANOTHER_TEAM: {
-    title:
-      'We’ve had an emergency on another team, we need your best tester for a while.',
-    occurs: () => Math.random() <= 0.1,
+    occurs() {
+      return Math.random() <= 0.1;
+    },
     effect(age, finishedActionIds) {
       if (
         age >= 3 ||
@@ -32,10 +33,18 @@ export const gremlinList: GremlinList = {
         capacity += 1;
       }
 
-      return { capacity, title: 'TODO: Best tester not available' };
+      return {
+        capacity,
+        title:
+          'We’ve had an emergency on another team, we need your best tester for a while.',
+      };
     },
   },
 };
+
+export const gremlins: Gremlin[] = Object.entries(
+  gremlinList,
+).map(([id, gremlin]) => ({ ...gremlin, id: id as GremlinId }));
 
 export function getGremlinEffect(
   gremlinId: GremlinId | undefined,
@@ -46,4 +55,16 @@ export function getGremlinEffect(
     return null;
   }
   return gremlinList[gremlinId].effect(age, finishedActionIds);
+}
+
+export function getGremlin(state: AppState): GremlinId | undefined {
+  if (state.currentRound.number < 2) {
+    return undefined;
+  }
+
+  const occurringGremlins = gremlins.filter((gremlin) => {
+    return gremlin.occurs();
+  });
+
+  return occurringGremlins.sort(() => Math.random() - 0.5)[0]?.id;
 }
