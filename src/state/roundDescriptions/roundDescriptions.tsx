@@ -4,10 +4,7 @@ import { ClosedRound } from '../round';
 
 export type RoundDescription = {
   description: ReactElement;
-  effect?: (
-    roundNumber: number,
-    previousRounds: ClosedRound[],
-  ) => Effect | null;
+  effect?: (previousRounds: ClosedRound[]) => Effect | null;
 };
 
 /* Rounds are 1-indexed - 1 is the first round */
@@ -40,11 +37,9 @@ export const roundDescriptions: { [key: string]: RoundDescription } = {
         </p>
       </>
     ),
-    effect: (roundNumber) => {
-      if (roundNumber === 3) {
-        return { capacity: 4, title: 'Management is paying overtime' };
-      }
-      return null;
-    },
+    effect: () => ({
+      capacity: 4,
+      title: 'Management is paying overtime',
+    }),
   },
 };

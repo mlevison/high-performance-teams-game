@@ -13,9 +13,12 @@ export function getGame() {
     get availableActionIds() {
       return wrapper.result.current[0].availableGameActions.map(({ id }) => id);
     },
-    nextRound: (gremlin?: GremlinId) => {
+    nextRound: (gremlinRoll?: GremlinId) => {
       act(() => {
-        wrapper.result.current[1]({ type: 'NEXT_ROUND', payload: { gremlin } });
+        wrapper.result.current[1]({
+          type: 'NEXT_ROUND',
+          payload: { gremlinRoll },
+        });
       });
     },
     selectAction: (gameActionId: GameActionId) => {

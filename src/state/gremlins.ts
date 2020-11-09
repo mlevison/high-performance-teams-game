@@ -1,20 +1,19 @@
+import { rollDice } from 'lib/rollDice';
 import { Effect } from './effects';
 import { GameActionId } from './gameActions';
-import { AppState } from './useAppState';
 
-export type GremlinId = 'EMERGENCY_ON_ANOTHER_TEAM';
+export type GremlinId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 type GremlinImplementation = {
-  occurs: () => boolean;
   effect: (age: number, finishedActionIds: GameActionId[]) => null | Effect;
 };
-type Gremlin = GremlinImplementation & { id: GremlinId };
-type GremlinList = { [k in GremlinId]: GremlinImplementation };
+type GremlinList = { [k in GremlinId]?: GremlinImplementation };
+
+export function isGremlinId(thing: unknown): thing is GremlinId {
+  return typeof thing === 'number' && thing >= 1 && thing <= 12;
+}
 
 export const gremlinList: GremlinList = {
-  EMERGENCY_ON_ANOTHER_TEAM: {
-    occurs() {
-      return Math.random() <= 0.1;
-    },
+  4: {
     effect(age, finishedActionIds) {
       if (
         age >= 3 ||
@@ -42,29 +41,17 @@ export const gremlinList: GremlinList = {
   },
 };
 
-export const gremlins: Gremlin[] = Object.entries(
-  gremlinList,
-).map(([id, gremlin]) => ({ ...gremlin, id: id as GremlinId }));
-
 export function getGremlinEffect(
-  gremlinId: GremlinId | undefined,
+  gremlinId: GremlinId,
   age: number,
   finishedActionIds: GameActionId[],
 ) {
-  if (!gremlinId) {
-    return null;
-  }
-  return gremlinList[gremlinId].effect(age, finishedActionIds);
+  return gremlinList[gremlinId]?.effect(age, finishedActionIds) || null;
 }
 
-export function getGremlin(state: AppState): GremlinId | undefined {
-  if (state.currentRound.number < 2) {
+export function rollGremlin(currentRound: number): GremlinId | undefined {
+  if (currentRound < 2) {
     return undefined;
   }
-
-  const occurringGremlins = gremlins.filter((gremlin) => {
-    return gremlin.occurs();
-  });
-
-  return occurringGremlins.sort(() => Math.random() - 0.5)[0]?.id;
+  return (rollDice() + rollDice()) as GremlinId;
 }

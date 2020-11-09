@@ -12,9 +12,7 @@ export function getRoundDescriptionEffects(pastRounds: ClosedRound[]) {
       continue;
     }
     const previousRounds = pastRounds.slice(0, i);
-    roundDescriptionEffects.push(
-      desc.effect?.(currentRound + 1, previousRounds) || null,
-    );
+    roundDescriptionEffects.push(desc.effect?.(previousRounds) || null);
   }
 
   return roundDescriptionEffects;
