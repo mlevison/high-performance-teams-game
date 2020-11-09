@@ -15,11 +15,29 @@ jest.mock('./effects/effects', () => ({
 jest.mock('./gameActions/getEffect', () => ({ getEffect: () => null }));
 
 describe('Gremlins', () => {
+  it('take only first gremlin roll into account', () => {
+    const game = getGame();
+    const gremlinRoll = 4;
+
+    game.nextRound(gremlinRoll);
+    expect(game.state.currentRound.capacity.available).toBe(7);
+
+    game.nextRound(gremlinRoll);
+    expect(game.state.currentRound.capacity.available).toBe(7);
+
+    game.nextRound(gremlinRoll);
+    expect(game.state.currentRound.capacity.available).toBe(7);
+
+    game.nextRound(gremlinRoll);
+    expect(game.state.currentRound.capacity.available).toBe(10);
+  });
+
   describe('emergency on another team', () => {
+    const GREMLIN_ROLL = 4;
     it('reduces capacity by 3 for 3 rounds', () => {
       const game = getGame();
 
-      game.nextRound('EMERGENCY_ON_ANOTHER_TEAM');
+      game.nextRound(GREMLIN_ROLL);
       expect(game.state.currentRound.capacity.available).toBe(7);
 
       game.nextRound();
@@ -36,7 +54,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
-      game.nextRound('EMERGENCY_ON_ANOTHER_TEAM');
+      game.nextRound(GREMLIN_ROLL);
       expect(game.state.currentRound.capacity.available).toBe(7);
 
       game.nextRound();
@@ -53,7 +71,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('GAME_ACTION_INFORMAL_CROSS_TRAINING');
-      game.nextRound('EMERGENCY_ON_ANOTHER_TEAM');
+      game.nextRound(GREMLIN_ROLL);
       expect(game.state.currentRound.capacity.available).toBe(8);
 
       game.nextRound();
@@ -72,7 +90,7 @@ describe('Gremlins', () => {
       game.selectAction('GAME_ACTION_INFORMAL_CROSS_TRAINING');
       game.selectAction('GAME_ACTION_FORMAL_CROSS_TRAINING');
       game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
-      game.nextRound('EMERGENCY_ON_ANOTHER_TEAM');
+      game.nextRound(GREMLIN_ROLL);
       expect(game.state.currentRound.capacity.available).toBe(9);
 
       game.nextRound();

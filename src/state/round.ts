@@ -12,7 +12,7 @@ export type Round = {
 };
 export type ClosedRound = Round & {
   storiesCompleted: number;
-  gremlin?: GremlinId;
+  gremlinRoll?: GremlinId;
 };
 
 export function createRound(): Round {
@@ -25,10 +25,15 @@ export function getEffects(
   round: ClosedRound,
   age: number,
   finishedActionIds: GameActionId[],
+  pastGremlinRolls: GremlinId[],
 ) {
   return round.selectedGameActionIds
     .map((id) => getActionEffect(id, age, finishedActionIds))
-    .concat(getGremlinEffect(round.gremlin, age, finishedActionIds));
+    .concat(
+      round.gremlinRoll && !pastGremlinRolls.includes(round.gremlinRoll)
+        ? getGremlinEffect(round.gremlinRoll, age, finishedActionIds)
+        : [],
+    );
 }
 
 export function getCosts(round: Round) {
@@ -43,11 +48,11 @@ export function getCosts(round: Round) {
 export function closeRound(
   round: Round,
   storiesAttempted: number,
-  gremlin?: GremlinId,
+  gremlinRoll?: GremlinId,
 ): ClosedRound {
   return {
     ...round,
-    gremlin,
+    gremlinRoll,
     storiesCompleted:
       storiesAttempted <= 0
         ? 0

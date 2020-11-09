@@ -10,7 +10,7 @@ import { Effect, gameEffectList, isEffect } from './effects';
 import { concatByProp } from '../lib';
 import { getRoundDescriptionEffects } from './roundDescriptions';
 import { GameActionId } from './gameActions';
-import { GremlinId } from './gremlins';
+import { GremlinId, isGremlinId } from './gremlins';
 
 export type GameState = {
   currentRound: Round;
@@ -22,7 +22,7 @@ export type SelectGameActionAction = {
 };
 export type NextRoundAction = {
   type: 'NEXT_ROUND';
-  payload?: { gremlin?: GremlinId };
+  payload?: { gremlinRoll?: GremlinId };
 };
 export type Action = NextRoundAction | SelectGameActionAction;
 
@@ -41,9 +41,19 @@ export function getRoundEffects(pastRounds: ClosedRound[]) {
   }
 
   const allActionIds = concatByProp(pastRounds, 'selectedGameActionIds');
+
   const actionEffects = pastRounds.reduce((allEffects, round, i) => {
     const age = roundAmounts - (i + 1);
-    const roundEffects = getEffects(round, age, allActionIds);
+    const previousGremlinRolls = pastRounds
+      .slice(0, i)
+      .map((round) => round.gremlinRoll)
+      .filter(isGremlinId);
+    const roundEffects = getEffects(
+      round,
+      age,
+      allActionIds,
+      previousGremlinRolls,
+    );
 
     return allEffects.concat(roundEffects);
   }, [] as (Effect | null)[]);
@@ -87,7 +97,7 @@ export function gameReducer(state: GameState, action: Action): GameState {
             state.currentRound,
             getCapacity(getRoundEffects(state.pastRounds)) -
               getCosts(state.currentRound),
-            action.payload?.gremlin,
+            action.payload?.gremlinRoll,
           ),
         ],
         currentRound: createRound(),

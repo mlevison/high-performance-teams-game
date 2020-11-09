@@ -66,7 +66,7 @@ jest.mock('./state', () => {
   let dispatch: Dispatch<Action> | null = null;
 
   return {
-    getGremlin() {},
+    rollGremlin() {},
     setState(newState: AppState) {
       state = newState;
     },

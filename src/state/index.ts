@@ -3,5 +3,5 @@ export { getCosts } from './round';
 export { getAvailableGameActions } from './gameActions';
 export { default as useAppState } from './useAppState';
 export { gameReducer, INITIAL_STATE } from './game';
-export { getGremlin } from './gremlins';
+export { rollGremlin } from './gremlins';
 export type ClosedRound = ClosedRoundType;
