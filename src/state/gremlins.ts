@@ -42,13 +42,10 @@ export const gremlinList: GremlinList = {
 };
 
 export function getGremlinEffect(
-  gremlinId: GremlinId | undefined,
+  gremlinId: GremlinId,
   age: number,
   finishedActionIds: GameActionId[],
 ) {
-  if (!gremlinId) {
-    return null;
-  }
   return gremlinList[gremlinId]?.effect(age, finishedActionIds) || null;
 }
 

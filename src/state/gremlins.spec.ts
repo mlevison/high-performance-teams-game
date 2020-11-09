@@ -1,4 +1,5 @@
 import { getGame } from '../lib/testHelpers';
+import { rollGremlin } from './gremlins';
 
 /* Disable roundDescription, game and action effects */
 jest.mock('./roundDescriptions/roundDescriptions', () => ({
@@ -15,6 +16,16 @@ jest.mock('./effects/effects', () => ({
 jest.mock('./gameActions/getEffect', () => ({ getEffect: () => null }));
 
 describe('Gremlins', () => {
+  describe('roll gremlin', () => {
+    it('does not roll in round 1', () => {
+      expect(rollGremlin(1)).toBe(undefined);
+      const roll2 = rollGremlin(2);
+      expect(roll2).toEqual(expect.any(Number));
+      expect(roll2).toBeGreaterThanOrEqual(1);
+      expect(roll2).toBeLessThanOrEqual(12);
+    });
+  });
+
   it('take only first gremlin roll into account', () => {
     const game = getGame();
     const gremlinRoll = 4;
