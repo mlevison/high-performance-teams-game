@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/css/main.34fbf6b6.chunk.css",
-    "main.js": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/main.1d13c452.chunk.js",
-    "main.js.map": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/main.1d13c452.chunk.js.map",
+    "main.css": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/css/main.f283dd87.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/main.8cb3f7eb.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/main.8cb3f7eb.chunk.js.map",
     "runtime-main.js": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/runtime-main.79eb8911.js",
     "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/runtime-main.79eb8911.js.map",
-    "static/js/2.c0d3cea4.chunk.js": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/2.c0d3cea4.chunk.js",
-    "static/js/2.c0d3cea4.chunk.js.map": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/2.c0d3cea4.chunk.js.map",
+    "static/js/2.53762266.chunk.js": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/2.53762266.chunk.js",
+    "static/js/2.53762266.chunk.js.map": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/2.53762266.chunk.js.map",
     "index.html": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/index.html",
-    "static/css/main.34fbf6b6.chunk.css.map": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/css/main.34fbf6b6.chunk.css.map",
-    "static/js/2.c0d3cea4.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/2.c0d3cea4.chunk.js.LICENSE.txt"
+    "static/css/main.f283dd87.chunk.css.map": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/css/main.f283dd87.chunk.css.map",
+    "static/js/2.53762266.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/preview/sketch-ui/static/js/2.53762266.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.79eb8911.js",
-    "static/js/2.c0d3cea4.chunk.js",
-    "static/css/main.34fbf6b6.chunk.css",
-    "static/js/main.1d13c452.chunk.js"
+    "static/js/2.53762266.chunk.js",
+    "static/css/main.f283dd87.chunk.css",
+    "static/js/main.8cb3f7eb.chunk.js"
   ]
 }
