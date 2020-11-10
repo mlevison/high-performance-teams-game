@@ -1,6 +1,7 @@
 import React from 'react';
-import { useAppState, rollGremlin } from './state';
+import { useAppState } from './state';
 import { TOTAL_ROUNDS } from './constants';
+import { Results, Actions, Round, Status } from './components';
 
 export default function App() {
   const [state, dispatch] = useAppState();
@@ -9,10 +10,7 @@ export default function App() {
     <>
       <h1>High-Performance Team Game </h1>
       {state.currentRound.number > TOTAL_ROUNDS ? (
-        <>
-          <h2>Results</h2>
-          <p>Completed {state.result.storiesCompleted} user stories</p>
-        </>
+        <Results storiesCompleted={state.result.storiesCompleted} />
       ) : (
         <>
           {state.pastRounds.length !== 0 && (
@@ -25,55 +23,17 @@ export default function App() {
               </p> */}
             </>
           )}
-          <h2>Round {state.currentRound.number} of 6</h2>
-          {state.currentRound.description}
-          <p>
-            Capacity: {state.currentRound.capacity.available} /{' '}
-            {state.currentRound.capacity.total}
-          </p>
-          {state.currentRound.activeEffects.length !== 0 && (
-            <>
-              <h3>Active Effects</h3>
-              {state.currentRound.activeEffects.map((effect) => (
-                <>
-                  <h4>{effect.title}</h4>
-                  <p>Capacity: {effect.capacity}</p>
-                  {effect.description && <p>{effect.description}</p>}
-                </>
-              ))}
-            </>
-          )}
-          <button
-            onClick={() =>
-              dispatch({
-                type: 'NEXT_ROUND',
-                payload: {
-                  gremlinRoll: rollGremlin(state.currentRound.number),
-                },
-              })
+          <Round
+            dispatch={dispatch}
+            currentRound={state.currentRound}
+            row1={
+              <Actions
+                availableGameActions={state.availableGameActions}
+                dispatch={dispatch}
+              />
             }
-          >
-            Complete Round
-          </button>
-
-          <h2>Available Actions</h2>
-          {state.availableGameActions.map((gameAction) => (
-            <div key={gameAction.id}>
-              <h3>{gameAction.name}</h3>
-              <p>{gameAction.description}</p>
-              <p>Cost: {gameAction.cost}</p>
-              <button
-                onClick={() =>
-                  dispatch({
-                    type: 'SELECT_GAME_ACTION',
-                    payload: gameAction.id,
-                  })
-                }
-              >
-                Commit
-              </button>
-            </div>
-          ))}
+            row2={<Status {...state.currentRound} />}
+          />
         </>
       )}
     </>
