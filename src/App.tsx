@@ -1,14 +1,14 @@
 import React from 'react';
 import { useAppState } from './state';
 import { TOTAL_ROUNDS } from './constants';
-import { Results, Actions, Round, Status } from './components';
+import { Results, Actions, Round, Status, Header } from './components';
 
 export default function App() {
   const [state, dispatch] = useAppState();
 
   return (
     <>
-      <h1>High-Performance Team Game </h1>
+      <Header />
       {state.currentRound.number > TOTAL_ROUNDS ? (
         <Results storiesCompleted={state.result.storiesCompleted} />
       ) : (
