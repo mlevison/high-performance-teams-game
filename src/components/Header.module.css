@@ -1,7 +1,7 @@
 .header {
-  padding: 1rem;
-  color: white;
-  background: #1f64a4;
+  padding: 1rem 0 0;
+  color: var(--header-color);
+  background: var(--header-background-color);
 }
 
 .header h1 {

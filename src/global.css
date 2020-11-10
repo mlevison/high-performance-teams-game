@@ -1,3 +1,12 @@
+:root {
+  --header-background-color: #1f64a4;
+  --header-background-color-light: #709bc4;
+  --header-color: white;
+  --main-background-color: white;
+  --main-color: #222;
+  --highlight-color: #f1584b;
+}
+
 body {
   margin: 0;
   font-family: 'Tahoma', 'Helvetica Neue', Helvetica, Arial, sans-serif;
