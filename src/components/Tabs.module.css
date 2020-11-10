@@ -1,0 +1,28 @@
+.tabs {
+  display: flex;
+}
+
+.tab {
+  font-weight: bold;
+  border-radius: 0;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  /* border-top: 0.3em solid var(--header-background-color); */
+  background: var(--header-background-color-light);
+  color: var(--header-color);
+  font-size: 1.2em;
+  padding: 0.3em;
+  margin-top: 0.3em;
+}
+.tab:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px inset var(--highlight-color);
+}
+
+.tabActive {
+  margin-top: 0;
+  border-top-color: var(--main-background-color);
+  background: var(--main-background-color);
+  color: var(--main-color);
+}
