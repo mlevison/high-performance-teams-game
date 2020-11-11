@@ -9,7 +9,11 @@ export type AvailabilityCheck = (
 ) => boolean;
 type GameActionImplementation = {
   type?: 'ENGINEERING';
-  available: AvailabilityCheck;
+  available: {
+    round: number;
+    requires?: GameActionId[] | GameActionId;
+    unique?: false;
+  };
   effect: (age: number, finishedActionIds: GameActionId[]) => Effect | null;
   name: string;
   description: string;

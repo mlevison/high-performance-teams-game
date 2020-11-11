@@ -8,12 +8,13 @@ import {
   getCapacity,
   INITIAL_STATE,
 } from './game';
-import { getAvailableGameActions, GameAction } from './gameActions';
+import { getAvailableGameActions } from './gameActions';
+import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
 import { ClosedRound, closeRound, getCosts } from './round';
 import { roundDescriptions } from './roundDescriptions';
 
 export type AppState = {
-  availableGameActions: GameAction[];
+  availableGameActions: GameActionWithStatus[];
   currentRound: {
     number: number;
     title?: string;

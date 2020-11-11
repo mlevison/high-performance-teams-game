@@ -13,7 +13,14 @@ export function getGame() {
       return wrapper.result.current[0];
     },
     get availableActionIds() {
-      return wrapper.result.current[0].availableGameActions.map(({ id }) => id);
+      return wrapper.result.current[0].availableGameActions
+        .filter(
+          (actionWithStatus) =>
+            actionWithStatus.status.type === 'AVAILABLE' ||
+            (actionWithStatus.status.type === 'MULTI_SELECT' &&
+              actionWithStatus.status.times === 0),
+        )
+        .map((actionWithStatus) => actionWithStatus.gameAction.id);
     },
     nextRound: (opts?: NextRoundOpts) => {
       const closedRound = {

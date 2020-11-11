@@ -42,6 +42,7 @@ export default function App() {
                 closeRound={closeRound}
                 row1={
                   <Actions
+                    currentRound={state.currentRound.number}
                     availableGameActions={state.availableGameActions}
                     dispatch={dispatch}
                   />
