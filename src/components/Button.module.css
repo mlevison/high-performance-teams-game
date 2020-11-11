@@ -6,6 +6,9 @@
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
+.button + .button {
+  margin-left: 0.5rem;
+}
 .primary {
   background-color: var(--primary-background-color);
   border-color: var(--primary-background-color);

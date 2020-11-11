@@ -16,6 +16,7 @@ export type AppState = {
   availableGameActions: GameAction[];
   currentRound: {
     number: number;
+    title?: string;
     description?: ReactElement;
     capacity: {
       available: number;
@@ -45,6 +46,7 @@ export default function useAppState(): [AppState, Dispatch<Action>] {
     concatByProp(state.pastRounds, 'selectedGameActionIds'),
     state.currentRound.selectedGameActionIds,
   );
+  const currentRoundTitle = roundDescriptions[currentRoundNumber]?.title;
   const currentRoundDescription =
     roundDescriptions[currentRoundNumber]?.description;
 
@@ -52,6 +54,7 @@ export default function useAppState(): [AppState, Dispatch<Action>] {
     {
       availableGameActions,
       currentRound: {
+        title: currentRoundTitle,
         description: currentRoundDescription,
         number: currentRoundNumber,
         capacity: {

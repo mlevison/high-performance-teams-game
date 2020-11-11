@@ -35,32 +35,18 @@ export default function App() {
             {state.currentRound.number > TOTAL_ROUNDS ? (
               <Results storiesCompleted={state.result.storiesCompleted} />
             ) : (
-              <>
-                {state.pastRounds.length !== 0 && (
-                  <>
-                    <h2>
-                      Round: {state.pastRounds.slice(-1)[0].number} results
-                    </h2>
-                    {/* <p>Action Cost: {pastRound.costs}</p>
-              <p>
-                Stories Completed: {pastRound.storiesCompleted}/
-                {pastRound.storiesAttempted}
-              </p> */}
-                  </>
-                )}
-                <Round
-                  key={state.currentRound.number}
-                  dispatch={dispatch}
-                  currentRound={state.currentRound}
-                  row1={
-                    <Actions
-                      availableGameActions={state.availableGameActions}
-                      dispatch={dispatch}
-                    />
-                  }
-                  row2={<Status {...state.currentRound} />}
-                />
-              </>
+              <Round
+                key={state.currentRound.number}
+                dispatch={dispatch}
+                currentRound={state.currentRound}
+                row1={
+                  <Actions
+                    availableGameActions={state.availableGameActions}
+                    dispatch={dispatch}
+                  />
+                }
+                row2={<Status {...state.currentRound} />}
+              />
             )}
           </>
         )}

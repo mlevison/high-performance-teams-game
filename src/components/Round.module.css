@@ -1,10 +1,9 @@
-.roundHeading {
+.number {
   font-weight: normal;
   color: var(--main-color-light);
   margin-bottom: 0;
 }
-
-.description *:first-child {
+.title {
   margin-top: 0.2rem;
 }
 .description {
