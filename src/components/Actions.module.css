@@ -1,0 +1,49 @@
+.roundList {
+  list-style: none;
+  padding: 0;
+}
+
+.roundVisibleToggle {
+  font-size: 1.1rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.roundVisibleToggle:focus {
+  outline: 3px solid var(--highlight-color);
+  outline-offset: 3px;
+}
+
+.roundActionList {
+  display: flex;
+  list-style: none;
+  padding: 1rem 0;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.roundActionList li {
+  flex-grow: 0;
+  max-width: 8rem;
+  min-width: 8rem;
+}
+.action {
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  background: none;
+}
+.action:focus {
+  outline: 3px solid var(--highlight-color);
+  outline-offset: 3px;
+}
+.actionImage {
+  display: block;
+  background-size: cover;
+  width: 4rem;
+  height: 4rem;
+}

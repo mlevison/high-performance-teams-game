@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { ButtonHTMLAttributes, useState } from 'react';
 import { GameActionWithStatus } from 'state/gameActions/getAvailableGameActions';
 import { GameDispatch, AppState } from '../state';
+import styles from './Actions.module.css';
 
 type Props = {
   currentRound: number;
@@ -9,60 +10,95 @@ type Props = {
 };
 
 function onlyRound(number: number) {
-  return (gaws: GameActionWithStatus): boolean =>
-    gaws.gameAction.available.round === number;
+  return (actionWithStatus: GameActionWithStatus): boolean =>
+    actionWithStatus.gameAction.available.round === number;
+}
+
+type RoundActionsProps = {
+  round: number;
+  dispatch: GameDispatch;
+  initialVisible: boolean;
+  actionsWithStatus: GameActionWithStatus[];
+};
+
+type ActionProps = Pick<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'onClick' | 'onDoubleClick'
+> &
+  GameActionWithStatus;
+
+function Action(props: ActionProps) {
+  return (
+    <button
+      onClick={props.onClick}
+      onDoubleClick={props.onDoubleClick}
+      className={styles.action}
+      disabled={
+        props.status.type === 'SELECTED' || props.status.type === 'MISSING_DEP'
+      }
+    >
+      <span
+        className={styles.actionImage}
+        style={{ backgroundImage: 'url(https://placekitten.com/100/100)' }}
+      ></span>
+      <span className={styles.actionTitle}>{props.gameAction.name}</span>
+    </button>
+  );
+}
+
+function RoundActions(props: RoundActionsProps) {
+  const [visible, setVisible] = useState(props.initialVisible);
+
+  return (
+    <li>
+      <button
+        className={styles.roundVisibleToggle}
+        onClick={() => setVisible(!visible)}
+      >
+        Round {props.round} {visible ? '▲' : '▼'}
+      </button>
+      {visible && (
+        <ul className={styles.roundActionList}>
+          {props.actionsWithStatus.map(
+            /* eslint-disable-next-line array-callback-return */
+            ({ status, gameAction }): JSX.Element => {
+              return (
+                <li key={gameAction.id}>
+                  <Action
+                    status={status}
+                    gameAction={gameAction}
+                    onClick={() => console.log('open')}
+                    onDoubleClick={() => console.log('SELECT')}
+                  />
+                </li>
+              );
+            },
+          )}
+        </ul>
+      )}
+    </li>
+  );
 }
 
 export default function Actions(props: Props) {
   return (
     <>
       <h2>Available Actions</h2>
-      <ul>
+      <ul className={styles.roundList}>
         {Array(props.currentRound)
           .fill('')
           .map((_, i) => {
             const round = i + 1;
             return (
-              <li key={round}>
-                <span>{round}</span>
-                <ul>
-                  {props.availableGameActions.filter(onlyRound(round)).map(
-                    /* eslint-disable-next-line array-callback-return */
-                    ({ status, gameAction }): JSX.Element => {
-                      switch (status.type) {
-                        case 'AVAILABLE':
-                          return (
-                            <li key={gameAction.id}>
-                              "Available"
-                              {gameAction.name} ({gameAction.cost})
-                            </li>
-                          );
-                        case 'SELECTED':
-                          return (
-                            <li key={gameAction.id}>
-                              "Selected"
-                              {gameAction.name} ({gameAction.cost})
-                            </li>
-                          );
-                        case 'MULTI_SELECT':
-                          return (
-                            <li key={gameAction.id}>
-                              "Selected times {status.times}" {gameAction.name}{' '}
-                              ({gameAction.cost})
-                            </li>
-                          );
-                        case 'MISSING_DEP':
-                          return (
-                            <li key={gameAction.id}>
-                              "Unmet Dependencies {status.unmetDependencies}"{' '}
-                              {gameAction.name} ({gameAction.cost})
-                            </li>
-                          );
-                      }
-                    },
-                  )}
-                </ul>
-              </li>
+              <RoundActions
+                dispatch={props.dispatch}
+                key={round}
+                initialVisible={round === props.currentRound}
+                round={round}
+                actionsWithStatus={props.availableGameActions.filter(
+                  onlyRound(round),
+                )}
+              />
             );
           })}
       </ul>
