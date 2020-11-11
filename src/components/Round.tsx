@@ -1,6 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import { TOTAL_ROUNDS } from '../constants';
 import { AppState, rollGremlin, GameDispatch } from '../state';
+import Button from './Button';
+import styles from './Round.module.css';
 
 type Props = {
   currentRound: AppState['currentRound'];
@@ -16,13 +18,19 @@ export default function Round(props: Props) {
 
   return (
     <>
-      <h2>
+      <h4 className={styles.roundHeading}>
         Round {props.currentRound.number} of {TOTAL_ROUNDS}
-      </h2>
+      </h4>
       {view === 'welcome' && (
         <>
-          {props.currentRound.description}
-          <button onClick={() => setView('actions')}>Start Round</button>
+          <div className={styles.description}>
+            {props.currentRound.description}
+          </div>
+          <div className={styles.center}>
+            <Button primary onClick={() => setView('actions')}>
+              Start Round
+            </Button>
+          </div>
         </>
       )}
       {view === 'actions' && (

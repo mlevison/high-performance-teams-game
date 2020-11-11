@@ -17,7 +17,9 @@
 }
 .tab:focus {
   outline: none;
-  box-shadow: 0 0 0 3px inset var(--highlight-color);
+  z-index: 1;
+  outline: 3px solid var(--highlight-color);
+  outline-offset: 3px;
 }
 
 .tabActive {
