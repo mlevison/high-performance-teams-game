@@ -1,11 +1,12 @@
 import React, { ReactElement, ReactNode, useState } from 'react';
+import { closeRound, getAttemptedStories } from 'state/round';
 import { TOTAL_ROUNDS } from '../constants';
-import { AppState, rollGremlin, GameDispatch } from '../state';
+import { AppState, GameDispatch, ClosedRound } from '../state';
 import Button from './Button';
 import styles from './Round.module.css';
 
 type Props = {
-  currentRound: AppState['currentRound'];
+  state: AppState;
   dispatch: GameDispatch;
   row1?: ReactElement;
   row2?: ReactElement;
@@ -34,53 +35,72 @@ function Actions(props: {
   );
 }
 
-export default function Round(props: Props) {
-  const [view, setView] = useState<'welcome' | 'actions' | 'results'>(
-    'welcome',
-  );
+type View =
+  | {
+      type: 'welcome' | 'actions';
+    }
+  | {
+      type: 'results';
+      payload: ClosedRound;
+    };
 
-  const description = props.currentRound.description ? (
-    <div className={styles.description}>{props.currentRound.description}</div>
+export default function Round(props: Props) {
+  const state = props.state;
+  const [view, setView] = useState<View>({ type: 'welcome' });
+
+  const description = state.currentRound.description ? (
+    <div className={styles.description}>{state.currentRound.description}</div>
   ) : null;
 
   return (
     <>
       <h4 className={styles.number}>
-        Round {props.currentRound.number} of {TOTAL_ROUNDS}
+        Round {state.currentRound.number} of {TOTAL_ROUNDS}
       </h4>
-      {props.currentRound.title && (
-        <h2 className={styles.title}>{props.currentRound.title}</h2>
+      {state.currentRound.title && (
+        <h2 className={styles.title}>{state.currentRound.title}</h2>
       )}
-      {view === 'welcome' && (
+      {view.type === 'welcome' && (
         <>
           {description}
           <div className={styles.center}>
-            <Button primary onClick={() => setView('actions')}>
+            <Button primary onClick={() => setView({ type: 'actions' })}>
               Start Round
             </Button>
           </div>
         </>
       )}
-      {view === 'actions' && (
-        <Actions onNext={() => setView('results')} description={description}>
+      {view.type === 'actions' && (
+        <Actions
+          onNext={() =>
+            setView({ type: 'results', payload: closeRound(props.state) })
+          }
+          description={description}
+        >
           {props.row1}
           {props.row2}
         </Actions>
       )}
-      {view === 'results' && (
-        <Button
-          primary
-          onClick={() =>
-            props.dispatch({
-              type: 'NEXT_ROUND',
-              payload: {
-                gremlinRoll: rollGremlin(props.currentRound.number),
-              },
-            })
-          }
-        >
-          Next Round
-        </Button>
+      {view.type === 'results' && (
+        <>
+          <ul>
+            <li>Attempted {getAttemptedStories(props.state)} Stories</li>
+            <li>Completed {view.payload.storiesCompleted} Stories</li>
+          </ul>
+          <div className={styles.center}>
+            <Button
+              primary
+              onClick={() =>
+                props.dispatch({
+                  type: 'NEXT_ROUND',
+                  payload: view.payload,
+                })
+              }
+            >
+              Next Round
+            </Button>
+          </div>
+        </>
       )}
     </>
   );

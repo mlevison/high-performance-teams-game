@@ -7,12 +7,15 @@ import {
   getRoundEffects,
   getCapacity,
   INITIAL_STATE,
+  GAME_STATE,
+  GameState,
 } from './game';
 import { getAvailableGameActions, GameAction } from './gameActions';
 import { getCosts } from './round';
 import { roundDescriptions } from './roundDescriptions';
 
 export type AppState = {
+  [GAME_STATE]: GameState;
   availableGameActions: GameAction[];
   currentRound: {
     number: number;
@@ -52,6 +55,7 @@ export default function useAppState(): [AppState, Dispatch<Action>] {
 
   return [
     {
+      [GAME_STATE]: state,
       availableGameActions,
       currentRound: {
         title: currentRoundTitle,

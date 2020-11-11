@@ -38,7 +38,7 @@ export default function App() {
               <Round
                 key={state.currentRound.number}
                 dispatch={dispatch}
-                currentRound={state.currentRound}
+                state={state}
                 row1={
                   <Actions
                     availableGameActions={state.availableGameActions}
