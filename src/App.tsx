@@ -14,7 +14,7 @@ import {
 } from './components';
 
 export default function App() {
-  const [state, dispatch] = useAppState();
+  const [state, dispatch, closeRound] = useAppState();
   const [tab, setTab] = useState<'play' | 'rules'>('play');
 
   return (
@@ -38,7 +38,8 @@ export default function App() {
               <Round
                 key={state.currentRound.number}
                 dispatch={dispatch}
-                state={state}
+                currentRound={state.currentRound}
+                closeRound={closeRound}
                 row1={
                   <Actions
                     availableGameActions={state.availableGameActions}

@@ -1,5 +1,5 @@
 import { storySucceeds, sumByProp } from '../lib';
-import { GAME_STATE, getCapacity, getRoundEffects } from './game';
+import { GameState, getCapacity, getRoundEffects } from './game';
 import {
   findGameActionById,
   GameActionId,
@@ -7,7 +7,6 @@ import {
   getEffect as getActionEffect,
 } from './gameActions';
 import { getGremlinEffect, GremlinId, rollGremlin } from './gremlins';
-import { AppState } from './useAppState';
 
 export type Round = {
   selectedGameActionIds: GameActionId[];
@@ -47,21 +46,14 @@ export function getCosts(round: Round) {
   );
 }
 
-export function getAttemptedStories(state: AppState) {
-  const gameState = state[GAME_STATE];
-  return (
-    getCapacity(getRoundEffects(gameState.pastRounds)) -
-    getCosts(gameState.currentRound)
-  );
-}
-
-export function closeRound(state: AppState): ClosedRound {
-  const gameState = state[GAME_STATE];
-  const storiesAttempted = getAttemptedStories(state);
+export function closeRound(state: GameState): ClosedRound {
+  const storiesAttempted =
+    getCapacity(getRoundEffects(state.pastRounds)) -
+    getCosts(state.currentRound);
 
   return {
-    ...gameState.currentRound,
-    gremlinRoll: rollGremlin(state.currentRound.number),
+    ...state.currentRound,
+    gremlinRoll: rollGremlin(state.pastRounds.length + 1),
     storiesCompleted:
       storiesAttempted <= 0
         ? 0

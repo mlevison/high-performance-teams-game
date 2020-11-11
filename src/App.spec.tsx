@@ -4,8 +4,11 @@ import App from './App';
 import * as state from './state';
 import { AppState } from './state/useAppState';
 import { Action } from './state/game';
+import { ClosedRound } from 'state/round';
 
 const setState: (newState: AppState) => void = (state as any).setState;
+const setNextClosedRound: (closedRound: ClosedRound) => void = (state as any)
+  .setNextClosedRound;
 const setDispatch: (newDispatch: Dispatch<Action>) => void = (state as any)
   .setDispatch;
 const reset: () => void = (state as any).reset;
@@ -46,36 +49,52 @@ describe('App UI', () => {
     ).toBeInTheDocument();
   });
 
-  it('has button to move to next round', () => {
+  it('has buttons to move between round views and to next round', () => {
     const dispatchSpy = jest.fn();
     setState(BASE_STATE);
     setDispatch(dispatchSpy);
     render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
+    expect(screen.getByText(/Round 1/)).toBeInTheDocument();
+    const closedRound: ClosedRound = {
+      gremlinRoll: 1,
+      selectedGameActionIds: [],
+      storiesCompleted: 5,
+    };
+    setNextClosedRound(closedRound);
     fireEvent.click(screen.getByRole('button', { name: /Complete Round/i }));
+    expect(screen.getByText(/Round 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Attempted 10 Stories/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /Next Round/i }));
 
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: 'NEXT_ROUND',
-      payload: { gremlin: undefined },
+      payload: closedRound,
     });
   });
 });
 
 jest.mock('./state', () => {
   let state: AppState | null = null;
+  let nextClosedRound: ClosedRound | null = null;
   let dispatch: Dispatch<Action> | null = null;
 
   return {
-    rollGremlin() {},
     setState(newState: AppState) {
       state = newState;
     },
     setDispatch(newDispatch: Dispatch<Action>) {
       dispatch = newDispatch;
     },
+    setNextClosedRound(closedRound: ClosedRound) {
+      nextClosedRound = closedRound;
+    },
     reset() {
       state = null;
       dispatch = null;
+      nextClosedRound = null;
     },
     useAppState: () => {
       if (state === null) {
@@ -89,6 +108,14 @@ jest.mock('./state', () => {
           (() => {
             throw new Error('Unexpected invocation of dispatch');
           }),
+        () => {
+          if (!nextClosedRound) {
+            throw new Error(
+              'Unexpected invocation of closeRound before mocked closed round is set',
+            );
+          }
+          return nextClosedRound;
+        },
       ];
     },
   };

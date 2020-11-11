@@ -1,12 +1,12 @@
 import React, { ReactElement, ReactNode, useState } from 'react';
-import { closeRound, getAttemptedStories } from 'state/round';
 import { TOTAL_ROUNDS } from '../constants';
 import { AppState, GameDispatch, ClosedRound } from '../state';
 import Button from './Button';
 import styles from './Round.module.css';
 
 type Props = {
-  state: AppState;
+  currentRound: AppState['currentRound'];
+  closeRound: () => ClosedRound;
   dispatch: GameDispatch;
   row1?: ReactElement;
   row2?: ReactElement;
@@ -45,20 +45,19 @@ type View =
     };
 
 export default function Round(props: Props) {
-  const state = props.state;
   const [view, setView] = useState<View>({ type: 'welcome' });
 
-  const description = state.currentRound.description ? (
-    <div className={styles.description}>{state.currentRound.description}</div>
+  const description = props.currentRound.description ? (
+    <div className={styles.description}>{props.currentRound.description}</div>
   ) : null;
 
   return (
     <>
       <h4 className={styles.number}>
-        Round {state.currentRound.number} of {TOTAL_ROUNDS}
+        Round {props.currentRound.number} of {TOTAL_ROUNDS}
       </h4>
-      {state.currentRound.title && (
-        <h2 className={styles.title}>{state.currentRound.title}</h2>
+      {props.currentRound.title && (
+        <h2 className={styles.title}>{props.currentRound.title}</h2>
       )}
       {view.type === 'welcome' && (
         <>
@@ -73,7 +72,7 @@ export default function Round(props: Props) {
       {view.type === 'actions' && (
         <Actions
           onNext={() =>
-            setView({ type: 'results', payload: closeRound(props.state) })
+            setView({ type: 'results', payload: props.closeRound() })
           }
           description={description}
         >
@@ -84,7 +83,7 @@ export default function Round(props: Props) {
       {view.type === 'results' && (
         <>
           <ul>
-            <li>Attempted {getAttemptedStories(props.state)} Stories</li>
+            <li>Attempted {props.currentRound.capacity.available} Stories</li>
             <li>Completed {view.payload.storiesCompleted} Stories</li>
           </ul>
           <div className={styles.center}>

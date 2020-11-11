@@ -1,4 +1,4 @@
-import { getGame } from '../lib/testHelpers';
+import { getGame, NextRoundOpts } from '../lib/testHelpers';
 import { rollGremlin } from './gremlins';
 
 /* Disable roundDescription, game and action effects */
@@ -30,25 +30,25 @@ describe('Gremlins', () => {
     const game = getGame();
     const gremlinRoll = 4;
 
-    game.nextRound(gremlinRoll);
+    game.nextRound({ gremlinRoll });
     expect(game.state.currentRound.capacity.available).toBe(7);
 
-    game.nextRound(gremlinRoll);
+    game.nextRound({ gremlinRoll });
     expect(game.state.currentRound.capacity.available).toBe(7);
 
-    game.nextRound(gremlinRoll);
+    game.nextRound({ gremlinRoll });
     expect(game.state.currentRound.capacity.available).toBe(7);
 
-    game.nextRound(gremlinRoll);
+    game.nextRound({ gremlinRoll });
     expect(game.state.currentRound.capacity.available).toBe(10);
   });
 
   describe('emergency on another team', () => {
-    const GREMLIN_ROLL = 4;
+    const NEXT_ROUND_OPTS: NextRoundOpts = { gremlinRoll: 4 };
     it('reduces capacity by 3 for 3 rounds', () => {
       const game = getGame();
 
-      game.nextRound(GREMLIN_ROLL);
+      game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(7);
 
       game.nextRound();
@@ -65,7 +65,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
-      game.nextRound(GREMLIN_ROLL);
+      game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(7);
 
       game.nextRound();
@@ -82,7 +82,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('GAME_ACTION_INFORMAL_CROSS_TRAINING');
-      game.nextRound(GREMLIN_ROLL);
+      game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(8);
 
       game.nextRound();
@@ -101,7 +101,7 @@ describe('Gremlins', () => {
       game.selectAction('GAME_ACTION_INFORMAL_CROSS_TRAINING');
       game.selectAction('GAME_ACTION_FORMAL_CROSS_TRAINING');
       game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
-      game.nextRound(GREMLIN_ROLL);
+      game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(9);
 
       game.nextRound();
