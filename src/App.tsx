@@ -45,6 +45,7 @@ export default function App() {
                 </>
               )}
               <Round
+                key={state.currentRound.number}
                 dispatch={dispatch}
                 currentRound={state.currentRound}
                 row1={
