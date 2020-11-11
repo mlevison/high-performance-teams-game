@@ -10,10 +10,11 @@ import {
   Rules,
   Tabs,
   Tab,
+  Content,
 } from './components';
 
 export default function App() {
-  const [state, dispatch] = useAppState();
+  const [state, dispatch, closeRound] = useAppState();
   const [tab, setTab] = useState<'play' | 'rules'>('play');
 
   return (
@@ -28,38 +29,31 @@ export default function App() {
           </Tab>
         </Tabs>
       </Header>
-      {tab === 'play' && (
-        <>
-          {state.currentRound.number > TOTAL_ROUNDS ? (
-            <Results storiesCompleted={state.result.storiesCompleted} />
-          ) : (
-            <>
-              {state.pastRounds.length !== 0 && (
-                <>
-                  <h2>Round: {state.pastRounds.slice(-1)[0].number} results</h2>
-                  {/* <p>Action Cost: {pastRound.costs}</p>
-              <p>
-                Stories Completed: {pastRound.storiesCompleted}/
-                {pastRound.storiesAttempted}
-              </p> */}
-                </>
-              )}
+      <Content>
+        {tab === 'play' && (
+          <>
+            {state.currentRound.number > TOTAL_ROUNDS ? (
+              <Results storiesCompleted={state.result.storiesCompleted} />
+            ) : (
               <Round
+                key={state.currentRound.number}
                 dispatch={dispatch}
                 currentRound={state.currentRound}
+                closeRound={closeRound}
                 row1={
                   <Actions
+                    currentRound={state.currentRound.number}
                     availableGameActions={state.availableGameActions}
                     dispatch={dispatch}
                   />
                 }
                 row2={<Status {...state.currentRound} />}
               />
-            </>
-          )}
-        </>
-      )}
-      {tab === 'rules' && <Rules />}
+            )}
+          </>
+        )}
+        {tab === 'rules' && <Rules />}
+      </Content>
     </>
   );
 }

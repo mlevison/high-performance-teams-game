@@ -8,14 +8,16 @@ import {
   getCapacity,
   INITIAL_STATE,
 } from './game';
-import { getAvailableGameActions, GameAction } from './gameActions';
-import { getCosts } from './round';
+import { getAvailableGameActions } from './gameActions';
+import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
+import { ClosedRound, closeRound, getCosts } from './round';
 import { roundDescriptions } from './roundDescriptions';
 
 export type AppState = {
-  availableGameActions: GameAction[];
+  availableGameActions: GameActionWithStatus[];
   currentRound: {
     number: number;
+    title?: string;
     description?: ReactElement;
     capacity: {
       available: number;
@@ -31,7 +33,11 @@ export type AppState = {
   }[];
 };
 
-export default function useAppState(): [AppState, Dispatch<Action>] {
+export default function useAppState(): [
+  AppState,
+  Dispatch<Action>,
+  () => ClosedRound,
+] {
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
 
   const effects = getRoundEffects(state.pastRounds);
@@ -45,6 +51,7 @@ export default function useAppState(): [AppState, Dispatch<Action>] {
     concatByProp(state.pastRounds, 'selectedGameActionIds'),
     state.currentRound.selectedGameActionIds,
   );
+  const currentRoundTitle = roundDescriptions[currentRoundNumber]?.title;
   const currentRoundDescription =
     roundDescriptions[currentRoundNumber]?.description;
 
@@ -52,6 +59,7 @@ export default function useAppState(): [AppState, Dispatch<Action>] {
     {
       availableGameActions,
       currentRound: {
+        title: currentRoundTitle,
         description: currentRoundDescription,
         number: currentRoundNumber,
         capacity: {
@@ -68,5 +76,6 @@ export default function useAppState(): [AppState, Dispatch<Action>] {
       })),
     },
     dispatch,
+    () => closeRound(state),
   ];
 }

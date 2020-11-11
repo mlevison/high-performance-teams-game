@@ -1,5 +1,4 @@
 import { AppState } from '../useAppState';
-import { render, screen } from '@testing-library/react';
 import { getGame } from '../../lib/testHelpers';
 
 /* disable game effect to only tests single actions */
@@ -25,11 +24,9 @@ describe('roundDescriptions and effects', () => {
 
       expect(game.state.currentRound).toEqual(expectedCurrentRound);
 
-      expect(game.state.currentRound.description).toBeTruthy();
-      render(game.state.currentRound.description!);
-      expect(
-        screen.getByText(/Welcome to the World’s Smallest Online Bookstore/i),
-      ).toBeInTheDocument();
+      expect(game.state.currentRound.title).toMatch(
+        /Welcome to the World’s Smallest Online Bookstore/i,
+      );
     });
   });
 
@@ -56,13 +53,9 @@ describe('roundDescriptions and effects', () => {
       expect(round3Effect.capacity).toBe(4);
       expect(round3Effect.title).toMatch(/Management is paying overtime/i);
 
-      expect(game.state.currentRound.description).toBeTruthy();
-      render(game.state.currentRound.description!);
-      expect(
-        screen.getByText(
-          /We must go live with an early version of the product/i,
-        ),
-      ).toBeInTheDocument();
+      expect(game.state.currentRound.title).toMatch(
+        /We must go live with an early version of the product/i,
+      );
     });
   });
 });

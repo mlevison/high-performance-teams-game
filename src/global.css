@@ -1,13 +1,22 @@
 :root {
-  --header-background-color: #1f64a4;
-  --header-background-color-light: #709bc4;
-  --header-color: white;
+  --primary-background-color: #1f64a4;
+  --primary-background-color-light: #709bc4;
+  --primary-color: white;
+  --header-background-color: var(--primary-background-color);
+  --header-background-color-light: var(--primary-background-color-light);
+  --header-color: var(--primary-color);
   --main-background-color: white;
   --main-color: #222;
+  --main-color-light: rgb(113, 116, 121);
   --highlight-color: #f1584b;
+  --light-border-color: rgb(130, 133, 136);
+  --light-background-color: rgb(204, 204, 207);
+  --light-color: var(--main-color);
 }
 
 body {
+  background: var(--main-background-color);
+  color: var(--main-color);
   margin: 0;
   font-family: 'Tahoma', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
