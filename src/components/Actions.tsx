@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { GameActionWithStatus } from 'state/gameActions/getAvailableGameActions';
 import { GameDispatch, AppState } from '../state';
 import styles from './Actions.module.css';
@@ -21,17 +21,28 @@ type RoundActionsProps = {
   actionsWithStatus: GameActionWithStatus[];
 };
 
-type ActionProps = Pick<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  'onClick' | 'onDoubleClick'
-> &
-  GameActionWithStatus;
+type ActionProps = GameActionWithStatus & {
+  onClick: () => void;
+  onDoubleClick: () => void;
+};
 
 function Action(props: ActionProps) {
+  const clickTimer = useRef<NodeJS.Timeout>();
+
   return (
     <button
-      onClick={props.onClick}
-      onDoubleClick={props.onDoubleClick}
+      onClick={() => {
+        if (clickTimer.current) {
+          clearTimeout(clickTimer.current);
+        }
+        clickTimer.current = setTimeout(() => props.onClick(), 300);
+      }}
+      onDoubleClick={() => {
+        if (clickTimer.current) {
+          clearTimeout(clickTimer.current);
+        }
+        props.onDoubleClick();
+      }}
       className={styles.action}
       disabled={
         props.status.type === 'SELECTED' || props.status.type === 'MISSING_DEP'
@@ -68,7 +79,12 @@ function RoundActions(props: RoundActionsProps) {
                     status={status}
                     gameAction={gameAction}
                     onClick={() => console.log('open')}
-                    onDoubleClick={() => console.log('SELECT')}
+                    onDoubleClick={() =>
+                      props.dispatch({
+                        type: 'SELECT_GAME_ACTION',
+                        payload: gameAction.id,
+                      })
+                    }
                   />
                 </li>
               );
