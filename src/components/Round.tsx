@@ -76,8 +76,10 @@ export default function Round(props: Props) {
           }
           description={description}
         >
-          {props.row1}
-          {props.row2}
+          <div className={styles.rows}>
+            <div className={styles.row}>{props.row1}</div>
+            <div className={styles.row}>{props.row2}</div>
+          </div>
         </Actions>
       )}
       {view.type === 'results' && (

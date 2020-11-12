@@ -13,3 +13,19 @@
 .center {
   text-align: center;
 }
+
+.rows {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row {
+  min-width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  .row {
+    min-width: 40%;
+    max-width: 60%;
+  }
+}
