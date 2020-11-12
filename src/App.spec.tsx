@@ -55,7 +55,7 @@ describe('App UI', () => {
     setDispatch(dispatchSpy);
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
-    expect(screen.getByText(/Round 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
     const closedRound: ClosedRound = {
       gremlinRoll: 1,
       selectedGameActionIds: [],
@@ -63,7 +63,7 @@ describe('App UI', () => {
     };
     setNextClosedRound(closedRound);
     fireEvent.click(screen.getByRole('button', { name: /Complete Round/i }));
-    expect(screen.getByText(/Round 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
     expect(screen.getByText(/Attempted 10 Stories/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /Next Round/i }));
@@ -72,6 +72,36 @@ describe('App UI', () => {
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: 'NEXT_ROUND',
       payload: closedRound,
+    });
+  });
+
+  it('can select actions in round 1', () => {
+    const dispatchSpy = jest.fn();
+    setState({
+      ...BASE_STATE,
+      availableGameActions: [
+        {
+          status: { type: 'AVAILABLE' },
+          gameAction: {
+            id: 'MY_ACTION_ID' as any,
+            available: { round: 1 },
+            name: 'My Action',
+            effect: () => null,
+            description: '',
+            cost: 2,
+          },
+        },
+      ],
+    });
+    setDispatch(dispatchSpy);
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
+    fireEvent.doubleClick(screen.getByRole('button', { name: /My Action/i }));
+
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledWith({
+      type: 'SELECT_GAME_ACTION',
+      payload: 'MY_ACTION_ID',
     });
   });
 });

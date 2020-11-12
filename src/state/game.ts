@@ -15,11 +15,18 @@ export type SelectGameActionAction = {
   type: 'SELECT_GAME_ACTION';
   payload: GameActionId;
 };
+export type UnselectGameActionAction = {
+  type: 'UNSELECT_GAME_ACTION';
+  payload: GameActionId;
+};
 export type NextRoundAction = {
   type: 'NEXT_ROUND';
   payload: ClosedRound;
 };
-export type Action = NextRoundAction | SelectGameActionAction;
+export type Action =
+  | NextRoundAction
+  | SelectGameActionAction
+  | UnselectGameActionAction;
 
 export const INITIAL_STATE: GameState = {
   currentRound: {
@@ -80,6 +87,17 @@ export function gameReducer(state: GameState, action: Action): GameState {
             ...state.currentRound.selectedGameActionIds,
             action.payload,
           ],
+        },
+      };
+    }
+    case 'UNSELECT_GAME_ACTION': {
+      return {
+        ...state,
+        currentRound: {
+          ...state.currentRound,
+          selectedGameActionIds: state.currentRound.selectedGameActionIds.filter(
+            (id) => id !== action.payload,
+          ),
         },
       };
     }

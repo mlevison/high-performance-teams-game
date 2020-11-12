@@ -15,10 +15,7 @@ export function getGame() {
     get availableActionIds() {
       return wrapper.result.current[0].availableGameActions
         .filter(
-          (actionWithStatus) =>
-            actionWithStatus.status.type === 'AVAILABLE' ||
-            (actionWithStatus.status.type === 'MULTI_SELECT' &&
-              actionWithStatus.status.times === 0),
+          (actionWithStatus) => actionWithStatus.status.type === 'AVAILABLE',
         )
         .map((actionWithStatus) => actionWithStatus.gameAction.id);
     },

@@ -13,11 +13,11 @@ export default function Status(props: Props) {
         <>
           <h3>Active Effects</h3>
           {props.activeEffects.map((effect) => (
-            <>
+            <div key={effect.title}>
               <h4>{effect.title}</h4>
               <p>Capacity: {effect.capacity}</p>
               {effect.description && <p>{effect.description}</p>}
-            </>
+            </div>
           ))}
         </>
       )}

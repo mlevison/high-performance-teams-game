@@ -18,6 +18,7 @@
 
 .roundActionList {
   display: flex;
+  flex-wrap: wrap;
   list-style: none;
   padding: 1rem 0;
   justify-content: flex-start;
@@ -37,6 +38,7 @@
   border: none;
   background: none;
 }
+
 .action:focus {
   outline: 3px solid var(--highlight-color);
   outline-offset: 3px;
@@ -46,4 +48,12 @@
   background-size: cover;
   width: 4rem;
   height: 4rem;
+  border: 3px solid var(--main-background-color);
+}
+.action:disabled .actionImage {
+  filter: grayscale(100%);
+}
+
+.actionSelected .actionImage {
+  border-color: var(--primary-background-color);
 }

@@ -1,11 +1,13 @@
 import { GameAction } from './types';
 import { GameActionId, gameActions } from './gameActions';
 
+export const UNIQUE = Symbol('UNIQUE');
+
+type Times = typeof UNIQUE | number;
 type GameActionStatus =
   | { type: 'MISSING_DEP'; unmetDependencies: GameActionId[] }
-  | { type: 'AVAILABLE' }
-  | { type: 'SELECTED' }
-  | { type: 'MULTI_SELECT'; times: number };
+  | { type: 'AVAILABLE'; times: Times }
+  | { type: 'SELECTED'; times: Times };
 
 function normalizeRequires(
   req: GameAction['available']['requires'],
@@ -47,22 +49,16 @@ export function getAvailableGameActions(
         };
       }
 
-      if (gameAction.available.unique === false) {
-        return {
-          gameAction,
-          status: {
-            type: 'MULTI_SELECT',
-            times: selectedGameActionIds.filter((id) => id === gameAction.id)
-              .length,
-          },
-        };
-      }
+      const times =
+        gameAction.available.unique === false
+          ? selectedGameActionIds.filter((id) => id === gameAction.id).length
+          : UNIQUE;
 
       return {
         gameAction,
         status: selectedGameActionIds.includes(gameAction.id)
-          ? { type: 'SELECTED' }
-          : { type: 'AVAILABLE' },
+          ? { type: 'SELECTED', times }
+          : { type: 'AVAILABLE', times },
       };
     })
     .filter((e): e is GameActionWithStatus => e !== null);
