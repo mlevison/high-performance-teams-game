@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import cx from 'classnames';
 import { GameActionWithStatus } from 'state/gameActions/getAvailableGameActions';
 import { GameDispatch, AppState } from '../state';
 import styles from './Actions.module.css';
@@ -43,10 +44,11 @@ function Action(props: ActionProps) {
         }
         props.onDoubleClick();
       }}
-      className={styles.action}
-      disabled={
-        props.status.type === 'SELECTED' || props.status.type === 'MISSING_DEP'
-      }
+      className={cx(
+        styles.action,
+        props.status.type === 'SELECTED' && styles.actionSelected,
+      )}
+      disabled={props.status.type === 'MISSING_DEP'}
     >
       <span
         className={styles.actionImage}
@@ -81,7 +83,10 @@ function RoundActions(props: RoundActionsProps) {
                     onClick={() => console.log('open')}
                     onDoubleClick={() =>
                       props.dispatch({
-                        type: 'SELECT_GAME_ACTION',
+                        type:
+                          status.type === 'SELECTED'
+                            ? 'UNSELECT_GAME_ACTION'
+                            : 'SELECT_GAME_ACTION',
                         payload: gameAction.id,
                       })
                     }
