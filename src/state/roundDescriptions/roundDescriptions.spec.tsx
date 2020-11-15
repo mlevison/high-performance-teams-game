@@ -54,7 +54,7 @@ describe('roundDescriptions and effects', () => {
       expect(round3Effect.title).toMatch(/Management is paying overtime/i);
 
       expect(game.state.currentRound.title).toMatch(
-        /We must go live with an early version of the product/i,
+        /Go Live Soon/i,
       );
     });
   });
