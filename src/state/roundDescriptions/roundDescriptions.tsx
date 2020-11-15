@@ -22,19 +22,31 @@ export const roundDescriptions: { [key: string]: RoundDescription } = {
     ),
     effect: () => ({ capacity: 10, title: EFFECT_HIDDEN }),
   },
+  2: {
+    title: 'Failed Expectations',
+    description: (<p>
+        Your team didn't met our expectations that you would complete 10 User Stories in the last round. Our vulture capitalists are becoming concerned and ask if you can really deliver?
+    </p>
+    )
+  },
   3: {
     title:
-      'We must go live with an early version of the product this round, for CES',
+      'Go Live Soon',
     description: (
       <p>
-        Due to your limited productivity in past rounds, management are prepared
-        to offer some options to help you out. We will pay an extra ‘4’ points
-        for anything that helps. Another team member? Overtime?
+        We must go live with an early version of the product this round, for a tradeshow. Due to your limited productivity in past rounds, management are prepared to offer some options to help you out. We will pay an extra ‘4’ points for anything that helps. Another team member? Overtime?
       </p>
     ),
     effect: () => ({
       capacity: 4,
       title: 'Management is paying overtime',
     }),
+  },
+  4: {
+    title: 'We\'re live and we have real Customers',
+    description: (<p>
+        Congratulations our product is live in the market. People are using it and they're finding bugs. We will have to do deal with those bugs this Sprint.
+    </p>
+    )
   },
 };
