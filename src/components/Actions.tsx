@@ -46,15 +46,16 @@ function Action(props: ActionProps) {
       }}
       className={cx(
         styles.action,
-        props.status.type === 'SELECTED' && styles.actionSelected,
+        ['SELECTED', 'FINISHED'].includes(props.status.type) &&
+          styles.actionSelected,
       )}
-      disabled={props.status.type === 'MISSING_DEP'}
+      disabled={['MISSING_DEP', 'FINISHED'].includes(props.status.type)}
     >
       <span
         className={styles.actionImage}
         style={{ backgroundImage: 'url(https://placekitten.com/100/100)' }}
       ></span>
-      <span className={styles.actionTitle}>{props.gameAction.name}</span>
+      <span>{props.gameAction.name}</span>
     </button>
   );
 }

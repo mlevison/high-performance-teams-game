@@ -55,6 +55,12 @@
 .action:disabled .actionImage {
   filter: grayscale(100%);
 }
+.action:disabled {
+  cursor: default;
+}
+.action:disabled.actionSelected .actionImage {
+  filter: none;
+}
 
 .actionSelected .actionImage {
   border-color: var(--primary-background-color);

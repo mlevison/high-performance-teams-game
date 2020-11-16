@@ -7,7 +7,8 @@ type Times = typeof UNIQUE | number;
 type GameActionStatus =
   | { type: 'MISSING_DEP'; unmetDependencies: GameActionId[] }
   | { type: 'AVAILABLE'; times: Times }
-  | { type: 'SELECTED'; times: Times };
+  | { type: 'SELECTED'; times: Times }
+  | { type: 'FINISHED' };
 
 function normalizeRequires(
   req: GameAction['available']['requires'],
@@ -53,6 +54,13 @@ export function getAvailableGameActions(
         gameAction.available.unique === false
           ? selectedGameActionIds.filter((id) => id === gameAction.id).length
           : UNIQUE;
+
+      if (times === UNIQUE && finishedActionIds.includes(gameAction.id)) {
+        return {
+          gameAction,
+          status: { type: 'FINISHED' },
+        };
+      }
 
       return {
         gameAction,
