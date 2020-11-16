@@ -5,6 +5,7 @@ import { AppState as AppStateT } from './useAppState';
 export type ClosedRound = ClosedRoundType;
 export type AppState = AppStateT;
 export type GameDispatch = Dispatch<Action>;
+export { startCapacity } from './roundDescriptions';
 export { getCosts } from './round';
 export { getAvailableGameActions } from './gameActions';
 export { default as useAppState } from './useAppState';

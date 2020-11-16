@@ -8,7 +8,11 @@ import {
   getCapacity,
   INITIAL_STATE,
 } from './game';
-import { getAvailableGameActions } from './gameActions';
+import {
+  getAvailableGameActions,
+  GameAction,
+  findGameActionById,
+} from './gameActions';
 import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
 import { ClosedRound, closeRound, getCosts } from './round';
 import { roundDescriptions } from './roundDescriptions';
@@ -19,6 +23,7 @@ export type AppState = {
     number: number;
     title?: string;
     description?: ReactElement;
+    selectedGameActions: GameAction[];
     capacity: {
       available: number;
       total: number;
@@ -51,6 +56,9 @@ export default function useAppState(): [
     concatByProp(state.pastRounds, 'selectedGameActionIds'),
     state.currentRound.selectedGameActionIds,
   );
+  const selectedGameActions = state.currentRound.selectedGameActionIds.map(
+    findGameActionById,
+  );
   const currentRoundTitle = roundDescriptions[currentRoundNumber]?.title;
   const currentRoundDescription =
     roundDescriptions[currentRoundNumber]?.description;
@@ -59,6 +67,7 @@ export default function useAppState(): [
     {
       availableGameActions,
       currentRound: {
+        selectedGameActions,
         title: currentRoundTitle,
         description: currentRoundDescription,
         number: currentRoundNumber,

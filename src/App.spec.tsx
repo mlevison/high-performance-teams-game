@@ -16,6 +16,7 @@ const reset: () => void = (state as any).reset;
 const BASE_STATE: AppState = {
   availableGameActions: [],
   currentRound: {
+    selectedGameActions: [],
     number: 1,
     capacity: {
       available: 10,
