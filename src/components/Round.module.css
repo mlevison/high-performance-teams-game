@@ -23,6 +23,18 @@
   min-width: 100%;
 }
 
+.userStoryIcons {
+  text-align: center;
+  list-style: none;
+  padding: 0;
+}
+.userStoryIcons li {
+  display: inline;
+}
+.userStoryDescription {
+  text-align: center;
+}
+
 @media screen and (min-width: 600px) {
   .row {
     min-width: 50%;

@@ -35,17 +35,12 @@ function Actions(props: {
   );
 }
 
-type View =
-  | {
-      type: 'welcome' | 'actions';
-    }
-  | {
-      type: 'results';
-      payload: ClosedRound;
-    };
+type View = 'welcome' | 'actions' | 'results';
 
 export default function Round(props: Props) {
-  const [view, setView] = useState<View>({ type: 'welcome' });
+  const [view, setView] = useState<View>('welcome');
+  const [closedRound, setClosedRound] = useState<ClosedRound>();
+  console.log(closedRound);
 
   const description = props.currentRound.description ? (
     <div className={styles.description}>{props.currentRound.description}</div>
@@ -59,44 +54,82 @@ export default function Round(props: Props) {
       {props.currentRound.title && (
         <h2 className={styles.title}>{props.currentRound.title}</h2>
       )}
-      {view.type === 'welcome' && (
+      {view === 'welcome' && (
         <>
           {description}
           <div className={styles.center}>
-            <Button primary onClick={() => setView({ type: 'actions' })}>
+            <Button primary onClick={() => setView('actions')}>
               Start Round
             </Button>
           </div>
         </>
       )}
-      {view.type === 'actions' && (
-        <Actions
-          onNext={() =>
-            setView({ type: 'results', payload: props.closeRound() })
-          }
-          description={description}
-        >
+      {view === 'actions' && (
+        <Actions onNext={() => setView('results')} description={description}>
           <div className={styles.rows}>
             <div className={styles.row}>{props.row1}</div>
             <div className={styles.row}>{props.row2}</div>
           </div>
         </Actions>
       )}
-      {view.type === 'results' && (
+      {view === 'results' && (
         <>
-          <ul>
+          <ul className={styles.userStoryIcons}>
+            {Array(props.currentRound.capacity.available)
+              .fill('')
+              .map((_, i) => (
+                <li key={i}>
+                  {!closedRound
+                    ? '❓'
+                    : i < closedRound.storiesCompleted
+                    ? '✅'
+                    : '❌'}
+                </li>
+              ))}
+          </ul>
+          {!closedRound && (
+            <p className={styles.userStoryDescription}>
+              {props.currentRound.capacity.available} capacity to spend on user
+              stories
+              <br />
+              <br />
+            </p>
+          )}
+          {closedRound && (
+            <p className={styles.userStoryDescription}>
+              {props.currentRound.capacity.available} user stories attempted
+              <br />
+              {closedRound.storiesCompleted} user stories completed
+              <br />
+            </p>
+          )}
+          {/* <ul>
             <li>Attempted {props.currentRound.capacity.available} Stories</li>
             <li>Completed {view.payload.storiesCompleted} Stories</li>
-          </ul>
+          </ul> */}
           <div className={styles.center}>
             <Button
+              disabled={!!closedRound}
+              onClick={() => {
+                setClosedRound(props.closeRound());
+              }}
+            >
+              Roll for User Stories
+            </Button>
+            <Button
               primary
-              onClick={() =>
+              disabled={!closedRound}
+              onClick={() => {
+                if (!closedRound) {
+                  throw new Error(
+                    'Can not go to next round without closing this one',
+                  );
+                }
                 props.dispatch({
                   type: 'NEXT_ROUND',
-                  payload: view.payload,
-                })
-              }
+                  payload: closedRound,
+                });
+              }}
             >
               Next Round
             </Button>
