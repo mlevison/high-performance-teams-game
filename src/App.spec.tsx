@@ -5,6 +5,7 @@ import * as state from './state';
 import { AppState } from './state/useAppState';
 import { Action } from './state/game';
 import { ClosedRound } from 'state/round';
+import { UNIQUE } from 'state/gameActions/getAvailableGameActions';
 
 const setState: (newState: AppState) => void = (state as any).setState;
 const setNextClosedRound: (closedRound: ClosedRound) => void = (state as any)
@@ -16,6 +17,7 @@ const reset: () => void = (state as any).reset;
 const BASE_STATE: AppState = {
   availableGameActions: [],
   currentRound: {
+    selectedGameActions: [],
     number: 1,
     capacity: {
       available: 10,
@@ -64,7 +66,13 @@ describe('App UI', () => {
     setNextClosedRound(closedRound);
     fireEvent.click(screen.getByRole('button', { name: /Complete Round/i }));
     expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
-    expect(screen.getByText(/Attempted 10 Stories/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/10 capacity to spend on user stories/),
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /Roll/i }));
+    expect(screen.getByText(/10 user stories attempted/)).toBeInTheDocument();
+    expect(screen.getByText(/5 user stories completed/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /Next Round/i }));
 
@@ -81,7 +89,7 @@ describe('App UI', () => {
       ...BASE_STATE,
       availableGameActions: [
         {
-          status: { type: 'AVAILABLE' },
+          status: { type: 'AVAILABLE', times: UNIQUE },
           gameAction: {
             id: 'MY_ACTION_ID' as any,
             available: { round: 1 },

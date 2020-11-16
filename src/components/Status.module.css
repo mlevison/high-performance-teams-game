@@ -1,0 +1,38 @@
+.cap {
+  position: absolute;
+  left: 0;
+  display: inline-block;
+  width: 2.5em;
+  padding-right: 0.5em;
+  text-align: right;
+}
+.sign {
+  float: left;
+  display: block;
+  width: 1em;
+  text-align: center;
+}
+
+.status li {
+  position: relative;
+  padding-left: 3em;
+}
+
+.status .title {
+  font-weight: bold;
+  padding: 0.5rem 0;
+}
+.capThisRound {
+  padding: 0.5rem 0 0;
+}
+.status {
+  list-style: none;
+  padding: 0;
+}
+
+.userStoryWarning {
+  background-color: var(--warning-color);
+}
+.userStoryCritical {
+  background-color: var(--error-color);
+}
