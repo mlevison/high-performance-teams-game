@@ -20,7 +20,6 @@ export const gameActionList: GameActionList = {
     available: { round: 1 },
     description: 'ScrumMaster protects the team from outside distraction',
     cost: 1,
-    // TODO - the effect is different in that it effects the success die roll
     effect: hasNoEffect,
   },
   WORKING_AGREEMENTS: {
@@ -28,7 +27,6 @@ export const gameActionList: GameActionList = {
     available: { round: 1 },
     description: 'Create Team Working Agreements',
     cost: 1,
-    // TODO - the effect is different in that it effects the success die roll
     effect: () => ({ capacity: 1, title: 'TODO: Working Agreements active' }),
   },
   ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
