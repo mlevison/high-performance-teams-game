@@ -6,6 +6,7 @@ export function hasNoEffect() {
 
 export type GameActionId =
   | 'GAME_ACTION_BUILD_SERVER'
+  | 'GAME_ACTION_REMOTE_TEAM_AVATARS'
   | 'GAME_ACTION_TEAMS_ON_SAME_FLOOR'
   | 'GAME_ACTION_UNIT_TESTING'
   | 'GAME_ACTION_INFORMAL_CROSS_TRAINING'
@@ -22,12 +23,20 @@ export const gameActionList: GameActionList = {
     cost: 1,
     effect: hasNoEffect,
   },
+  GAME_ACTION_REMOTE_TEAM_AVATARS: {
+    name: 'Remote Team Avatars',
+    available: { round: 1 },
+    description:
+      "Remote Teams suffer from the start, in that team members don't get know about their colleagues easily. To counter this run a short get to know you session. Get team members to share things like - working hours, city they live in, timezone, contact info. If people are open share some personal details such as hobbies, family status, favorite food and beverage. Some teams even create a wiki or site to share this information ",
+    cost: 1,
+    effect: () => ({ capacity: 1, title: 'Remote Team Avatars active' }),
+  },
   WORKING_AGREEMENTS: {
     name: 'Working Agreements',
     available: { round: 1 },
     description: 'Create Team Working Agreements',
     cost: 1,
-    effect: () => ({ capacity: 1, title: 'TODO: Working Agreements active' }),
+    effect: () => ({ capacity: 1, title: 'TODO: #30 Working Agreements active' }),
   },
   ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
     type: 'ENGINEERING',
