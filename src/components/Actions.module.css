@@ -65,3 +65,26 @@
 .actionSelected .actionImage {
   border-color: var(--primary-background-color);
 }
+
+.overlayWrap {
+  position: absolute;
+  height: 0;
+  left: 0;
+  width: 100%;
+  overflow: visible;
+}
+.overlay {
+  position: relative;
+  box-shadow: -1px 3px 5px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  padding: 0.1rem 1rem 1rem;
+  margin-top: 2rem;
+  background-color: var(--main-background-color);
+}
+
+@media screen and (min-width: 600px) {
+  .overlay {
+    width: calc(50% - 1rem);
+    margin-left: calc(50% - 1rem);
+  }
+}

@@ -1,4 +1,9 @@
-import React, { ReactElement, ReactNode, useState } from 'react';
+import React, {
+  MutableRefObject,
+  ReactElement,
+  ReactNode,
+  useState,
+} from 'react';
 import { TOTAL_ROUNDS } from '../constants';
 import { AppState, GameDispatch, ClosedRound } from '../state';
 import Button from './Button';
@@ -8,6 +13,7 @@ type Props = {
   currentRound: AppState['currentRound'];
   closeRound: () => ClosedRound;
   dispatch: GameDispatch;
+  overlayRef: MutableRefObject<HTMLDivElement | null>;
   row1?: ReactElement;
   row2?: ReactElement;
 };
@@ -71,6 +77,7 @@ export default function Round(props: Props) {
       )}
       {view === 'actions' && (
         <Actions onNext={() => setView('results')} description={description}>
+          <div ref={props.overlayRef} />
           <div className={styles.rows}>
             <div className={styles.row}>{props.row1}</div>
             <div className={styles.row}>{props.row2}</div>

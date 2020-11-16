@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAppState } from './state';
 import { TOTAL_ROUNDS } from './constants';
 import {
@@ -16,6 +16,7 @@ import {
 export default function App() {
   const [state, dispatch, closeRound] = useAppState();
   const [tab, setTab] = useState<'play' | 'rules'>('play');
+  const overlayRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <>
@@ -40,8 +41,10 @@ export default function App() {
                 dispatch={dispatch}
                 currentRound={state.currentRound}
                 closeRound={closeRound}
+                overlayRef={overlayRef}
                 row1={
                   <Actions
+                    overlay={overlayRef}
                     currentRound={state.currentRound.number}
                     availableGameActions={state.availableGameActions}
                     dispatch={dispatch}

@@ -1,26 +1,24 @@
-import React, { useState, useRef } from 'react';
+import React, {
+  useState,
+  useRef,
+  SetStateAction,
+  Dispatch,
+  MutableRefObject,
+  useEffect,
+} from 'react';
 import cx from 'classnames';
 import { GameActionWithStatus } from 'state/gameActions/getAvailableGameActions';
 import { GameDispatch, AppState } from '../state';
 import styles from './Actions.module.css';
-
-type Props = {
-  currentRound: number;
-  availableGameActions: AppState['availableGameActions'];
-  dispatch: GameDispatch;
-};
+import { Button } from 'components';
+import { createPortal } from 'react-dom';
+import Content from './Content';
+import { GameActionId } from 'state/gameActions/gameActions';
 
 function onlyRound(number: number) {
   return (actionWithStatus: GameActionWithStatus): boolean =>
     actionWithStatus.gameAction.available.round === number;
 }
-
-type RoundActionsProps = {
-  round: number;
-  dispatch: GameDispatch;
-  initialVisible: boolean;
-  actionsWithStatus: GameActionWithStatus[];
-};
 
 type ActionProps = GameActionWithStatus & {
   onClick: () => void;
@@ -60,6 +58,29 @@ function Action(props: ActionProps) {
   );
 }
 
+type RoundActionsProps = {
+  round: number;
+  dispatch: GameDispatch;
+  initialVisible: boolean;
+  setSelectedAction: Dispatch<SetStateAction<GameActionId | undefined>>;
+  actionsWithStatus: GameActionWithStatus[];
+};
+
+function toggle(
+  actionWithStatus: GameActionWithStatus,
+  dispatch: GameDispatch,
+) {
+  return () => {
+    dispatch({
+      type:
+        actionWithStatus.status.type === 'SELECTED'
+          ? 'UNSELECT_GAME_ACTION'
+          : 'SELECT_GAME_ACTION',
+      payload: actionWithStatus.gameAction.id,
+    });
+  };
+}
+
 function RoundActions(props: RoundActionsProps) {
   const [visible, setVisible] = useState(props.initialVisible);
 
@@ -75,22 +96,15 @@ function RoundActions(props: RoundActionsProps) {
         <ul className={styles.roundActionList}>
           {props.actionsWithStatus.map(
             /* eslint-disable-next-line array-callback-return */
-            ({ status, gameAction }): JSX.Element => {
+            (actionWithStatus): JSX.Element => {
               return (
-                <li key={gameAction.id}>
+                <li key={actionWithStatus.gameAction.id}>
                   <Action
-                    status={status}
-                    gameAction={gameAction}
-                    onClick={() => console.log('open')}
-                    onDoubleClick={() =>
-                      props.dispatch({
-                        type:
-                          status.type === 'SELECTED'
-                            ? 'UNSELECT_GAME_ACTION'
-                            : 'SELECT_GAME_ACTION',
-                        payload: gameAction.id,
-                      })
+                    {...actionWithStatus}
+                    onClick={() =>
+                      props.setSelectedAction(actionWithStatus.gameAction.id)
                     }
+                    onDoubleClick={toggle(actionWithStatus, props.dispatch)}
                   />
                 </li>
               );
@@ -102,7 +116,35 @@ function RoundActions(props: RoundActionsProps) {
   );
 }
 
+type Props = {
+  currentRound: number;
+  availableGameActions: AppState['availableGameActions'];
+  dispatch: GameDispatch;
+  overlay: MutableRefObject<HTMLElement | null>;
+};
+
 export default function Actions(props: Props) {
+  const [selectedActionId, setSelectedAction] = useState<GameActionId>();
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const handler = (ev: MouseEvent) => {
+      if (!selectedActionId || !overlayRef.current || !ev.target) {
+        return;
+      }
+      if (!overlayRef.current.contains(ev.target as any)) {
+        setSelectedAction(undefined);
+      }
+    };
+    window.addEventListener('click', handler);
+
+    return () => window.removeEventListener('click', handler);
+  });
+  const selectedAction =
+    selectedActionId &&
+    props.availableGameActions.find(
+      (actionWithStatus) => actionWithStatus.gameAction.id === selectedActionId,
+    );
+
   return (
     <>
       <h2>Available Actions</h2>
@@ -113,6 +155,7 @@ export default function Actions(props: Props) {
             const round = i + 1;
             return (
               <RoundActions
+                setSelectedAction={setSelectedAction}
                 dispatch={props.dispatch}
                 key={round}
                 initialVisible={round === props.currentRound}
@@ -124,6 +167,30 @@ export default function Actions(props: Props) {
             );
           })}
       </ul>
+      {props.overlay.current &&
+        createPortal(
+          selectedAction ? (
+            <>
+              <div className={styles.overlayWrap}>
+                <Content>
+                  <div className={styles.overlay} ref={overlayRef}>
+                    <h3>{selectedAction.gameAction.name}</h3>
+                    <p>{selectedAction.gameAction.description}</p>
+                    <Button
+                      primary={selectedAction.status.type === 'AVAILABLE'}
+                      onClick={toggle(selectedAction, props.dispatch)}
+                    >
+                      {selectedAction.status.type === 'SELECTED'
+                        ? 'Remove'
+                        : 'Select'}
+                    </Button>
+                  </div>
+                </Content>
+              </div>
+            </>
+          ) : null,
+          props.overlay.current,
+        )}
     </>
   );
 }
