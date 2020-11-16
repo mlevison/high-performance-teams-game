@@ -1,10 +1,18 @@
 import React from 'react';
+import cx from 'classnames';
 import { AppState, startCapacity } from '../state';
 import styles from './Status.module.css';
 
 type Props = AppState['currentRound'];
 
 export default function Status(props: Props) {
+  const percentOnUserStories = props.capacity.available / props.capacity.total;
+  const userStoryStatus =
+    percentOnUserStories < 0.5
+      ? 'CRITICAL'
+      : percentOnUserStories < 0.7
+      ? 'WARNING'
+      : 'OK';
   return (
     <>
       <h2>Capacity Breakdown</h2>
@@ -49,11 +57,24 @@ export default function Status(props: Props) {
         )}
 
         <li className={styles.title}>User Stories</li>
-        <li>
+        <li
+          className={cx(
+            userStoryStatus === 'WARNING' && styles.userStoryWarning,
+            userStoryStatus === 'CRITICAL' && styles.userStoryCritical,
+          )}
+        >
           <span className={styles.cap}>
             <span className={styles.sign}>-</span> {props.capacity.available}
           </span>{' '}
           spent on User Stories
+        </li>
+        <li className={styles.title}>
+          {userStoryStatus === 'WARNING' && (
+            <>🧑‍💼: "feature work needs more priority"</>
+          )}
+          {userStoryStatus === 'CRITICAL' && (
+            <>🧑‍💼: "not enough time spent on feature work"</>
+          )}
         </li>
       </ul>
     </>

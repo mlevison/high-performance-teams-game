@@ -12,6 +12,8 @@
   --light-border-color: rgb(130, 133, 136);
   --light-background-color: rgb(204, 204, 207);
   --light-color: var(--main-color);
+  --warning-color: #ffc919;
+  --error-color: #f03423;
 }
 
 body {

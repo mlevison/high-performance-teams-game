@@ -29,3 +29,10 @@
   list-style: none;
   padding: 0;
 }
+
+.userStoryWarning {
+  background-color: var(--warning-color);
+}
+.userStoryCritical {
+  background-color: var(--error-color);
+}
