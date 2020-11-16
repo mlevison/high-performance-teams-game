@@ -3,7 +3,7 @@ import { Effect, gameEffectList, isEffect } from './effects';
 import { concatByProp } from '../lib';
 import { getRoundDescriptionEffects } from './roundDescriptions';
 import { GameActionId } from './gameActions';
-import { isGremlinId } from './gremlins';
+import { getGremlinRolls } from './gremlins';
 
 export const GAME_STATE = Symbol('GAME_STATE');
 
@@ -46,10 +46,7 @@ export function getRoundEffects(pastRounds: ClosedRound[]) {
 
   const actionEffects = pastRounds.reduce((allEffects, round, i) => {
     const age = roundAmounts - (i + 1);
-    const previousGremlinRolls = pastRounds
-      .slice(0, i)
-      .map((round) => round.gremlinRoll)
-      .filter(isGremlinId);
+    const previousGremlinRolls = getGremlinRolls(pastRounds.slice(0, i));
     const roundEffects = getEffects(
       round,
       age,

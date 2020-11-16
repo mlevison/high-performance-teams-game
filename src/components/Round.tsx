@@ -40,7 +40,6 @@ type View = 'welcome' | 'actions' | 'results';
 export default function Round(props: Props) {
   const [view, setView] = useState<View>('welcome');
   const [closedRound, setClosedRound] = useState<ClosedRound>();
-  console.log(closedRound);
 
   const description = props.currentRound.description ? (
     <div className={styles.description}>{props.currentRound.description}</div>
@@ -57,6 +56,12 @@ export default function Round(props: Props) {
       {view === 'welcome' && (
         <>
           {description}
+          {props.currentRound.gremlin && (
+            <>
+              <h3>⚠️ {props.currentRound.gremlin.name}</h3>
+              {props.currentRound.gremlin.description}
+            </>
+          )}
           <div className={styles.center}>
             <Button primary onClick={() => setView('actions')}>
               Start Round
@@ -100,7 +105,6 @@ export default function Round(props: Props) {
               {props.currentRound.capacity.available} user stories attempted
               <br />
               {closedRound.storiesCompleted} user stories completed
-              <br />
             </p>
           )}
           {/* <ul>

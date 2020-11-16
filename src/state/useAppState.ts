@@ -14,6 +14,7 @@ import {
   findGameActionById,
 } from './gameActions';
 import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
+import { GremlinDescription, getGremlin } from './gremlins';
 import { ClosedRound, closeRound, getCosts } from './round';
 import { roundDescriptions } from './roundDescriptions';
 
@@ -22,6 +23,7 @@ export type AppState = {
   currentRound: {
     number: number;
     title?: string;
+    gremlin?: GremlinDescription;
     description?: ReactElement;
     selectedGameActions: GameAction[];
     capacity: {
@@ -62,6 +64,7 @@ export default function useAppState(): [
   const currentRoundTitle = roundDescriptions[currentRoundNumber]?.title;
   const currentRoundDescription =
     roundDescriptions[currentRoundNumber]?.description;
+  const gremlin = getGremlin(state.pastRounds);
 
   return [
     {
@@ -70,6 +73,7 @@ export default function useAppState(): [
         selectedGameActions,
         title: currentRoundTitle,
         description: currentRoundDescription,
+        gremlin,
         number: currentRoundNumber,
         capacity: {
           available: capacityAvailable,
