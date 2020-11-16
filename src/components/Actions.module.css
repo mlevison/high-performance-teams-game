@@ -30,6 +30,7 @@
   min-width: 8rem;
 }
 .action {
+  position: relative;
   cursor: pointer;
   width: 100%;
   display: flex;
@@ -40,6 +41,7 @@
 }
 
 .action:focus {
+  z-index: 1;
   outline: 3px solid var(--highlight-color);
   outline-offset: 3px;
 }
