@@ -30,11 +30,18 @@ export const roundDescriptions: { [key: string]: RoundDescription } = {
     )
   },
   3: {
+    title: 'Work Harder',
+    description: (<p>
+        Things are slowly improving. You are getting better. *Please* work harder in the next Sprint.
+    </p>
+    )
+  },
+  4: {
     title:
       'Go Live Soon',
     description: (
       <p>
-        We must go live with an early version of the product this round, for a tradeshow. Due to your limited productivity in past rounds, management are prepared to offer some options to help you out. We will pay an extra ‘4’ points for anything that helps. Another team member? Overtime?
+        We must go live with an early version of the product this round, for a tradeshow. Due to your limited productivity in past rounds, management are prepared to offer some options to help you out. We will provide an extra ‘4’ points of capacity for anything that helps. Another team member? Overtime?
       </p>
     ),
     effect: () => ({
@@ -42,7 +49,7 @@ export const roundDescriptions: { [key: string]: RoundDescription } = {
       title: 'Management is paying overtime',
     }),
   },
-  4: {
+  5: {
     title: 'We\'re live and we have real Customers',
     description: (<p>
         Congratulations our product is live in the market. People are using it and they're finding bugs. We will have to do deal with those bugs this Sprint.

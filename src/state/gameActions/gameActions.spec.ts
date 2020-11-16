@@ -36,9 +36,13 @@ describe('GameActions', () => {
   });
 
   describe('Informal Cross Training', () => {
-    it('is only available from round 3 on', () => {
+    it('is only available from round 4 on', () => {
       const game = getGame();
 
+      expect(game.availableActionIds).not.toContain(
+        'GAME_ACTION_INFORMAL_CROSS_TRAINING',
+      );
+      game.nextRound();
       expect(game.availableActionIds).not.toContain(
         'GAME_ACTION_INFORMAL_CROSS_TRAINING',
       );

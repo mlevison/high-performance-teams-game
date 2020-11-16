@@ -80,7 +80,7 @@ export const gameActionList: GameActionList = {
   },
   GAME_ACTION_INFORMAL_CROSS_TRAINING: {
     name: 'Informal Cross Training',
-    available: { round: 3 },
+    available: { round: 4 },
     description:
       'Informal cross-training for existing team members in an area the team is weak. (Testing anyone?)',
     cost: 1,
@@ -91,7 +91,7 @@ export const gameActionList: GameActionList = {
   },
   GAME_ACTION_FORMAL_CROSS_TRAINING: {
     name: 'Formal Cross-Training',
-    available: { round: 3 },
+    available: { round: 4 },
     description:
       'Formal cross-training for existing team members in an area the team is weak. (Testing anyone?)',
     cost: 3,
