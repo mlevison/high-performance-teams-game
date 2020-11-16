@@ -176,6 +176,7 @@ export default function Actions(props: Props) {
                   <div className={styles.overlay} ref={overlayRef}>
                     <h3>{selectedAction.gameAction.name}</h3>
                     <p>{selectedAction.gameAction.description}</p>
+                    <p><b>Cost</b>: {selectedAction.gameAction.cost}</p>
                     <Button
                       primary={selectedAction.status.type === 'AVAILABLE'}
                       onClick={toggle(selectedAction, props.dispatch)}
