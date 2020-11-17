@@ -152,7 +152,7 @@ export default function Actions(props: Props) {
         {Array(props.currentRound)
           .fill('')
           .map((_, i) => {
-            const round = i + 1;
+            const round = props.currentRound - i;
             return (
               <RoundActions
                 setSelectedAction={setSelectedAction}
