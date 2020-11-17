@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/static/css/main.adbc5c9d.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/static/js/main.cb9e3fb1.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/static/js/main.cb9e3fb1.chunk.js.map",
+    "runtime-main.js": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/static/js/runtime-main.32e04e74.js",
+    "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/static/js/runtime-main.32e04e74.js.map",
+    "static/js/2.246f8a53.chunk.js": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/static/js/2.246f8a53.chunk.js",
+    "static/js/2.246f8a53.chunk.js.map": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/static/js/2.246f8a53.chunk.js.map",
+    "index.html": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/index.html",
+    "static/css/main.adbc5c9d.chunk.css.map": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/static/css/main.adbc5c9d.chunk.css.map",
+    "static/js/2.246f8a53.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/preview/game-action-images-and-icons/static/js/2.246f8a53.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.32e04e74.js",
+    "static/js/2.246f8a53.chunk.js",
+    "static/css/main.adbc5c9d.chunk.css",
+    "static/js/main.cb9e3fb1.chunk.js"
+  ]
+}
