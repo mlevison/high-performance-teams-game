@@ -45,12 +45,17 @@
   outline: 3px solid var(--highlight-color);
   outline-offset: 3px;
 }
-.actionImage {
+.actionImage,
+.actionIcon {
   display: block;
   background-size: cover;
   width: 4rem;
   height: 4rem;
   border: 3px solid var(--main-background-color);
+}
+.actionIcon {
+  font-size: 3.2rem;
+  box-shadow: 0 0 0 1px inset var(--main-color-light);
 }
 .action:disabled .actionImage {
   filter: grayscale(100%);

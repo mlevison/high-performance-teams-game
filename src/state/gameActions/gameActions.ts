@@ -1,4 +1,5 @@
 import { GameActionList, GameAction } from './types';
+import example from './images/example.jpg';
 
 export function hasNoEffect() {
   return null;
@@ -17,6 +18,7 @@ export type GameActionId =
 
 export const gameActionList: GameActionList = {
   PROTECTED_FROM_OUTSIDE_DISTRACTION: {
+    image: 'https://placekitten.com/100/100',
     name: 'Protected from Outside Distraction',
     available: { round: 1 },
     description: 'ScrumMaster protects the team from outside distraction',
@@ -24,6 +26,7 @@ export const gameActionList: GameActionList = {
     effect: hasNoEffect,
   },
   GAME_ACTION_REMOTE_TEAM_AVATARS: {
+    icon: '👋',
     name: 'Remote Team Avatars',
     available: { round: 1 },
     description:
@@ -32,13 +35,18 @@ export const gameActionList: GameActionList = {
     effect: () => ({ capacity: 1, title: 'Remote Team Avatars active' }),
   },
   WORKING_AGREEMENTS: {
+    image: example,
     name: 'Working Agreements',
     available: { round: 1 },
     description: 'Create Team Working Agreements',
     cost: 1,
-    effect: () => ({ capacity: 1, title: 'TODO: #30 Working Agreements active' }),
+    effect: () => ({
+      capacity: 1,
+      title: 'TODO: #30 Working Agreements active',
+    }),
   },
   ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
+    image: example,
     type: 'ENGINEERING',
     name: 'All Work is done on Main or Trunk',
     available: { round: 1 },
@@ -51,6 +59,7 @@ export const gameActionList: GameActionList = {
     }),
   },
   GAME_ACTION_BUILD_SERVER: {
+    image: example,
     type: 'ENGINEERING',
     name: 'Build Server',
     available: { round: 1 },
@@ -60,6 +69,7 @@ export const gameActionList: GameActionList = {
     effect: hasNoEffect,
   },
   GAME_ACTION_TEAMS_ON_SAME_FLOOR: {
+    image: example,
     name: 'Team Members On SameFloor',
     available: { round: 1 },
     description:
@@ -80,6 +90,7 @@ export const gameActionList: GameActionList = {
     },
   },
   GAME_ACTION_UNIT_TESTING: {
+    image: example,
     type: 'ENGINEERING',
     name: 'Unit Testing',
     available: { round: 2, requires: 'GAME_ACTION_BUILD_SERVER' },
@@ -88,6 +99,7 @@ export const gameActionList: GameActionList = {
     effect: () => ({ capacity: 2, title: 'TODO: Unit Testing active' }),
   },
   GAME_ACTION_INFORMAL_CROSS_TRAINING: {
+    image: example,
     name: 'Informal Cross Training',
     available: { round: 4 },
     description:
@@ -99,6 +111,7 @@ export const gameActionList: GameActionList = {
     }),
   },
   GAME_ACTION_FORMAL_CROSS_TRAINING: {
+    image: example,
     name: 'Formal Cross-Training',
     available: { round: 4 },
     description:

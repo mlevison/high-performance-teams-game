@@ -7,6 +7,35 @@ export type AvailabilityCheck = (
   selectedGameActionIds: GameActionId[],
   id: GameActionId,
 ) => boolean;
+type Image = {
+  /**
+   * An image url
+   * can be externally hosted image
+   * `https://example.org/my.png`
+   * or relative file:
+   * `import imageUrl from './my.png';
+   */
+  image: string;
+};
+export function isGameActionWithImage(
+  action: GameAction,
+): action is GameActionWithId & Image {
+  return Object.getOwnPropertyNames(action).includes('image');
+}
+type Icon = {
+  /**
+   * Unicode Character to be displayed instead of image
+   * can be emoji or any other char
+   */
+  icon: string;
+};
+export function isGameActionWithIcon(
+  action: GameAction,
+): action is GameActionWithId & Icon {
+  return Object.getOwnPropertyNames(action).includes('icon');
+}
+type ImageOrIcon = Image | Icon;
+
 type GameActionImplementation = {
   type?: 'ENGINEERING';
   available: {
@@ -19,7 +48,10 @@ type GameActionImplementation = {
   description: string;
   cost: number;
 };
+type GameActionWithId = GameActionImplementation & { id: GameActionId };
+
 export type GameActionList = {
-  [K in GameActionId]: GameActionImplementation;
+  [K in GameActionId]: ImageOrIcon & GameActionImplementation;
 };
-export type GameAction = GameActionImplementation & { id: GameActionId };
+
+export type GameAction = ImageOrIcon & GameActionWithId;

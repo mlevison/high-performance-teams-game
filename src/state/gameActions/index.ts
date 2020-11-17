@@ -5,6 +5,7 @@ export { getAvailableGameActions } from './getAvailableGameActions';
 export { findGameActionById } from './findGameActionById';
 export { getEffect } from './getEffect';
 export { getCost } from './getCost';
+export { isGameActionWithIcon, isGameActionWithImage } from './types';
 
 export type GameActionId = GameActionIdT;
 export type GameAction = GameActionT;
