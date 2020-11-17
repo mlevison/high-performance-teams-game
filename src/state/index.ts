@@ -12,11 +12,12 @@ export type GameDispatch = Dispatch<Action>;
 export type GameActionId = GameActionIdT;
 export type GameActionWithStatus = GameActionWithStatusT;
 export { startCapacity } from './roundDescriptions';
-export { getCosts } from './round';
+export { getCosts, closeRound } from './round';
 export {
   getAvailableGameActions,
   isGameActionWithIcon,
   isGameActionWithImage,
+  UNIQUE_ACTION,
 } from './gameActions';
 export { default as useAppState } from './useAppState';
 export { gameReducer, INITIAL_STATE } from './game';
