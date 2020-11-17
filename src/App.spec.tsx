@@ -1,18 +1,10 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import App from './App';
-import * as state from './state';
-import { AppState } from './state/useAppState';
-import { Action } from './state/game';
+import { AppState, useAppState, UNIQUE_ACTION } from './state';
 import { ClosedRound } from 'state/round';
-import { UNIQUE } from 'state/gameActions/getAvailableGameActions';
 
-const setState: (newState: AppState) => void = (state as any).setState;
-const setNextClosedRound: (closedRound: ClosedRound) => void = (state as any)
-  .setNextClosedRound;
-const setDispatch: (newDispatch: Dispatch<Action>) => void = (state as any)
-  .setDispatch;
-const reset: () => void = (state as any).reset;
+jest.mock('./state');
 
 const BASE_STATE: AppState = {
   availableGameActions: [],
@@ -32,18 +24,18 @@ const BASE_STATE: AppState = {
 };
 
 describe('App UI', () => {
-  beforeEach(() => {
-    reset();
-  });
-
   it('displays current round', () => {
-    setState({
-      ...BASE_STATE,
-      currentRound: {
-        ...BASE_STATE.currentRound,
-        number: 3,
+    (useAppState as jest.Mock).mockReturnValue([
+      {
+        ...BASE_STATE,
+        currentRound: {
+          ...BASE_STATE.currentRound,
+          number: 3,
+        },
       },
-    });
+      jest.fn(),
+      jest.fn(),
+    ]);
     render(<App />);
 
     expect(
@@ -53,8 +45,12 @@ describe('App UI', () => {
 
   it('has buttons to move between round views and to next round', () => {
     const dispatchSpy = jest.fn();
-    setState(BASE_STATE);
-    setDispatch(dispatchSpy);
+    const closeRoundSpy = jest.fn();
+    (useAppState as jest.Mock).mockReturnValue([
+      BASE_STATE,
+      dispatchSpy,
+      closeRoundSpy,
+    ]);
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
     expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
@@ -63,7 +59,7 @@ describe('App UI', () => {
       selectedGameActionIds: [],
       storiesCompleted: 5,
     };
-    setNextClosedRound(closedRound);
+    closeRoundSpy.mockReturnValue(closedRound);
     fireEvent.click(screen.getByRole('button', { name: /Complete Round/i }));
     expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
     expect(
@@ -85,23 +81,26 @@ describe('App UI', () => {
 
   it('can select actions in round 1', () => {
     const dispatchSpy = jest.fn();
-    setState({
-      ...BASE_STATE,
-      availableGameActions: [
-        {
-          status: { type: 'AVAILABLE', times: UNIQUE },
-          gameAction: {
-            id: 'MY_ACTION_ID' as any,
-            available: { round: 1 },
-            name: 'My Action',
-            effect: () => null,
-            description: '',
-            cost: 2,
+    (useAppState as jest.Mock).mockReturnValue([
+      {
+        ...BASE_STATE,
+        availableGameActions: [
+          {
+            status: { type: 'AVAILABLE', times: UNIQUE_ACTION },
+            gameAction: {
+              id: 'MY_ACTION_ID' as any,
+              available: { round: 1 },
+              name: 'My Action',
+              effect: () => null,
+              description: '',
+              cost: 2,
+            },
           },
-        },
-      ],
-    });
-    setDispatch(dispatchSpy);
+        ],
+      },
+      dispatchSpy,
+      jest.fn(),
+    ]);
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
     fireEvent.doubleClick(screen.getByRole('button', { name: /My Action/i }));
@@ -112,49 +111,4 @@ describe('App UI', () => {
       payload: 'MY_ACTION_ID',
     });
   });
-});
-
-jest.mock('./state', () => {
-  let state: AppState | null = null;
-  let nextClosedRound: ClosedRound | null = null;
-  let dispatch: Dispatch<Action> | null = null;
-
-  return {
-    setState(newState: AppState) {
-      state = newState;
-    },
-    setDispatch(newDispatch: Dispatch<Action>) {
-      dispatch = newDispatch;
-    },
-    setNextClosedRound(closedRound: ClosedRound) {
-      nextClosedRound = closedRound;
-    },
-    reset() {
-      state = null;
-      dispatch = null;
-      nextClosedRound = null;
-    },
-    useAppState: () => {
-      if (state === null) {
-        throw new Error(
-          'Unexpected invocation of useAppState before mocked state is set',
-        );
-      }
-      return [
-        state,
-        dispatch ||
-          (() => {
-            throw new Error('Unexpected invocation of dispatch');
-          }),
-        () => {
-          if (!nextClosedRound) {
-            throw new Error(
-              'Unexpected invocation of closeRound before mocked closed round is set',
-            );
-          }
-          return nextClosedRound;
-        },
-      ];
-    },
-  };
 });

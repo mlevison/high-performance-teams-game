@@ -7,13 +7,18 @@ import React, {
   useEffect,
 } from 'react';
 import cx from 'classnames';
-import { GameActionWithStatus } from 'state/gameActions/getAvailableGameActions';
-import { GameDispatch, AppState } from '../state';
+import {
+  GameDispatch,
+  AppState,
+  GameActionId,
+  GameActionWithStatus,
+  isGameActionWithIcon,
+  isGameActionWithImage,
+} from '../state';
 import styles from './Actions.module.css';
 import { Button } from 'components';
 import { createPortal } from 'react-dom';
 import Content from './Content';
-import { GameActionId } from 'state/gameActions/gameActions';
 
 function onlyRound(number: number) {
   return (actionWithStatus: GameActionWithStatus): boolean =>
@@ -27,6 +32,7 @@ type ActionProps = GameActionWithStatus & {
 
 function Action(props: ActionProps) {
   const clickTimer = useRef<NodeJS.Timeout>();
+  const gameAction = props.gameAction;
 
   return (
     <button
@@ -49,10 +55,16 @@ function Action(props: ActionProps) {
       )}
       disabled={['MISSING_DEP', 'FINISHED'].includes(props.status.type)}
     >
-      <span
-        className={styles.actionImage}
-        style={{ backgroundImage: 'url(https://placekitten.com/100/100)' }}
-      ></span>
+      {isGameActionWithImage(gameAction) && (
+        <span
+          className={styles.actionImage}
+          style={{ backgroundImage: `url(${gameAction.image})` }}
+        ></span>
+      )}
+      {isGameActionWithIcon(gameAction) && (
+        <span className={styles.actionIcon}>{gameAction.icon}</span>
+      )}
+
       <span>{props.gameAction.name}</span>
     </button>
   );
@@ -152,7 +164,7 @@ export default function Actions(props: Props) {
         {Array(props.currentRound)
           .fill('')
           .map((_, i) => {
-            const round = i + 1;
+            const round = props.currentRound - i;
             return (
               <RoundActions
                 setSelectedAction={setSelectedAction}
