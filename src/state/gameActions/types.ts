@@ -1,6 +1,9 @@
 import { Effect } from '../effects';
 import { GameActionId } from './gameActions';
 
+type EffectWithOptionalTitle = Omit<Effect, 'title'> & {
+  title?: Effect['title'];
+};
 export type AvailabilityCheck = (
   currentRound: number,
   finishedActionIds: GameActionId[],
@@ -14,7 +17,10 @@ type GameActionImplementation = {
     requires?: GameActionId[] | GameActionId;
     unique?: false;
   };
-  effect: (age: number, finishedActionIds: GameActionId[]) => Effect | null;
+  effect: (
+    age: number,
+    finishedActionIds: GameActionId[],
+  ) => EffectWithOptionalTitle | null;
   name: string;
   description: string;
   cost: number;
