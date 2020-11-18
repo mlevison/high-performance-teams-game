@@ -71,25 +71,70 @@
   border-color: var(--primary-background-color);
 }
 
-.overlayWrap {
+.arrow {
+  width: 20px;
+  height: 20px;
+}
+.arrow::before {
+  box-shadow: -1px 3px 6px rgba(0, 0, 0, 0.4),
+    0 0 0 1px var(--primary-background-color);
   position: absolute;
-  height: 0;
-  left: 0;
-  width: 100%;
-  overflow: visible;
+  z-index: -1;
+  content: '';
+  transform: rotate(45deg);
+  background: var(--main-background-color);
+  top: 0px;
+  width: 20px;
+  height: 20px;
+  left: 0px;
+}
+[data-popper-placement^='top'] .arrow {
+  bottom: -4px;
+}
+[data-popper-placement^='bottom'] .arrow {
+  top: -4px;
+}
+[data-popper-placement^='left'] .arrow {
+  right: -4px;
+}
+[data-popper-placement^='right'] .arrow {
+  left: -4px;
 }
 .overlay {
-  position: relative;
-  box-shadow: -1px 3px 5px rgba(0, 0, 0, 0.4);
+  /* position: relative; */
+  max-width: 80%;
+  box-shadow: -1px 3px 6px rgba(0, 0, 0, 0.4),
+    0 0 0 1px var(--primary-background-color);
   z-index: 10;
-  padding: 0.1rem 1rem 1rem;
-  margin-top: 2rem;
+
+  margin: 0.5rem 0;
+}
+.overlayInner {
+  position: relative;
+  z-index: 1;
   background-color: var(--main-background-color);
+  padding: 0.1rem 1rem 1rem;
+}
+
+.closeOverlay {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border: none;
+  background: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+.closeOverlay:focus {
+  outline: 3px solid var(--highlight-color);
+  outline-offset: 3px;
+}
+.overlayTitle {
+  padding-right: 1rem;
 }
 
 @media screen and (min-width: 600px) {
   .overlay {
-    width: calc(50% - 1rem);
-    margin-left: calc(50% - 1rem);
+    max-width: calc(40%);
   }
 }
