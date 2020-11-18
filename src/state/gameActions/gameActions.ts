@@ -32,7 +32,7 @@ export const gameActionList: GameActionList = {
     description:
       "Remote Teams suffer from the start, in that team members don't get know about their colleagues easily. To counter this run a short get to know you session. Get team members to share things like - working hours, city they live in, timezone, contact info. If people are open share some personal details such as hobbies, family status, favorite food and beverage. Some teams even create a wiki or site to share this information ",
     cost: 1,
-    effect: () => ({ capacity: 1, title: 'Remote Team Avatars active' }),
+    effect: () => ({ capacity: 1 }),
   },
   WORKING_AGREEMENTS: {
     image: example,
@@ -40,10 +40,7 @@ export const gameActionList: GameActionList = {
     available: { round: 1 },
     description: 'Create Team Working Agreements',
     cost: 1,
-    effect: () => ({
-      capacity: 1,
-      title: 'TODO: #30 Working Agreements active',
-    }),
+    effect: () => ({ capacity: 1 }),
   },
   ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
     image: example,
@@ -55,7 +52,6 @@ export const gameActionList: GameActionList = {
     cost: 2,
     effect: () => ({
       capacity: 1,
-      title: 'TODO: All Work is done on Main or Trunk active',
     }),
   },
   GAME_ACTION_BUILD_SERVER: {
@@ -75,17 +71,18 @@ export const gameActionList: GameActionList = {
     description:
       "Getting Team Members on the same floor reduces the cost of communication as they don't have to go far to ask questions",
     cost: 3,
-    effect: (age) => {
+    /* don't use arrow function in order to have "this" bound to action */
+    effect(age) {
       if (age < 5) {
         return {
           capacity: age + 1,
-          title: `TODO: Team on same floor since ${age + 1} rounds`,
+          title: `${this.name} active since ${age + 1} rounds`,
         };
       }
 
       return {
         capacity: 5,
-        title: `TODO: Team on same floor since 5 or more rounds`,
+        title: `${this.name} active since 5 or more rounds`,
       };
     },
   },
@@ -96,7 +93,7 @@ export const gameActionList: GameActionList = {
     available: { round: 2, requires: 'GAME_ACTION_BUILD_SERVER' },
     description: 'TODO: SOME DESCRIPTION',
     cost: 2,
-    effect: () => ({ capacity: 2, title: 'TODO: Unit Testing active' }),
+    effect: () => ({ capacity: 2 }),
   },
   GAME_ACTION_INFORMAL_CROSS_TRAINING: {
     image: example,
@@ -107,7 +104,6 @@ export const gameActionList: GameActionList = {
     cost: 1,
     effect: () => ({
       capacity: 1,
-      title: 'TODO: Informal Cross Training active',
     }),
   },
   GAME_ACTION_FORMAL_CROSS_TRAINING: {
@@ -119,7 +115,6 @@ export const gameActionList: GameActionList = {
     cost: 3,
     effect: () => ({
       capacity: 3,
-      title: 'TODO: Informal Cross Training active',
     }),
   },
 };
