@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  SetStateAction,
-  Dispatch,
-  MutableRefObject,
-  useEffect,
-} from 'react';
+import React, { useState, useRef, MutableRefObject, useEffect } from 'react';
 import cx from 'classnames';
 import {
   GameDispatch,
@@ -17,8 +10,7 @@ import {
 } from '../state';
 import styles from './Actions.module.css';
 import { Button } from 'components';
-import { createPortal } from 'react-dom';
-import Content from './Content';
+import { usePopper } from 'react-popper';
 
 function onlyRound(number: number) {
   return (actionWithStatus: GameActionWithStatus): boolean =>
@@ -26,21 +18,23 @@ function onlyRound(number: number) {
 }
 
 type ActionProps = GameActionWithStatus & {
-  onClick: () => void;
+  onClick: (elm: HTMLButtonElement) => void;
   onDoubleClick: () => void;
 };
 
 function Action(props: ActionProps) {
+  const ref = useRef<HTMLButtonElement>(null);
   const clickTimer = useRef<NodeJS.Timeout>();
   const gameAction = props.gameAction;
 
   return (
     <button
+      ref={ref}
       onClick={() => {
         if (clickTimer.current) {
           clearTimeout(clickTimer.current);
         }
-        clickTimer.current = setTimeout(() => props.onClick(), 300);
+        clickTimer.current = setTimeout(() => props.onClick(ref.current!), 300);
       }}
       onDoubleClick={() => {
         if (clickTimer.current) {
@@ -74,7 +68,7 @@ type RoundActionsProps = {
   round: number;
   dispatch: GameDispatch;
   initialVisible: boolean;
-  setSelectedAction: Dispatch<SetStateAction<GameActionId | undefined>>;
+  onOpen: (elm: HTMLElement, id: GameActionId) => void;
   actionsWithStatus: GameActionWithStatus[];
 };
 
@@ -99,36 +93,37 @@ function toggle(
 
 function RoundActions(props: RoundActionsProps) {
   const [visible, setVisible] = useState(props.initialVisible);
-
   return (
-    <li>
-      <button
-        className={styles.roundVisibleToggle}
-        onClick={() => setVisible(!visible)}
-      >
-        Round {props.round} {visible ? '▲' : '▼'}
-      </button>
-      {visible && (
-        <ul className={styles.roundActionList}>
-          {props.actionsWithStatus.map(
-            /* eslint-disable-next-line array-callback-return */
-            (actionWithStatus): JSX.Element => {
-              return (
-                <li key={actionWithStatus.gameAction.id}>
-                  <Action
-                    {...actionWithStatus}
-                    onClick={() =>
-                      props.setSelectedAction(actionWithStatus.gameAction.id)
-                    }
-                    onDoubleClick={toggle(actionWithStatus, props.dispatch)}
-                  />
-                </li>
-              );
-            },
-          )}
-        </ul>
-      )}
-    </li>
+    <>
+      <li>
+        <button
+          className={styles.roundVisibleToggle}
+          onClick={() => setVisible(!visible)}
+        >
+          Round {props.round} {visible ? '▲' : '▼'}
+        </button>
+        {visible && (
+          <ul className={styles.roundActionList}>
+            {props.actionsWithStatus.map(
+              /* eslint-disable-next-line array-callback-return */
+              (actionWithStatus): JSX.Element => {
+                return (
+                  <li key={actionWithStatus.gameAction.id}>
+                    <Action
+                      {...actionWithStatus}
+                      onClick={(ev) =>
+                        props.onOpen(ev, actionWithStatus.gameAction.id)
+                      }
+                      onDoubleClick={toggle(actionWithStatus, props.dispatch)}
+                    />
+                  </li>
+                );
+              },
+            )}
+          </ul>
+        )}
+      </li>
+    </>
   );
 }
 
@@ -155,6 +150,35 @@ export default function Actions(props: Props) {
 
     return () => window.removeEventListener('click', handler);
   });
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
+    null,
+  );
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
+    null,
+  );
+  overlayRef.current = popperElement;
+  const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
+  const popper = usePopper(referenceElement, popperElement, {
+    placement: 'bottom-end',
+    modifiers: [
+      {
+        name: 'flip',
+        options: {
+          fallbackPlacements: [
+            'bottom',
+            'bottom-start',
+            'top-end',
+            'top',
+            'top-start',
+            'right',
+          ],
+        },
+      },
+      { name: 'preventOverflow' },
+      { name: 'arrow', options: { element: arrowElement } },
+    ],
+  });
+
   const selectedAction =
     selectedActionId &&
     props.availableGameActions.find(
@@ -171,7 +195,10 @@ export default function Actions(props: Props) {
             const round = props.currentRound - i;
             return (
               <RoundActions
-                setSelectedAction={setSelectedAction}
+                onOpen={(elm, actionId) => {
+                  setReferenceElement(elm);
+                  setSelectedAction(actionId);
+                }}
                 dispatch={props.dispatch}
                 key={round}
                 initialVisible={round === props.currentRound}
@@ -183,33 +210,42 @@ export default function Actions(props: Props) {
             );
           })}
       </ul>
-      {props.overlay.current &&
-        createPortal(
-          selectedAction ? (
-            <>
-              <div className={styles.overlayWrap}>
-                <Content>
-                  <div className={styles.overlay} ref={overlayRef}>
-                    <h3>{selectedAction.gameAction.name}</h3>
-                    <p>{selectedAction.gameAction.description}</p>
-                    <p>
-                      <b>Cost</b>: {selectedAction.gameAction.cost}
-                    </p>
-                    <Button
-                      primary={selectedAction.status.type === 'AVAILABLE'}
-                      onClick={toggle(selectedAction, props.dispatch)}
-                    >
-                      {selectedAction.status.type === 'SELECTED'
-                        ? 'Remove'
-                        : 'Select'}
-                    </Button>
-                  </div>
-                </Content>
-              </div>
-            </>
-          ) : null,
-          props.overlay.current,
-        )}
+      {selectedAction && (
+        <div
+          data-popper-placement={popper.state?.placement}
+          ref={setPopperElement}
+          className={styles.overlay}
+          style={popper.styles.popper}
+          {...popper.attributes}
+        >
+          <div
+            ref={setArrowElement}
+            style={popper.styles.arrow}
+            className={styles.arrow}
+          />
+          <div className={styles.overlayInner}>
+            <button
+              className={styles.closeOverlay}
+              onClick={() => setSelectedAction(undefined)}
+            >
+              ╳
+            </button>
+            <h3 className={styles.overlayTitle}>
+              {selectedAction.gameAction.name}
+            </h3>
+            <p>{selectedAction.gameAction.description}</p>
+            <p>
+              <b>Cost</b>: {selectedAction.gameAction.cost}
+            </p>
+            <Button
+              primary={selectedAction.status.type === 'AVAILABLE'}
+              onClick={toggle(selectedAction, props.dispatch)}
+            >
+              {selectedAction.status.type === 'SELECTED' ? 'Remove' : 'Select'}
+            </Button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
