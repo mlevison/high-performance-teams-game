@@ -83,13 +83,17 @@ function toggle(
   dispatch: GameDispatch,
 ) {
   return () => {
-    dispatch({
-      type:
-        actionWithStatus.status.type === 'SELECTED'
-          ? 'UNSELECT_GAME_ACTION'
-          : 'SELECT_GAME_ACTION',
-      payload: actionWithStatus.gameAction.id,
-    });
+    dispatch(
+      actionWithStatus.status.type === 'SELECTED'
+        ? {
+            type: 'UNSELECT_GAME_ACTION',
+            payload: actionWithStatus.gameAction.id,
+          }
+        : {
+            type: 'SELECT_GAME_ACTION',
+            payload: actionWithStatus.gameAction.id,
+          },
+    );
   };
 }
 
