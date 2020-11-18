@@ -12,16 +12,23 @@ export type GameActionId =
   | 'GAME_ACTION_UNIT_TESTING'
   | 'GAME_ACTION_INFORMAL_CROSS_TRAINING'
   | 'GAME_ACTION_FORMAL_CROSS_TRAINING'
-  | 'PROTECTED_FROM_OUTSIDE_DISTRACTION'
-  | 'WORKING_AGREEMENTS'
-  | 'ELIMINATE_LONG_LIVED_FEATURE_BRANCHES';
+  | 'GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION'
+  | 'GAME_ACTION_WORKING_AGREEMENTS'
+  | 'GAME_ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES'
+  | 'GAME_ACTION_SOCIAL_TIME'
+  | 'GAME_ACTION_FIRE_FIGHTER_AWARD'
+  | 'GAME_ACTION_OBSERVE_PEOPLE_AND_RELATIONSHIPS'
+  | 'GAME_ACTION_ONE_ON_ONES'
+  | 'GAME_ACTION_PAIR_PROGRAMMING'
+  | 'GAME_ACTION_TEST_DRIVEN_DEVELOPMENT';
 
 export const gameActionList: GameActionList = {
-  PROTECTED_FROM_OUTSIDE_DISTRACTION: {
+  GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION: {
     image: 'https://placekitten.com/100/100',
     name: 'Protected from Outside Distraction',
     available: { round: 1 },
-    description: 'ScrumMaster protects the team from outside distraction',
+    description:
+      'ScrumMaster protects the team from outside distraction. Example: A manager asking a team member to do them a small favour as it will only take an hour.',
     cost: 1,
     effect: hasNoEffect,
   },
@@ -34,25 +41,14 @@ export const gameActionList: GameActionList = {
     cost: 1,
     effect: () => ({ capacity: 1 }),
   },
-  WORKING_AGREEMENTS: {
+  GAME_ACTION_WORKING_AGREEMENTS: {
     image: example,
     name: 'Working Agreements',
     available: { round: 1 },
-    description: 'Create Team Working Agreements',
+    description:
+      'Working Agreements are a simple, powerful way of creating explicit guidelines for what kind of work culture you want for your Team. They are a reminder for everyone about how they can commit to respectful behaviour and communication',
     cost: 1,
     effect: () => ({ capacity: 1 }),
-  },
-  ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
-    image: example,
-    type: 'ENGINEERING',
-    name: 'All Work is done on Main or Trunk',
-    available: { round: 1 },
-    description:
-      'When teams use Feature Branches – then they’re not really using Continuous integration. Feature branching optimizes for the individual while harming the Team',
-    cost: 2,
-    effect: () => ({
-      capacity: 1,
-    }),
   },
   GAME_ACTION_BUILD_SERVER: {
     image: example,
@@ -86,6 +82,17 @@ export const gameActionList: GameActionList = {
       };
     },
   },
+  // Round 2 Actions
+  GAME_ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
+    image: example,
+    type: 'ENGINEERING',
+    name: 'All Work is done on Main or Trunk',
+    available: { round: 2 },
+    description:
+      'When teams use Feature Branches – then they’re not really using Continuous integration. Feature branching optimizes for the individual while harming the Team',
+    cost: 2,
+    effect: () => ({ capacity: 1 }),
+  },
   GAME_ACTION_UNIT_TESTING: {
     image: example,
     type: 'ENGINEERING',
@@ -94,6 +101,84 @@ export const gameActionList: GameActionList = {
     description: 'TODO: SOME DESCRIPTION',
     cost: 2,
     effect: () => ({ capacity: 2 }),
+  },
+  GAME_ACTION_SOCIAL_TIME: {
+    image: example,
+    // type: 'COMMUNICATION',
+    name: 'Social Time',
+    available: { round: 2 },
+    description:
+      'Setting aside some time during the working day to talk to your peers outside of the work itself.',
+    cost: 1,
+    effect: () => ({
+      capacity: 1,
+      title:
+        'This benefits the team, as team members get to know each other not just as doers of work.',
+    }),
+  },
+  GAME_ACTION_FIRE_FIGHTER_AWARD: {
+    image: example,
+    name: 'Fire Fighter Award',
+    available: { round: 2 },
+    description:
+      'Offer a firefighter award to any team member who solves big problem',
+    cost: 1,
+    effect: () => ({
+      capacity: -1,
+      title:
+        'Promoting a firefighter culture promotes individual behavior and, surprisingly, the starting of fires.',
+    }),
+  },
+
+  // Round 3
+  GAME_ACTION_OBSERVE_PEOPLE_AND_RELATIONSHIPS: {
+    image: example,
+    // type: 'COMMUNICATION',
+    name: 'Observe People + Relationships',
+    available: { round: 3 },
+    description:
+      'ScrumMaster spends time observing people, how they interact, and the quality of their relationship.',
+    cost: 1,
+    effect: () => ({
+      capacity: 1,
+      title: 'Watching the Team tells you where to put your coaching energy.',
+    }),
+  },
+  GAME_ACTION_ONE_ON_ONES: {
+    image: example,
+    // type: 'COMMUNICATION',
+    name: 'One on One',
+    available: { round: 3 },
+    description:
+      'ScrumMaster meets with all team members for a regular one-on-one. Once ‘Gremlins’ start to popup, this action mitigates the worst of the effects, because you already have a deeper understanding of team member needs.',
+    cost: 1,
+    effect: hasNoEffect,
+  },
+  GAME_ACTION_PAIR_PROGRAMMING: {
+    image: example,
+    type: 'ENGINEERING',
+    name: 'Pair Programming',
+    available: { round: 3 },
+    description: 'Two team members – one computer',
+    cost: 2,
+    effect: () => ({
+      capacity: 2,
+      title:
+        'Team Members working in pairs have a lower defect rate, simpler code and learn from each other.',
+    }),
+  },
+  GAME_ACTION_TEST_DRIVEN_DEVELOPMENT: {
+    image: example,
+    type: 'ENGINEERING',
+    name: 'Test Driven Development',
+    available: { round: 3, requires: 'GAME_ACTION_BUILD_SERVER' },
+    description: 'Writing Unit level Tests before writing the code',
+    cost: 2,
+    effect: () => ({
+      capacity: 2,
+      title:
+        'By writing the tests before the code – the Developer is forced to consider the simplest solution to their problem. Result: Less code; simpler design and fewer defects',
+    }),
   },
   GAME_ACTION_INFORMAL_CROSS_TRAINING: {
     image: example,

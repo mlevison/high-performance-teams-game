@@ -64,7 +64,7 @@ describe('Gremlins', () => {
     it('reduces capacity by 3 for 2 rounds when team is protected by outside distractions', () => {
       const game = getGame();
 
-      game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
+      game.selectAction('GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
       game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(7);
 
@@ -100,7 +100,7 @@ describe('Gremlins', () => {
 
       game.selectAction('GAME_ACTION_INFORMAL_CROSS_TRAINING');
       game.selectAction('GAME_ACTION_FORMAL_CROSS_TRAINING');
-      game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
+      game.selectAction('GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
       game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(9);
 

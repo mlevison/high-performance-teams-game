@@ -52,7 +52,9 @@ export const gremlinList: GremlinList = {
     effect(age, finishedActionIds) {
       if (
         age >= 3 ||
-        (finishedActionIds.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION') &&
+        (finishedActionIds.includes(
+          'GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION',
+        ) &&
           age >= 2)
       ) {
         return null;
