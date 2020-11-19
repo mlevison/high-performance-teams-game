@@ -13,28 +13,34 @@ export default function Overlay(props: Props) {
   const referenceElement = props.referenceElement;
   const onClose = props.onClose;
   const overlayRef = useRef<HTMLDivElement | null>(null);
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
+    null,
+  );
   useEffect(() => {
     const handler = (ev: MouseEvent) => {
-      if (!referenceElement || !ev.target) {
+      if (!popperElement || !ev.target) {
         return;
       }
-      if (!referenceElement.contains(ev.target as any)) {
+      if (!popperElement.contains(ev.target as any)) {
         onClose();
       }
     };
     window.addEventListener('click', handler);
 
     return () => window.removeEventListener('click', handler);
-  }, [referenceElement, onClose]);
+  }, [popperElement, onClose]);
 
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
-    null,
-  );
   overlayRef.current = popperElement;
   const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
   const popper = usePopper(referenceElement, popperElement, {
     placement: 'bottom-end',
     modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 8],
+        },
+      },
       {
         name: 'flip',
         options: {

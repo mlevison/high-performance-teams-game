@@ -101,13 +101,10 @@
   left: -4px;
 }
 .overlay {
-  /* position: relative; */
   max-width: 80%;
   box-shadow: -1px 3px 6px rgba(0, 0, 0, 0.4),
     0 0 0 1px var(--primary-background-color);
   z-index: 10;
-
-  margin: 0.5rem 0;
 }
 .overlayInner {
   position: relative;
