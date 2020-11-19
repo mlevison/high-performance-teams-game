@@ -1,11 +1,12 @@
 import { GameAction } from './types';
 import { GameActionId, gameActions } from './gameActions';
+import { findGameActionById } from './findGameActionById';
 
 export const UNIQUE = Symbol('UNIQUE');
 
 type Times = typeof UNIQUE | number;
 type GameActionStatus =
-  | { type: 'MISSING_DEP'; unmetDependencies: GameActionId[] }
+  | { type: 'MISSING_DEP'; missing: GameAction[] }
   | { type: 'AVAILABLE'; times: Times }
   | { type: 'SELECTED'; times: Times }
   | { type: 'FINISHED' };
@@ -46,7 +47,10 @@ export function getAvailableGameActions(
       if (unmetDependencies.length) {
         return {
           gameAction,
-          status: { type: 'MISSING_DEP', unmetDependencies },
+          status: {
+            type: 'MISSING_DEP',
+            missing: unmetDependencies.map(findGameActionById),
+          },
         };
       }
 
