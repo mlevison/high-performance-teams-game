@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/static/css/main.af0b1951.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/static/js/main.7866fe1f.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/static/js/main.7866fe1f.chunk.js.map",
+    "runtime-main.js": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/static/js/runtime-main.4d6825e8.js",
+    "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/static/js/runtime-main.4d6825e8.js.map",
+    "static/js/2.59c4e31e.chunk.js": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/static/js/2.59c4e31e.chunk.js",
+    "static/js/2.59c4e31e.chunk.js.map": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/static/js/2.59c4e31e.chunk.js.map",
+    "index.html": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/index.html",
+    "static/css/main.af0b1951.chunk.css.map": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/static/css/main.af0b1951.chunk.css.map",
+    "static/js/2.59c4e31e.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/preview/display-missing-dependencies/static/js/2.59c4e31e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4d6825e8.js",
+    "static/js/2.59c4e31e.chunk.js",
+    "static/css/main.af0b1951.chunk.css",
+    "static/js/main.7866fe1f.chunk.js"
+  ]
+}
