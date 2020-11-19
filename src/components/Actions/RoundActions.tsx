@@ -6,8 +6,9 @@ import Action from './Action';
 type Props = {
   round: number;
   initialVisible: boolean;
-  onOpen: (elm: HTMLElement, id: GameActionId) => void;
-  onSelect: (actionWithStatus: GameActionWithStatus) => void;
+  openGameActionId?: GameActionId;
+  onOpen: (open: boolean, id: GameActionId) => void;
+  onSelect: (selected: boolean, actionWithStatus: GameActionId) => void;
   actionsWithStatus: GameActionWithStatus[];
 };
 
@@ -31,12 +32,16 @@ export default function RoundActions(props: Props) {
                   <li key={actionWithStatus.gameAction.id}>
                     <Action
                       {...actionWithStatus}
-                      onClick={(ev) =>
-                        props.onOpen(ev, actionWithStatus.gameAction.id)
+                      isOpen={
+                        props.openGameActionId ===
+                        actionWithStatus.gameAction.id
                       }
-                      onDoubleClick={() => {
-                        props.onSelect(actionWithStatus);
-                      }}
+                      onOpen={(open) =>
+                        props.onOpen(open, actionWithStatus.gameAction.id)
+                      }
+                      onSelect={(selected) =>
+                        props.onSelect(selected, actionWithStatus.gameAction.id)
+                      }
                     />
                   </li>
                 );

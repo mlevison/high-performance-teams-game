@@ -7,31 +7,10 @@ import {
 } from '../../state';
 import styles from './Actions.module.css';
 import RoundActions from './RoundActions';
-import Overlay from './Overlay';
-import { Button } from '../../components';
 
 function onlyRound(number: number) {
   return (actionWithStatus: GameActionWithStatus): boolean =>
     actionWithStatus.gameAction.available.round === number;
-}
-
-function toggle(
-  actionWithStatus: GameActionWithStatus,
-  dispatch: GameDispatch,
-) {
-  return () => {
-    dispatch(
-      actionWithStatus.status.type === 'SELECTED'
-        ? {
-            type: 'UNSELECT_GAME_ACTION',
-            payload: actionWithStatus.gameAction.id,
-          }
-        : {
-            type: 'SELECT_GAME_ACTION',
-            payload: actionWithStatus.gameAction.id,
-          },
-    );
-  };
 }
 
 type Props = {
@@ -42,15 +21,7 @@ type Props = {
 };
 
 export default function Actions(props: Props) {
-  const [selectedActionId, setSelectedAction] = useState<GameActionId>();
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
-    null,
-  );
-  const selectedAction =
-    selectedActionId &&
-    props.availableGameActions.find(
-      (actionWithStatus) => actionWithStatus.gameAction.id === selectedActionId,
-    );
+  const [openActionId, setOpenActionId] = useState<GameActionId>();
 
   return (
     <>
@@ -62,12 +33,22 @@ export default function Actions(props: Props) {
             const round = props.currentRound - i;
             return (
               <RoundActions
-                onOpen={(elm, actionId) => {
-                  setReferenceElement(elm);
-                  setSelectedAction(actionId);
+                onOpen={(open, actionId) => {
+                  setOpenActionId(open ? actionId : undefined);
                 }}
-                onSelect={(actionWithState) =>
-                  toggle(actionWithState, props.dispatch)()
+                openGameActionId={openActionId}
+                onSelect={(selected, actionId) =>
+                  props.dispatch(
+                    selected
+                      ? {
+                          type: 'SELECT_GAME_ACTION',
+                          payload: actionId,
+                        }
+                      : {
+                          type: 'UNSELECT_GAME_ACTION',
+                          payload: actionId,
+                        },
+                  )
                 }
                 key={round}
                 initialVisible={round === props.currentRound}
@@ -79,24 +60,6 @@ export default function Actions(props: Props) {
             );
           })}
       </ul>
-      {selectedAction && (
-        <Overlay
-          referenceElement={referenceElement}
-          title={selectedAction.gameAction.name}
-          onClose={() => setSelectedAction(undefined)}
-        >
-          <p>{selectedAction.gameAction.description}</p>
-          <p>
-            <b>Cost</b>: {selectedAction.gameAction.cost}
-          </p>
-          <Button
-            primary={selectedAction.status.type === 'AVAILABLE'}
-            onClick={toggle(selectedAction, props.dispatch)}
-          >
-            {selectedAction.status.type === 'SELECTED' ? 'Remove' : 'Select'}
-          </Button>
-        </Overlay>
-      )}
     </>
   );
 }

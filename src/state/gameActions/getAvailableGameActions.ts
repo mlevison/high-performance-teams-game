@@ -1,14 +1,18 @@
 import { GameAction } from './types';
 import { GameActionId, gameActions } from './gameActions';
+import { findGameActionById } from './findGameActionById';
 
 export const UNIQUE = Symbol('UNIQUE');
 
 type Times = typeof UNIQUE | number;
-type GameActionStatus =
-  | { type: 'MISSING_DEP'; unmetDependencies: GameActionId[] }
+type GameActionStatus = {
+  dependencies: (GameAction & { missing: boolean })[];
+} & (
+  | { type: 'MISSING_DEP' }
   | { type: 'AVAILABLE'; times: Times }
   | { type: 'SELECTED'; times: Times }
-  | { type: 'FINISHED' };
+  | { type: 'FINISHED' }
+);
 
 function normalizeRequires(
   req: GameAction['available']['requires'],
@@ -38,15 +42,24 @@ export function getAvailableGameActions(
         return null;
       }
 
-      const dependencies = normalizeRequires(gameAction.available.requires);
-      const unmetDependencies = dependencies.filter(
+      const allDependencies = normalizeRequires(gameAction.available.requires);
+      const unmetDependencies = allDependencies.filter(
         (id) => !finishedActionIds.includes(id),
       );
+      const dependencies = allDependencies
+        .map(findGameActionById)
+        .map((gameAction) => ({
+          ...gameAction,
+          missing: unmetDependencies.includes(gameAction.id),
+        }));
 
       if (unmetDependencies.length) {
         return {
           gameAction,
-          status: { type: 'MISSING_DEP', unmetDependencies },
+          status: {
+            type: 'MISSING_DEP',
+            dependencies,
+          },
         };
       }
 
@@ -58,15 +71,15 @@ export function getAvailableGameActions(
       if (times === UNIQUE && finishedActionIds.includes(gameAction.id)) {
         return {
           gameAction,
-          status: { type: 'FINISHED' },
+          status: { type: 'FINISHED', dependencies },
         };
       }
 
       return {
         gameAction,
         status: selectedGameActionIds.includes(gameAction.id)
-          ? { type: 'SELECTED', times }
-          : { type: 'AVAILABLE', times },
+          ? { type: 'SELECTED', times, dependencies }
+          : { type: 'AVAILABLE', times, dependencies },
       };
     })
     .filter((e): e is GameActionWithStatus => e !== null);

@@ -14,6 +14,7 @@
   --light-color: var(--main-color);
   --warning-color: #ffc919;
   --error-color: #f03423;
+  --disabled-color: #aaa;
 }
 
 body {
