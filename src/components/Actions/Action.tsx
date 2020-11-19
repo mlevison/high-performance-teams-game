@@ -22,6 +22,8 @@ export default function Action(props: ActionProps) {
   const clickTimer = useRef<NodeJS.Timeout>();
   const gameAction = props.gameAction;
 
+  const disabled = ['MISSING_DEP', 'FINISHED'].includes(props.status.type);
+
   return (
     <>
       <button
@@ -33,6 +35,9 @@ export default function Action(props: ActionProps) {
           clickTimer.current = setTimeout(() => props.onOpen(true), 300);
         }}
         onDoubleClick={() => {
+          if (disabled) {
+            return;
+          }
           if (clickTimer.current) {
             clearTimeout(clickTimer.current);
           }
@@ -40,10 +45,11 @@ export default function Action(props: ActionProps) {
         }}
         className={cx(
           styles.action,
+          disabled && styles.disabled,
+          props.status.type === 'MISSING_DEP' && styles.missingDep,
           ['SELECTED', 'FINISHED'].includes(props.status.type) &&
             styles.actionSelected,
         )}
-        disabled={['MISSING_DEP', 'FINISHED'].includes(props.status.type)}
       >
         {isGameActionWithImage(gameAction) && (
           <span
@@ -63,16 +69,35 @@ export default function Action(props: ActionProps) {
           title={props.gameAction.name}
           onClose={() => props.onOpen(false)}
         >
+          {props.status.dependencies.length ? (
+            <>
+              <h4 className={styles.requiresTitle}>Requires</h4>
+              <ul className={styles.requiresList}>
+                {props.status.dependencies.map((dep) => (
+                  <li key={dep.id}>
+                    {dep.missing ? '❌' : '✅'} {dep.name}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
           <p>{props.gameAction.description}</p>
           <p>
             <b>Cost</b>: {props.gameAction.cost}
           </p>
-          <Button
-            primary={props.status.type === 'AVAILABLE'}
-            onClick={() => props.onSelect(props.status.type === 'AVAILABLE')}
-          >
-            {props.status.type === 'SELECTED' ? 'Remove' : 'Select'}
-          </Button>
+          {!disabled && (
+            <Button
+              primary={props.status.type === 'AVAILABLE'}
+              onClick={() => props.onSelect(props.status.type === 'AVAILABLE')}
+            >
+              {props.status.type === 'SELECTED' ? 'Remove' : 'Select'}
+            </Button>
+          )}
+          {disabled && props.status.type === 'FINISHED' && (
+            <Button primary disabled>
+              Finished
+            </Button>
+          )}
         </Overlay>
       )}
     </>

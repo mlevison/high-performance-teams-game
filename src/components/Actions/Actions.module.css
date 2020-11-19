@@ -39,6 +39,12 @@
   border: none;
   background: none;
 }
+.action.disabled {
+  color: var(--disabled-color);
+}
+.action.missingDep .actionImage {
+  filter: grayscale(100%);
+}
 
 .action:focus {
   z-index: 1;
@@ -57,12 +63,7 @@
   font-size: 3.2rem;
   box-shadow: 0 0 0 1px inset var(--main-color-light);
 }
-.action:disabled .actionImage {
-  filter: grayscale(100%);
-}
-.action:disabled {
-  cursor: default;
-}
+
 .action:disabled.actionSelected .actionImage {
   filter: none;
 }
@@ -134,4 +135,13 @@
   .overlay {
     max-width: calc(40%);
   }
+}
+
+.requiresTitle {
+  margin: 0;
+}
+
+.requiresList {
+  list-style: none;
+  padding: 0;
 }
