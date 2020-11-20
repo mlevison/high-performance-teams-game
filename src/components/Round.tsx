@@ -92,8 +92,10 @@ export default function Round(props: Props) {
       )}
       {view === 'results' && (
         <>
+          <p>What is the chance that each User Story will successfully be built?</p>
+          <h3>Calculation</h3>
           <ul className={styles.userStoryChanceList}>
-            <li>&nbsp;&nbsp; {STORY_SUCCEEDS_BASE}% base chance</li>
+            <li>&nbsp;&nbsp;&nbsp;{STORY_SUCCEEDS_BASE}% base chance</li>
             {userStoryEffects.map((effect) => (
               <li key={effect.title}>
                 {effect.userStoryChance > 0 ? '+' : '-'}{' '}

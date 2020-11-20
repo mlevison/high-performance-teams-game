@@ -11,9 +11,5 @@ export const round5: RoundDescription<Round5ActionId> = {
       they're finding bugs. We will have to do deal with those bugs this Sprint.
     </p>
   ),
-  effect: () => ({
-    capacity: 4,
-    title: 'Management is paying overtime',
-  }),
   actions: {},
 };
