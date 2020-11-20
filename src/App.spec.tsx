@@ -37,6 +37,7 @@ describe('App UI', () => {
       jest.fn(),
     ]);
     render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /play/i }));
 
     expect(
       screen.getByRole('heading', { name: /Round 3 of 6/i }),
@@ -52,6 +53,7 @@ describe('App UI', () => {
       closeRoundSpy,
     ]);
     render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /play/i }));
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
     expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
     const closedRound: ClosedRound = {
@@ -102,6 +104,7 @@ describe('App UI', () => {
       jest.fn(),
     ]);
     render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /play/i }));
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
     fireEvent.doubleClick(screen.getByRole('button', { name: /My Action/i }));
 

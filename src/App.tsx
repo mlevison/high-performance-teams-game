@@ -15,7 +15,7 @@ import {
 
 export default function App() {
   const [state, dispatch, closeRound] = useAppState();
-  const [tab, setTab] = useState<'play' | 'rules'>('play');
+  const [tab, setTab] = useState<'play' | 'rules'>('rules');
   const overlayRef = useRef<HTMLDivElement | null>(null);
 
   return (
