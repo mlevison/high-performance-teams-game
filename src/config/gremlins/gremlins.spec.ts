@@ -5,8 +5,8 @@ import { rollGremlin } from '../../state/gremlins';
 jest.mock('../../state/rounds/getRoundEffects', () => ({
   getRoundEffects: () => [{ capacity: 10 }],
 }));
-jest.mock('../../state/effects/effects', () => ({
-  gameEffectList: [],
+jest.mock('../gameEffects', () => ({
+  gameEffects: [],
 }));
 jest.mock('../../state/gameActions/getEffect', () => ({
   getEffect: () => null,
