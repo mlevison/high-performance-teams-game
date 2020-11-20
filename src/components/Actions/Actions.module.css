@@ -42,7 +42,8 @@
 .action.disabled {
   color: var(--disabled-color);
 }
-.action.missingDep .actionImage {
+.action.missingDep .actionImage,
+.action.missingDep .actionIcon {
   filter: grayscale(100%);
 }
 
@@ -68,7 +69,8 @@
   filter: none;
 }
 
-.actionSelected .actionImage {
+.actionSelected .actionImage,
+.actionSelected .actionIcon {
   border-color: var(--primary-background-color);
 }
 
