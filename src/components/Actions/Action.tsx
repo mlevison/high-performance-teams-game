@@ -81,7 +81,7 @@ export default function Action(props: ActionProps) {
               </ul>
             </>
           ) : null}
-          <p>{props.gameAction.description}</p>
+          {props.gameAction.description}
           <p>
             <b>Cost</b>: {props.gameAction.cost}
           </p>
