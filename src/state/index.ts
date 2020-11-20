@@ -5,6 +5,7 @@ import { AppState as AppStateT } from './useAppState';
 import { GameActionWithStatus as GameActionWithStatusT } from './gameActions';
 import { RoundDescription as RoundDescriptionT } from './rounds';
 
+export type { GremlinList } from './gremlins';
 export type RoundDescription<T extends string> = RoundDescriptionT<T>;
 export type ClosedRound = ClosedRoundType;
 export type AppState = AppStateT;
