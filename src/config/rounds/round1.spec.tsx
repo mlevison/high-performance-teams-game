@@ -1,14 +1,13 @@
-import { AppState } from '../../state';
+import type { AppState } from '../../state';
 import { getGame } from '../../lib/testHelpers';
 
 /* disable all other rounds */
-jest.mock('../index', () => ({
+jest.mock('./index', () => ({
   rounds: { 1: require('./round1').round1 },
 }));
-
 /* disable game effect to only tests single actions */
-jest.mock('../../state/effects/effects', () => ({
-  gameEffectList: [],
+jest.mock('../gameEffects', () => ({
+  gameEffects: [],
 }));
 
 describe('round 1', () => {

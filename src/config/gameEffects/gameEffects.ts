@@ -1,7 +1,6 @@
-import { findGameActionById } from '../gameActions';
-import { GameEffect } from './types';
+import { findGameActionById, GameEffect } from '../../state';
 
-export const gameEffectList: GameEffect[] = [
+export const gameEffects: GameEffect[] = [
   function technicalDebtDrag(rounds) {
     let roundsWithoutEngAction = 0;
 
