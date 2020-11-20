@@ -33,7 +33,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       effect: () => ({ capacity: 1 }),
     },
     GAME_ACTION_UNIT_TESTING: {
-      image: example,
+      icon: '🏗',
       type: 'ENGINEERING',
       name: 'Unit Testing',
       available: { requires: 'GAME_ACTION_BUILD_SERVER' },
