@@ -16,6 +16,7 @@ export {
   isGameActionWithImage,
   UNIQUE_ACTION,
 } from './gameActions';
+export { isCapacityEffect, isUserStoryChanceEffect } from './effects';
 export { default as useAppState } from './useAppState';
 export { gameReducer, INITIAL_STATE } from './game';
 export { rollGremlin } from './gremlins';

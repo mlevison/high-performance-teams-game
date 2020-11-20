@@ -1,11 +1,17 @@
+import { sumByProp } from 'lib';
 import React, {
   MutableRefObject,
   ReactElement,
   ReactNode,
   useState,
 } from 'react';
-import { TOTAL_ROUNDS } from '../constants';
-import { AppState, GameDispatch, ClosedRound } from '../state';
+import { TOTAL_ROUNDS, STORY_SUCCEEDS_BASE } from '../constants';
+import {
+  AppState,
+  GameDispatch,
+  ClosedRound,
+  isUserStoryChanceEffect,
+} from '../state';
 import Button from './Button';
 import styles from './Round.module.css';
 
@@ -43,6 +49,10 @@ export default function Round(props: Props) {
   const description = props.currentRound.description ? (
     <div className={styles.description}>{props.currentRound.description}</div>
   ) : null;
+
+  const userStoryEffects = props.currentRound.activeEffects.filter(
+    isUserStoryChanceEffect,
+  );
 
   return (
     <>
@@ -82,6 +92,41 @@ export default function Round(props: Props) {
       )}
       {view === 'results' && (
         <>
+          <ul className={styles.userStoryChanceList}>
+            <li>&nbsp;&nbsp; {STORY_SUCCEEDS_BASE}% base chance</li>
+            {userStoryEffects.map((effect) => (
+              <li key={effect.title}>
+                {effect.userStoryChance > 0 ? '+' : '-'}{' '}
+                {effect.userStoryChance.toString().replace(/^-/, '')}%{' '}
+                {effect.title}
+              </li>
+            ))}
+            <li>
+              ={' '}
+              {STORY_SUCCEEDS_BASE +
+                sumByProp(userStoryEffects, 'userStoryChance')}
+              % chance to successful finish user-story
+            </li>
+            <li>---</li>
+            {!closedRound && (
+              <>
+                <li>
+                  x &nbsp; {props.currentRound.capacity.available} capacity to
+                  spend on user stories
+                </li>
+                <li>&nbsp;</li>
+              </>
+            )}
+            {closedRound && (
+              <>
+                <li>
+                  {props.currentRound.capacity.available} user stories attempted
+                </li>
+                <li>{closedRound.storiesCompleted} user stories completed</li>
+              </>
+            )}
+          </ul>
+
           <ul className={styles.userStoryIcons}>
             {Array(props.currentRound.capacity.available)
               .fill('')
@@ -95,25 +140,6 @@ export default function Round(props: Props) {
                 </li>
               ))}
           </ul>
-          {!closedRound && (
-            <p className={styles.userStoryDescription}>
-              {props.currentRound.capacity.available} capacity to spend on user
-              stories
-              <br />
-              <br />
-            </p>
-          )}
-          {closedRound && (
-            <p className={styles.userStoryDescription}>
-              {props.currentRound.capacity.available} user stories attempted
-              <br />
-              {closedRound.storiesCompleted} user stories completed
-            </p>
-          )}
-          {/* <ul>
-            <li>Attempted {props.currentRound.capacity.available} Stories</li>
-            <li>Completed {view.payload.storiesCompleted} Stories</li>
-          </ul> */}
           <div className={styles.center}>
             <Button
               disabled={!!closedRound}

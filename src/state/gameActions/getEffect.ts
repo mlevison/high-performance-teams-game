@@ -13,8 +13,10 @@ export function getEffect(
     return null;
   }
 
+  const fallbackTitle: Effect['title'] = `${gameAction.name} active`;
+
   return {
-    title: `${gameAction.name} active`,
+    title: fallbackTitle,
     ...effect,
-  };
+  } as Effect;
 }

@@ -1,5 +1,5 @@
 import { Round, ClosedRound, createRound, getEffects } from './round';
-import { Effect, isEffect } from './effects';
+import { Effect, isCapacityEffect, isEffect } from './effects';
 import { concatByProp } from '../lib';
 import { GameActionId, gameEffects } from '../config';
 import { getRoundEffects } from './rounds';
@@ -68,7 +68,7 @@ export function getAllRoundEffects(pastRounds: ClosedRound[]) {
 }
 
 export function getCapacity(effects: Effect[]) {
-  return effects.reduce((capacity, effect) => {
+  return effects.filter(isCapacityEffect).reduce((capacity, effect) => {
     return capacity + effect.capacity;
   }, 0);
 }

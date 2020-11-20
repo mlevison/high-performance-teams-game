@@ -34,10 +34,19 @@
 .userStoryDescription {
   text-align: center;
 }
+.userStoryChanceList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
 @media screen and (min-width: 600px) {
   .row {
     min-width: 50%;
     max-width: 50%;
+  }
+
+  .userStoryChanceList {
+    margin: 0 0 0 34%;
   }
 }

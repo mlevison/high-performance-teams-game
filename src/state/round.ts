@@ -1,12 +1,15 @@
-import { storySucceeds, sumByProp } from '../lib';
+import { sumByProp, storySucceeds, concatByProp } from '../lib';
 import { GameActionId } from '../config';
+import { STORY_SUCCEEDS_BASE } from '../constants';
 import { GameState, getCapacity, getAllRoundEffects } from './game';
 import {
   findGameActionById,
   getCost as getActionCost,
   getEffect as getActionEffect,
+  getEffect,
 } from './gameActions';
 import { getGremlinEffect, GremlinId, rollGremlin } from './gremlins';
+import { isEffect, isUserStoryChanceEffect } from './effects';
 
 export type Round = {
   selectedGameActionIds: GameActionId[];
@@ -47,9 +50,27 @@ export function getCosts(round: Round) {
 }
 
 export function closeRound(state: GameState): ClosedRound {
+  const lastRoundEffects = getAllRoundEffects(state.pastRounds);
   const storiesAttempted =
     getCapacity(getAllRoundEffects(state.pastRounds)) -
     getCosts(state.currentRound);
+
+  const finishedActionIds = concatByProp(
+    state.pastRounds,
+    'selectedGameActionIds',
+  );
+  const thisRoundsActionEffects = state.currentRound.selectedGameActionIds
+    .map((id) => getEffect(id, 0, finishedActionIds))
+    .filter(isEffect);
+
+  const chance =
+    STORY_SUCCEEDS_BASE +
+    sumByProp(
+      lastRoundEffects
+        .concat(thisRoundsActionEffects)
+        .filter(isUserStoryChanceEffect),
+      'userStoryChance',
+    );
 
   return {
     ...state.currentRound,
@@ -57,6 +78,8 @@ export function closeRound(state: GameState): ClosedRound {
     storiesCompleted:
       storiesAttempted <= 0
         ? 0
-        : Array(storiesAttempted).fill('').filter(storySucceeds).length,
+        : Array.from({ length: storiesAttempted }).filter(() =>
+            storySucceeds(chance),
+          ).length,
   };
 }

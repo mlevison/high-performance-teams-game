@@ -1,10 +1,8 @@
 import { ReactNode } from 'react';
 import { GameActionId } from '../../config';
-import { Effect } from '../effects';
+import { EffectDescription, BaseEffect } from '../effects';
 
-type EffectWithOptionalTitle = Omit<Effect, 'title'> & {
-  title?: Effect['title'];
-};
+type EffectWithOptionalTitle = Partial<EffectDescription> & BaseEffect;
 export type AvailabilityCheck = (
   currentRound: number,
   finishedActionIds: GameActionId[],
