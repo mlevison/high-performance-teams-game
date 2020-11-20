@@ -1,14 +1,16 @@
-import { getGame, NextRoundOpts } from '../lib/testHelpers';
-import { rollGremlin } from './gremlins';
+import { getGame, NextRoundOpts } from '../../lib/testHelpers';
+import { rollGremlin } from '../../state/gremlins';
 
 /* Disable round, game and action effects */
-jest.mock('./rounds/getRoundEffects', () => ({
+jest.mock('../../state/rounds/getRoundEffects', () => ({
   getRoundEffects: () => [{ capacity: 10 }],
 }));
-jest.mock('./effects/effects', () => ({
+jest.mock('../../state/effects/effects', () => ({
   gameEffectList: [],
 }));
-jest.mock('./gameActions/getEffect', () => ({ getEffect: () => null }));
+jest.mock('../../state/gameActions/getEffect', () => ({
+  getEffect: () => null,
+}));
 
 describe('Gremlins', () => {
   describe('roll gremlin', () => {
