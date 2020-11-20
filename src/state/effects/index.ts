@@ -1,3 +1,9 @@
-export type { Effect, GameEffect, VisibleEffect } from './types';
+export type {
+  Effect,
+  GameEffect,
+  VisibleEffect,
+  BaseEffect,
+  EffectDescription,
+} from './types';
 
-export { isEffect, isVisibleEffect } from './helpers';
+export * from './helpers';

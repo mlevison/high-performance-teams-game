@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { AppState, startCapacity } from '../state';
+import { AppState, startCapacity, isCapacityEffect } from '../state';
 import styles from './Status.module.css';
 
 type Props = AppState['currentRound'];
@@ -23,7 +23,7 @@ export default function Status(props: Props) {
         {props.activeEffects.length !== 0 && (
           <>
             <li className={styles.title}>Active Effects</li>
-            {props.activeEffects.map((effect) => (
+            {props.activeEffects.filter(isCapacityEffect).map((effect) => (
               <li key={effect.title}>
                 <span className={styles.cap}>
                   <span className={styles.sign}>

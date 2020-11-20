@@ -1,6 +1,12 @@
 import { Dispatch, ReactNode, useReducer } from 'react';
 import { concatByProp, sumByProp } from '../lib';
-import { isVisibleEffect, VisibleEffect } from './effects';
+import {
+  isVisibleEffect,
+  VisibleEffect,
+  BaseEffect,
+  isEffect,
+  isUserStoryChanceEffect,
+} from './effects';
 import {
   Action,
   gameReducer,
@@ -12,6 +18,7 @@ import {
   getAvailableGameActions,
   GameAction,
   findGameActionById,
+  getEffect,
 } from './gameActions';
 import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
 import { GremlinDescription, getGremlin } from './gremlins';
@@ -30,12 +37,13 @@ export type AppState = {
       available: number;
       total: number;
     };
-    activeEffects: VisibleEffect[];
+    activeEffects: VisibleEffect<BaseEffect>[];
   };
   result: {
     storiesCompleted: number;
   };
   pastRounds: {
+    // storiesSucceeded: number;
     number: number;
   }[];
 };
@@ -49,7 +57,17 @@ export default function useAppState(): [
 
   const effects = getAllRoundEffects(state.pastRounds);
   const roundCapacity = getCapacity(effects);
-  const visibleEffects = effects.filter(isVisibleEffect);
+  const finishedActionIds = concatByProp(
+    state.pastRounds,
+    'selectedGameActionIds',
+  );
+  const thisRoundsActionUserStoryEffects = state.currentRound.selectedGameActionIds
+    .map((id) => getEffect(id, 0, finishedActionIds))
+    .filter(isEffect)
+    .filter(isUserStoryChanceEffect);
+  const visibleEffects = effects
+    .concat(thisRoundsActionUserStoryEffects)
+    .filter(isVisibleEffect);
   const costs = getCosts(state.currentRound);
   const capacityAvailable = roundCapacity - costs;
   const currentRoundNumber = state.pastRounds.length + 1;

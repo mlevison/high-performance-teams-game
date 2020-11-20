@@ -33,6 +33,7 @@ export const round1: RoundDescription<Round1ActionId> = {
         </p>
       ),
       cost: 1,
+      effect: () => ({ userStoryChance: 10 }),
     },
     GAME_ACTION_REMOTE_TEAM_AVATARS: {
       icon: '👋',
@@ -63,7 +64,7 @@ export const round1: RoundDescription<Round1ActionId> = {
         </p>
       ),
       cost: 1,
-      effect: () => ({ capacity: 1 }),
+      effect: () => ({ capacity: 1, userStoryChance: 10 }),
     },
     GAME_ACTION_BUILD_SERVER: {
       image: example,
