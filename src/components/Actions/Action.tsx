@@ -88,7 +88,10 @@ export default function Action(props: ActionProps) {
           {!disabled && (
             <Button
               primary={props.status.type === 'AVAILABLE'}
-              onClick={() => props.onSelect(props.status.type === 'AVAILABLE')}
+              onClick={() => {
+                props.onOpen(false);
+                props.onSelect(props.status.type === 'AVAILABLE');
+              }}
             >
               {props.status.type === 'SELECTED' ? 'Remove' : 'Select'}
             </Button>
