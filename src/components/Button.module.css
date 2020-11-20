@@ -5,6 +5,7 @@
   border-radius: 3px;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  line-height: 1;
 }
 .button + .button {
   margin-left: 0.5rem;
