@@ -1,6 +1,6 @@
-import { GameActionId } from './gameActions';
-import { findGameActionById } from './findGameActionById';
+import { GameActionId } from '../../config';
 import { Effect } from '../effects';
+import { findGameActionById } from './findGameActionById';
 
 export function getEffect(
   gameActionId: GameActionId,
@@ -8,7 +8,7 @@ export function getEffect(
   finishedActionIds: GameActionId[],
 ): Effect | null {
   const gameAction = findGameActionById(gameActionId);
-  const effect = gameAction.effect(age, finishedActionIds);
+  const effect = gameAction.effect?.(age, finishedActionIds) || null;
   if (effect === null) {
     return null;
   }

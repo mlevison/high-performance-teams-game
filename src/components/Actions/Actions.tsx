@@ -1,16 +1,12 @@
 import React, { useState, MutableRefObject } from 'react';
-import {
-  GameDispatch,
-  AppState,
-  GameActionId,
-  GameActionWithStatus,
-} from '../../state';
+import { GameActionId } from '../../config';
+import { GameDispatch, AppState, GameActionWithStatus } from '../../state';
 import styles from './Actions.module.css';
 import RoundActions from './RoundActions';
 
 function onlyRound(number: number) {
   return (actionWithStatus: GameActionWithStatus): boolean =>
-    actionWithStatus.gameAction.available.round === number;
+    actionWithStatus.gameAction.round === number;
 }
 
 type Props = {

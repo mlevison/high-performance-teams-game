@@ -1,9 +1,9 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import useAppState from '../state/useAppState';
-import { GameActionId } from '../state/gameActions';
-import { GremlinId } from 'state/gremlins';
+// import type { GameActionId } from '../config/rounds';
+// import { GremlinId } from '../state/gremlins';
 
-export type NextRoundOpts = { gremlinRoll?: GremlinId };
+export type NextRoundOpts = { gremlinRoll?: any };
 
 export function getGame() {
   const wrapper = renderHook(() => useAppState());
@@ -32,7 +32,7 @@ export function getGame() {
         });
       });
     },
-    selectAction: (gameActionId: GameActionId) => {
+    selectAction: (gameActionId: any) => {
       act(() => {
         wrapper.result.current[1]({
           type: 'SELECT_GAME_ACTION',

@@ -2,16 +2,15 @@ import { Dispatch } from 'react';
 import { Action } from './game';
 import { ClosedRound as ClosedRoundType } from './round';
 import { AppState as AppStateT } from './useAppState';
-import {
-  GameActionId as GameActionIdT,
-  GameActionWithStatus as GameActionWithStatusT,
-} from './gameActions';
+import { GameActionWithStatus as GameActionWithStatusT } from './gameActions';
+import { RoundDescription as RoundDescriptionT } from './rounds';
+
+export type RoundDescription<T extends string> = RoundDescriptionT<T>;
 export type ClosedRound = ClosedRoundType;
 export type AppState = AppStateT;
 export type GameDispatch = Dispatch<Action>;
-export type GameActionId = GameActionIdT;
 export type GameActionWithStatus = GameActionWithStatusT;
-export { startCapacity } from './roundDescriptions';
+export { startCapacity } from './rounds';
 export { getCosts, closeRound } from './round';
 export {
   getAvailableGameActions,

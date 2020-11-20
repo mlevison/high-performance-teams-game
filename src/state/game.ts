@@ -1,8 +1,8 @@
 import { Round, ClosedRound, createRound, getEffects } from './round';
 import { Effect, gameEffectList, isEffect } from './effects';
 import { concatByProp } from '../lib';
-import { getRoundDescriptionEffects } from './roundDescriptions';
-import { GameActionId } from './gameActions';
+import { GameActionId } from '../config';
+import { getRoundEffects } from './rounds';
 import { getGremlinRolls } from './gremlins';
 
 export const GAME_STATE = Symbol('GAME_STATE');
@@ -35,9 +35,9 @@ export const INITIAL_STATE: GameState = {
   pastRounds: [],
 };
 
-export function getRoundEffects(pastRounds: ClosedRound[]) {
+export function getAllRoundEffects(pastRounds: ClosedRound[]) {
   const roundAmounts = pastRounds.length;
-  const roundDescriptionEffects = getRoundDescriptionEffects(pastRounds);
+  const roundDescriptionEffects = getRoundEffects(pastRounds);
   if (!pastRounds.length) {
     return roundDescriptionEffects.filter(isEffect);
   }

@@ -1,10 +1,10 @@
-import { Dispatch, ReactElement, useReducer } from 'react';
+import { Dispatch, ReactNode, useReducer } from 'react';
 import { concatByProp, sumByProp } from '../lib';
 import { isVisibleEffect, VisibleEffect } from './effects';
 import {
   Action,
   gameReducer,
-  getRoundEffects,
+  getAllRoundEffects,
   getCapacity,
   INITIAL_STATE,
 } from './game';
@@ -16,7 +16,7 @@ import {
 import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
 import { GremlinDescription, getGremlin } from './gremlins';
 import { ClosedRound, closeRound, getCosts } from './round';
-import { roundDescriptions } from './roundDescriptions';
+import { rounds } from '../config';
 
 export type AppState = {
   availableGameActions: GameActionWithStatus[];
@@ -24,7 +24,7 @@ export type AppState = {
     number: number;
     title?: string;
     gremlin?: GremlinDescription;
-    description?: ReactElement;
+    description?: ReactNode;
     selectedGameActions: GameAction[];
     capacity: {
       available: number;
@@ -47,7 +47,7 @@ export default function useAppState(): [
 ] {
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
 
-  const effects = getRoundEffects(state.pastRounds);
+  const effects = getAllRoundEffects(state.pastRounds);
   const roundCapacity = getCapacity(effects);
   const visibleEffects = effects.filter(isVisibleEffect);
   const costs = getCosts(state.currentRound);
@@ -61,9 +61,8 @@ export default function useAppState(): [
   const selectedGameActions = state.currentRound.selectedGameActionIds.map(
     findGameActionById,
   );
-  const currentRoundTitle = roundDescriptions[currentRoundNumber]?.title;
-  const currentRoundDescription =
-    roundDescriptions[currentRoundNumber]?.description;
+  const currentRoundTitle = rounds[currentRoundNumber]?.title;
+  const currentRoundDescription = rounds[currentRoundNumber]?.description;
   const gremlin = getGremlin(state.pastRounds);
 
   return [

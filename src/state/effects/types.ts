@@ -1,5 +1,5 @@
 import { Round } from '../round';
-export const EFFECT_HIDDEN = Symbol('EFFECT_HIDDEN');
+import { EFFECT_HIDDEN } from '../../constants';
 
 export type VisibleEffect = {
   capacity: number;

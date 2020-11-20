@@ -1,13 +1,20 @@
 import { getGame } from '../lib/testHelpers';
 
-jest.mock('./roundDescriptions/roundDescriptions', () => ({
-  roundDescriptions: {
-    1: {
-      description: null,
-      effect: () => ({ capacity: 10 }),
+jest.mock('../config/rounds', () => {
+  return {
+    rounds: {
+      1: {
+        actions: {
+          GAME_ACTION_BUILD_SERVER: {
+            type: 'ENGINEERING',
+            cost: 2,
+          },
+        },
+        effect: () => ({ capacity: 10 }),
+      },
     },
-  },
-}));
+  };
+});
 
 describe('AppState', () => {
   it('starts with no past rounds', () => {

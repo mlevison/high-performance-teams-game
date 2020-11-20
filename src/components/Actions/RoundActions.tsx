@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { GameActionId, GameActionWithStatus } from '../../state';
+import { GameActionId } from '../../config';
+import { GameActionWithStatus } from '../../state';
 import styles from './Actions.module.css';
 import Action from './Action';
 

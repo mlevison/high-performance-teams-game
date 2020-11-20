@@ -1,5 +1,6 @@
+import { GameActionId } from '../../config';
 import { GameAction } from './types';
-import { GameActionId, gameActions } from './gameActions';
+import { gameActions } from './gameActions';
 import { findGameActionById } from './findGameActionById';
 
 export const UNIQUE = Symbol('UNIQUE');
@@ -14,9 +15,8 @@ type GameActionStatus = {
   | { type: 'FINISHED' }
 );
 
-function normalizeRequires(
-  req: GameAction['available']['requires'],
-): GameActionId[] {
+function getDependencies(gameAction: GameAction): GameActionId[] {
+  const req = gameAction.available?.requires;
   if (!req) {
     return [];
   }
@@ -38,11 +38,11 @@ export function getAvailableGameActions(
 ): GameActionWithStatus[] {
   return gameActions
     .map((gameAction): GameActionWithStatus | null => {
-      if (currentRound < gameAction.available.round) {
+      if (currentRound < gameAction.round) {
         return null;
       }
 
-      const allDependencies = normalizeRequires(gameAction.available.requires);
+      const allDependencies = getDependencies(gameAction);
       const unmetDependencies = allDependencies.filter(
         (id) => !finishedActionIds.includes(id),
       );
@@ -64,7 +64,7 @@ export function getAvailableGameActions(
       }
 
       const times =
-        gameAction.available.unique === false
+        gameAction.available?.unique === false
           ? selectedGameActionIds.filter((id) => id === gameAction.id).length
           : UNIQUE;
 
