@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/static/css/main.6ab9fee5.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/static/js/main.d7bb7b1f.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/static/js/main.d7bb7b1f.chunk.js.map",
+    "runtime-main.js": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/static/js/runtime-main.fea3b003.js",
+    "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/static/js/runtime-main.fea3b003.js.map",
+    "static/js/2.59c4e31e.chunk.js": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/static/js/2.59c4e31e.chunk.js",
+    "static/js/2.59c4e31e.chunk.js.map": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/static/js/2.59c4e31e.chunk.js.map",
+    "index.html": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/index.html",
+    "static/css/main.6ab9fee5.chunk.css.map": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/static/css/main.6ab9fee5.chunk.css.map",
+    "static/js/2.59c4e31e.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/preview/round-actions-back-button/static/js/2.59c4e31e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.fea3b003.js",
+    "static/js/2.59c4e31e.chunk.js",
+    "static/css/main.6ab9fee5.chunk.css",
+    "static/js/main.d7bb7b1f.chunk.js"
+  ]
+}
