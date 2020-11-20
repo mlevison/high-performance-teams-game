@@ -31,30 +31,28 @@ export default function App() {
         </Tabs>
       </Header>
       <Content>
-        {tab === 'play' && (
-          <>
-            {state.currentRound.number > TOTAL_ROUNDS ? (
-              <Results storiesCompleted={state.result.storiesCompleted} />
-            ) : (
-              <Round
-                key={state.currentRound.number}
-                dispatch={dispatch}
-                currentRound={state.currentRound}
-                closeRound={closeRound}
-                overlayRef={overlayRef}
-                row1={
-                  <Actions
-                    overlay={overlayRef}
-                    currentRound={state.currentRound.number}
-                    availableGameActions={state.availableGameActions}
-                    dispatch={dispatch}
-                  />
-                }
-                row2={<Status {...state.currentRound} />}
-              />
-            )}
-          </>
-        )}
+        <div style={{ display: tab === 'play' ? 'block' : 'none' }}>
+          {state.currentRound.number > TOTAL_ROUNDS ? (
+            <Results storiesCompleted={state.result.storiesCompleted} />
+          ) : (
+            <Round
+              key={state.currentRound.number}
+              dispatch={dispatch}
+              currentRound={state.currentRound}
+              closeRound={closeRound}
+              overlayRef={overlayRef}
+              row1={
+                <Actions
+                  overlay={overlayRef}
+                  currentRound={state.currentRound.number}
+                  availableGameActions={state.availableGameActions}
+                  dispatch={dispatch}
+                />
+              }
+              row2={<Status {...state.currentRound} />}
+            />
+          )}
+        </div>
         {tab === 'rules' && <Rules />}
       </Content>
     </>
