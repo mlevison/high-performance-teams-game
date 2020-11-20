@@ -1,7 +1,7 @@
-import { rollDice } from 'lib/rollDice';
 import React, { ReactElement } from 'react';
+import { GameActionId } from '../config';
+import { rollDice } from '../lib/rollDice';
 import { Effect } from './effects';
-import { GameActionId } from './gameActions';
 import { ClosedRound } from './round';
 
 export type GremlinDescription = {

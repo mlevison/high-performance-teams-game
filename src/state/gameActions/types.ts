@@ -1,5 +1,6 @@
+import { ReactNode } from 'react';
+import { GameActionId } from '../../config';
 import { Effect } from '../effects';
-import { GameActionId } from './gameActions';
 
 type EffectWithOptionalTitle = Omit<Effect, 'title'> & {
   title?: Effect['title'];
@@ -22,7 +23,7 @@ type Image = {
 };
 export function isGameActionWithImage(
   action: GameAction,
-): action is GameActionWithId & Image {
+): action is FullGameAction & Image {
   return Object.getOwnPropertyNames(action).includes('image');
 }
 type Icon = {
@@ -34,30 +35,31 @@ type Icon = {
 };
 export function isGameActionWithIcon(
   action: GameAction,
-): action is GameActionWithId & Icon {
+): action is FullGameAction & Icon {
   return Object.getOwnPropertyNames(action).includes('icon');
 }
 type ImageOrIcon = Image | Icon;
 
 type GameActionImplementation = {
   type?: 'ENGINEERING';
-  available: {
-    round: number;
+  available?: {
     requires?: GameActionId[] | GameActionId;
     unique?: false;
   };
-  effect: (
+  effect?: (
     age: number,
     finishedActionIds: GameActionId[],
   ) => EffectWithOptionalTitle | null;
   name: string;
-  description: string;
+  description: ReactNode;
   cost: number;
 };
-type GameActionWithId = GameActionImplementation & { id: GameActionId };
-
-export type GameActionList = {
-  [K in GameActionId]: ImageOrIcon & GameActionImplementation;
+type FullGameAction = GameActionImplementation & {
+  id: GameActionId;
+  round: number;
+};
+export type GameActionList<T extends string> = {
+  [K in T]: ImageOrIcon & GameActionImplementation;
 };
 
-export type GameAction = ImageOrIcon & GameActionWithId;
+export type GameAction = ImageOrIcon & FullGameAction;

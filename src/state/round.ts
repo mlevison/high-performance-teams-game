@@ -1,8 +1,8 @@
 import { storySucceeds, sumByProp } from '../lib';
-import { GameState, getCapacity, getRoundEffects } from './game';
+import { GameActionId } from '../config';
+import { GameState, getCapacity, getAllRoundEffects } from './game';
 import {
   findGameActionById,
-  GameActionId,
   getCost as getActionCost,
   getEffect as getActionEffect,
 } from './gameActions';
@@ -48,7 +48,7 @@ export function getCosts(round: Round) {
 
 export function closeRound(state: GameState): ClosedRound {
   const storiesAttempted =
-    getCapacity(getRoundEffects(state.pastRounds)) -
+    getCapacity(getAllRoundEffects(state.pastRounds)) -
     getCosts(state.currentRound);
 
   return {

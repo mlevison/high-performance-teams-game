@@ -1,4 +1,5 @@
-import { Effect, EFFECT_HIDDEN, VisibleEffect } from './types';
+import { Effect, VisibleEffect } from './types';
+import { EFFECT_HIDDEN } from '../../constants';
 
 export function isEffect(e: Effect | null): e is Effect {
   return e !== null;

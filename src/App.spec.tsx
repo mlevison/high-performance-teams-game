@@ -88,8 +88,8 @@ describe('App UI', () => {
           {
             status: { type: 'AVAILABLE', times: UNIQUE_ACTION },
             gameAction: {
-              id: 'MY_ACTION_ID' as any,
-              available: { round: 1 },
+              id: 'MY_ACTION_ID',
+              round: 1,
               name: 'My Action',
               effect: () => null,
               description: '',
