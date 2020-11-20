@@ -1,5 +1,6 @@
-import { storySucceeds, sumByProp } from '../lib';
+import { sumByProp, storySucceeds } from '../lib';
 import { GameActionId } from '../config';
+import { STORY_SUCCEEDS_BASE } from '../constants';
 import { GameState, getCapacity, getAllRoundEffects } from './game';
 import {
   findGameActionById,
@@ -57,6 +58,8 @@ export function closeRound(state: GameState): ClosedRound {
     storiesCompleted:
       storiesAttempted <= 0
         ? 0
-        : Array(storiesAttempted).fill('').filter(storySucceeds).length,
+        : Array.from({ length: storiesAttempted }).filter(() =>
+            storySucceeds(STORY_SUCCEEDS_BASE),
+          ).length,
   };
 }

@@ -1,5 +1,5 @@
-import { rollDice } from './rollDice';
+import { random } from './random';
 
-export function storySucceeds() {
-  return rollDice() >= 3;
+export function storySucceeds(chance: number) {
+  return random() * 100 < chance;
 }

@@ -19,6 +19,9 @@ export function getGame() {
         )
         .map((actionWithStatus) => actionWithStatus.gameAction.id);
     },
+    closeRound: () => {
+      return wrapper.result.current[2]();
+    },
     nextRound: (opts?: NextRoundOpts) => {
       const closedRound = {
         ...wrapper.result.current[2](),
