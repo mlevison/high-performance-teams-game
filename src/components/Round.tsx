@@ -20,19 +20,12 @@ type Props = {
 
 function Actions(props: {
   onNext: () => void;
-  description: ReactNode;
+  onBack: () => void;
   children: ReactNode;
 }) {
-  const [showDescription, setShowDescription] = useState(false);
-
   return (
     <>
-      {props.description && showDescription && props.description}
-      {props.description && (
-        <Button onClick={() => setShowDescription(!showDescription)}>
-          {showDescription ? 'Hide' : 'Show'} Description
-        </Button>
-      )}
+      <Button onClick={props.onBack}>◀ Back</Button>
       <Button primary onClick={props.onNext}>
         Complete Round
       </Button>
@@ -76,7 +69,10 @@ export default function Round(props: Props) {
         </>
       )}
       {view === 'actions' && (
-        <Actions onNext={() => setView('results')} description={description}>
+        <Actions
+          onNext={() => setView('results')}
+          onBack={() => setView('welcome')}
+        >
           <div ref={props.overlayRef} />
           <div className={styles.rows}>
             <div className={styles.row}>{props.row1}</div>
