@@ -39,7 +39,7 @@ export function isGameActionWithIcon(
 type ImageOrIcon = Image | Icon;
 
 type GameActionImplementation = {
-  type?: 'ENGINEERING';
+  type?: 'ENGINEERING' | 'COMMUNICATION';
   available?: {
     requires?: GameActionId[] | GameActionId;
     unique?: false;

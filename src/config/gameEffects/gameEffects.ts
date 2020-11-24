@@ -31,4 +31,34 @@ export const gameEffects: GameEffect[] = [
       }`,
     };
   },
+  function communicationDebtDrag(rounds) {
+    let roundsWithoutCommunicationAction = 0;
+
+    for (const round of rounds) {
+      const roundsGameActions = round.selectedGameActionIds.map(
+        findGameActionById,
+      );
+      const communicationAction = roundsGameActions.find(
+        ({ type }) => type === 'COMMUNICATION',
+      );
+
+      if (communicationAction) {
+        break;
+      }
+
+      roundsWithoutCommunicationAction += 1;
+    }
+
+    if (roundsWithoutCommunicationAction === 0) {
+      return null;
+    }
+
+    return {
+      capacity: -roundsWithoutCommunicationAction,
+      title: 'Communication Drag Effect Title',
+      description: `No Communication improvement for ${roundsWithoutCommunicationAction} round${
+        roundsWithoutCommunicationAction > 1 ? 's' : ''
+      }`,
+    };
+  },
 ];
