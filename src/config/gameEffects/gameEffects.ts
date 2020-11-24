@@ -25,7 +25,7 @@ export const gameEffects: GameEffect[] = [
 
     return {
       capacity: -roundsWithoutEngAction,
-      title: 'TODO: TechnicalDebt Drag Effect Title',
+      title: 'TechnicalDebt Drag Effect Title',
       description: `No Engineering improvement for ${roundsWithoutEngAction} round${
         roundsWithoutEngAction > 1 ? 's' : ''
       }`,
