@@ -75,29 +75,4 @@ describe('round 4', () => {
       );
     });
   });
-
-  /* Since Actions now live inside their respective rounds this test is no longer particularly meaningful */
-  describe('actions', () => {
-    describe('Informal Cross Training', () => {
-      it('is only available from round 4 on', () => {
-        const game = getGame();
-
-        expect(game.availableActionIds).not.toContain(
-          'GAME_ACTION_INFORMAL_CROSS_TRAINING',
-        );
-        game.nextRound();
-        expect(game.availableActionIds).not.toContain(
-          'GAME_ACTION_INFORMAL_CROSS_TRAINING',
-        );
-        game.nextRound();
-        expect(game.availableActionIds).not.toContain(
-          'GAME_ACTION_INFORMAL_CROSS_TRAINING',
-        );
-        game.nextRound();
-        expect(game.availableActionIds).toContain(
-          'GAME_ACTION_INFORMAL_CROSS_TRAINING',
-        );
-      });
-    });
-  });
 });
