@@ -46,6 +46,9 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.nextRound(NEXT_ROUND_OPTS);
+
+      // TODO - Hannes - Can't tell what property to access to assert that the name is what I expect
+
       expect(game.state.currentRound.capacity.available).toBe(7);
 
       game.nextRound();
@@ -108,6 +111,36 @@ describe('Gremlins', () => {
       expect(game.state.currentRound.capacity.available).toBe(10);
 
       game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(10);
+    });
+  });
+
+  describe('Management yells at a team member', () => {
+    const MANAGEMENT_YELLS_GREMLIN: NextRoundOpts = { gremlinRoll: 3 };
+    it('reduces capacity by 2 ', () => {
+      const game = getGame();
+
+      game.nextRound(MANAGEMENT_YELLS_GREMLIN);
+
+      // TODO Again how to test on the name?
+
+      expect(game.state.currentRound.capacity.available).toBe(8);
+
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(8);
+
+      // It never goes away by itself
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(8);
+    });
+
+    it('has no effect on capacity when team is protected by outside distractions', () => {
+      const game = getGame();
+
+      game.selectAction('GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
+      game.nextRound(MANAGEMENT_YELLS_GREMLIN);
       expect(game.state.currentRound.capacity.available).toBe(10);
     });
   });

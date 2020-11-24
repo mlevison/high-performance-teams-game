@@ -3,6 +3,7 @@ import useAppState from '../state/useAppState';
 import type { GameActionId } from '../config/rounds';
 import { GremlinId } from '../state/gremlins';
 
+// TODO Hannes confused as to my this called NextRoundOpts
 export type NextRoundOpts = { gremlinRoll?: GremlinId };
 
 export function getGame() {
