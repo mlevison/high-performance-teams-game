@@ -14,6 +14,11 @@ export default function Rules() {
         things that affect the relationships between team members, and therefore
         the overall cohesion and productivity of the team.
       </p>
+      <p>
+        Each web browser gets its own copy of the game. So you can play by
+        yourself. However the game is intended to foster a conversation among
+        team members.
+      </p>
       <h2>Rules</h2>
       <ul>
         <li>Rounds represent 6 weeks or 3 Sprints in the life of your team</li>
