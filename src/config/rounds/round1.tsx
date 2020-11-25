@@ -4,11 +4,11 @@ import { EFFECT_HIDDEN } from '../../constants';
 import example from './images/example.jpg';
 
 export type Round1ActionId =
-  | 'GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION'
-  | 'GAME_ACTION_REMOTE_TEAM_AVATARS'
-  | 'GAME_ACTION_WORKING_AGREEMENTS'
-  | 'GAME_ACTION_BUILD_SERVER'
-  | 'GAME_ACTION_TEAMS_ON_SAME_FLOOR';
+  | 'ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION'
+  | 'ACTION_REMOTE_TEAM_AVATARS'
+  | 'ACTION_WORKING_AGREEMENTS'
+  | 'ACTION_BUILD_SERVER'
+  | 'ACTION_TEAMS_ON_SAME_FLOOR';
 
 export const round1: RoundDescription<Round1ActionId> = {
   title: 'Team, welcome to the World’s Smallest Online Bookstore',
@@ -22,7 +22,7 @@ export const round1: RoundDescription<Round1ActionId> = {
   ),
   effect: () => ({ capacity: 10, title: EFFECT_HIDDEN }),
   actions: {
-    GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION: {
+    ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION: {
       image: 'https://placekitten.com/100/100',
       name: 'Protected from Outside Distraction',
       description: (
@@ -35,7 +35,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       cost: 1,
       effect: () => ({ userStoryChance: 10 }),
     },
-    GAME_ACTION_REMOTE_TEAM_AVATARS: {
+    ACTION_REMOTE_TEAM_AVATARS: {
       icon: '👋',
       name: 'Remote Team Avatars',
       description: (
@@ -52,7 +52,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       cost: 1,
       effect: () => ({ capacity: 1 }),
     },
-    GAME_ACTION_WORKING_AGREEMENTS: {
+    ACTION_WORKING_AGREEMENTS: {
       image: example,
       type: 'COMMUNICATION',
       name: 'Working Agreements',
@@ -67,7 +67,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       cost: 1,
       effect: () => ({ capacity: 1, userStoryChance: 10 }),
     },
-    GAME_ACTION_BUILD_SERVER: {
+    ACTION_BUILD_SERVER: {
       image: example,
       type: 'ENGINEERING',
       name: 'Build Server',
@@ -79,7 +79,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       ),
       cost: 2,
     },
-    GAME_ACTION_TEAMS_ON_SAME_FLOOR: {
+    ACTION_TEAMS_ON_SAME_FLOOR: {
       image: example,
       name: 'Team Members On SameFloor',
       type: 'COMMUNICATION',

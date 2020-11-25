@@ -44,7 +44,7 @@ describe('round 1', () => {
         addRolls(Array(100).fill(0));
         const game = getGame();
 
-        game.selectAction('GAME_ACTION_TEAMS_ON_SAME_FLOOR');
+        game.selectAction('ACTION_TEAMS_ON_SAME_FLOOR');
         game.nextRound();
 
         expect(game.state.currentRound.number).toEqual(2);
@@ -65,7 +65,7 @@ describe('round 1', () => {
       it('increases the chance user-stories succeed', () => {
         const game = getGame();
 
-        game.selectAction('GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
+        game.selectAction('ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
 
         addRolls(Array(game.state.currentRound.capacity.available).fill(0.39));
         game.nextRound();

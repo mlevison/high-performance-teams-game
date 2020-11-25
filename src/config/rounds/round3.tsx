@@ -3,10 +3,10 @@ import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
 export type Round3ActionId =
-  | 'GAME_ACTION_OBSERVE_PEOPLE_AND_RELATIONSHIPS'
-  | 'GAME_ACTION_ONE_ON_ONES'
-  | 'GAME_ACTION_PAIR_PROGRAMMING'
-  | 'GAME_ACTION_TEST_DRIVEN_DEVELOPMENT';
+  | 'ACTION_OBSERVE_PEOPLE_AND_RELATIONSHIPS'
+  | 'ACTION_ONE_ON_ONES'
+  | 'ACTION_PAIR_PROGRAMMING'
+  | 'ACTION_TEST_DRIVEN_DEVELOPMENT';
 
 export const round3: RoundDescription<Round3ActionId> = {
   title: 'Work Harder',
@@ -17,7 +17,7 @@ export const round3: RoundDescription<Round3ActionId> = {
     </p>
   ),
   actions: {
-    GAME_ACTION_OBSERVE_PEOPLE_AND_RELATIONSHIPS: {
+    ACTION_OBSERVE_PEOPLE_AND_RELATIONSHIPS: {
       image: example,
       // type: 'COMMUNICATION',
       name: 'Observe People + Relationships',
@@ -33,7 +33,7 @@ export const round3: RoundDescription<Round3ActionId> = {
         title: 'Watching the Team tells you where to put your coaching energy.',
       }),
     },
-    GAME_ACTION_ONE_ON_ONES: {
+    ACTION_ONE_ON_ONES: {
       image: example,
       // type: 'COMMUNICATION',
       name: 'One on One',
@@ -47,7 +47,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       ),
       cost: 1,
     },
-    GAME_ACTION_PAIR_PROGRAMMING: {
+    ACTION_PAIR_PROGRAMMING: {
       image: example,
       type: 'ENGINEERING',
       name: 'Pair Programming',
@@ -59,11 +59,11 @@ export const round3: RoundDescription<Round3ActionId> = {
           'Team Members working in pairs have a lower defect rate, simpler code and learn from each other.',
       }),
     },
-    GAME_ACTION_TEST_DRIVEN_DEVELOPMENT: {
+    ACTION_TEST_DRIVEN_DEVELOPMENT: {
       image: example,
       type: 'ENGINEERING',
       name: 'Test Driven Development',
-      available: { requires: 'GAME_ACTION_BUILD_SERVER' },
+      available: { requires: 'ACTION_BUILD_SERVER' },
       description: <p>Writing Unit level Tests before writing the code</p>,
       cost: 2,
       effect: () => ({

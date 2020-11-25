@@ -8,11 +8,11 @@ jest.mock('../rounds', () => {
     rounds: {
       1: {
         actions: {
-          GAME_ACTION_BUILD_SERVER: {
+          ACTION_BUILD_SERVER: {
             type: 'ENGINEERING',
             cost: 2,
           },
-          GAME_ACTION_WORKING_AGREEMENTS: {
+          ACTION_WORKING_AGREEMENTS: {
             type: 'COMMUNICATION',
             cost: 2,
           },
@@ -63,7 +63,7 @@ describe('game effects', () => {
       expect(game.state.currentRound.number).toEqual(2);
       expect(game.state.currentRound.capacity.total).toEqual(9);
 
-      game.selectAction('GAME_ACTION_BUILD_SERVER');
+      game.selectAction('ACTION_BUILD_SERVER');
       expect(game.state.currentRound.capacity.available).toEqual(7);
 
       game.nextRound();
@@ -112,7 +112,7 @@ describe('game effects', () => {
       expect(game.state.currentRound.number).toEqual(2);
       expect(game.state.currentRound.capacity.total).toEqual(9);
 
-      game.selectAction('GAME_ACTION_WORKING_AGREEMENTS');
+      game.selectAction('ACTION_WORKING_AGREEMENTS');
       expect(game.state.currentRound.capacity.available).toEqual(7);
 
       game.nextRound();

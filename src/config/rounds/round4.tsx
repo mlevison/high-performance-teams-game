@@ -3,8 +3,8 @@ import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
 export type Round4ActionId =
-  | 'GAME_ACTION_INFORMAL_CROSS_TRAINING'
-  | 'GAME_ACTION_FORMAL_CROSS_TRAINING';
+  | 'ACTION_INFORMAL_CROSS_TRAINING'
+  | 'ACTION_FORMAL_CROSS_TRAINING';
 
 export const round4: RoundDescription<Round4ActionId> = {
   title: 'Go Live Soon',
@@ -27,7 +27,7 @@ export const round4: RoundDescription<Round4ActionId> = {
     return null;
   },
   actions: {
-    GAME_ACTION_INFORMAL_CROSS_TRAINING: {
+    ACTION_INFORMAL_CROSS_TRAINING: {
       image: example,
       name: 'Informal Cross Training',
       description:
@@ -37,7 +37,7 @@ export const round4: RoundDescription<Round4ActionId> = {
         capacity: 1,
       }),
     },
-    GAME_ACTION_FORMAL_CROSS_TRAINING: {
+    ACTION_FORMAL_CROSS_TRAINING: {
       image: example,
       name: 'Formal Cross-Training',
       description:

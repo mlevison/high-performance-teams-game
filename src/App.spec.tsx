@@ -135,7 +135,7 @@ describe('App UI', () => {
               dependencies: [],
             },
             gameAction: {
-              id: 'GAME_ACTION_BUILD_SERVER',
+              id: 'ACTION_BUILD_SERVER',
               icon: '',
               round: 1,
               name: 'My Action',

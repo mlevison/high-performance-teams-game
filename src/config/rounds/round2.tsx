@@ -3,10 +3,10 @@ import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
 export type Round2ActionId =
-  | 'GAME_ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES'
-  | 'GAME_ACTION_UNIT_TESTING'
-  | 'GAME_ACTION_SOCIAL_TIME'
-  | 'GAME_ACTION_FIRE_FIGHTER_AWARD';
+  | 'ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES'
+  | 'ACTION_UNIT_TESTING'
+  | 'ACTION_SOCIAL_TIME'
+  | 'ACTION_FIRE_FIGHTER_AWARD';
 
 export const round2: RoundDescription<Round2ActionId> = {
   title: 'Failed Expectations',
@@ -18,7 +18,7 @@ export const round2: RoundDescription<Round2ActionId> = {
     </p>
   ),
   actions: {
-    GAME_ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
+    ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
       image: example,
       type: 'ENGINEERING',
       name: 'All Work is done on Main or Trunk',
@@ -32,16 +32,16 @@ export const round2: RoundDescription<Round2ActionId> = {
       cost: 2,
       effect: () => ({ capacity: 1 }),
     },
-    GAME_ACTION_UNIT_TESTING: {
+    ACTION_UNIT_TESTING: {
       icon: '🏗',
       type: 'ENGINEERING',
       name: 'Unit Testing',
-      available: { requires: 'GAME_ACTION_BUILD_SERVER' },
+      available: { requires: 'ACTION_BUILD_SERVER' },
       description: <p>TODO: SOME DESCRIPTION</p>,
       cost: 2,
       effect: () => ({ capacity: 2 }),
     },
-    GAME_ACTION_SOCIAL_TIME: {
+    ACTION_SOCIAL_TIME: {
       image: example,
       // type: 'COMMUNICATION',
       name: 'Social Time',
@@ -58,7 +58,7 @@ export const round2: RoundDescription<Round2ActionId> = {
           'This benefits the team, as team members get to know each other not just as doers of work.',
       }),
     },
-    GAME_ACTION_FIRE_FIGHTER_AWARD: {
+    ACTION_FIRE_FIGHTER_AWARD: {
       image: example,
       name: 'Fire Fighter Award',
       description: (

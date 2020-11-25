@@ -64,7 +64,7 @@ describe('Gremlins', () => {
     it('reduces capacity by 3 for 2 rounds when team is protected by outside distractions', () => {
       const game = getGame();
 
-      game.selectAction('GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
+      game.selectAction('ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
       game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(7);
 
@@ -81,7 +81,7 @@ describe('Gremlins', () => {
     it('reduces capacity by 2 for 3 rounds when team had informal cross training', () => {
       const game = getGame();
 
-      game.selectAction('GAME_ACTION_INFORMAL_CROSS_TRAINING');
+      game.selectAction('ACTION_INFORMAL_CROSS_TRAINING');
       game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(8);
 
@@ -98,9 +98,9 @@ describe('Gremlins', () => {
     it('reduces capacity by 1 for 2 rounds when team has all protective actions', () => {
       const game = getGame();
 
-      game.selectAction('GAME_ACTION_INFORMAL_CROSS_TRAINING');
-      game.selectAction('GAME_ACTION_FORMAL_CROSS_TRAINING');
-      game.selectAction('GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
+      game.selectAction('ACTION_INFORMAL_CROSS_TRAINING');
+      game.selectAction('ACTION_FORMAL_CROSS_TRAINING');
+      game.selectAction('ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
       game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(9);
 
@@ -139,7 +139,7 @@ describe('Gremlins', () => {
     it('has no effect on capacity when team is protected by outside distractions', () => {
       const game = getGame();
 
-      game.selectAction('GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
+      game.selectAction('ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
       game.nextRound(MANAGEMENT_YELLS_GREMLIN);
       expect(game.state.currentRound.capacity.available).toBe(10);
     });
@@ -169,7 +169,7 @@ describe('Gremlins', () => {
     it('has effect reduced by 1 if ScrumMaster conducts one on ones', () => {
       const game = getGame();
 
-      game.selectAction('GAME_ACTION_ONE_ON_ONES');
+      game.selectAction('ACTION_ONE_ON_ONES');
       game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
       expect(game.state.currentRound.capacity.available).toBe(9);
     });
@@ -177,7 +177,7 @@ describe('Gremlins', () => {
     it('has effect reduced by 1 if the team works on Cross Skilling', () => {
       const game = getGame();
 
-      game.selectAction('GAME_ACTION_INFORMAL_CROSS_TRAINING');
+      game.selectAction('ACTION_INFORMAL_CROSS_TRAINING');
       game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
       expect(game.state.currentRound.capacity.available).toBe(9);
     });
@@ -185,7 +185,7 @@ describe('Gremlins', () => {
     it('has effect reduce by only 1 if both One on Ones and Cross Skilling', () => {
       const game = getGame();
 
-      game.selectAction('GAME_ACTION_ONE_ON_ONES');
+      game.selectAction('ACTION_ONE_ON_ONES');
       game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
       expect(game.state.currentRound.capacity.available).toBe(9);
     });
@@ -214,7 +214,7 @@ describe('Gremlins', () => {
     it('has effect reduced to 0 if ScrumMaster conducts one on ones', () => {
       const game = getGame();
 
-      game.selectAction('GAME_ACTION_ONE_ON_ONES');
+      game.selectAction('ACTION_ONE_ON_ONES');
       game.nextRound(NOT_AT_DAILY_SCRUM_GREMLIN);
       expect(game.state.currentRound.capacity.available).toBe(10);
     });
@@ -222,7 +222,7 @@ describe('Gremlins', () => {
     it('has effect reduced to 0 if Working Agreements in effect', () => {
       const game = getGame();
 
-      game.selectAction('GAME_ACTION_WORKING_AGREEMENTS');
+      game.selectAction('ACTION_WORKING_AGREEMENTS');
       game.nextRound(NOT_AT_DAILY_SCRUM_GREMLIN);
       expect(game.state.currentRound.capacity.available).toBe(10);
     });

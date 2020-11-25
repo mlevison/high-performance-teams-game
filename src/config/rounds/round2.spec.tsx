@@ -18,18 +18,14 @@ describe('round 2', () => {
       it('is only available if the BuildServer was implemented', () => {
         const game = getGame();
 
-        expect(game.availableActionIds).not.toContain(
-          'GAME_ACTION_UNIT_TESTING',
-        );
+        expect(game.availableActionIds).not.toContain('ACTION_UNIT_TESTING');
 
         game.nextRound();
-        expect(game.availableActionIds).not.toContain(
-          'GAME_ACTION_UNIT_TESTING',
-        );
+        expect(game.availableActionIds).not.toContain('ACTION_UNIT_TESTING');
 
-        game.selectAction('GAME_ACTION_BUILD_SERVER');
+        game.selectAction('ACTION_BUILD_SERVER');
         game.nextRound();
-        expect(game.availableActionIds).toContain('GAME_ACTION_UNIT_TESTING');
+        expect(game.availableActionIds).toContain('ACTION_UNIT_TESTING');
       });
     });
   });
