@@ -13,6 +13,7 @@ type Props = {
   currentRound: number;
   availableGameActions: AppState['availableGameActions'];
   dispatch: GameDispatch;
+  availableCapacity: number;
   overlay: MutableRefObject<HTMLElement | null>;
 };
 
@@ -29,6 +30,7 @@ export default function Actions(props: Props) {
             const round = props.currentRound - i;
             return (
               <RoundActions
+                availableCapacity={props.availableCapacity}
                 onOpen={(open, actionId) => {
                   setOpenActionId(open ? actionId : undefined);
                 }}

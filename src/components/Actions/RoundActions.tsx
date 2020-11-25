@@ -8,6 +8,7 @@ type Props = {
   round: number;
   initialVisible: boolean;
   openGameActionId?: GameActionId;
+  availableCapacity: number;
   onOpen: (open: boolean, id: GameActionId) => void;
   onSelect: (selected: boolean, actionWithStatus: GameActionId) => void;
   actionsWithStatus: GameActionWithStatus[];
@@ -33,6 +34,7 @@ export default function RoundActions(props: Props) {
                   <li key={actionWithStatus.gameAction.id}>
                     <Action
                       {...actionWithStatus}
+                      availableCapacity={props.availableCapacity}
                       isOpen={
                         props.openGameActionId ===
                         actionWithStatus.gameAction.id

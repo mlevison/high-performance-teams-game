@@ -11,6 +11,7 @@ import { Button } from 'components';
 
 type ActionProps = GameActionWithStatus & {
   isOpen: boolean;
+  availableCapacity: number;
   onOpen: (open: boolean) => void;
   onSelect: (selected: boolean) => void;
 };
@@ -22,7 +23,10 @@ export default function Action(props: ActionProps) {
   const clickTimer = useRef<NodeJS.Timeout>();
   const gameAction = props.gameAction;
 
-  const disabled = ['MISSING_DEP', 'FINISHED'].includes(props.status.type);
+  const disabled =
+    (props.status.type === 'AVAILABLE' &&
+      gameAction.cost > props.availableCapacity) ||
+    ['MISSING_DEP', 'FINISHED'].includes(props.status.type);
 
   return (
     <>
