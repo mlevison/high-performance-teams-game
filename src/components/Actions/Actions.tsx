@@ -23,6 +23,10 @@ export default function Actions(props: Props) {
   return (
     <>
       <h2>Available Actions</h2>
+      <p>
+        Select one or more actions to take this round.<br></br>Previous rounds
+        actions are still available, click the &#9658; to open the round
+      </p>
       <ul className={styles.roundList}>
         {Array(props.currentRound)
           .fill('')
