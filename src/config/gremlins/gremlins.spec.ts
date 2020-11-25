@@ -190,4 +190,41 @@ describe('Gremlins', () => {
       expect(game.state.currentRound.capacity.available).toBe(9);
     });
   });
+
+  describe('Team Member consistently late or misses Daily Scrum', () => {
+    const NOT_AT_DAILY_SCRUM_GREMLIN: NextRoundOpts = { gremlinRoll: 8 };
+    it('reduces capacity by 1 ', () => {
+      const game = getGame();
+
+      game.nextRound(NOT_AT_DAILY_SCRUM_GREMLIN);
+
+      // TODO Again how to test on the name?
+
+      expect(game.state.currentRound.capacity.available).toBe(9);
+
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(9);
+
+      // It never goes away by itself
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(9);
+    });
+    it('has effect reduced to 0 if ScrumMaster conducts one on ones', () => {
+      const game = getGame();
+
+      game.selectAction('GAME_ACTION_ONE_ON_ONES');
+      game.nextRound(NOT_AT_DAILY_SCRUM_GREMLIN);
+      expect(game.state.currentRound.capacity.available).toBe(10);
+    });
+
+    it('has effect reduced to 0 if Working Agreements in effect', () => {
+      const game = getGame();
+
+      game.selectAction('GAME_ACTION_WORKING_AGREEMENTS');
+      game.nextRound(NOT_AT_DAILY_SCRUM_GREMLIN);
+      expect(game.state.currentRound.capacity.available).toBe(10);
+    });
+  });
 });

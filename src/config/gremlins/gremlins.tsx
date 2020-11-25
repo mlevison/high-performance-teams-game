@@ -23,6 +23,7 @@ export const gremlins: GremlinList = {
         return null;
       }
       return {
+        // TODO - Hannes did I get this wrong? I want this effect to be permanent - even if they add the GAME_ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION later
         capacity: -2,
         title: 'Management yells at a team member in public',
       };
@@ -89,6 +90,31 @@ export const gremlins: GremlinList = {
       return {
         capacity: capacityChange,
         title: "Team member isn't pulling their weight",
+      };
+    },
+  },
+  8: {
+    name: 'Team Member consistently late or misses Daily Scrum',
+    description: (
+      <p>
+        When one team member is consistently late or worse missing, they signal
+        disrespect to their team. Other team members are annoyed that this
+        person feels that them. &nbsp; ScrumMaster conducts one on ones - you
+        will become aware of the problem early; Working Agreements - because
+        they empower team members to raise the issue.
+      </p>
+    ),
+    effect(age, finishedActionIds) {
+      let capacityChange = -1;
+      if (
+        finishedActionIds.includes('GAME_ACTION_ONE_ON_ONES') ||
+        finishedActionIds.includes('GAME_ACTION_WORKING_AGREEMENTS')
+      ) {
+        capacityChange = 0;
+      }
+      return {
+        capacity: capacityChange,
+        title: 'Team Member consistently late or misses Daily Scrum',
       };
     },
   },
