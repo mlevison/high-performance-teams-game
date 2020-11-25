@@ -26,7 +26,11 @@ export default function Rules() {
       </p>
       <h2>Rules</h2>
       <ul>
-        <li>Rounds represent 6 weeks or 3 Sprints in the life of your team</li>
+        <li>
+          Rounds represent 6 weeks or 3 Sprints in the life of your team. This
+          has no effect on game play, the length was selected because most
+          improvements take a more than 2 weeks to take root.
+        </li>
         <li>The game lasts 10 rounds or 30 weeks</li>
         <li>Your team starts with a Capacity of 10 pontsi</li>
         <ul>
