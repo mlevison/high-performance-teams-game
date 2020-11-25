@@ -17,10 +17,15 @@ export const round4: RoundDescription<Round4ActionId> = {
       Overtime?
     </p>
   ),
-  effect: () => ({
-    capacity: 4,
-    title: 'Management is paying overtime',
-  }),
+  effect: (_, currentRound) => {
+    if (currentRound === 4) {
+      return {
+        capacity: 4,
+        title: 'Management is paying overtime',
+      };
+    }
+    return null;
+  },
   actions: {
     GAME_ACTION_INFORMAL_CROSS_TRAINING: {
       image: example,
