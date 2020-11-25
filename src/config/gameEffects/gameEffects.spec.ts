@@ -1,5 +1,8 @@
+import { gameEffects as gameEffectsMock } from './gameEffects';
 import { getGame } from '../../lib/testHelpers';
 
+const { gameEffects } = jest.requireActual('./gameEffects');
+jest.mock('./gameEffects', () => ({ gameEffects: [] }));
 jest.mock('../rounds', () => {
   return {
     rounds: {
@@ -22,7 +25,16 @@ jest.mock('../rounds', () => {
 
 // TODO - we're going to need a mock here that silences the communication drag effect.
 describe('game effects', () => {
+  beforeEach(() => {
+    Object.keys(gameEffectsMock).forEach((key) => {
+      delete gameEffectsMock[key];
+    });
+  });
   describe('Drag Effect if the team makes no engineering improvement', () => {
+    beforeEach(() => {
+      gameEffectsMock.technicalDebtDrag = gameEffects.technicalDebtDrag;
+    });
+
     it('reduces capacity', () => {
       const game = getGame();
 
@@ -68,6 +80,10 @@ describe('game effects', () => {
   });
 
   describe('Drag Effect if the team makes no Communication improvement', () => {
+    beforeEach(() => {
+      gameEffectsMock.communicationDebtDrag = gameEffects.communicationDebtDrag;
+    });
+
     it('reduces capacity', () => {
       const game = getGame();
 

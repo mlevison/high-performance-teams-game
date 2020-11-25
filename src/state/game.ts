@@ -57,7 +57,7 @@ export function getAllRoundEffects(pastRounds: ClosedRound[]) {
     return allEffects.concat(roundEffects);
   }, [] as (Effect | null)[]);
 
-  const activeGameEffects = gameEffects.map((gameEffect) => {
+  const activeGameEffects = Object.values(gameEffects).map((gameEffect) => {
     return gameEffect(pastRounds);
   });
 

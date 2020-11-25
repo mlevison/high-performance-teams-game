@@ -12,7 +12,7 @@ export function getRoundEffects(pastRounds: ClosedRound[]) {
       continue;
     }
     const previousRounds = pastRounds.slice(0, i);
-    roundEffects.push(desc.effect?.(previousRounds) || null);
+    roundEffects.push(desc.effect?.(previousRounds, currentRound + 1) || null);
   }
 
   return roundEffects;
