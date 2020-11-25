@@ -1,7 +1,7 @@
 import { findGameActionById, GameEffect } from '../../state';
 
-export const gameEffects: GameEffect[] = [
-  function technicalDebtDrag(rounds) {
+export const gameEffects: { [key: string]: GameEffect } = {
+  technicalDebtDrag(rounds) {
     let roundsWithoutEngAction = 0;
 
     for (const round of rounds) {
@@ -31,7 +31,7 @@ export const gameEffects: GameEffect[] = [
       }`,
     };
   },
-  function communicationDebtDrag(rounds) {
+  communicationDebtDrag(rounds) {
     let roundsWithoutCommunicationAction = 0;
 
     for (const round of rounds) {
@@ -61,4 +61,4 @@ export const gameEffects: GameEffect[] = [
       }`,
     };
   },
-];
+};
