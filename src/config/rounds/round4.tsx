@@ -3,7 +3,7 @@ import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
 export type Round4ActionId =
-  | 'ACTION_INFORMAL_CROSS_TRAINING'
+  | 'ACTION_INFORMAL_CROSS_SKILLING'
   | 'ACTION_FORMAL_CROSS_TRAINING';
 
 export const round4: RoundDescription<Round4ActionId> = {
@@ -27,11 +27,11 @@ export const round4: RoundDescription<Round4ActionId> = {
     return null;
   },
   actions: {
-    ACTION_INFORMAL_CROSS_TRAINING: {
+    ACTION_INFORMAL_CROSS_SKILLING: {
       image: example,
-      name: 'Informal Cross Training',
+      name: 'Informal Cross Skilling',
       description:
-        'Informal cross-training for existing team members in an area the team is weak. (Testing anyone?)',
+        'Informal cross-skilling for existing team members in an area the team is weak. This is often achieved through Pair Programming, Learning Time, etc (Testing anyone?)',
       cost: 1,
       effect: () => ({
         capacity: 1,
@@ -41,10 +41,10 @@ export const round4: RoundDescription<Round4ActionId> = {
       image: example,
       name: 'Formal Cross-Training',
       description:
-        'Formal cross-training for existing team members in an area the team is weak. (Testing anyone?)',
+        'Take an outside course to improve the skills of one existing team members in an area the team is weak. (Testing anyone?)',
       cost: 3,
       effect: () => ({
-        capacity: 3,
+        capacity: 2,
       }),
     },
   },

@@ -32,7 +32,7 @@ export const gremlins: GremlinList = {
     description: (
       <p>
         Your best tester is needed by another team for a while.&nbsp; If you
-        have already implemented: Cross Training and Protection from Outside
+        have already implemented: Cross Skilling and Protection from Outside
         Distraction, they will reduce effects.
       </p>
     ),
@@ -49,7 +49,7 @@ export const gremlins: GremlinList = {
 
       let capacity = -3;
 
-      if (finishedActionIds.includes('ACTION_INFORMAL_CROSS_TRAINING')) {
+      if (finishedActionIds.includes('ACTION_INFORMAL_CROSS_SKILLING')) {
         capacity += 1;
       }
       if (finishedActionIds.includes('ACTION_FORMAL_CROSS_TRAINING')) {
@@ -81,7 +81,7 @@ export const gremlins: GremlinList = {
       let capacityChange = -2;
       if (
         finishedActionIds.includes('ACTION_ONE_ON_ONES') ||
-        finishedActionIds.includes('ACTION_INFORMAL_CROSS_TRAINING')
+        finishedActionIds.includes('ACTION_INFORMAL_CROSS_SKILLING')
       ) {
         capacityChange = -1;
       }

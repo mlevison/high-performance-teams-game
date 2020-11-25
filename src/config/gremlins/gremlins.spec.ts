@@ -81,7 +81,7 @@ describe('Gremlins', () => {
     it('reduces capacity by 2 for 3 rounds when team had informal cross training', () => {
       const game = getGame();
 
-      game.selectAction('ACTION_INFORMAL_CROSS_TRAINING');
+      game.selectAction('ACTION_INFORMAL_CROSS_SKILLING');
       game.nextRound(NEXT_ROUND_OPTS);
       expect(game.state.currentRound.capacity.available).toBe(8);
 
@@ -98,7 +98,7 @@ describe('Gremlins', () => {
     it('reduces capacity by 1 for 2 rounds when team has all protective actions', () => {
       const game = getGame();
 
-      game.selectAction('ACTION_INFORMAL_CROSS_TRAINING');
+      game.selectAction('ACTION_INFORMAL_CROSS_SKILLING');
       game.selectAction('ACTION_FORMAL_CROSS_TRAINING');
       game.selectAction('ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
       game.nextRound(NEXT_ROUND_OPTS);
@@ -177,7 +177,7 @@ describe('Gremlins', () => {
     it('has effect reduced by 1 if the team works on Cross Skilling', () => {
       const game = getGame();
 
-      game.selectAction('ACTION_INFORMAL_CROSS_TRAINING');
+      game.selectAction('ACTION_INFORMAL_CROSS_SKILLING');
       game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
       expect(game.state.currentRound.capacity.available).toBe(9);
     });
