@@ -5,6 +5,16 @@ export default function Rules() {
     <>
       <h2>Welcome</h2>
       <p>
+        Purpose: To spark a discussion among your real team about improvements
+        they can make. To that end the game is best played in a single web
+        browser where everyone can see what is happening and discuss the
+        options.
+        <em>
+          Eventually each action will link to a blog post or section of our
+          reference library with more material.
+        </em>
+      </p>
+      <p>
         Your team is working on the World’s Smallest Online Bookstore, a site
         that provides the best results (just a few) for every search, not every
         result on earth. We’re a vulture capital funded company, so if we don’t
@@ -13,11 +23,6 @@ export default function Rules() {
         the benefits of Agile happen at the individual level, there are many
         things that affect the relationships between team members, and therefore
         the overall cohesion and productivity of the team.
-      </p>
-      <p>
-        Each web browser gets its own copy of the game. So you can play by
-        yourself. However the game is intended to foster a conversation among
-        team members.
       </p>
       <h2>Rules</h2>
       <ul>
