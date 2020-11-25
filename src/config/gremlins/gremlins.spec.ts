@@ -144,4 +144,50 @@ describe('Gremlins', () => {
       expect(game.state.currentRound.capacity.available).toBe(10);
     });
   });
+
+  describe('Team Member not pulling their weight', () => {
+    const NOT_PULLING_THEIR_WEIGHT_GREMLIN: NextRoundOpts = { gremlinRoll: 5 };
+    it('reduces capacity by 2 ', () => {
+      const game = getGame();
+
+      game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
+
+      // TODO Again how to test on the name?
+
+      expect(game.state.currentRound.capacity.available).toBe(8);
+
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(8);
+
+      // It never goes away by itself
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(8);
+    });
+
+    it('has effect reduced by 1 if ScrumMaster conducts one on ones', () => {
+      const game = getGame();
+
+      game.selectAction('GAME_ACTION_ONE_ON_ONES');
+      game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
+      expect(game.state.currentRound.capacity.available).toBe(9);
+    });
+
+    it('has effect reduced by 1 if the team works on Cross Skilling', () => {
+      const game = getGame();
+
+      game.selectAction('GAME_ACTION_INFORMAL_CROSS_TRAINING');
+      game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
+      expect(game.state.currentRound.capacity.available).toBe(9);
+    });
+
+    it('has effect reduce by only 1 if both One on Ones and Cross Skilling', () => {
+      const game = getGame();
+
+      game.selectAction('GAME_ACTION_ONE_ON_ONES');
+      game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
+      expect(game.state.currentRound.capacity.available).toBe(9);
+    });
+  });
 });

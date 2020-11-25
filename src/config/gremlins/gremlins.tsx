@@ -65,4 +65,31 @@ export const gremlins: GremlinList = {
       };
     },
   },
+  5: {
+    name: "Team member isn't pulling their weight",
+    description: (
+      <p>
+        One of the people on your team isn’t pulling their weight - not even
+        close. However, nothing seems to get done about it. The rest of the team
+        is pulling together and taking this person’s work on, but it’s harming
+        morale and productivity. &nbsp; If you have already implemented: A
+        ScrumMaster conducts one on ones - you will be working on the problem
+        already; Cross Skilling - the problem person is more likely to grow
+        because they see others and learn from them.
+      </p>
+    ),
+    effect(age, finishedActionIds) {
+      let capacityChange = -2;
+      if (
+        finishedActionIds.includes('GAME_ACTION_ONE_ON_ONES') ||
+        finishedActionIds.includes('GAME_ACTION_INFORMAL_CROSS_TRAINING')
+      ) {
+        capacityChange = -1;
+      }
+      return {
+        capacity: capacityChange,
+        title: "Team member isn't pulling their weight",
+      };
+    },
+  },
 };
