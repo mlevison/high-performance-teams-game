@@ -114,4 +114,47 @@ describe('App UI', () => {
       payload: 'MY_ACTION_ID',
     });
   });
+
+  it('can not select an action when not enough capacity is available', () => {
+    const dispatchSpy = jest.fn();
+    (useAppState as jest.Mock<[AppState, any, any]>).mockReturnValue([
+      {
+        ...BASE_STATE,
+        currentRound: {
+          ...BASE_STATE.currentRound,
+          capacity: {
+            available: 2,
+            total: 10,
+          },
+        },
+        availableGameActions: [
+          {
+            status: {
+              type: 'AVAILABLE',
+              times: UNIQUE_ACTION,
+              dependencies: [],
+            },
+            gameAction: {
+              id: 'GAME_ACTION_BUILD_SERVER',
+              icon: '',
+              round: 1,
+              name: 'My Action',
+              effect: () => null,
+              description: '',
+              cost: 3,
+            },
+          },
+        ],
+      },
+      dispatchSpy,
+      jest.fn(),
+    ]);
+
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /play/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
+    fireEvent.doubleClick(screen.getByRole('button', { name: /My Action/i }));
+
+    expect(dispatchSpy).not.toHaveBeenCalled();
+  });
 });

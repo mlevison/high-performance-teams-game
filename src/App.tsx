@@ -45,6 +45,7 @@ export default function App() {
                 <Actions
                   overlay={overlayRef}
                   currentRound={state.currentRound.number}
+                  availableCapacity={state.currentRound.capacity.available}
                   availableGameActions={state.availableGameActions}
                   dispatch={dispatch}
                 />
