@@ -23,7 +23,6 @@ jest.mock('../rounds', () => {
   };
 });
 
-// TODO - we're going to need a mock here that silences the communication drag effect.
 describe('game effects', () => {
   beforeEach(() => {
     Object.keys(gameEffectsMock).forEach((key) => {
