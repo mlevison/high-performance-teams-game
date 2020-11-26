@@ -46,6 +46,10 @@ export default function Rules() {
           Practice will eventually be penalized.
         </li>
         <li>
+          Failure to invest in things that aid your resilience will harm your
+          team later rounds.
+        </li>
+        <li>
           If you play well your team's capacity will increase round by round
         </li>
       </ul>
@@ -53,20 +57,24 @@ export default function Rules() {
       <p>Each round consists of a series of steps:</p>
       <ol>
         <li>
-          You get a round description. Click <b>Start Round</b>
+          You get a round description.<br></br>
+          &nbsp;&nbsp;&nbsp;<b>Click Start Round</b>
         </li>
         <li>
           Select Improvements or Actions that will affect the team. Once
           selected the actions cost will be taken away from the teams Capacity
-          Click. <b>Complete Round</b>
+          <br></br>
+          &nbsp;&nbsp;&nbsp;<b>Click Complete Round</b>
         </li>
         <li>
           The Game tells you how much capacity there is to spend on User
-          Stories. Click <b>Roll for User Stories</b>
+          Stories.<br></br>
+          &nbsp;&nbsp;&nbsp;<b>Click Roll for User Stories</b>
         </li>
         <li>
           The rolls a die for each User Story to determine how many are actually
-          completed. Click <b>Next Round</b>
+          completed.<br></br>
+          &nbsp;&nbsp;&nbsp;<b>Click Next Round</b>
         </li>
         <li>
           At the end of each round the game also checks to see if your team was
