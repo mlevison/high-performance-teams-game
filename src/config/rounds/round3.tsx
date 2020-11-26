@@ -19,7 +19,7 @@ export const round3: RoundDescription<Round3ActionId> = {
   actions: {
     ACTION_OBSERVE_PEOPLE_AND_RELATIONSHIPS: {
       image: example,
-      // type: 'COMMUNICATION',
+      type: 'COMMUNICATION',
       name: 'Observe People + Relationships',
       description: (
         <p>
@@ -35,7 +35,7 @@ export const round3: RoundDescription<Round3ActionId> = {
     },
     ACTION_ONE_ON_ONES: {
       image: example,
-      // type: 'COMMUNICATION',
+      type: 'COMMUNICATION',
       name: 'One on One',
       description: (
         <p>

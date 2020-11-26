@@ -1,6 +1,7 @@
 import type { AppState } from '../../state';
-import { getGame } from '../../lib/testHelpers';
+import { getGame, testFutureCapacities } from '../../lib/testHelpers';
 import { reset, addRolls } from '../../lib/notRandom';
+import { Console } from 'console';
 
 jest.mock('../../lib/random', () => require('../../lib/notRandom'));
 /* disable all other rounds */
@@ -46,18 +47,10 @@ describe('round 1', () => {
 
         game.selectAction('ACTION_TEAMS_ON_SAME_FLOOR');
         game.nextRound();
-
         expect(game.state.currentRound.number).toEqual(2);
         expect(game.state.currentRound.capacity.total).toEqual(11);
 
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(12);
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(13);
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(14);
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(15);
+        testFutureCapacities(game, [12, 13, 14, 15]);
       });
     });
 
@@ -94,10 +87,7 @@ describe('round 1', () => {
         // TODO - Hannes - how to test the user story completiion chances haven't changed?
 
         // Capacity only ever increases by one in total
-        game.nextRound();
-        game.nextRound();
-        expect(game.state.currentRound.number).toEqual(4);
-        expect(game.state.currentRound.capacity.total).toEqual(11);
+        testFutureCapacities(game, [11, 11, 11, 11]);
       });
     });
   });
