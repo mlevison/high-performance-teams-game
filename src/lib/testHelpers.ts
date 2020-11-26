@@ -54,9 +54,7 @@ export function testFutureCapacities(
     readonly availableActionIds: GameActionId[];
     closeRound: () => ClosedRound;
     nextRound: (opts?: NextRoundOpts | undefined) => void;
-    selectAction: (
-      gameActionId: import('c:/Users/mark/Documents/GitHub/high-performance-teams-game/src/config/rounds/index').GameActionId,
-    ) => void;
+    selectAction: (gameActionId: GameActionId) => void;
   },
   capacities: number[],
 ) {
