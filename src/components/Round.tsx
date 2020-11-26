@@ -67,7 +67,9 @@ export default function Round(props: Props) {
           {description}
           {props.currentRound.gremlin && (
             <>
-              <h3>⚠️ {props.currentRound.gremlin.name}</h3>
+              <h3>Gremlin</h3>
+              Just happened:&nbsp;
+              <strong>⚠️ {props.currentRound.gremlin.name}</strong>
               {props.currentRound.gremlin.description}
             </>
           )}
@@ -92,7 +94,9 @@ export default function Round(props: Props) {
       )}
       {view === 'results' && (
         <>
-          <p>What is the chance that each User Story will successfully be built?</p>
+          <p>
+            What is the chance that each User Story will successfully be built?
+          </p>
           <h3>Calculation</h3>
           <ul className={styles.userStoryChanceList}>
             <li>&nbsp;&nbsp;&nbsp;{STORY_SUCCEEDS_BASE}% base chance</li>
