@@ -71,7 +71,7 @@
 
 .actionSelected .actionImage,
 .actionSelected .actionIcon {
-  border-color: var(--primary-background-color);
+  border: 5px solid var(--selected-action-color);
 }
 
 .arrow {

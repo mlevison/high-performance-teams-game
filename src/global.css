@@ -15,6 +15,7 @@
   --warning-color: #ffc919;
   --error-color: #f03423;
   --disabled-color: #aaa;
+  --selected-action-color: greenyellow;
 }
 
 body {
