@@ -65,7 +65,7 @@ export const round1: RoundDescription<Round1ActionId> = {
         </p>
       ),
       cost: 1,
-      effect: () => ({ capacity: 1, userStoryChance: 10 }),
+      effect: () => ({ capacity: 1 }),
     },
     ACTION_BUILD_SERVER: {
       image: example,

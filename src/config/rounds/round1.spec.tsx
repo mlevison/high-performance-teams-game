@@ -79,5 +79,26 @@ describe('round 1', () => {
         expect(game.state.result.storiesCompleted).toEqual(14);
       });
     });
+
+    describe('Working Agreements', () => {
+      it('increases capacity, but have no effect on User Story Success', () => {
+        addRolls(Array(100).fill(0));
+        const game = getGame();
+
+        game.selectAction('ACTION_WORKING_AGREEMENTS');
+        game.nextRound();
+
+        expect(game.state.currentRound.number).toEqual(2);
+        expect(game.state.currentRound.capacity.total).toEqual(11);
+
+        // TODO - Hannes - how to test the user story completiion chances haven't changed?
+
+        // Capacity only ever increases by one in total
+        game.nextRound();
+        game.nextRound();
+        expect(game.state.currentRound.number).toEqual(4);
+        expect(game.state.currentRound.capacity.total).toEqual(11);
+      });
+    });
   });
 });
