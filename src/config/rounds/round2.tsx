@@ -3,6 +3,7 @@ import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
 export type Round2ActionId =
+  | 'ACTION_REMOTE_TEAM_AVATARS'
   | 'ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES'
   | 'ACTION_UNIT_TESTING'
   | 'ACTION_SOCIAL_TIME'
@@ -18,6 +19,23 @@ export const round2: RoundDescription<Round2ActionId> = {
     </p>
   ),
   actions: {
+    ACTION_REMOTE_TEAM_AVATARS: {
+      icon: '👋',
+      name: 'Remote Team Avatars',
+      description: (
+        <p>
+          Remote Teams suffer from the start, in that team members don't get
+          know about their colleagues easily. To counter this run a short get to
+          know you session. Get team members to share things like - working
+          hours, city they live in, timezone, contact info. If people are open
+          share some personal details such as hobbies, family status, favorite
+          food and beverage. Some teams even create a wiki or site to share this
+          information
+        </p>
+      ),
+      cost: 1,
+      effect: () => ({ capacity: 1 }),
+    },
     ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
       image: example,
       type: 'ENGINEERING',

@@ -1,7 +1,6 @@
 import type { AppState } from '../../state';
 import { getGame, testFutureCapacities } from '../../lib/testHelpers';
 import { reset, addRolls } from '../../lib/notRandom';
-import { Console } from 'console';
 
 jest.mock('../../lib/random', () => require('../../lib/notRandom'));
 /* disable all other rounds */
@@ -60,6 +59,8 @@ describe('round 1', () => {
 
         game.selectAction('ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
 
+        // TODO Hannes - very very confused as to how/what this is checking
+        // it would help if this was extracted to a testHelper so it could be used to test multiple actions
         addRolls(Array(game.state.currentRound.capacity.available).fill(0.39));
         game.nextRound();
         expect(game.state.result.storiesCompleted).toEqual(9);
@@ -70,6 +71,9 @@ describe('round 1', () => {
         addRolls(Array(5 + /* gremlin */ 2).fill(0.41));
         game.nextRound();
         expect(game.state.result.storiesCompleted).toEqual(14);
+
+        // proving it had no effect on capacity
+        // TODO - Hannes help - we can't call here - becaue it uses the wrong "random effect" testFutureCapacities(game, [10, 10, 10, 10]);
       });
     });
 
@@ -88,6 +92,21 @@ describe('round 1', () => {
 
         // Capacity only ever increases by one in total
         testFutureCapacities(game, [11, 11, 11, 11]);
+      });
+    });
+
+    describe('Clarify Product Vision', () => {
+      it('increases UserStory success and has no effect on capacity', () => {
+        addRolls(Array(100).fill(0));
+        const game = getGame();
+
+        game.selectAction('ACTION_CLARIFY_PRODUCT_VISION');
+        game.nextRound();
+
+        // TODO Hannes - no idea how to test the 10% improvement in User Story success
+
+        // proving it had no effect on capacity
+        testFutureCapacities(game, [10, 10, 10, 10]);
       });
     });
   });

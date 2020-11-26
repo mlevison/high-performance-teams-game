@@ -5,7 +5,7 @@ import example from './images/example.jpg';
 
 export type Round1ActionId =
   | 'ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION'
-  | 'ACTION_REMOTE_TEAM_AVATARS'
+  | 'ACTION_CLARIFY_PRODUCT_VISION'
   | 'ACTION_WORKING_AGREEMENTS'
   | 'ACTION_BUILD_SERVER'
   | 'ACTION_TEAMS_ON_SAME_FLOOR';
@@ -35,23 +35,21 @@ export const round1: RoundDescription<Round1ActionId> = {
       cost: 1,
       effect: () => ({ userStoryChance: 10 }),
     },
-    ACTION_REMOTE_TEAM_AVATARS: {
-      icon: '👋',
-      name: 'Remote Team Avatars',
+    ACTION_CLARIFY_PRODUCT_VISION: {
+      image: 'https://placekitten.com/100/100',
+      name: 'Clarify Product Vision',
       description: (
         <p>
-          Remote Teams suffer from the start, in that team members don't get
-          know about their colleagues easily. To counter this run a short get to
-          know you session. Get team members to share things like - working
-          hours, city they live in, timezone, contact info. If people are open
-          share some personal details such as hobbies, family status, favorite
-          food and beverage. Some teams even create a wiki or site to share this
-          information
+          PO and Development Team collaborate on understanding Product Vision
+          using an exercise like Product Box. Teams that aren’t involved in the
+          creation of their product vision are doomed to build Product that
+          neither PO, Customers nor Stakeholders want.
         </p>
       ),
-      cost: 1,
-      effect: () => ({ capacity: 1 }),
+      cost: 2,
+      effect: () => ({ userStoryChance: 15 }),
     },
+
     ACTION_WORKING_AGREEMENTS: {
       image: example,
       type: 'COMMUNICATION',
