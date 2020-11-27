@@ -20,7 +20,11 @@ export const round1: RoundDescription<Round1ActionId> = {
       needs you to prove that you can deliver a working …
     </p>
   ),
-  effect: () => ({ capacityChange: 10, title: EFFECT_HIDDEN }),
+  effect: () => ({
+    capacityChange: 10,
+    userStoryChance: 30,
+    title: EFFECT_HIDDEN,
+  }),
   actions: {
     ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION: {
       image: 'https://placekitten.com/100/100',

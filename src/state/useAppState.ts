@@ -37,6 +37,7 @@ export type AppState = {
       available: number;
       total: number;
     };
+    userStoryChance: number;
     activeEffects: VisibleEffect<BaseEffect>[];
   };
   result: {
@@ -66,9 +67,16 @@ export default function useAppState(): [
     .map((id) => getEffect(id, 0, finishedActionIds))
     .filter(isEffect)
     .filter(isUserStoryChanceEffect);
+
   const visibleEffects = effects
     .concat(thisRoundsActionUserStoryEffects)
     .filter(isVisibleEffect);
+  const totalUserStoryChance = sumByProp(
+    effects
+      .concat(thisRoundsActionUserStoryEffects)
+      .filter(isUserStoryChanceEffect),
+    'userStoryChance',
+  );
   const costs = getCosts(state.currentRound);
   const capacityAvailable = roundCapacity - costs;
   const currentRoundNumber = state.pastRounds.length + 1;
@@ -97,6 +105,7 @@ export default function useAppState(): [
           available: capacityAvailable,
           total: roundCapacity,
         },
+        userStoryChance: totalUserStoryChance,
         activeEffects: visibleEffects,
       },
       result: {
