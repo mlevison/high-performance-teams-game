@@ -20,7 +20,7 @@ export const round4: RoundDescription<Round4ActionId> = {
   effect: (_, currentRound) => {
     if (currentRound === 4) {
       return {
-        capacity: 4,
+        capacityChange: 4,
         title: 'Management is paying overtime',
       };
     }
@@ -34,7 +34,7 @@ export const round4: RoundDescription<Round4ActionId> = {
         'Informal cross-skilling for existing team members in an area the team is weak. This is often achieved through Pair Programming, Learning Time, etc (Testing anyone?)',
       cost: 1,
       effect: () => ({
-        capacity: 1,
+        capacityChange: 1,
       }),
     },
     ACTION_FORMAL_CROSS_TRAINING: {
@@ -44,7 +44,7 @@ export const round4: RoundDescription<Round4ActionId> = {
         'Take an outside course to improve the skills of one existing team members in an area the team is weak. (Testing anyone?)',
       cost: 3,
       effect: () => ({
-        capacity: 2,
+        capacityChange: 2,
       }),
     },
   },

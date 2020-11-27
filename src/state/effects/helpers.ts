@@ -17,11 +17,13 @@ export function isVisibleEffect<T extends Effect>(e: T): e is VisibleEffect<T> {
 export function isCapacityEffect<T extends Effect>(
   e: T,
 ): e is CapacityEffect<T> {
-  return Object.getOwnPropertyNames(e).includes('capacity');
+  const key: keyof CapacityEffect<T> = 'capacityChange';
+  return Object.getOwnPropertyNames(e).includes(key);
 }
 
 export function isUserStoryChanceEffect<T extends Effect>(
   e: T,
 ): e is UserStoryChanceEffect<T> {
-  return Object.getOwnPropertyNames(e).includes('userStoryChance');
+  const key: keyof UserStoryChanceEffect<T> = 'userStoryChance';
+  return Object.getOwnPropertyNames(e).includes(key);
 }

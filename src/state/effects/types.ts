@@ -2,7 +2,7 @@ import { Round } from '../round';
 import { EFFECT_HIDDEN } from '../../constants';
 
 type CapacityEffectProps = {
-  capacity: number;
+  capacityChange: number;
 };
 type UserStoryChanceEffectProps = {
   userStoryChance: number;

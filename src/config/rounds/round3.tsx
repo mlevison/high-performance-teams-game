@@ -29,7 +29,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       ),
       cost: 1,
       effect: () => ({
-        capacity: 1,
+        capacityChange: 1,
         title: 'Watching the Team tells you where to put your coaching energy.',
       }),
     },
@@ -54,7 +54,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       description: <p>Two team members – one computer</p>,
       cost: 2,
       effect: () => ({
-        capacity: 2,
+        capacityChange: 2,
         title:
           'Team Members working in pairs have a lower defect rate, simpler code and learn from each other.',
       }),
@@ -67,7 +67,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       description: <p>Writing Unit level Tests before writing the code</p>,
       cost: 2,
       effect: () => ({
-        capacity: 2,
+        capacityChange: 2,
         title:
           'By writing the tests before the code – the Developer is forced to consider the simplest solution to their problem. Result: Less code; simpler design and fewer defects',
       }),

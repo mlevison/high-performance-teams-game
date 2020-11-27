@@ -24,7 +24,7 @@ export const gameEffects: { [key: string]: GameEffect } = {
     }
 
     return {
-      capacity: -roundsWithoutEngAction,
+      capacityChange: -roundsWithoutEngAction,
       title: 'TechnicalDebt Drag Effect Title',
       description: `No Engineering improvement for ${roundsWithoutEngAction} round${
         roundsWithoutEngAction > 1 ? 's' : ''
@@ -54,7 +54,7 @@ export const gameEffects: { [key: string]: GameEffect } = {
     }
 
     return {
-      capacity: -roundsWithoutCommunicationAction,
+      capacityChange: -roundsWithoutCommunicationAction,
       title: 'Communication Drag Effect Title',
       description: `No Communication improvement for ${roundsWithoutCommunicationAction} round${
         roundsWithoutCommunicationAction > 1 ? 's' : ''

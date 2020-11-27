@@ -7,4 +7,6 @@ export type RoundDescription<T extends string> = RoundDescriptionT<T>;
 
 const round1Effect = rounds['1']?.effect?.([], 1);
 export const startCapacity =
-  round1Effect && isCapacityEffect(round1Effect) ? round1Effect.capacity : 0;
+  round1Effect && isCapacityEffect(round1Effect)
+    ? round1Effect.capacityChange
+    : 0;

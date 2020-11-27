@@ -38,7 +38,7 @@ describe('round 4', () => {
     if (!isCapacityEffect(round4Effect)) {
       throw new Error('Expected effect of round 4 to be a capacity effect');
     }
-    expect(round4Effect.capacity).toBe(4);
+    expect(round4Effect.capacityChange).toBe(4);
     expect(round4Effect.title).toMatch(/Management is paying overtime/i);
 
     expect(game.state.currentRound.title).toMatch(/Go Live Soon/i);
