@@ -69,7 +69,7 @@ export function getAllRoundEffects(pastRounds: ClosedRound[]) {
 
 export function getCapacity(effects: Effect[]) {
   return effects.filter(isCapacityEffect).reduce((capacity, effect) => {
-    return capacity + effect.capacity;
+    return capacity + effect.capacityChange;
   }, 0);
 }
 

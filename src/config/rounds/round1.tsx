@@ -20,7 +20,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       needs you to prove that you can deliver a working …
     </p>
   ),
-  effect: () => ({ capacity: 10, title: EFFECT_HIDDEN }),
+  effect: () => ({ capacityChange: 10, title: EFFECT_HIDDEN }),
   actions: {
     ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION: {
       image: 'https://placekitten.com/100/100',
@@ -63,7 +63,7 @@ export const round1: RoundDescription<Round1ActionId> = {
         </p>
       ),
       cost: 1,
-      effect: () => ({ capacity: 1 }),
+      effect: () => ({ capacityChange: 1 }),
     },
     ACTION_BUILD_SERVER: {
       image: example,
@@ -88,13 +88,13 @@ export const round1: RoundDescription<Round1ActionId> = {
       effect(age) {
         if (age < 5) {
           return {
-            capacity: age + 1,
+            capacityChange: age + 1,
             title: `${this.name} active since ${age + 1} rounds`,
           };
         }
 
         return {
-          capacity: 5,
+          capacityChange: 5,
           title: `${this.name} active since 5 or more rounds`,
         };
       },

@@ -27,9 +27,9 @@ export default function Status(props: Props) {
               <li key={effect.title}>
                 <span className={styles.cap}>
                   <span className={styles.sign}>
-                    {effect.capacity > 0 ? '+' : '-'}
+                    {effect.capacityChange > 0 ? '+' : '-'}
                   </span>
-                  {String(effect.capacity).replace(/^-/, '')}
+                  {String(effect.capacityChange).replace(/^-/, '')}
                 </span>
                 {effect.title}
               </li>

@@ -34,7 +34,7 @@ export const round2: RoundDescription<Round2ActionId> = {
         </p>
       ),
       cost: 1,
-      effect: () => ({ capacity: 1 }),
+      effect: () => ({ capacityChange: 1 }),
     },
     ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
       image: example,
@@ -48,7 +48,7 @@ export const round2: RoundDescription<Round2ActionId> = {
         </p>
       ),
       cost: 2,
-      effect: () => ({ capacity: 1 }),
+      effect: () => ({ capacityChange: 1 }),
     },
     ACTION_UNIT_TESTING: {
       icon: '🏗',
@@ -57,7 +57,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       available: { requires: 'ACTION_BUILD_SERVER' },
       description: <p>TODO: SOME DESCRIPTION</p>,
       cost: 2,
-      effect: () => ({ capacity: 2 }),
+      effect: () => ({ capacityChange: 2 }),
     },
     ACTION_SOCIAL_TIME: {
       image: example,
@@ -71,7 +71,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       ),
       cost: 1,
       effect: () => ({
-        capacity: 1,
+        capacityChange: 1,
         title:
           'This benefits the team, as team members get to know each other not just as doers of work.',
       }),
@@ -86,7 +86,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       ),
       cost: 1,
       effect: () => ({
-        capacity: -1,
+        capacityChange: -1,
         title:
           'Promoting a firefighter culture promotes individual behavior and, surprisingly, the starting of fires.',
       }),

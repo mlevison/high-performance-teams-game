@@ -3,7 +3,7 @@ import { rollGremlin } from '../../state/gremlins';
 
 /* Disable round, game and action effects */
 jest.mock('../../state/rounds/getRoundEffects', () => ({
-  getRoundEffects: () => [{ capacity: 10 }],
+  getRoundEffects: () => [{ capacityChange: 10 }],
 }));
 jest.mock('../gameEffects', () => ({
   gameEffects: [],

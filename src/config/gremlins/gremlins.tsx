@@ -22,7 +22,7 @@ export const gremlins: GremlinList = {
       }
       return {
         // TODO - Hannes did I get this wrong? I want this effect to be permanent - even if they add the ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION later
-        capacity: -2,
+        capacityChange: -2,
         title: 'Management yells at a team member in public',
       };
     },
@@ -58,7 +58,7 @@ export const gremlins: GremlinList = {
 
       return {
         // TODO Hannes - why does this have to be an assignment like the one I did above
-        capacity,
+        capacityChange: capacity,
         title:
           'We’ve had an emergency on another team, we need your best tester for a while.',
       };
@@ -86,7 +86,7 @@ export const gremlins: GremlinList = {
         capacityChange = -1;
       }
       return {
-        capacity: capacityChange,
+        capacityChange: capacityChange,
         title: "Team member isn't pulling their weight",
       };
     },
@@ -111,7 +111,7 @@ export const gremlins: GremlinList = {
         capacityChange = 0;
       }
       return {
-        capacity: capacityChange,
+        capacityChange: capacityChange,
         title: 'Team Member consistently late or misses Daily Scrum',
       };
     },

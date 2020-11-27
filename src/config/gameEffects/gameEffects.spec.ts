@@ -17,7 +17,7 @@ jest.mock('../rounds', () => {
             cost: 2,
           },
         },
-        effect: () => ({ capacity: 10 }),
+        effect: () => ({ capacityChange: 10 }),
       },
     },
   };

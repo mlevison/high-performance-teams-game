@@ -57,6 +57,7 @@ export default function useAppState(): [
 
   const effects = getAllRoundEffects(state.pastRounds);
   const roundCapacity = getCapacity(effects);
+
   const finishedActionIds = concatByProp(
     state.pastRounds,
     'selectedGameActionIds',
