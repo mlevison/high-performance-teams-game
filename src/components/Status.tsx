@@ -1,7 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
-import { AppState, startCapacity, isCapacityEffect } from '../state';
+import { AppState, isCapacityEffect } from '../state';
 import styles from './Status.module.css';
+import { START_CAPACITY } from '../constants';
 
 type Props = AppState['currentRound'];
 
@@ -18,7 +19,7 @@ export default function Status(props: Props) {
       <h2>Capacity Breakdown</h2>
       <ul className={styles.status}>
         <li>
-          <span className={styles.cap}>{startCapacity}</span> Start Capacity
+          <span className={styles.cap}>{START_CAPACITY}</span> Start Capacity
         </li>
         {props.activeEffects.length !== 0 && (
           <>

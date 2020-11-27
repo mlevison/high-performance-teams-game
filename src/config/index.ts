@@ -1,5 +1,5 @@
-import { GameActionId as GameActionIdT } from './rounds';
-export type GameActionId = GameActionIdT;
+export type { GameActionId } from './rounds';
+export type { GremlinId } from './gremlins';
 
 export { rounds } from './rounds';
 export { gremlins } from './gremlins';

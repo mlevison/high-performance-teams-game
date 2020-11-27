@@ -1,7 +1,11 @@
 import {
   CapacityEffect,
+  CAPACITY_CHANGE_KEY,
   Effect,
+  GremlinChanceEffect,
+  GREMLIN_CHANCE_KEY,
   UserStoryChanceEffect,
+  USER_STORY_CHANCE_KEY,
   VisibleEffect,
 } from './types';
 import { EFFECT_HIDDEN } from '../../constants';
@@ -17,13 +21,23 @@ export function isVisibleEffect<T extends Effect>(e: T): e is VisibleEffect<T> {
 export function isCapacityEffect<T extends Effect>(
   e: T,
 ): e is CapacityEffect<T> {
-  const key: keyof CapacityEffect<T> = 'capacityChange';
-  return Object.getOwnPropertyNames(e).includes(key);
+  return Object.getOwnPropertyNames(e).includes(CAPACITY_CHANGE_KEY);
 }
 
 export function isUserStoryChanceEffect<T extends Effect>(
   e: T,
 ): e is UserStoryChanceEffect<T> {
-  const key: keyof UserStoryChanceEffect<T> = 'userStoryChance';
-  return Object.getOwnPropertyNames(e).includes(key);
+  return Object.getOwnPropertyNames(e).includes(USER_STORY_CHANCE_KEY);
+}
+
+export function isGremlinChanceEffect<T extends Effect>(
+  e: T,
+): e is GremlinChanceEffect<T> {
+  return Object.getOwnPropertyNames(e).includes(GREMLIN_CHANCE_KEY);
+}
+
+export function isUserStoryOrGremlinChanceEffect<T extends Effect>(
+  effect: T,
+): effect is UserStoryChanceEffect<T> | GremlinChanceEffect<T> {
+  return isUserStoryChanceEffect(effect) || isGremlinChanceEffect(effect);
 }

@@ -7,5 +7,8 @@ export type RoundDescription<T extends string> = {
   description: ReactNode;
   title: string;
   actions: GameActionList<T>;
-  effect?: (previousRounds: Round[], currentRound: number) => Effect | null;
+  effect?: (
+    previousRounds: Round[],
+    currentRound: number,
+  ) => Effect | Effect[] | null;
 };

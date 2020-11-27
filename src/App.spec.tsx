@@ -35,6 +35,7 @@ describe('App UI', () => {
       },
       jest.fn(),
       jest.fn(),
+      jest.fn(),
     ]);
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
@@ -51,13 +52,14 @@ describe('App UI', () => {
       BASE_STATE,
       dispatchSpy,
       closeRoundSpy,
+      jest.fn(() => null),
     ]);
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
     expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
     const closedRound: ClosedRound = {
-      gremlinRoll: 2,
+      gremlin: null,
       selectedGameActionIds: [],
       storiesCompleted: 5,
     };
@@ -77,7 +79,7 @@ describe('App UI', () => {
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: 'NEXT_ROUND',
-      payload: closedRound,
+      payload: { closedRound, gremlin: null },
     });
   });
 
@@ -102,6 +104,7 @@ describe('App UI', () => {
       },
       dispatchSpy,
       jest.fn(),
+      jest.fn(),
     ]);
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
@@ -117,7 +120,7 @@ describe('App UI', () => {
 
   it('can not select an action when not enough capacity is available', () => {
     const dispatchSpy = jest.fn();
-    (useAppState as jest.Mock<[AppState, any, any]>).mockReturnValue([
+    (useAppState as jest.Mock<[AppState, any, any, any]>).mockReturnValue([
       {
         ...BASE_STATE,
         currentRound: {
@@ -147,6 +150,7 @@ describe('App UI', () => {
         ],
       },
       dispatchSpy,
+      jest.fn(),
       jest.fn(),
     ]);
 

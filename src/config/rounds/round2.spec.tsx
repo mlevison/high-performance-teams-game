@@ -12,6 +12,20 @@ jest.mock('../gameEffects', () => ({
   gameEffects: [],
 }));
 
+describe('round2', () => {
+  it('does not change base values', () => {
+    const game = getGame();
+
+    times(5, () => {
+      game.nextRound();
+
+      expect(game.state.currentRound.capacity.total).toEqual(10);
+      expect(game.state.currentRound.gremlinChance).toEqual(0);
+      expect(game.state.currentRound.userStoryChance).toEqual(30);
+    });
+  });
+});
+
 describe('round 2 Actions', () => {
   describe('Unit Testing', () => {
     it('is only available if the BuildServer was implemented', () => {

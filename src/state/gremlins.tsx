@@ -1,55 +1,100 @@
+import { sumByProp } from 'lib';
+import { random } from 'lib/random';
 import { ReactElement } from 'react';
-import { GameActionId, gremlins } from '../config';
-import { rollDice } from '../lib/rollDice';
-import { Effect } from './effects';
-import { ClosedRound } from './round';
+import { GameActionId, GremlinId, gremlins } from '../config';
+import { Effect, isGremlinChanceEffect } from './effects';
+import { GameState, getAllEffects } from './game';
+import { Round } from './round';
 
 export type GremlinDescription = {
   name: string;
   description?: ReactElement;
 };
-export type GremlinId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 type GremlinImplementation = GremlinDescription & {
-  effect: (age: number, finishedActionIds: GameActionId[]) => null | Effect;
+  probability: (state: GameState) => number;
+  effect: (
+    age: number,
+    finishedActionIds: GameActionId[],
+  ) => null | Effect | Effect[];
 };
-export type GremlinList = { [k in GremlinId]?: GremlinImplementation };
+export type GremlinList<K extends string> = {
+  [k in K]: GremlinImplementation;
+};
 
-export function isGremlinId(thing: unknown): thing is GremlinId {
-  return typeof thing === 'number' && thing >= 1 && thing <= 12;
+const gremlinArray = Object.entries(gremlins).map(([id, gremlin]) => ({
+  id: id as GremlinId,
+  ...gremlin,
+}));
+
+export function rollGremlin(state: GameState): GremlinId | null {
+  const gremlinChanceEffects = getAllEffects(state).filter(
+    isGremlinChanceEffect,
+  );
+  const gremlinChance = sumByProp(gremlinChanceEffects, 'gremlinChance');
+
+  if (random() * 100 > gremlinChance) {
+    return null;
+  }
+
+  const pastGremlinIds = [state.currentRound, ...state.pastRounds]
+    .map((round) => round.gremlin)
+    .filter(isGremlinId);
+
+  const newGremlinsWithProbability = gremlinArray
+    .map((gremlin) => ({
+      ...gremlin,
+      currentProbability: gremlin.probability(state),
+    }))
+    .filter(
+      (gremlin) =>
+        !pastGremlinIds.includes(gremlin.id) && gremlin.currentProbability > 0,
+    );
+
+  const totalProbability = sumByProp(
+    newGremlinsWithProbability,
+    'currentProbability',
+  );
+
+  if (totalProbability === 0) {
+    return null;
+  }
+
+  let roll = random() * totalProbability;
+  let gremlin = newGremlinsWithProbability.shift();
+  while (roll > (gremlin?.currentProbability || Infinity)) {
+    roll -= gremlin?.currentProbability || Infinity;
+    gremlin = newGremlinsWithProbability.shift();
+  }
+
+  return gremlin?.id || null;
 }
 
-export function getGremlinRolls(rounds: ClosedRound[]) {
-  return rounds.map((round) => round.gremlinRoll).filter(isGremlinId);
+export function isGremlinId(thing: GremlinId | null): thing is GremlinId {
+  return thing !== null;
 }
 
-export function getGremlin(
-  rounds: ClosedRound[],
-): GremlinDescription | undefined {
-  const lastRounds = [...rounds];
-  const lastRound = lastRounds.pop();
-  const pastRolls = getGremlinRolls(lastRounds);
-  if (
-    !lastRound ||
-    !lastRound.gremlinRoll ||
-    pastRolls.includes(lastRound.gremlinRoll)
-  ) {
+export function getGremlinEffects(
+  round: Round,
+  age: number,
+  finishedActionIds: GameActionId[],
+): Effect[] {
+  if (round.gremlin) {
+    const effect = gremlins[round.gremlin].effect(age, finishedActionIds);
+    if (Array.isArray(effect)) {
+      return effect;
+    }
+    if (effect) {
+      return [effect];
+    }
+  }
+
+  return [];
+}
+
+export function getGremlin(round: Round): GremlinDescription | undefined {
+  if (!round.gremlin) {
     return;
   }
 
-  return gremlins[lastRound.gremlinRoll];
-}
-
-export function getGremlinEffect(
-  gremlinId: GremlinId,
-  age: number,
-  finishedActionIds: GameActionId[],
-) {
-  return gremlins[gremlinId]?.effect(age, finishedActionIds) || null;
-}
-
-export function rollGremlin(currentRound: number): GremlinId | undefined {
-  if (currentRound < 2) {
-    return undefined;
-  }
-  return (rollDice() + rollDice()) as GremlinId;
+  return gremlins[round.gremlin];
 }

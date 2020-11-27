@@ -1,4 +1,5 @@
 import React from 'react';
+import { EFFECT_HIDDEN } from '../../constants';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
@@ -17,6 +18,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       in the next Sprint.
     </p>
   ),
+  effect: () => ({ title: EFFECT_HIDDEN, gremlinChance: 50 }),
   actions: {
     OBSERVE_PEOPLE_AND_RELATIONSHIPS: {
       image: example,

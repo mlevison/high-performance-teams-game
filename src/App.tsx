@@ -14,7 +14,7 @@ import {
 } from './components';
 
 export default function App() {
-  const [state, dispatch, closeRound] = useAppState();
+  const [state, dispatch, closeRound, rollGremlin] = useAppState();
   const [tab, setTab] = useState<'play' | 'rules'>('rules');
   const overlayRef = useRef<HTMLDivElement | null>(null);
 
@@ -40,6 +40,7 @@ export default function App() {
               dispatch={dispatch}
               currentRound={state.currentRound}
               closeRound={closeRound}
+              rollGremlin={rollGremlin}
               overlayRef={overlayRef}
               row1={
                 <Actions

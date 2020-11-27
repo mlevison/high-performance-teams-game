@@ -1,6 +1,10 @@
 import React from 'react';
 import type { RoundDescription } from '../../state';
-import { EFFECT_HIDDEN } from '../../constants';
+import {
+  EFFECT_HIDDEN,
+  START_CAPACITY,
+  START_USER_STORY_CHANCE,
+} from '../../constants';
 import example from './images/example.jpg';
 
 export type Round1ActionId =
@@ -20,11 +24,16 @@ export const round1: RoundDescription<Round1ActionId> = {
       needs you to prove that you can deliver a working …
     </p>
   ),
-  effect: () => ({
-    capacityChange: 10,
-    userStoryChance: 30,
-    title: EFFECT_HIDDEN,
-  }),
+  effect: () => [
+    {
+      title: EFFECT_HIDDEN,
+      capacityChange: START_CAPACITY,
+    },
+    {
+      title: EFFECT_HIDDEN,
+      userStoryChance: START_USER_STORY_CHANCE,
+    },
+  ],
   actions: {
     PROTECTED_FROM_OUTSIDE_DISTRACTION: {
       image: 'https://placekitten.com/100/100',
