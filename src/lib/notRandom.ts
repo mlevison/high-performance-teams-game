@@ -10,5 +10,5 @@ export function random() {
   if (!rolls.length) {
     throw new Error('Unexpected random roll');
   }
-  return rolls.pop()!;
+  return rolls.shift()!;
 }

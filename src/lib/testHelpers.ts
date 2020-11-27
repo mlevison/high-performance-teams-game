@@ -1,8 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useAppState, { AppState } from '../state/useAppState';
+import useAppState from '../state/useAppState';
 import type { GameActionId } from '../config/rounds';
 import { GremlinId } from '../state/gremlins';
-import { ClosedRound } from 'state';
 
 // TODO Hannes confused as to my this called NextRoundOpts
 export type NextRoundOpts = { gremlinRoll?: GremlinId };
@@ -49,17 +48,17 @@ export function getGame() {
 }
 
 export function testFutureCapacities(
-  game: {
-    readonly state: AppState;
-    readonly availableActionIds: GameActionId[];
-    closeRound: () => ClosedRound;
-    nextRound: (opts?: NextRoundOpts | undefined) => void;
-    selectAction: (gameActionId: GameActionId) => void;
-  },
+  game: ReturnType<typeof getGame>,
   capacities: number[],
 ) {
   capacities.forEach((capacity) => {
     game.nextRound();
     expect(game.state.currentRound.capacity.total).toEqual(capacity);
   });
+}
+
+export function times(n: number, callback: (i: number) => void) {
+  for (let i = 0; i < n; i++) {
+    callback(i);
+  }
 }

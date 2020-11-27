@@ -1,6 +1,5 @@
 import { sumByProp, storySucceeds, concatByProp } from '../lib';
 import { GameActionId } from '../config';
-import { STORY_SUCCEEDS_BASE } from '../constants';
 import { GameState, getCapacity, getAllRoundEffects } from './game';
 import {
   findGameActionById,
@@ -63,14 +62,12 @@ export function closeRound(state: GameState): ClosedRound {
     .map((id) => getEffect(id, 0, finishedActionIds))
     .filter(isEffect);
 
-  const chance =
-    STORY_SUCCEEDS_BASE +
-    sumByProp(
-      lastRoundEffects
-        .concat(thisRoundsActionEffects)
-        .filter(isUserStoryChanceEffect),
-      'userStoryChance',
-    );
+  const chance = sumByProp(
+    lastRoundEffects
+      .concat(thisRoundsActionEffects)
+      .filter(isUserStoryChanceEffect),
+    'userStoryChance',
+  );
 
   return {
     ...state.currentRound,

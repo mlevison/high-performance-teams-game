@@ -1,16 +1,16 @@
-import { sumByProp } from 'lib';
 import React, {
   MutableRefObject,
   ReactElement,
   ReactNode,
   useState,
 } from 'react';
-import { TOTAL_ROUNDS, STORY_SUCCEEDS_BASE } from '../constants';
+import { TOTAL_ROUNDS } from '../constants';
 import {
   AppState,
   GameDispatch,
   ClosedRound,
   isUserStoryChanceEffect,
+  startUserStoryChance,
 } from '../state';
 import Button from './Button';
 import styles from './Round.module.css';
@@ -99,7 +99,7 @@ export default function Round(props: Props) {
           </p>
           <h3>Calculation</h3>
           <ul className={styles.userStoryChanceList}>
-            <li>&nbsp;&nbsp;&nbsp;{STORY_SUCCEEDS_BASE}% base chance</li>
+            <li>&nbsp;&nbsp;&nbsp;{startUserStoryChance}% base chance</li>
             {userStoryEffects.map((effect) => (
               <li key={effect.title}>
                 {effect.userStoryChance > 0 ? '+' : '-'}{' '}
@@ -108,10 +108,8 @@ export default function Round(props: Props) {
               </li>
             ))}
             <li>
-              ={' '}
-              {STORY_SUCCEEDS_BASE +
-                sumByProp(userStoryEffects, 'userStoryChance')}
-              % chance to successful finish user-story
+              = {props.currentRound.userStoryChance}% chance to successful
+              finish user-story
             </li>
             <li>---</li>
             {!closedRound && (

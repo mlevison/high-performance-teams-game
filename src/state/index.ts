@@ -7,7 +7,7 @@ export type { RoundDescription } from './rounds';
 export type { GremlinList } from './gremlins';
 export type { GameEffect } from './effects';
 export type GameDispatch = Dispatch<Action>;
-export { startCapacity } from './rounds';
+export { startCapacity, startUserStoryChance } from './rounds';
 export { getCosts, closeRound } from './round';
 export {
   findGameActionById,
