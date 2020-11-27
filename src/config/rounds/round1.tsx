@@ -51,7 +51,7 @@ export const round1: RoundDescription<Round1ActionId> = {
         </p>
       ),
       cost: 2,
-      effect: () => ({ userStoryChance: 15 }),
+      effect: () => ({ userStoryChance: 10 }),
     },
 
     ACTION_WORKING_AGREEMENTS: {

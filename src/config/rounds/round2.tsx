@@ -7,7 +7,8 @@ export type Round2ActionId =
   | 'ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES'
   | 'ACTION_UNIT_TESTING'
   | 'ACTION_SOCIAL_TIME'
-  | 'ACTION_FIRE_FIGHTER_AWARD';
+  | 'ACTION_PROBLEM_SOLVING_BONUS'
+  | 'BACKLOG_REFINEMENT';
 
 export const round2: RoundDescription<Round2ActionId> = {
   title: 'Failed Expectations',
@@ -15,7 +16,8 @@ export const round2: RoundDescription<Round2ActionId> = {
     <p>
       Your team didn't met our expectations that you would complete 10 User
       Stories in the last round. Our vulture capitalists are becoming concerned
-      and ask if you can really deliver?
+      and ask if you can really deliver? They have decided we need more problem
+      solvers on the team.
     </p>
   ),
   actions: {
@@ -55,13 +57,19 @@ export const round2: RoundDescription<Round2ActionId> = {
       type: 'ENGINEERING',
       name: 'Unit Testing',
       available: { requires: 'ACTION_BUILD_SERVER' },
-      description: <p>TODO: SOME DESCRIPTION</p>,
+      description: (
+        <p>
+          Unit Testing is the approach of testing the smallest possible fragment
+          of code. It ensures that the code does what the developer expected it
+          do.
+        </p>
+      ),
       cost: 2,
-      effect: () => ({ capacityChange: 2 }),
+      effect: () => ({ capacityChange: 1 }),
     },
     ACTION_SOCIAL_TIME: {
       image: example,
-      // type: 'COMMUNICATION',
+      type: 'COMMUNICATION',
       name: 'Social Time',
       description: (
         <p>
@@ -76,20 +84,44 @@ export const round2: RoundDescription<Round2ActionId> = {
           'This benefits the team, as team members get to know each other not just as doers of work.',
       }),
     },
-    ACTION_FIRE_FIGHTER_AWARD: {
+    ACTION_PROBLEM_SOLVING_BONUS: {
       image: example,
-      name: 'Fire Fighter Award',
+      name: 'Problem Solving Award',
       description: (
         <p>
-          Offer a firefighter award to any team member who solves big problem
+          Offer a bonus to the team member who solves our current site
+          performance problem.
         </p>
       ),
-      cost: 1,
-      effect: () => ({
-        capacityChange: -1,
-        title:
-          'Promoting a firefighter culture promotes individual behavior and, surprisingly, the starting of fires.',
-      }),
+      cost: 0,
+      effect(age) {
+        // First round it has a positive affect, the second round eliminates it. No effect after that.
+        let change = 0;
+        if (age === 0) {
+          change = 1;
+        }
+
+        return {
+          capacityChange: change,
+          title: `${this.name} active since ${age + 1} rounds`,
+        };
+      },
+    },
+    BACKLOG_REFINEMENT: {
+      image: example,
+      type: 'COMMUNICATION',
+      name: 'Backlog Refinement',
+      description: (
+        <p>
+          The Development Team and the Product Owner sit down every Sprint. They
+          take the time to better understand upcoming features. They might
+          estimate or split stories, create acceptance criteria. They also
+          create new stories and delete one's that no longer make sense. All of
+          this improves their understanding the product they're building.
+        </p>
+      ),
+      cost: 3,
+      effect: () => ({ userStoryChance: 15 }),
     },
   },
 };

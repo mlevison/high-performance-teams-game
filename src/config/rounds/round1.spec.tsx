@@ -82,13 +82,13 @@ describe('round 1', () => {
         const game = getGame();
 
         game.selectAction('ACTION_CLARIFY_PRODUCT_VISION');
-        expect(game.state.currentRound.userStoryChance).toEqual(45);
+        expect(game.state.currentRound.userStoryChance).toEqual(40);
 
         // proving it had no effect on capacity
         times(5, () => {
           game.nextRound();
           expect(game.state.currentRound.capacity.total).toEqual(10);
-          expect(game.state.currentRound.userStoryChance).toEqual(45);
+          expect(game.state.currentRound.userStoryChance).toEqual(40);
         });
       });
     });
