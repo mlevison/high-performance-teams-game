@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import App from './App';
-import { AppState, useAppState, UNIQUE_ACTION } from './state';
-import { ClosedRound } from 'state/round';
+import { AppState, useAppState, UNIQUE_ACTION, ClosedRound } from './state';
 
 jest.mock('./state');
 
@@ -11,6 +10,7 @@ const BASE_STATE: AppState = {
   currentRound: {
     selectedGameActions: [],
     number: 1,
+    userStoryChance: 30,
     capacity: {
       available: 10,
       total: 10,
@@ -57,7 +57,7 @@ describe('App UI', () => {
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
     expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
     const closedRound: ClosedRound = {
-      gremlinRoll: 1,
+      gremlinRoll: 2,
       selectedGameActionIds: [],
       storiesCompleted: 5,
     };
