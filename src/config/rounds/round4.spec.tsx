@@ -1,5 +1,5 @@
 import { AppState, isCapacityEffect } from '../../state';
-import { getGame } from '../../lib/testHelpers';
+import { getGame, testFutureCapacities } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
@@ -46,5 +46,33 @@ describe('round 4', () => {
     /* make sure bump only lasts for 1 round*/
     game.nextRound();
     expect(game.state.currentRound.activeEffects).toHaveLength(0);
+  });
+
+  describe('Cross Skilling', () => {
+    it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
+      const game = getGame();
+
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.selectAction('CROSS_SKILLING');
+
+      testFutureCapacities(game, [10, 11, 12, 13, 13]);
+    });
+  });
+
+  describe('Outside Course to learn testing', () => {
+    it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
+      const game = getGame();
+
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.selectAction('EXTERNAL_CROSS_TRAINING');
+
+      testFutureCapacities(game, [10, 10, 12, 12, 12]);
+    });
   });
 });

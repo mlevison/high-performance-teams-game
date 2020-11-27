@@ -30,20 +30,34 @@ export const round4: RoundDescription<Round4ActionId> = {
       name: 'Informal Cross Skilling',
       description:
         'Informal cross-skilling for existing team members in an area the team is weak. This is often achieved through Pair Programming, Learning Time, etc (Testing anyone?)',
-      cost: 1,
-      effect: () => ({
-        capacityChange: 1,
-      }),
+      cost: 4,
+      effect(age) {
+        let change = age;
+        if (age > 3) {
+          change = 3;
+        }
+
+        return {
+          capacityChange: change,
+        };
+      },
     },
     EXTERNAL_CROSS_TRAINING: {
       image: example,
-      name: 'Formal Cross-Training',
+      name: 'Send Team Members on a testing course',
       description:
         'Take an outside course to improve the skills of one existing team members in an area the team is weak. (Testing anyone?)',
       cost: 3,
-      effect: () => ({
-        capacityChange: 2,
-      }),
+      effect(age) {
+        let change = 0;
+        if (age > 1) {
+          change = 2;
+        }
+
+        return {
+          capacityChange: change,
+        };
+      },
     },
   },
 };

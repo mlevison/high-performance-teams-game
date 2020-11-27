@@ -108,16 +108,6 @@ describe('round 3 Actions', () => {
     });
   });
 
-  describe('Problem Solving Bonus', () => {
-    it('increases capacity now at first but harms it in the future', () => {
-      const game = getGame();
-
-      game.selectAction('PROBLEM_SOLVING_BONUS');
-
-      testFutureCapacities(game, [11, 10, 10, 10]);
-    });
-  });
-
   describe('Product Backlog Refinement', () => {
     it('increases User Story Success, but have no effect on increases capacity', () => {
       const game = getGame();
