@@ -6,7 +6,8 @@ export type Round3ActionId =
   | 'OBSERVE_PEOPLE_AND_RELATIONSHIPS'
   | 'ONE_ON_ONES'
   | 'PAIR_PROGRAMMING'
-  | 'TEST_DRIVEN_DEVELOPMENT';
+  | 'TEST_DRIVEN_DEVELOPMENT'
+  | 'STORY_MAPPING_OR_OTHER';
 
 export const round3: RoundDescription<Round3ActionId> = {
   title: 'Work Harder',
@@ -54,23 +55,51 @@ export const round3: RoundDescription<Round3ActionId> = {
       description: <p>Two team members – one computer</p>,
       cost: 2,
       effect: () => ({
-        capacityChange: 2,
+        capacityChange: 1,
         title:
           'Team Members working in pairs have a lower defect rate, simpler code and learn from each other.',
       }),
+    },
+    STORY_MAPPING_OR_OTHER: {
+      image: example,
+      type: 'COMMUNICATION',
+      name: 'Story Mapping',
+      available: { requires: 'CLARIFY_PRODUCT_VISION' },
+      description: (
+        <p>
+          Story Mapping is a strategic tool, that gets Developers and the
+          Product Owner to discuss strategy. Story mapping helps link
+          understanding of Product Vision with the individual User Stories.
+        </p>
+      ),
+      cost: 2,
+      effect: () => ({ userStoryChance: 10 }),
     },
     TEST_DRIVEN_DEVELOPMENT: {
       image: example,
       type: 'ENGINEERING',
       name: 'Test Driven Development',
       available: { requires: 'BUILD_SERVER' },
-      description: <p>Writing Unit level Tests before writing the code</p>,
-      cost: 2,
-      effect: () => ({
-        capacityChange: 2,
-        title:
-          'By writing the tests before the code – the Developer is forced to consider the simplest solution to their problem. Result: Less code; simpler design and fewer defects',
-      }),
+      description: (
+        <p>
+          Writing Unit level Tests before writing the code. TDD helps the
+          quality by ensuring the developer understands what they're attempting
+          to build before they build it. As a side effect it reduces the volume
+          of code and its complexity. Thereby reduce the number of defects. This
+          skill is takes time to learn.
+        </p>
+      ),
+      cost: 3,
+      effect(age) {
+        let change = age;
+        if (age > 2) {
+          change = 2;
+        }
+
+        return {
+          capacityChange: change,
+        };
+      },
     },
   },
 };
