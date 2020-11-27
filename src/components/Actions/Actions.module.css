@@ -58,7 +58,7 @@
   background-size: cover;
   width: 4rem;
   height: 4rem;
-  border: 3px solid var(--main-background-color);
+  border: 5px solid var(--main-background-color);
 }
 .actionIcon {
   font-size: 3.2rem;
@@ -71,7 +71,7 @@
 
 .actionSelected .actionImage,
 .actionSelected .actionIcon {
-  border: 5px solid var(--selected-action-color);
+  border-color: var(--selected-action-color);
 }
 
 .arrow {
