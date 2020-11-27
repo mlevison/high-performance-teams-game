@@ -38,7 +38,7 @@ describe('round 1', () => {
       it('increases capacity over many rounds', () => {
         const game = getGame();
 
-        game.selectAction('ACTION_TEAMS_ON_SAME_FLOOR');
+        game.selectAction('TEAMS_ON_SAME_FLOOR');
         game.nextRound();
         expect(game.state.currentRound.number).toEqual(2);
         expect(game.state.currentRound.capacity.total).toEqual(11);
@@ -51,7 +51,7 @@ describe('round 1', () => {
       it('increases the chance user-stories succeed', () => {
         const game = getGame();
 
-        game.selectAction('ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION');
+        game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
         expect(game.state.currentRound.userStoryChance).toEqual(40);
 
         times(5, () => {
@@ -66,7 +66,7 @@ describe('round 1', () => {
       it('increases capacity, but have no effect on User Story Success', () => {
         const game = getGame();
 
-        game.selectAction('ACTION_WORKING_AGREEMENTS');
+        game.selectAction('WORKING_AGREEMENTS');
 
         // Capacity only ever increases by one in total
         times(5, () => {
@@ -81,7 +81,7 @@ describe('round 1', () => {
       it('increases UserStory success and has no effect on capacity', () => {
         const game = getGame();
 
-        game.selectAction('ACTION_CLARIFY_PRODUCT_VISION');
+        game.selectAction('CLARIFY_PRODUCT_VISION');
         expect(game.state.currentRound.userStoryChance).toEqual(40);
 
         // proving it had no effect on capacity

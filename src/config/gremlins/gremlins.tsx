@@ -14,14 +14,12 @@ export const gremlins: GremlinList = {
       </p>
     ),
     effect(age, finishedActionIds) {
-      if (
-        finishedActionIds.includes('ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION')
-      ) {
+      if (finishedActionIds.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION')) {
         // TODO - Hannes are we better to return null or 0 capacity change with details on why zero?
         return null;
       }
       return {
-        // TODO - Hannes did I get this wrong? I want this effect to be permanent - even if they add the ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION later
+        // TODO - Hannes did I get this wrong? I want this effect to be permanent - even if they add the PROTECTED_FROM_OUTSIDE_DISTRACTION later
         capacityChange: -2,
         title: 'Management yells at a team member in public',
       };
@@ -39,9 +37,7 @@ export const gremlins: GremlinList = {
     effect(age, finishedActionIds) {
       if (
         age >= 3 ||
-        (finishedActionIds.includes(
-          'ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION',
-        ) &&
+        (finishedActionIds.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION') &&
           age >= 2)
       ) {
         return null;
@@ -49,10 +45,10 @@ export const gremlins: GremlinList = {
 
       let capacity = -3;
 
-      if (finishedActionIds.includes('ACTION_INFORMAL_CROSS_SKILLING')) {
+      if (finishedActionIds.includes('CROSS_SKILLING')) {
         capacity += 1;
       }
-      if (finishedActionIds.includes('ACTION_FORMAL_CROSS_TRAINING')) {
+      if (finishedActionIds.includes('EXTERNAL_CROSS_TRAINING')) {
         capacity += 1;
       }
 
@@ -80,8 +76,8 @@ export const gremlins: GremlinList = {
     effect(age, finishedActionIds) {
       let capacityChange = -2;
       if (
-        finishedActionIds.includes('ACTION_ONE_ON_ONES') ||
-        finishedActionIds.includes('ACTION_INFORMAL_CROSS_SKILLING')
+        finishedActionIds.includes('ONE_ON_ONES') ||
+        finishedActionIds.includes('CROSS_SKILLING')
       ) {
         capacityChange = -1;
       }
@@ -105,8 +101,8 @@ export const gremlins: GremlinList = {
     effect(age, finishedActionIds) {
       let capacityChange = -1;
       if (
-        finishedActionIds.includes('ACTION_ONE_ON_ONES') ||
-        finishedActionIds.includes('ACTION_WORKING_AGREEMENTS')
+        finishedActionIds.includes('ONE_ON_ONES') ||
+        finishedActionIds.includes('WORKING_AGREEMENTS')
       ) {
         capacityChange = 0;
       }

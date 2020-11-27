@@ -2,9 +2,7 @@ import React from 'react';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
-export type Round4ActionId =
-  | 'ACTION_INFORMAL_CROSS_SKILLING'
-  | 'ACTION_FORMAL_CROSS_TRAINING';
+export type Round4ActionId = 'CROSS_SKILLING' | 'EXTERNAL_CROSS_TRAINING';
 
 export const round4: RoundDescription<Round4ActionId> = {
   title: 'Go Live Soon',
@@ -27,7 +25,7 @@ export const round4: RoundDescription<Round4ActionId> = {
     return null;
   },
   actions: {
-    ACTION_INFORMAL_CROSS_SKILLING: {
+    CROSS_SKILLING: {
       image: example,
       name: 'Informal Cross Skilling',
       description:
@@ -37,7 +35,7 @@ export const round4: RoundDescription<Round4ActionId> = {
         capacityChange: 1,
       }),
     },
-    ACTION_FORMAL_CROSS_TRAINING: {
+    EXTERNAL_CROSS_TRAINING: {
       image: example,
       name: 'Formal Cross-Training',
       description:

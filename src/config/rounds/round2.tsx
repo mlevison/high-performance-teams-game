@@ -3,11 +3,11 @@ import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
 export type Round2ActionId =
-  | 'ACTION_REMOTE_TEAM_AVATARS'
-  | 'ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES'
-  | 'ACTION_UNIT_TESTING'
-  | 'ACTION_SOCIAL_TIME'
-  | 'ACTION_PROBLEM_SOLVING_BONUS'
+  | 'REMOTE_TEAM_AVATARS'
+  | 'ELIMINATE_LONG_LIVED_FEATURE_BRANCHES'
+  | 'UNIT_TESTING'
+  | 'SOCIAL_TIME'
+  | 'PROBLEM_SOLVING_BONUS'
   | 'BACKLOG_REFINEMENT';
 
 export const round2: RoundDescription<Round2ActionId> = {
@@ -21,7 +21,7 @@ export const round2: RoundDescription<Round2ActionId> = {
     </p>
   ),
   actions: {
-    ACTION_REMOTE_TEAM_AVATARS: {
+    REMOTE_TEAM_AVATARS: {
       icon: '👋',
       name: 'Remote Team Avatars',
       description: (
@@ -38,7 +38,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       cost: 1,
       effect: () => ({ capacityChange: 1 }),
     },
-    ACTION_ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
+    ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
       image: example,
       type: 'ENGINEERING',
       name: 'All Work is done on Main or Trunk',
@@ -52,11 +52,11 @@ export const round2: RoundDescription<Round2ActionId> = {
       cost: 2,
       effect: () => ({ capacityChange: 1 }),
     },
-    ACTION_UNIT_TESTING: {
+    UNIT_TESTING: {
       icon: '🏗',
       type: 'ENGINEERING',
       name: 'Unit Testing',
-      available: { requires: 'ACTION_BUILD_SERVER' },
+      available: { requires: 'BUILD_SERVER' },
       description: (
         <p>
           Unit Testing is the approach of testing the smallest possible fragment
@@ -67,7 +67,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       cost: 2,
       effect: () => ({ capacityChange: 1 }),
     },
-    ACTION_SOCIAL_TIME: {
+    SOCIAL_TIME: {
       image: example,
       type: 'COMMUNICATION',
       name: 'Social Time',
@@ -84,7 +84,7 @@ export const round2: RoundDescription<Round2ActionId> = {
           'This benefits the team, as team members get to know each other not just as doers of work.',
       }),
     },
-    ACTION_PROBLEM_SOLVING_BONUS: {
+    PROBLEM_SOLVING_BONUS: {
       image: example,
       name: 'Problem Solving Award',
       description: (

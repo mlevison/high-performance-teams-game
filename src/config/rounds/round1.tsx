@@ -4,11 +4,11 @@ import { EFFECT_HIDDEN } from '../../constants';
 import example from './images/example.jpg';
 
 export type Round1ActionId =
-  | 'ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION'
-  | 'ACTION_CLARIFY_PRODUCT_VISION'
-  | 'ACTION_WORKING_AGREEMENTS'
-  | 'ACTION_BUILD_SERVER'
-  | 'ACTION_TEAMS_ON_SAME_FLOOR';
+  | 'PROTECTED_FROM_OUTSIDE_DISTRACTION'
+  | 'CLARIFY_PRODUCT_VISION'
+  | 'WORKING_AGREEMENTS'
+  | 'BUILD_SERVER'
+  | 'TEAMS_ON_SAME_FLOOR';
 
 export const round1: RoundDescription<Round1ActionId> = {
   title: 'Team, welcome to the World’s Smallest Online Bookstore',
@@ -26,7 +26,7 @@ export const round1: RoundDescription<Round1ActionId> = {
     title: EFFECT_HIDDEN,
   }),
   actions: {
-    ACTION_PROTECTED_FROM_OUTSIDE_DISTRACTION: {
+    PROTECTED_FROM_OUTSIDE_DISTRACTION: {
       image: 'https://placekitten.com/100/100',
       name: 'Protected from Outside Distraction',
       description: (
@@ -39,7 +39,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       cost: 1,
       effect: () => ({ userStoryChance: 10 }),
     },
-    ACTION_CLARIFY_PRODUCT_VISION: {
+    CLARIFY_PRODUCT_VISION: {
       image: 'https://placekitten.com/100/100',
       name: 'Clarify Product Vision',
       description: (
@@ -54,7 +54,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       effect: () => ({ userStoryChance: 10 }),
     },
 
-    ACTION_WORKING_AGREEMENTS: {
+    WORKING_AGREEMENTS: {
       image: example,
       type: 'COMMUNICATION',
       name: 'Working Agreements',
@@ -69,7 +69,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       cost: 1,
       effect: () => ({ capacityChange: 1 }),
     },
-    ACTION_BUILD_SERVER: {
+    BUILD_SERVER: {
       image: example,
       type: 'ENGINEERING',
       name: 'Build Server',
@@ -81,7 +81,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       ),
       cost: 2,
     },
-    ACTION_TEAMS_ON_SAME_FLOOR: {
+    TEAMS_ON_SAME_FLOOR: {
       image: example,
       name: 'Team Members On SameFloor',
       type: 'COMMUNICATION',
