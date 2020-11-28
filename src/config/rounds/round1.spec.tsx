@@ -20,6 +20,7 @@ describe('round 1', () => {
           total: 10,
           available: 10,
         },
+        gremlinChance: 0,
         userStoryChance: 30,
         number: 1,
         activeEffects: [],

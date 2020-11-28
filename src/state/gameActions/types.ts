@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { GameActionId } from '../../config';
-import { EffectDescription, BaseEffect } from '../effects';
+import { EffectDescription, BaseEffect, Effect } from '../effects';
 
 type EffectWithOptionalTitle = Partial<EffectDescription> & BaseEffect;
 export type AvailabilityCheck = (
@@ -47,7 +47,7 @@ type GameActionImplementation = {
   effect?: (
     age: number,
     finishedActionIds: GameActionId[],
-  ) => EffectWithOptionalTitle | null;
+  ) => Effect[] | EffectWithOptionalTitle | null;
   name: string;
   description: ReactNode;
   cost: number;

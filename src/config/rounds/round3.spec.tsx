@@ -1,10 +1,9 @@
-import { getGame, testFutureCapacities, times } from '../../lib/testHelpers';
+import { getGame, times, testFutureCapacities } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
   rounds: {
     1: require('./round1').round1,
-    2: require('./round2').round2,
     3: require('./round3').round3,
   },
 }));
@@ -12,6 +11,21 @@ jest.mock('./index', () => ({
 jest.mock('../gameEffects', () => ({
   gameEffects: [],
 }));
+
+describe('round 3', () => {
+  it('increases gremlinChance to 50', () => {
+    const game = getGame();
+
+    game.nextRound();
+    times(5, () => {
+      game.nextRound();
+
+      expect(game.state.currentRound.capacity.total).toEqual(10);
+      expect(game.state.currentRound.gremlinChance).toEqual(50);
+      expect(game.state.currentRound.userStoryChance).toEqual(30);
+    });
+  });
+});
 
 describe('round 3 Actions', () => {
   describe('Test Driven Development', () => {
@@ -104,21 +118,6 @@ describe('round 3 Actions', () => {
         game.nextRound();
         expect(game.state.currentRound.capacity.total).toEqual(11);
         expect(game.state.currentRound.userStoryChance).toEqual(30);
-      });
-    });
-  });
-
-  describe('Product Backlog Refinement', () => {
-    it('increases User Story Success, but have no effect on increases capacity', () => {
-      const game = getGame();
-
-      game.selectAction('BACKLOG_REFINEMENT');
-      expect(game.state.currentRound.userStoryChance).toEqual(45);
-
-      times(5, () => {
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(10);
-        expect(game.state.currentRound.userStoryChance).toEqual(45);
       });
     });
   });

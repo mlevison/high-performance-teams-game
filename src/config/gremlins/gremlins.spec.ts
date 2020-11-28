@@ -1,5 +1,5 @@
-import { getGame, NextRoundOpts } from '../../lib/testHelpers';
-import { rollGremlin } from '../../state/gremlins';
+import { getGame } from '../../lib/testHelpers';
+import { gremlins } from './gremlins';
 
 /* Disable round, game and action effects */
 jest.mock('../../state/rounds/getRoundEffects', () => ({
@@ -8,44 +8,25 @@ jest.mock('../../state/rounds/getRoundEffects', () => ({
 jest.mock('../gameEffects', () => ({
   gameEffects: [],
 }));
-jest.mock('../../state/gameActions/getEffect', () => ({
-  getEffect: () => null,
+jest.mock('../../state/gameActions/getEffects', () => ({
+  getEffects: () => [],
 }));
 
 describe('Gremlins', () => {
-  describe('roll gremlin', () => {
-    it('does not roll in round 1', () => {
-      expect(rollGremlin(1)).toBe(undefined);
-      const roll2 = rollGremlin(2);
-      expect(roll2).toEqual(expect.any(Number));
-      expect(roll2).toBeGreaterThanOrEqual(1);
-      expect(roll2).toBeLessThanOrEqual(12);
-    });
-  });
-
-  it('take only first gremlin roll into account', () => {
-    const game = getGame();
-    const gremlinRoll = 4;
-
-    game.nextRound({ gremlinRoll });
-    expect(game.state.currentRound.capacity.available).toBe(7);
-
-    game.nextRound({ gremlinRoll });
-    expect(game.state.currentRound.capacity.available).toBe(7);
-
-    game.nextRound({ gremlinRoll });
-    expect(game.state.currentRound.capacity.available).toBe(7);
-
-    game.nextRound({ gremlinRoll });
-    expect(game.state.currentRound.capacity.available).toBe(10);
-  });
-
   describe('emergency on another team', () => {
-    const NEXT_ROUND_OPTS: NextRoundOpts = { gremlinRoll: 4 };
+    it('has a probability of 10', () => {
+      expect(
+        gremlins.GREMLIN_EMERGENCY_ON_OTHER_TEAM.probability({
+          currentRound: { gremlin: null, selectedGameActionIds: [] },
+          pastRounds: [],
+        }),
+      ).toBe(10);
+    });
+
     it('reduces capacity by 3 for 3 rounds', () => {
       const game = getGame();
 
-      game.nextRound(NEXT_ROUND_OPTS);
+      game.nextRound('GREMLIN_EMERGENCY_ON_OTHER_TEAM');
 
       // TODO - Hannes - Can't tell what property to access to assert that the name is what I expect
 
@@ -65,7 +46,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
-      game.nextRound(NEXT_ROUND_OPTS);
+      game.nextRound('GREMLIN_EMERGENCY_ON_OTHER_TEAM');
       expect(game.state.currentRound.capacity.available).toBe(7);
 
       game.nextRound();
@@ -82,7 +63,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('CROSS_SKILLING');
-      game.nextRound(NEXT_ROUND_OPTS);
+      game.nextRound('GREMLIN_EMERGENCY_ON_OTHER_TEAM');
       expect(game.state.currentRound.capacity.available).toBe(8);
 
       game.nextRound();
@@ -101,7 +82,7 @@ describe('Gremlins', () => {
       game.selectAction('CROSS_SKILLING');
       game.selectAction('EXTERNAL_CROSS_TRAINING');
       game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
-      game.nextRound(NEXT_ROUND_OPTS);
+      game.nextRound('GREMLIN_EMERGENCY_ON_OTHER_TEAM');
       expect(game.state.currentRound.capacity.available).toBe(9);
 
       game.nextRound();
@@ -116,11 +97,10 @@ describe('Gremlins', () => {
   });
 
   describe('Management yells at a team member', () => {
-    const MANAGEMENT_YELLS_GREMLIN: NextRoundOpts = { gremlinRoll: 3 };
     it('reduces capacity by 2 ', () => {
       const game = getGame();
 
-      game.nextRound(MANAGEMENT_YELLS_GREMLIN);
+      game.nextRound('GREMLIN_MANAGEMENT_YELLS');
 
       // TODO Again how to test on the name?
 
@@ -140,17 +120,16 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
-      game.nextRound(MANAGEMENT_YELLS_GREMLIN);
+      game.nextRound('GREMLIN_MANAGEMENT_YELLS');
       expect(game.state.currentRound.capacity.available).toBe(10);
     });
   });
 
   describe('Team Member not pulling their weight', () => {
-    const NOT_PULLING_THEIR_WEIGHT_GREMLIN: NextRoundOpts = { gremlinRoll: 5 };
     it('reduces capacity by 2 ', () => {
       const game = getGame();
 
-      game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
+      game.nextRound('GREMLIN_NOT_PULLING_THEIR_WEIGHT');
 
       // TODO Again how to test on the name?
 
@@ -170,7 +149,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('ONE_ON_ONES');
-      game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
+      game.nextRound('GREMLIN_NOT_PULLING_THEIR_WEIGHT');
       expect(game.state.currentRound.capacity.available).toBe(9);
     });
 
@@ -178,7 +157,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('CROSS_SKILLING');
-      game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
+      game.nextRound('GREMLIN_NOT_PULLING_THEIR_WEIGHT');
       expect(game.state.currentRound.capacity.available).toBe(9);
     });
 
@@ -186,17 +165,16 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('ONE_ON_ONES');
-      game.nextRound(NOT_PULLING_THEIR_WEIGHT_GREMLIN);
+      game.nextRound('GREMLIN_NOT_PULLING_THEIR_WEIGHT');
       expect(game.state.currentRound.capacity.available).toBe(9);
     });
   });
 
   describe('Team Member consistently late or misses Daily Scrum', () => {
-    const NOT_AT_DAILY_SCRUM_GREMLIN: NextRoundOpts = { gremlinRoll: 8 };
     it('reduces capacity by 1 ', () => {
       const game = getGame();
 
-      game.nextRound(NOT_AT_DAILY_SCRUM_GREMLIN);
+      game.nextRound('GREMLIN_NOT_AT_DAILY_SCRUM');
 
       // TODO Again how to test on the name?
 
@@ -215,7 +193,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('ONE_ON_ONES');
-      game.nextRound(NOT_AT_DAILY_SCRUM_GREMLIN);
+      game.nextRound('GREMLIN_NOT_AT_DAILY_SCRUM');
       expect(game.state.currentRound.capacity.available).toBe(10);
     });
 
@@ -223,7 +201,7 @@ describe('Gremlins', () => {
       const game = getGame();
 
       game.selectAction('WORKING_AGREEMENTS');
-      game.nextRound(NOT_AT_DAILY_SCRUM_GREMLIN);
+      game.nextRound('GREMLIN_NOT_AT_DAILY_SCRUM');
       expect(game.state.currentRound.capacity.available).toBe(10);
     });
   });

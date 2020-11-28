@@ -4,13 +4,13 @@ import {
   isVisibleEffect,
   VisibleEffect,
   BaseEffect,
-  isEffect,
   isUserStoryChanceEffect,
+  isGremlinChanceEffect,
 } from './effects';
 import {
   Action,
   gameReducer,
-  getAllRoundEffects,
+  getAllEffects,
   getCapacity,
   INITIAL_STATE,
 } from './game';
@@ -18,12 +18,11 @@ import {
   getAvailableGameActions,
   GameAction,
   findGameActionById,
-  getEffect,
 } from './gameActions';
 import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
-import { GremlinDescription, getGremlin } from './gremlins';
+import { GremlinDescription, rollGremlin, getGremlin } from './gremlins';
 import { ClosedRound, closeRound, getCosts } from './round';
-import { rounds } from '../config';
+import { GremlinId, rounds } from '../config';
 
 export type AppState = {
   availableGameActions: GameActionWithStatus[];
@@ -37,6 +36,7 @@ export type AppState = {
       available: number;
       total: number;
     };
+    gremlinChance: number;
     userStoryChance: number;
     activeEffects: VisibleEffect<BaseEffect>[];
   };
@@ -49,36 +49,29 @@ export type AppState = {
   }[];
 };
 
+function orZero(num: number): number {
+  return num < 0 ? 0 : num;
+}
+
 export default function useAppState(): [
   AppState,
   Dispatch<Action>,
   () => ClosedRound,
+  () => GremlinId | null,
 ] {
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
 
-  const effects = getAllRoundEffects(state.pastRounds);
-  const roundCapacity = getCapacity(effects);
+  const effects = getAllEffects(state);
 
-  const finishedActionIds = concatByProp(
-    state.pastRounds,
-    'selectedGameActionIds',
-  );
-  const thisRoundsActionUserStoryEffects = state.currentRound.selectedGameActionIds
-    .map((id) => getEffect(id, 0, finishedActionIds))
-    .filter(isEffect)
-    .filter(isUserStoryChanceEffect);
+  const roundCapacity = orZero(getCapacity(effects));
 
-  const visibleEffects = effects
-    .concat(thisRoundsActionUserStoryEffects)
-    .filter(isVisibleEffect);
+  const visibleEffects = effects.filter(isVisibleEffect);
   const totalUserStoryChance = sumByProp(
-    effects
-      .concat(thisRoundsActionUserStoryEffects)
-      .filter(isUserStoryChanceEffect),
+    effects.filter(isUserStoryChanceEffect),
     'userStoryChance',
   );
   const costs = getCosts(state.currentRound);
-  const capacityAvailable = roundCapacity - costs;
+  const capacityAvailable = orZero(roundCapacity - costs);
   const currentRoundNumber = state.pastRounds.length + 1;
   const availableGameActions = getAvailableGameActions(
     currentRoundNumber,
@@ -90,7 +83,7 @@ export default function useAppState(): [
   );
   const currentRoundTitle = rounds[currentRoundNumber]?.title;
   const currentRoundDescription = rounds[currentRoundNumber]?.description;
-  const gremlin = getGremlin(state.pastRounds);
+  const gremlin = getGremlin(state.currentRound);
 
   return [
     {
@@ -105,6 +98,10 @@ export default function useAppState(): [
           available: capacityAvailable,
           total: roundCapacity,
         },
+        gremlinChance: sumByProp(
+          effects.filter(isGremlinChanceEffect),
+          'gremlinChance',
+        ),
         userStoryChance: totalUserStoryChance,
         activeEffects: visibleEffects,
       },
@@ -117,5 +114,6 @@ export default function useAppState(): [
     },
     dispatch,
     () => closeRound(state),
+    () => rollGremlin(state),
   ];
 }

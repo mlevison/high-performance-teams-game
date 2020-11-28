@@ -1,16 +1,16 @@
+import { GremlinId } from 'config';
 import React, {
   MutableRefObject,
   ReactElement,
   ReactNode,
   useState,
 } from 'react';
-import { TOTAL_ROUNDS } from '../constants';
+import { TOTAL_ROUNDS, START_USER_STORY_CHANCE } from '../constants';
 import {
   AppState,
   GameDispatch,
   ClosedRound,
   isUserStoryChanceEffect,
-  startUserStoryChance,
 } from '../state';
 import Button from './Button';
 import styles from './Round.module.css';
@@ -18,6 +18,7 @@ import styles from './Round.module.css';
 type Props = {
   currentRound: AppState['currentRound'];
   closeRound: () => ClosedRound;
+  rollGremlin: () => GremlinId | null;
   dispatch: GameDispatch;
   overlayRef: MutableRefObject<HTMLDivElement | null>;
   row1?: ReactElement;
@@ -99,7 +100,7 @@ export default function Round(props: Props) {
           </p>
           <h3>Calculation</h3>
           <ul className={styles.userStoryChanceList}>
-            <li>&nbsp;&nbsp;&nbsp;{startUserStoryChance}% base chance</li>
+            <li>&nbsp;&nbsp;&nbsp;{START_USER_STORY_CHANCE}% base chance</li>
             {userStoryEffects.map((effect) => (
               <li key={effect.title}>
                 {effect.userStoryChance > 0 ? '+' : '-'}{' '}
@@ -164,7 +165,10 @@ export default function Round(props: Props) {
                 }
                 props.dispatch({
                   type: 'NEXT_ROUND',
-                  payload: closedRound,
+                  payload: {
+                    closedRound,
+                    gremlin: props.rollGremlin(),
+                  },
                 });
               }}
             >

@@ -1,11 +1,15 @@
-import { Round, ClosedRound, createRound, getEffects } from './round';
-import { Effect, isCapacityEffect, isEffect } from './effects';
+import { Round, ClosedRound, createRound, getActionEffects } from './round';
+import {
+  Effect,
+  isCapacityEffect,
+  isEffect,
+  isUserStoryOrGremlinChanceEffect,
+} from './effects';
 import { concatByProp } from '../lib';
-import { GameActionId, gameEffects } from '../config';
+import { GameActionId, gameEffects, GremlinId } from '../config';
 import { getRoundEffects } from './rounds';
-import { getGremlinRolls } from './gremlins';
-
-export const GAME_STATE = Symbol('GAME_STATE');
+import { getEffects } from './gameActions';
+import { getGremlinEffects } from './gremlins';
 
 export type GameState = {
   currentRound: Round;
@@ -21,7 +25,10 @@ export type UnselectGameActionAction = {
 };
 export type NextRoundAction = {
   type: 'NEXT_ROUND';
-  payload: ClosedRound;
+  payload: {
+    closedRound: ClosedRound;
+    gremlin: GremlinId | null;
+  };
 };
 export type Action =
   | NextRoundAction
@@ -30,41 +37,58 @@ export type Action =
 
 export const INITIAL_STATE: GameState = {
   currentRound: {
+    gremlin: null,
     selectedGameActionIds: [],
   },
   pastRounds: [],
 };
 
-export function getAllRoundEffects(pastRounds: ClosedRound[]) {
-  const roundAmounts = pastRounds.length;
-  const roundDescriptionEffects = getRoundEffects(pastRounds);
-  if (!pastRounds.length) {
-    return roundDescriptionEffects.filter(isEffect);
-  }
+export function getAllEffects(state: GameState) {
+  const finishedActionIds = concatByProp(
+    state.pastRounds,
+    'selectedGameActionIds',
+  );
+  const effects: Effect[] = [];
 
-  const allActionIds = concatByProp(pastRounds, 'selectedGameActionIds');
+  /* Base round effects of past rounds */
+  effects.push(...getRoundEffects(state));
 
-  const actionEffects = pastRounds.reduce((allEffects, round, i) => {
-    const age = roundAmounts - (i + 1);
-    const previousGremlinRolls = getGremlinRolls(pastRounds.slice(0, i));
-    const roundEffects = getEffects(
-      round,
-      age,
-      allActionIds,
-      previousGremlinRolls,
+  /* UserStory and gremlin-roll effects are directly active */
+  state.currentRound.selectedGameActionIds.forEach((id) => {
+    effects.push(
+      ...getEffects(id, 0, finishedActionIds).filter(
+        isUserStoryOrGremlinChanceEffect,
+      ),
     );
-
-    return allEffects.concat(roundEffects);
-  }, [] as (Effect | null)[]);
-
-  const activeGameEffects = Object.values(gameEffects).map((gameEffect) => {
-    return gameEffect(pastRounds);
   });
 
-  return roundDescriptionEffects
-    .concat(actionEffects)
-    .concat(activeGameEffects)
-    .filter(isEffect);
+  /* current rounds gremlin */
+  effects.push(...getGremlinEffects(state.currentRound, 0, finishedActionIds));
+
+  /* Get action and gremlin effects from past rounds */
+  const roundAmounts = state.pastRounds.length - 1;
+  state.pastRounds.forEach((round, i) => {
+    const age = roundAmounts - i;
+
+    effects.push(
+      /* gremlins occur on current round, so they're at age +1 in next */
+      ...getGremlinEffects(round, age + 1, finishedActionIds),
+      /* actions get active in next */
+      ...getActionEffects(round, age, finishedActionIds).filter(isEffect),
+    );
+  });
+
+  /* Add game Effects */
+  Object.values(gameEffects).forEach((gameEffect) => {
+    const effect = gameEffect(state.pastRounds);
+    if (Array.isArray(effect)) {
+      effects.push(...effect);
+    } else if (effect) {
+      effects.push(effect);
+    }
+  });
+
+  return effects;
 }
 
 export function getCapacity(effects: Effect[]) {
@@ -101,8 +125,8 @@ export function gameReducer(state: GameState, action: Action): GameState {
     case 'NEXT_ROUND': {
       return {
         ...state,
-        pastRounds: [...state.pastRounds, action.payload],
-        currentRound: createRound(),
+        pastRounds: [...state.pastRounds, action.payload.closedRound],
+        currentRound: createRound(action.payload.gremlin),
       };
     }
   }
