@@ -44,4 +44,4 @@ export type GremlinChanceEffect<T extends EffectDescription> = T &
   GremlinChanceEffectProps;
 
 export type Effect = BaseEffect & EffectDescription;
-export type GameEffect = (rounds: Round[]) => Effect | null;
+export type GameEffect = (rounds: Round[]) => Effect[] | Effect | null;

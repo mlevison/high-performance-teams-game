@@ -8,7 +8,7 @@ import {
 import { concatByProp } from '../lib';
 import { GameActionId, gameEffects, GremlinId } from '../config';
 import { getRoundEffects } from './rounds';
-import { getEffect } from './gameActions';
+import { getEffects } from './gameActions';
 import { getGremlinEffects } from './gremlins';
 
 export type GameState = {
@@ -54,12 +54,13 @@ export function getAllEffects(state: GameState) {
   effects.push(...getRoundEffects(state));
 
   /* UserStory and gremlin-roll effects are directly active */
-  effects.push(
-    ...state.currentRound.selectedGameActionIds
-      .map((id) => getEffect(id, 0, finishedActionIds))
-      .filter(isEffect)
-      .filter(isUserStoryOrGremlinChanceEffect),
-  );
+  state.currentRound.selectedGameActionIds.forEach((id) => {
+    effects.push(
+      ...getEffects(id, 0, finishedActionIds).filter(
+        isUserStoryOrGremlinChanceEffect,
+      ),
+    );
+  });
 
   /* current rounds gremlin */
   effects.push(...getGremlinEffects(state.currentRound, 0, finishedActionIds));
@@ -80,7 +81,9 @@ export function getAllEffects(state: GameState) {
   /* Add game Effects */
   Object.values(gameEffects).forEach((gameEffect) => {
     const effect = gameEffect(state.pastRounds);
-    if (effect) {
+    if (Array.isArray(effect)) {
+      effects.push(...effect);
+    } else if (effect) {
       effects.push(effect);
     }
   });

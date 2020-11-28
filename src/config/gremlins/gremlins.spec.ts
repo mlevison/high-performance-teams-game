@@ -8,8 +8,8 @@ jest.mock('../../state/rounds/getRoundEffects', () => ({
 jest.mock('../gameEffects', () => ({
   gameEffects: [],
 }));
-jest.mock('../../state/gameActions/getEffect', () => ({
-  getEffect: () => null,
+jest.mock('../../state/gameActions/getEffects', () => ({
+  getEffects: () => [],
 }));
 
 describe('Gremlins', () => {

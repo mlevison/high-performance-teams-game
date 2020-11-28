@@ -4,9 +4,9 @@ import { GameState, getCapacity, getAllEffects } from './game';
 import {
   findGameActionById,
   getCost as getActionCost,
-  getEffect as getActionEffect,
+  getEffects,
 } from './gameActions';
-import { isUserStoryChanceEffect } from './effects';
+import { Effect, isUserStoryChanceEffect } from './effects';
 
 export type Round = {
   gremlin: GremlinId | null;
@@ -27,10 +27,12 @@ export function getActionEffects(
   round: ClosedRound,
   age: number,
   finishedActionIds: GameActionId[],
-) {
-  return round.selectedGameActionIds.map((id) =>
-    getActionEffect(id, age, finishedActionIds),
-  );
+): Effect[] {
+  const effects: Effect[] = [];
+  round.selectedGameActionIds.forEach((id) => {
+    effects.push(...getEffects(id, age, finishedActionIds));
+  });
+  return effects;
 }
 
 export function getCosts(round: Round) {
