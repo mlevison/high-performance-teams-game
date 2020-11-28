@@ -21,12 +21,12 @@ export type GremlinList<K extends string> = {
   [k in K]: GremlinImplementation;
 };
 
-const gremlinArray = Object.entries(gremlins).map(([id, gremlin]) => ({
-  id: id as GremlinId,
-  ...gremlin,
-}));
-
 export function rollGremlin(state: GameState): GremlinId | null {
+  const gremlinArray = Object.entries(gremlins).map(([id, gremlin]) => ({
+    id: id as GremlinId,
+    ...gremlin,
+  }));
+
   const gremlinChanceEffects = getAllEffects(state).filter(
     isGremlinChanceEffect,
   );
