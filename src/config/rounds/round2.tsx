@@ -121,7 +121,7 @@ export const round2: RoundDescription<Round2ActionId> = {
         </p>
       ),
       cost: 3,
-      effect: () => ({ userStoryChance: 15 }),
+      effect: () => ({ userStoryChange: 15 }),
     },
   },
 };

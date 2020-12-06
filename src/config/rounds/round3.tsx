@@ -18,7 +18,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       in the next Sprint.
     </p>
   ),
-  effect: () => ({ title: EFFECT_HIDDEN, gremlinChance: 50 }),
+  effect: () => ({ title: EFFECT_HIDDEN, gremlinChange: 50 }),
   actions: {
     OBSERVE_PEOPLE_AND_RELATIONSHIPS: {
       image: example,
@@ -75,7 +75,7 @@ export const round3: RoundDescription<Round3ActionId> = {
         </p>
       ),
       cost: 2,
-      effect: () => ({ userStoryChance: 10 }),
+      effect: () => ({ userStoryChange: 10 }),
     },
     TEST_DRIVEN_DEVELOPMENT: {
       image: example,

@@ -103,8 +103,8 @@ export default function Round(props: Props) {
             <li>&nbsp;&nbsp;&nbsp;{START_USER_STORY_CHANCE}% base chance</li>
             {userStoryEffects.map((effect) => (
               <li key={effect.title}>
-                {effect.userStoryChance > 0 ? '+' : '-'}{' '}
-                {effect.userStoryChance.toString().replace(/^-/, '')}%{' '}
+                {effect.userStoryChange > 0 ? '+' : '-'}{' '}
+                {effect.userStoryChange.toString().replace(/^-/, '')}%{' '}
                 {effect.title}
               </li>
             ))}
