@@ -30,7 +30,7 @@ export function rollGremlin(state: GameState): GremlinId | null {
   const gremlinChanceEffects = getAllEffects(state).filter(
     isGremlinChanceEffect,
   );
-  const gremlinChance = sumByProp(gremlinChanceEffects, 'gremlinChance');
+  const gremlinChance = sumByProp(gremlinChanceEffects, 'gremlinChange');
 
   if (random() * 100 > gremlinChance) {
     return null;

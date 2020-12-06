@@ -31,7 +31,7 @@ export const round1: RoundDescription<Round1ActionId> = {
     },
     {
       title: EFFECT_HIDDEN,
-      userStoryChance: START_USER_STORY_CHANCE,
+      userStoryChange: START_USER_STORY_CHANCE,
     },
   ],
   actions: {
@@ -46,7 +46,7 @@ export const round1: RoundDescription<Round1ActionId> = {
         </p>
       ),
       cost: 1,
-      effect: () => ({ userStoryChance: 10 }),
+      effect: () => ({ userStoryChange: 10 }),
     },
     CLARIFY_PRODUCT_VISION: {
       image: 'https://placekitten.com/100/100',
@@ -60,7 +60,7 @@ export const round1: RoundDescription<Round1ActionId> = {
         </p>
       ),
       cost: 2,
-      effect: () => ({ userStoryChance: 10 }),
+      effect: () => ({ userStoryChange: 10 }),
     },
 
     WORKING_AGREEMENTS: {

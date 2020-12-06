@@ -12,7 +12,7 @@ describe('rollGremlin', () => {
 
     jest
       .spyOn(game, 'getAllEffects')
-      .mockImplementation(() => [{ gremlinChance: 50, title: EFFECT_HIDDEN }]);
+      .mockImplementation(() => [{ gremlinChange: 50, title: EFFECT_HIDDEN }]);
   });
 
   it('rolls nothing when occur roll does not meet gremlinChance', () => {

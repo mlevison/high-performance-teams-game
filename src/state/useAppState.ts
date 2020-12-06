@@ -68,7 +68,7 @@ export default function useAppState(): [
   const visibleEffects = effects.filter(isVisibleEffect);
   const totalUserStoryChance = sumByProp(
     effects.filter(isUserStoryChanceEffect),
-    'userStoryChance',
+    'userStoryChange',
   );
   const costs = getCosts(state.currentRound);
   const capacityAvailable = orZero(roundCapacity - costs);
@@ -100,7 +100,7 @@ export default function useAppState(): [
         },
         gremlinChance: sumByProp(
           effects.filter(isGremlinChanceEffect),
-          'gremlinChance',
+          'gremlinChange',
         ),
         userStoryChance: totalUserStoryChance,
         activeEffects: visibleEffects,

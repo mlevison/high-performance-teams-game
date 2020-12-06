@@ -1,24 +1,24 @@
 import { Round } from '../round';
 import { EFFECT_HIDDEN } from '../../constants';
 
-export const GREMLIN_CHANCE_KEY = 'gremlinChance';
+export const GREMLIN_CHANGE_KEY = 'gremlinChange';
 export const CAPACITY_CHANGE_KEY = 'capacityChange';
-export const USER_STORY_CHANCE_KEY = 'userStoryChance';
+export const USER_STORY_CHANGE_KEY = 'userStoryChange';
 
 type GremlinChanceEffectProps = {
-  [GREMLIN_CHANCE_KEY]: number;
+  [GREMLIN_CHANGE_KEY]: number;
   [CAPACITY_CHANGE_KEY]?: never;
-  [USER_STORY_CHANCE_KEY]?: never;
+  [USER_STORY_CHANGE_KEY]?: never;
 };
 type CapacityEffectProps = {
-  [GREMLIN_CHANCE_KEY]?: never;
+  [GREMLIN_CHANGE_KEY]?: never;
   [CAPACITY_CHANGE_KEY]: number;
-  [USER_STORY_CHANCE_KEY]?: never;
+  [USER_STORY_CHANGE_KEY]?: never;
 };
 type UserStoryChanceEffectProps = {
   [CAPACITY_CHANGE_KEY]?: never;
-  [GREMLIN_CHANCE_KEY]?: never;
-  [USER_STORY_CHANCE_KEY]: number;
+  [GREMLIN_CHANGE_KEY]?: never;
+  [USER_STORY_CHANGE_KEY]: number;
 };
 type InvisibleEffectProps = {
   title: typeof EFFECT_HIDDEN;

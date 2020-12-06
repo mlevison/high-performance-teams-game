@@ -50,7 +50,7 @@ export function closeRound(state: GameState): ClosedRound {
 
   const chance = sumByProp(
     effects.filter(isUserStoryChanceEffect),
-    'userStoryChance',
+    'userStoryChange',
   );
 
   return {
