@@ -74,6 +74,13 @@ describe('round 3 Actions', () => {
       game.selectAction('CLARIFY_PRODUCT_VISION');
       game.nextRound();
       game.selectAction('STORY_MAPPING_OR_OTHER');
+
+      // Improves by 10% and the change is effectively permanent
+      expect(game.state.currentRound.userStoryChance).toEqual(50);
+      game.nextRound();
+      expect(game.state.currentRound.userStoryChance).toEqual(50);
+      game.nextRound();
+      expect(game.state.currentRound.userStoryChance).toEqual(50);
     });
   });
 

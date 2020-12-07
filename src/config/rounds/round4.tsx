@@ -1,8 +1,12 @@
+import { EFFECT_HIDDEN } from '../../constants';
 import React from 'react';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
-export type Round4ActionId = 'CROSS_SKILLING' | 'EXTERNAL_CROSS_TRAINING';
+export type Round4ActionId =
+  | 'CROSS_SKILLING'
+  | 'EXTERNAL_CROSS_TRAINING'
+  | 'PERSONAL_PRODUCTIVITY_BONUS';
 
 export const round4: RoundDescription<Round4ActionId> = {
   title: 'Go Live Soon',
@@ -57,6 +61,40 @@ export const round4: RoundDescription<Round4ActionId> = {
         return {
           capacityChange: change,
         };
+      },
+    },
+    PERSONAL_PRODUCTIVITY_BONUS: {
+      image: example,
+      name: 'Personal Productivity Bonus',
+      description:
+        'The company will offer anyone who exceeds their performance goals an extra $5,000. A manager says team members working harder will increase the likelihood of completing features on time',
+      cost: 2,
+      effect(age) {
+        if (age >= 1) {
+          return [
+            {
+              capacityChange: -1,
+              title:
+                'Productivity Bonus helped in the short term and then the benefit waned. Along the way it harmed collaboration',
+            },
+            {
+              userStoryChange: -50,
+              title: EFFECT_HIDDEN,
+            },
+          ];
+        }
+
+        return [
+          {
+            capacityChange: 0,
+            title:
+              'Productivity Bonus helped in the short term - team members focused on individual productivity',
+          },
+          {
+            userStoryChange: 50,
+            title: EFFECT_HIDDEN,
+          },
+        ];
       },
     },
   },

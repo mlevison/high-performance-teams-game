@@ -75,4 +75,33 @@ describe('round 4', () => {
       testFutureCapacities(game, [10, 10, 12, 12, 12]);
     });
   });
+
+  describe('Personal Productivity Bonus', () => {
+    it('harms Capacity later.', () => {
+      const game = getGame();
+
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.selectAction('PERSONAL_PRODUCTIVITY_BONUS');
+
+      testFutureCapacities(game, [10, 9, 9, 9, 9]);
+    });
+
+    it('increases User Story Success now ', () => {
+      const game = getGame();
+
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.selectAction('PERSONAL_PRODUCTIVITY_BONUS');
+
+      // Improves success by 50% one round only
+      expect(game.state.currentRound.userStoryChance).toEqual(80);
+      game.nextRound();
+      expect(game.state.currentRound.userStoryChance).toEqual(30);
+    });
+  });
 });
