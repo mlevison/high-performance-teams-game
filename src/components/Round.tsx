@@ -95,6 +95,12 @@ export default function Round(props: Props) {
           onBack={() => setView('welcome')}
         >
           <div ref={props.overlayRef} />
+          {props.currentRound.gremlin && (
+            <p>
+              ⚠️ Gremlin just happened:&nbsp;
+              <strong>{props.currentRound.gremlin.name}</strong>
+            </p>
+          )}
           <div className={styles.rows}>
             <div className={styles.row}>{props.row1}</div>
             <div className={styles.row}>{props.row2}</div>
