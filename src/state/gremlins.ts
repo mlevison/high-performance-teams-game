@@ -91,7 +91,9 @@ export function getGremlinEffects(
   return [];
 }
 
-export function getGremlin(round: Round): GremlinDescription | undefined {
+export function getGremlin(
+  round: Round,
+): (GremlinDescription & GremlinImplementation) | undefined {
   if (!round.gremlin) {
     return;
   }

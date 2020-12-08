@@ -12,6 +12,7 @@ import {
   ClosedRound,
   isUserStoryChanceEffect,
 } from '../state';
+import EffectValue from './EffectValue';
 import Button from './Button';
 import styles from './Round.module.css';
 
@@ -72,6 +73,13 @@ export default function Round(props: Props) {
               Just happened:&nbsp;
               <strong>⚠️ {props.currentRound.gremlin.name}</strong>
               {props.currentRound.gremlin.description}
+              <ul className={styles.gremlinEffects}>
+                {props.currentRound.gremlin.effect.map((effect) => (
+                  <li key={effect.title}>
+                    <EffectValue effect={effect} />
+                  </li>
+                ))}
+              </ul>
             </>
           )}
           <div className={styles.center}>
