@@ -3,6 +3,7 @@ import { useAppState } from './state';
 import { TOTAL_ROUNDS } from './constants';
 import {
   Results,
+  FinalResults,
   Actions,
   Round,
   Status,
@@ -33,14 +34,11 @@ export default function App() {
       <Content>
         <div style={{ display: tab === 'play' ? 'block' : 'none' }}>
           {state.currentRound.number > TOTAL_ROUNDS ? (
-            <Results storiesCompleted={state.result.storiesCompleted} />
+            <FinalResults storiesCompleted={state.result.storiesCompleted} />
           ) : (
             <Round
               key={state.currentRound.number}
-              dispatch={dispatch}
               currentRound={state.currentRound}
-              closeRound={closeRound}
-              rollGremlin={rollGremlin}
               overlayRef={overlayRef}
               row1={
                 <Actions
@@ -52,6 +50,14 @@ export default function App() {
                 />
               }
               row2={<Status {...state.currentRound} />}
+              results={
+                <Results
+                  currentRound={state.currentRound}
+                  dispatch={dispatch}
+                  closeRound={closeRound}
+                  rollGremlin={rollGremlin}
+                />
+              }
             />
           )}
         </div>
