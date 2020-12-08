@@ -96,6 +96,7 @@ describe('round 4', () => {
       game.nextRound();
       game.nextRound();
       game.nextRound();
+      expect(game.state.currentRound.userStoryChance).toEqual(30);
       game.selectAction('PERSONAL_PRODUCTIVITY_BONUS');
 
       // Improves success by 50% one round only

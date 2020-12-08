@@ -97,13 +97,13 @@ export const round2: RoundDescription<Round2ActionId> = {
       effect(age) {
         // First round it has a positive affect, the second round eliminates it. No effect after that.
         let change = 0;
-        if (age === 0) {
+        if (age === 1) {
           change = 1;
         }
 
         return {
           capacityChange: change,
-          title: `${this.name} active since ${age + 1} rounds`,
+          title: `${this.name} active since ${age} rounds`,
         };
       },
     },

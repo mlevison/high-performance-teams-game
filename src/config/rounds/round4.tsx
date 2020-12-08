@@ -1,4 +1,3 @@
-import { EFFECT_HIDDEN } from '../../constants';
 import React from 'react';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
@@ -36,8 +35,8 @@ export const round4: RoundDescription<Round4ActionId> = {
         'Informal cross-skilling for existing team members in an area the team is weak. This is often achieved through Pair Programming, Learning Time, etc (Testing anyone?)',
       cost: 4,
       effect(age) {
-        let change = age;
-        if (age > 3) {
+        let change = age - 1;
+        if (age > 4) {
           change = 3;
         }
 
@@ -54,7 +53,7 @@ export const round4: RoundDescription<Round4ActionId> = {
       cost: 3,
       effect(age) {
         let change = 0;
-        if (age > 1) {
+        if (age > 2) {
           change = 2;
         }
 
@@ -70,31 +69,26 @@ export const round4: RoundDescription<Round4ActionId> = {
         'The company will offer anyone who exceeds their performance goals an extra $5,000. A manager says team members working harder will increase the likelihood of completing features on time',
       cost: 2,
       effect(age) {
-        if (age >= 1) {
+        if (age >= 2) {
           return [
             {
               capacityChange: -1,
               title:
                 'Productivity Bonus helped in the short term and then the benefit waned. Along the way it harmed collaboration',
             },
-            {
-              userStoryChange: -50,
-              title: EFFECT_HIDDEN,
-            },
           ];
         }
 
-        return [
-          {
-            capacityChange: 0,
-            title:
-              'Productivity Bonus helped in the short term - team members focused on individual productivity',
-          },
-          {
-            userStoryChange: 50,
-            title: EFFECT_HIDDEN,
-          },
-        ];
+        if (age === 0) {
+          return [
+            {
+              userStoryChange: 50,
+              title:
+                'Productivity Bonus helped in the short term - team members focused on individual productivity',
+            },
+          ];
+        }
+        return null;
       },
     },
   },

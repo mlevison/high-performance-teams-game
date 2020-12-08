@@ -99,9 +99,9 @@ export const round1: RoundDescription<Round1ActionId> = {
       cost: 3,
       /* don't use arrow function in order to have "this" bound to action */
       effect(age) {
-        if (age < 5) {
+        if (age < 6) {
           return {
-            capacityChange: age + 1,
+            capacityChange: age,
             title: `${this.name} active since ${age + 1} rounds`,
           };
         }

@@ -66,13 +66,13 @@ export function getAllEffects(state: GameState) {
   effects.push(...getGremlinEffects(state.currentRound, 0, finishedActionIds));
 
   /* Get action and gremlin effects from past rounds */
-  const roundAmounts = state.pastRounds.length - 1;
+  const roundAmounts = state.pastRounds.length;
   state.pastRounds.forEach((round, i) => {
     const age = roundAmounts - i;
 
     effects.push(
       /* gremlins occur on current round, so they're at age +1 in next */
-      ...getGremlinEffects(round, age + 1, finishedActionIds),
+      ...getGremlinEffects(round, age, finishedActionIds),
       /* actions get active in next */
       ...getActionEffects(round, age, finishedActionIds).filter(isEffect),
     );
