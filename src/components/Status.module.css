@@ -36,3 +36,10 @@
 .userStoryCritical {
   background-color: var(--error-color);
 }
+
+.negative {
+  background-color: var(--error-color-20);
+}
+.negativeValue {
+  color: var(--error-color);
+}

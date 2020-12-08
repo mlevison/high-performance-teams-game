@@ -13,7 +13,8 @@
   --light-background-color: rgb(204, 204, 207);
   --light-color: var(--main-color);
   --warning-color: #ffc919;
-  --error-color: #f03423;
+  --error-color: rgba(240, 52, 35);
+  --error-color-20: rgba(240, 52, 35, 0.2);
   --disabled-color: #aaa;
   --selected-action-color: greenyellow;
 }
