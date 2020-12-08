@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/static/css/main.07a83d92.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/static/js/main.c4881eae.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/static/js/main.c4881eae.chunk.js.map",
+    "runtime-main.js": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/static/js/runtime-main.a381a783.js",
+    "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/static/js/runtime-main.a381a783.js.map",
+    "static/js/2.1a6846f8.chunk.js": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/static/js/2.1a6846f8.chunk.js",
+    "static/js/2.1a6846f8.chunk.js.map": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/static/js/2.1a6846f8.chunk.js.map",
+    "index.html": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/index.html",
+    "static/css/main.07a83d92.chunk.css.map": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/static/css/main.07a83d92.chunk.css.map",
+    "static/js/2.1a6846f8.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/preview/show-gremlin-effects-in-description/static/js/2.1a6846f8.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a381a783.js",
+    "static/js/2.1a6846f8.chunk.js",
+    "static/css/main.07a83d92.chunk.css",
+    "static/js/main.c4881eae.chunk.js"
+  ]
+}
