@@ -43,11 +43,13 @@ export const INITIAL_STATE: GameState = {
   pastRounds: [],
 };
 
-export function getAllEffects(state: GameState) {
-  const finishedActionIds = concatByProp(
+export function getAllEffects(
+  state: GameState,
+  finishedActionIds: GameActionId[] = concatByProp(
     state.pastRounds,
     'selectedGameActionIds',
-  );
+  ),
+) {
   const effects: Effect[] = [];
 
   /* Base round effects of past rounds */

@@ -6,6 +6,7 @@ import {
   BaseEffect,
   isUserStoryChanceEffect,
   isGremlinChanceEffect,
+  isEffect,
 } from './effects';
 import {
   Action,
@@ -29,7 +30,9 @@ export type AppState = {
   currentRound: {
     number: number;
     title?: string;
-    gremlin?: GremlinDescription;
+    gremlin?: GremlinDescription & {
+      effect: VisibleEffect<BaseEffect>[];
+    };
     description?: ReactNode;
     selectedGameActions: GameAction[];
     capacity: {
@@ -61,7 +64,11 @@ export default function useAppState(): [
 ] {
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
 
-  const effects = getAllEffects(state);
+  const finishedActionIds = concatByProp(
+    state.pastRounds,
+    'selectedGameActionIds',
+  );
+  const effects = getAllEffects(state, finishedActionIds);
 
   const roundCapacity = orZero(getCapacity(effects));
 
@@ -84,6 +91,13 @@ export default function useAppState(): [
   const currentRoundTitle = rounds[currentRoundNumber]?.title;
   const currentRoundDescription = rounds[currentRoundNumber]?.description;
   const gremlin = getGremlin(state.currentRound);
+  const gremlinEffect = gremlin?.effect(0, finishedActionIds) || null;
+  const visibleGremlinEffects = (Array.isArray(gremlinEffect)
+    ? gremlinEffect
+    : [gremlinEffect]
+  )
+    .filter(isEffect)
+    .filter(isVisibleEffect);
 
   return [
     {
@@ -92,7 +106,13 @@ export default function useAppState(): [
         selectedGameActions,
         title: currentRoundTitle,
         description: currentRoundDescription,
-        gremlin,
+        gremlin: gremlin
+          ? {
+              name: gremlin.name,
+              description: gremlin.description,
+              effect: visibleGremlinEffects,
+            }
+          : undefined,
         number: currentRoundNumber,
         capacity: {
           available: capacityAvailable,

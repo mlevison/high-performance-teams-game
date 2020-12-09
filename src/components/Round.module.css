@@ -39,6 +39,10 @@
   padding: 0;
   margin: 0;
 }
+.gremlinEffects {
+  list-style: none;
+  padding: 0;
+}
 
 @media screen and (min-width: 600px) {
   .row {

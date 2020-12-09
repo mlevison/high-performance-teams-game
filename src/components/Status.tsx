@@ -25,8 +25,16 @@ export default function Status(props: Props) {
           <>
             <li className={styles.title}>Active Effects</li>
             {props.activeEffects.filter(isCapacityEffect).map((effect) => (
-              <li key={effect.title}>
-                <span className={styles.cap}>
+              <li
+                key={effect.title}
+                className={cx(effect.capacityChange < 0 && styles.negative)}
+              >
+                <span
+                  className={cx(
+                    styles.cap,
+                    effect.capacityChange < 0 && styles.negativeValue,
+                  )}
+                >
                   <span className={styles.sign}>
                     {effect.capacityChange > 0 ? '+' : '-'}
                   </span>

@@ -5,7 +5,7 @@ export type { AppState } from './useAppState';
 export type { GameActionWithStatus } from './gameActions';
 export type { RoundDescription } from './rounds';
 export type { GremlinList } from './gremlins';
-export type { GameEffect } from './effects';
+export type { GameEffect, VisibleEffect, BaseEffect } from './effects';
 export type GameDispatch = Dispatch<Action>;
 export { getCosts, closeRound } from './round';
 export {
