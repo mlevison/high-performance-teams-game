@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from 'react';
-import { Chart } from 'react-charts';
+import React, { useState } from 'react';
 import { GremlinId } from '../../config';
 import { START_USER_STORY_CHANCE } from '../../constants';
 import {
@@ -9,9 +8,8 @@ import {
   isUserStoryChanceEffect,
 } from '../../state';
 import Button from '../Button';
+import CapStoryChart from '../CapStoryChart';
 import styles from './Round.module.css';
-
-type Data = { primary: number; secondary: number };
 
 type Props = {
   pastRounds: AppState['pastRounds'];
@@ -22,60 +20,7 @@ type Props = {
 };
 export default function Results(props: Props) {
   const [closedRound, setClosedRound] = useState<ClosedRound>();
-  const pastRounds = props.pastRounds;
-  const currentRound = props.currentRound;
-  const data = useMemo(() => {
-    const totalCapacity: Data[] = [];
-    const storiesCompleted: Data[] = [];
 
-    pastRounds.forEach((round, i) => {
-      totalCapacity.push({
-        primary: i + 1,
-        secondary: round.totalCapacity,
-      });
-
-      storiesCompleted.push({
-        primary: i + 1,
-        secondary: round.storiesCompleted,
-      });
-    });
-
-    totalCapacity.push({
-      primary: currentRound.number,
-      secondary: currentRound.capacity.total,
-    });
-    if (closedRound) {
-      storiesCompleted.push({
-        primary: currentRound.number,
-        secondary: closedRound.storiesCompleted,
-      });
-    }
-
-    return [
-      { label: 'Stories Completed', data: storiesCompleted },
-      { label: 'Total Capacity', data: totalCapacity },
-    ];
-  }, [pastRounds, currentRound, closedRound]);
-
-  const axes = useMemo(
-    () => [
-      {
-        primary: true,
-        type: 'ordinal',
-        position: 'bottom',
-        format(val: any) {
-          return `Round ${val}`;
-        },
-      },
-      {
-        type: 'linear',
-        position: 'left',
-        tickSizeInner: 1,
-        base: 0,
-      },
-    ],
-    [],
-  );
   const userStoryEffects = props.currentRound.activeEffects.filter(
     isUserStoryChanceEffect,
   );
@@ -160,10 +105,15 @@ export default function Results(props: Props) {
           Next Round
         </Button>
       </div>
-
-      <div className={styles.chart}>
-        <Chart data={data} axes={axes} tooltip />
-      </div>
+      <CapStoryChart
+        rounds={[
+          ...props.pastRounds,
+          {
+            totalCapacity: props.currentRound.capacity.total,
+            storiesCompleted: closedRound?.storiesCompleted,
+          },
+        ]}
+      />
     </>
   );
 }

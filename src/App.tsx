@@ -33,7 +33,7 @@ export default function App() {
       <Content>
         <div style={{ display: tab === 'play' ? 'block' : 'none' }}>
           {state.currentRound.number > TOTAL_ROUNDS ? (
-            <FinalResults storiesCompleted={state.result.storiesCompleted} />
+            <FinalResults state={state} />
           ) : (
             <Round
               key={state.currentRound.number}

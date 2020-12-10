@@ -44,11 +44,6 @@
   padding: 0;
 }
 
-.chart {
-  height: 300px;
-  margin-top: 1rem;
-}
-
 @media screen and (min-width: 600px) {
   .row {
     min-width: 50%;
