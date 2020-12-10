@@ -138,11 +138,11 @@ export default function useAppState(): [
           finishedActionIds,
         );
 
-        const totalCapacity = getCapacity(effects);
+        const totalCapacity = orZero(getCapacity(effects));
 
         return {
           totalCapacity,
-          storiesAttempted: totalCapacity - getCosts(round),
+          storiesAttempted: orZero(totalCapacity - getCosts(round)),
           storiesCompleted: round.storiesCompleted,
           number: i + 1,
         };

@@ -20,18 +20,18 @@ export default function CapStoryChart({ rounds }: Props) {
     rounds.forEach((round, i) => {
       totalCapacity.push({
         primary: i + 1,
-        secondary: round.totalCapacity,
+        secondary: round.totalCapacity || 0.1,
       });
 
       storiesAttempted.push({
         primary: i + 1,
-        secondary: round.storiesAttempted,
+        secondary: round.storiesAttempted || 0.1,
       });
 
-      if (round.storiesCompleted) {
+      if (round.storiesCompleted !== undefined) {
         storiesCompleted.push({
           primary: i + 1,
-          secondary: round.storiesCompleted,
+          secondary: round.storiesCompleted || 0.1,
         });
       }
     });
