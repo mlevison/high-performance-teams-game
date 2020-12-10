@@ -4,18 +4,28 @@ import styles from './CapStoryChart.module.css';
 
 type Data = { primary: number; secondary: number };
 type Props = {
-  rounds: { totalCapacity: number; storiesCompleted: number | undefined }[];
+  rounds: {
+    totalCapacity: number;
+    storiesAttempted: number;
+    storiesCompleted: number | undefined;
+  }[];
 };
 
 export default function CapStoryChart({ rounds }: Props) {
   const data = useMemo(() => {
     const totalCapacity: Data[] = [];
+    const storiesAttempted: Data[] = [];
     const storiesCompleted: Data[] = [];
 
     rounds.forEach((round, i) => {
       totalCapacity.push({
         primary: i + 1,
         secondary: round.totalCapacity,
+      });
+
+      storiesAttempted.push({
+        primary: i + 1,
+        secondary: round.storiesAttempted,
       });
 
       if (round.storiesCompleted) {
@@ -28,6 +38,7 @@ export default function CapStoryChart({ rounds }: Props) {
 
     return [
       { label: 'Stories Completed', data: storiesCompleted },
+      { label: 'Stories Attempted', data: storiesAttempted },
       { label: 'Total Capacity', data: totalCapacity },
     ];
   }, [rounds]);

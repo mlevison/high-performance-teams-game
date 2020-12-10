@@ -43,11 +43,9 @@ export type AppState = {
     userStoryChance: number;
     activeEffects: VisibleEffect<BaseEffect>[];
   };
-  result: {
-    storiesCompleted: number;
-  };
   pastRounds: {
     totalCapacity: number;
+    storiesAttempted: number;
     storiesCompleted: number;
   }[];
 };
@@ -125,9 +123,6 @@ export default function useAppState(): [
         userStoryChance: totalUserStoryChance,
         activeEffects: visibleEffects,
       },
-      result: {
-        storiesCompleted: sumByProp(state.pastRounds, 'storiesCompleted'),
-      },
       pastRounds: state.pastRounds.map((round, i) => {
         const pastRounds = state.pastRounds.slice(0, i);
         const finishedActionIds = concatByProp(
@@ -143,8 +138,11 @@ export default function useAppState(): [
           finishedActionIds,
         );
 
+        const totalCapacity = getCapacity(effects);
+
         return {
-          totalCapacity: getCapacity(effects),
+          totalCapacity,
+          storiesAttempted: totalCapacity - getCosts(round),
           storiesCompleted: round.storiesCompleted,
           number: i + 1,
         };

@@ -110,6 +110,7 @@ export default function Results(props: Props) {
           ...props.pastRounds,
           {
             totalCapacity: props.currentRound.capacity.total,
+            storiesAttempted: props.currentRound.capacity.available,
             storiesCompleted: closedRound?.storiesCompleted,
           },
         ]}
