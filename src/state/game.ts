@@ -15,6 +15,9 @@ export type GameState = {
   currentRound: Round;
   pastRounds: ClosedRound[];
 };
+export type RestartGameAction = {
+  type: 'RESTART_GAME';
+};
 export type SelectGameActionAction = {
   type: 'SELECT_GAME_ACTION';
   payload: GameActionId;
@@ -33,7 +36,8 @@ export type NextRoundAction = {
 export type Action =
   | NextRoundAction
   | SelectGameActionAction
-  | UnselectGameActionAction;
+  | UnselectGameActionAction
+  | RestartGameAction;
 
 export const INITIAL_STATE: GameState = {
   currentRound: {
@@ -131,5 +135,7 @@ export function gameReducer(state: GameState, action: Action): GameState {
         currentRound: createRound(action.payload.gremlin),
       };
     }
+    case 'RESTART_GAME':
+      return INITIAL_STATE;
   }
 }
