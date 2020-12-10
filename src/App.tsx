@@ -49,6 +49,7 @@ export default function App() {
               row2={<Status {...state.currentRound} />}
               results={
                 <Results
+                  pastRounds={state.pastRounds}
                   currentRound={state.currentRound}
                   dispatch={dispatch}
                   closeRound={closeRound}

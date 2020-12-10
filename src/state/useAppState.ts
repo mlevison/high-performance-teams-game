@@ -47,8 +47,8 @@ export type AppState = {
     storiesCompleted: number;
   };
   pastRounds: {
-    // storiesSucceeded: number;
-    number: number;
+    totalCapacity: number;
+    storiesCompleted: number;
   }[];
 };
 
@@ -128,9 +128,27 @@ export default function useAppState(): [
       result: {
         storiesCompleted: sumByProp(state.pastRounds, 'storiesCompleted'),
       },
-      pastRounds: state.pastRounds.map((round, i) => ({
-        number: i + 1,
-      })),
+      pastRounds: state.pastRounds.map((round, i) => {
+        const pastRounds = state.pastRounds.slice(0, i);
+        const finishedActionIds = concatByProp(
+          pastRounds,
+          'selectedGameActionIds',
+        );
+        const currentRound = state.pastRounds[i];
+        const effects = getAllEffects(
+          {
+            pastRounds,
+            currentRound,
+          },
+          finishedActionIds,
+        );
+
+        return {
+          totalCapacity: getCapacity(effects),
+          storiesCompleted: round.storiesCompleted,
+          number: i + 1,
+        };
+      }),
     },
     dispatch,
     () => closeRound(state),
