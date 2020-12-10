@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useAppState } from './state';
 import { TOTAL_ROUNDS } from './constants';
 import {
@@ -17,7 +17,6 @@ import {
 export default function App() {
   const [state, dispatch, closeRound, rollGremlin] = useAppState();
   const [tab, setTab] = useState<'play' | 'rules'>('rules');
-  const overlayRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <>
@@ -39,10 +38,8 @@ export default function App() {
             <Round
               key={state.currentRound.number}
               currentRound={state.currentRound}
-              overlayRef={overlayRef}
               row1={
                 <Actions
-                  overlay={overlayRef}
                   currentRound={state.currentRound.number}
                   availableCapacity={state.currentRound.capacity.available}
                   availableGameActions={state.availableGameActions}

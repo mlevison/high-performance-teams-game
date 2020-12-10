@@ -1,4 +1,4 @@
-import React, { useState, MutableRefObject } from 'react';
+import React, { useState } from 'react';
 import { GameActionId } from '../../config';
 import { GameDispatch, AppState, GameActionWithStatus } from '../../state';
 import styles from './Actions.module.css';
@@ -14,7 +14,6 @@ type Props = {
   availableGameActions: AppState['availableGameActions'];
   dispatch: GameDispatch;
   availableCapacity: number;
-  overlay: MutableRefObject<HTMLElement | null>;
 };
 
 export default function Actions(props: Props) {

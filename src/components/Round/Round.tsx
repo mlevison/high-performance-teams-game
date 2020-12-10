@@ -1,9 +1,4 @@
-import React, {
-  MutableRefObject,
-  ReactElement,
-  ReactNode,
-  useState,
-} from 'react';
+import React, { ReactElement, ReactNode, useState } from 'react';
 import { TOTAL_ROUNDS } from '../../constants';
 import { AppState } from '../../state';
 import Button from '../Button';
@@ -13,7 +8,6 @@ import Welcome from './Welcome';
 
 type Props = {
   currentRound: AppState['currentRound'];
-  overlayRef: MutableRefObject<HTMLDivElement | null>;
   row1?: ReactElement;
   row2?: ReactElement;
   results?: ReactElement;
@@ -60,7 +54,6 @@ export default function Round(props: Props) {
           onNext={() => setView('results')}
           onBack={() => setView('welcome')}
         >
-          <div ref={props.overlayRef} />
           {props.currentRound.gremlin && (
             <p>
               ⚠️ Gremlin just happened:&nbsp;
