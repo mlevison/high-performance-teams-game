@@ -10,6 +10,7 @@ import Overlay from './Overlay';
 import { Button } from 'components';
 
 type ActionProps = GameActionWithStatus & {
+  review: boolean;
   isOpen: boolean;
   availableCapacity: number;
   onOpen: (open: boolean) => void;
@@ -24,6 +25,7 @@ export default function Action(props: ActionProps) {
   const gameAction = props.gameAction;
 
   const disabled =
+    props.review ||
     (props.status.type === 'AVAILABLE' &&
       gameAction.cost > props.availableCapacity) ||
     ['MISSING_DEP', 'FINISHED'].includes(props.status.type);
@@ -49,10 +51,10 @@ export default function Action(props: ActionProps) {
         }}
         className={cx(
           styles.action,
-          disabled && styles.disabled,
+          disabled && !props.review && styles.disabled,
           props.status.type === 'MISSING_DEP' && styles.missingDep,
-          ['SELECTED', 'FINISHED'].includes(props.status.type) &&
-            styles.actionSelected,
+          props.status.type === 'SELECTED' && styles.actionSelected,
+          props.status.type === 'FINISHED' && styles.actionFinished,
         )}
       >
         {isGameActionWithImage(gameAction) && (

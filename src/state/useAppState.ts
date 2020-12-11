@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, useReducer } from 'react';
-import { concatByProp, sumByProp } from '../lib';
+import { concatByProp, sumByProp, usePersistState } from '../lib';
 import {
   isVisibleEffect,
   VisibleEffect,
@@ -11,9 +11,9 @@ import {
 import {
   Action,
   gameReducer,
+  GameState,
   getAllEffects,
   getCapacity,
-  INITIAL_STATE,
 } from './game';
 import {
   getAvailableGameActions,
@@ -43,26 +43,35 @@ export type AppState = {
     userStoryChance: number;
     activeEffects: VisibleEffect<BaseEffect>[];
   };
-  result: {
-    storiesCompleted: number;
-  };
   pastRounds: {
-    // storiesSucceeded: number;
-    number: number;
+    totalCapacity: number;
+    storiesAttempted: number;
+    storiesCompleted: number;
   }[];
+  ui: GameState['ui'];
 };
 
 function orZero(num: number): number {
   return num < 0 ? 0 : num;
 }
 
-export default function useAppState(): [
-  AppState,
-  Dispatch<Action>,
-  () => ClosedRound,
-  () => GremlinId | null,
-] {
-  const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
+export default function useAppState(
+  initialState: GameState,
+): [AppState, Dispatch<Action>, () => ClosedRound, () => GremlinId | null] {
+  const [gameState, dispatch] = useReducer(gameReducer, initialState);
+  usePersistState(gameState);
+
+  const state: GameState =
+    gameState.ui.review === false
+      ? gameState
+      : {
+          currentRound: gameState.pastRounds[gameState.ui.review],
+          pastRounds: gameState.pastRounds.slice(0, gameState.ui.review),
+          ui: {
+            ...gameState.ui,
+            closedRound: gameState.pastRounds[gameState.ui.review],
+          },
+        };
 
   const finishedActionIds = concatByProp(
     state.pastRounds,
@@ -125,12 +134,31 @@ export default function useAppState(): [
         userStoryChance: totalUserStoryChance,
         activeEffects: visibleEffects,
       },
-      result: {
-        storiesCompleted: sumByProp(state.pastRounds, 'storiesCompleted'),
-      },
-      pastRounds: state.pastRounds.map((round, i) => ({
-        number: i + 1,
-      })),
+      pastRounds: state.pastRounds.map((round, i) => {
+        const pastRounds = state.pastRounds.slice(0, i);
+        const finishedActionIds = concatByProp(
+          pastRounds,
+          'selectedGameActionIds',
+        );
+        const currentRound = state.pastRounds[i];
+        const effects = getAllEffects(
+          {
+            pastRounds,
+            currentRound,
+          },
+          finishedActionIds,
+        );
+
+        const totalCapacity = orZero(getCapacity(effects));
+
+        return {
+          totalCapacity,
+          storiesAttempted: orZero(totalCapacity - getCosts(round)),
+          storiesCompleted: round.storiesCompleted,
+          number: i + 1,
+        };
+      }),
+      ui: state.ui,
     },
     dispatch,
     () => closeRound(state),

@@ -1,9 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import useAppState from '../state/useAppState';
 import type { GameActionId, GremlinId } from '../config';
+import { INITIAL_STATE } from 'state';
 
 export function getGame() {
-  const wrapper = renderHook(() => useAppState());
+  const wrapper = renderHook(() => useAppState(INITIAL_STATE));
 
   return {
     get state() {

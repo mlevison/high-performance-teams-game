@@ -1,4 +1,4 @@
-import React, { useState, MutableRefObject } from 'react';
+import React, { useState } from 'react';
 import { GameActionId } from '../../config';
 import { GameDispatch, AppState, GameActionWithStatus } from '../../state';
 import styles from './Actions.module.css';
@@ -11,10 +11,10 @@ function onlyRound(number: number) {
 
 type Props = {
   currentRound: number;
+  ui: AppState['ui'];
   availableGameActions: AppState['availableGameActions'];
   dispatch: GameDispatch;
   availableCapacity: number;
-  overlay: MutableRefObject<HTMLElement | null>;
 };
 
 export default function Actions(props: Props) {
@@ -34,6 +34,7 @@ export default function Actions(props: Props) {
             const round = props.currentRound - i;
             return (
               <RoundActions
+                review={props.ui.review !== false}
                 availableCapacity={props.availableCapacity}
                 onOpen={(open, actionId) => {
                   setOpenActionId(open ? actionId : undefined);

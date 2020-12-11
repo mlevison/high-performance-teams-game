@@ -73,6 +73,10 @@
 .actionSelected .actionIcon {
   border-color: var(--selected-action-color);
 }
+.actionFinished .actionImage,
+.actionSelected .actionIcon {
+  border-color: var(--finished-action-color);
+}
 
 .arrow {
   width: 20px;

@@ -14,15 +14,6 @@
   text-align: center;
 }
 
-.rows {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.row {
-  min-width: 100%;
-}
-
 .userStoryIcons {
   text-align: center;
   list-style: none;
@@ -45,11 +36,6 @@
 }
 
 @media screen and (min-width: 600px) {
-  .row {
-    min-width: 50%;
-    max-width: 50%;
-  }
-
   .userStoryChanceList {
     margin: 0 0 0 34%;
   }

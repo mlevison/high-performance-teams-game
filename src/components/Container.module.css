@@ -1,0 +1,37 @@
+.review {
+  position: relative;
+  min-height: calc(100vh - 10px);
+  border: 5px solid var(--review-background-color);
+  --primary-background-color: var(--review-background-color);
+  --primary-color: var(--review-color);
+}
+
+.reviewHint {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--review-background-color);
+  padding: 0.1rem 0 0.5rem 1rem;
+  color: var(--review-color);
+  font-weight: bold;
+  border-bottom-left-radius: 5px;
+}
+.reviewHint button {
+  background: none;
+  color: var(--review-color);
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.reviewHint button:focus {
+  outline: 3px solid var(--highlight-color);
+  outline-offset: 3px;
+}
+
+@media screen and (min-width: 600px) {
+  .review {
+    min-height: calc(100vh - 20px);
+    border-width: 10px;
+  }
+}
