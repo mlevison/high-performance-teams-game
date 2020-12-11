@@ -47,9 +47,20 @@ export function testFutureCapacities(
   game: ReturnType<typeof getGame>,
   capacities: number[],
 ) {
+  // TODO Am always bugged when two variables differ only on the use of plurals
   capacities.forEach((capacity) => {
     game.nextRound();
     expect(game.state.currentRound.capacity.total).toEqual(capacity);
+  });
+}
+
+export function testUserStoryChance(
+  game: ReturnType<typeof getGame>,
+  userStoryChances: number[],
+) {
+  userStoryChances.forEach((chance) => {
+    game.nextRound();
+    expect(game.state.currentRound.userStoryChance).toEqual(chance);
   });
 }
 

@@ -1,5 +1,5 @@
 import type { AppState } from '../../state';
-import { getGame, testFutureCapacities, times } from '../../lib/testHelpers';
+import { getGame, testFutureCapacities, testUserStoryChance, times } from '../../lib/testHelpers';
 
 /* disable all other rounds */
 jest.mock('./index', () => ({
@@ -53,13 +53,8 @@ describe('round 1', () => {
         const game = getGame();
 
         game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
-        expect(game.state.currentRound.userStoryChance).toEqual(40);
 
-        times(5, () => {
-          game.nextRound();
-          expect(game.state.currentRound.capacity.total).toEqual(10);
-          expect(game.state.currentRound.userStoryChance).toEqual(40);
-        });
+        testUserStoryChance(game, [40, 40, 40, 40, 40]);
       });
     });
 
