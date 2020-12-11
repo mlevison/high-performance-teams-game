@@ -12,6 +12,10 @@ import {
 jest.mock('./state');
 
 const BASE_STATE: AppState = {
+  ui: {
+    review: false,
+    view: 'welcome',
+  },
   availableGameActions: [],
   currentRound: {
     selectedGameActions: [],

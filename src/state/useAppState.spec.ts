@@ -13,9 +13,7 @@ describe('AppState', () => {
   it('starts with 0 completed stories', () => {
     const game = getGame();
 
-    expect(game.state.result).toEqual({
-      storiesCompleted: 0,
-    });
+    expect(game.state.pastRounds).toEqual([]);
   });
 
   describe('closeRound', () => {

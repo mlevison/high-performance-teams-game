@@ -13,6 +13,10 @@ function hashCode(string: string) {
 }
 
 export default new Promise(async (resolve, reject) => {
+  if (process.env.NODE_ENV === 'test') {
+    resolve('test');
+    return;
+  }
   try {
     const response = await fetch('/asset-manifest.json');
     resolve(hashCode(await response.text()));
