@@ -1,7 +1,13 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import App from './App';
-import { AppState, useAppState, UNIQUE_ACTION, ClosedRound } from './state';
+import { App } from './App';
+import {
+  AppState,
+  useAppState,
+  UNIQUE_ACTION,
+  ClosedRound,
+  INITIAL_STATE,
+} from './state';
 
 jest.mock('./state');
 
@@ -10,15 +16,13 @@ const BASE_STATE: AppState = {
   currentRound: {
     selectedGameActions: [],
     number: 1,
+    gremlinChance: 0,
     userStoryChance: 30,
     capacity: {
       available: 10,
       total: 10,
     },
     activeEffects: [],
-  },
-  result: {
-    storiesCompleted: 0,
   },
   pastRounds: [],
 };
@@ -37,7 +41,7 @@ describe('App UI', () => {
       jest.fn(),
       jest.fn(),
     ]);
-    render(<App />);
+    render(<App initialState={INITIAL_STATE} />);
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
 
     expect(
@@ -54,7 +58,7 @@ describe('App UI', () => {
       closeRoundSpy,
       jest.fn(() => null),
     ]);
-    render(<App />);
+    render(<App initialState={INITIAL_STATE} />);
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
     expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
@@ -106,7 +110,7 @@ describe('App UI', () => {
       jest.fn(),
       jest.fn(),
     ]);
-    render(<App />);
+    render(<App initialState={INITIAL_STATE} />);
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
     fireEvent.doubleClick(screen.getByRole('button', { name: /My Action/i }));
@@ -154,7 +158,7 @@ describe('App UI', () => {
       jest.fn(),
     ]);
 
-    render(<App />);
+    render(<App initialState={INITIAL_STATE} />);
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
     fireEvent.click(screen.getByRole('button', { name: /Start Round/i }));
     fireEvent.doubleClick(screen.getByRole('button', { name: /My Action/i }));

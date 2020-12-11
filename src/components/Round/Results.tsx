@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GremlinId } from '../../config';
 import { START_USER_STORY_CHANCE } from '../../constants';
 import {
@@ -12,6 +12,7 @@ import CapStoryChart from '../CapStoryChart';
 import styles from './Round.module.css';
 
 type Props = {
+  ui: AppState['ui'];
   pastRounds: AppState['pastRounds'];
   currentRound: AppState['currentRound'];
   closeRound: () => ClosedRound;
@@ -19,8 +20,6 @@ type Props = {
   dispatch: GameDispatch;
 };
 export default function Results(props: Props) {
-  const [closedRound, setClosedRound] = useState<ClosedRound>();
-
   const userStoryEffects = props.currentRound.activeEffects.filter(
     isUserStoryChanceEffect,
   );
@@ -43,7 +42,7 @@ export default function Results(props: Props) {
           user-story
         </li>
         <li>---</li>
-        {!closedRound && (
+        {!props.ui.closedRound && (
           <>
             <li>
               x &nbsp; {props.currentRound.capacity.available} capacity to spend
@@ -52,12 +51,14 @@ export default function Results(props: Props) {
             <li>&nbsp;</li>
           </>
         )}
-        {closedRound && (
+        {props.ui.closedRound && (
           <>
             <li>
               {props.currentRound.capacity.available} user stories attempted
             </li>
-            <li>{closedRound.storiesCompleted} user stories completed</li>
+            <li>
+              {props.ui.closedRound.storiesCompleted} user stories completed
+            </li>
           </>
         )}
       </ul>
@@ -67,9 +68,9 @@ export default function Results(props: Props) {
           .fill('')
           .map((_, i) => (
             <li key={i}>
-              {!closedRound
+              {!props.ui.closedRound
                 ? '❓'
-                : i < closedRound.storiesCompleted
+                : i < props.ui.closedRound.storiesCompleted
                 ? '✅'
                 : '❌'}
             </li>
@@ -77,18 +78,21 @@ export default function Results(props: Props) {
       </ul>
       <div className={styles.center}>
         <Button
-          disabled={!!closedRound}
+          disabled={!!props.ui.closedRound}
           onClick={() => {
-            setClosedRound(props.closeRound());
+            props.dispatch({
+              type: 'SET_UI_CLOSED_ROUND_ACTION',
+              payload: props.closeRound(),
+            });
           }}
         >
           Roll for User Stories
         </Button>
         <Button
           primary
-          disabled={!closedRound}
+          disabled={!props.ui.closedRound}
           onClick={() => {
-            if (!closedRound) {
+            if (!props.ui.closedRound) {
               throw new Error(
                 'Can not go to next round without closing this one',
               );
@@ -96,7 +100,7 @@ export default function Results(props: Props) {
             props.dispatch({
               type: 'NEXT_ROUND',
               payload: {
-                closedRound,
+                closedRound: props.ui.closedRound,
                 gremlin: props.rollGremlin(),
               },
             });
@@ -111,7 +115,7 @@ export default function Results(props: Props) {
           {
             totalCapacity: props.currentRound.capacity.total,
             storiesAttempted: props.currentRound.capacity.available,
-            storiesCompleted: closedRound?.storiesCompleted,
+            storiesCompleted: props.ui.closedRound?.storiesCompleted,
           },
         ]}
       />

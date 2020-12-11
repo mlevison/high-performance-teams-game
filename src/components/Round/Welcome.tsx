@@ -1,19 +1,20 @@
-import React, { Dispatch, ReactNode, SetStateAction } from 'react';
-import { AppState } from '../../state';
+import React, { ReactNode } from 'react';
+import { AppState, GameDispatch } from '../../state';
 import Button from '../Button';
 import EffectValue from '../EffectValue';
 import styles from './Round.module.css';
-import { View } from './types';
 
 type Props = {
   children: ReactNode;
   gremlin: AppState['currentRound']['gremlin'];
-  setView: Dispatch<SetStateAction<View>>;
+  dispatch: GameDispatch;
 };
 export default function Welcome(props: Props) {
   return (
     <>
-      {props.children}
+      {props.children ? (
+        <div className={styles.description}>{props.children}</div>
+      ) : null}
       {props.gremlin && (
         <>
           <h3>Gremlin</h3>
@@ -30,7 +31,12 @@ export default function Welcome(props: Props) {
         </>
       )}
       <div className={styles.center}>
-        <Button primary onClick={() => props.setView('actions')}>
+        <Button
+          primary
+          onClick={() =>
+            props.dispatch({ type: 'SET_UI_VIEW_ACTION', payload: 'actions' })
+          }
+        >
           Start Round
         </Button>
       </div>

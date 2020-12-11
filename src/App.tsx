@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppState } from './state';
+import { useAppState, GameState, INITIAL_STATE } from './state';
 import { TOTAL_ROUNDS } from './constants';
 import {
   Results,
@@ -12,16 +12,34 @@ import {
   Tabs,
   Tab,
   Content,
+  Button,
+  Welcome,
+  Rows,
+  Row,
 } from './components';
+import { GAME_STATE_OK, InitialStateWithStatus, restartGame } from 'lib';
 
-export default function App() {
-  const [state, dispatch, closeRound, rollGremlin] = useAppState();
-  const [tab, setTab] = useState<'play' | 'rules'>('rules');
+type Props = { initialState: GameState };
+export function App(props: Props) {
+  const [state, dispatch, closeRound, rollGremlin] = useAppState(
+    props.initialState,
+  );
+  const [tab, setTab] = useState<'play' | 'rules'>(
+    props.initialState === INITIAL_STATE ? 'rules' : 'play',
+  );
 
   return (
     <>
       <Header>
         <Tabs>
+          <Tab
+            active={false}
+            onClick={restartGame(dispatch)}
+            style={{ maxWidth: '2rem' }}
+            title="Restart Game"
+          >
+            ↩
+          </Tab>
           <Tab active={tab === 'play'} onClick={() => setTab('play')}>
             Play
           </Tab>
@@ -36,19 +54,66 @@ export default function App() {
             <FinalResults state={state} dispatch={dispatch} />
           ) : (
             <Round
+              ui={state.ui}
               key={state.currentRound.number}
               currentRound={state.currentRound}
-              row1={
-                <Actions
-                  currentRound={state.currentRound.number}
-                  availableCapacity={state.currentRound.capacity.available}
-                  availableGameActions={state.availableGameActions}
+              welcome={
+                <Welcome
                   dispatch={dispatch}
-                />
+                  gremlin={state.currentRound.gremlin}
+                >
+                  {state.currentRound.description}
+                </Welcome>
               }
-              row2={<Status {...state.currentRound} />}
+              actions={
+                <>
+                  <Button
+                    onClick={() =>
+                      dispatch({
+                        type: 'SET_UI_VIEW_ACTION',
+                        payload: 'welcome',
+                      })
+                    }
+                  >
+                    ◀ Back
+                  </Button>
+                  <Button
+                    primary
+                    onClick={() =>
+                      dispatch({
+                        type: 'SET_UI_VIEW_ACTION',
+                        payload: 'results',
+                      })
+                    }
+                  >
+                    Complete Round
+                  </Button>
+                  {state.currentRound.gremlin && (
+                    <p>
+                      ⚠️ Gremlin just happened:&nbsp;
+                      <strong>{state.currentRound.gremlin.name}</strong>
+                    </p>
+                  )}
+                  <Rows>
+                    <Row>
+                      <Actions
+                        currentRound={state.currentRound.number}
+                        availableCapacity={
+                          state.currentRound.capacity.available
+                        }
+                        availableGameActions={state.availableGameActions}
+                        dispatch={dispatch}
+                      />
+                    </Row>
+                    <Row>
+                      <Status {...state.currentRound} />
+                    </Row>
+                  </Rows>
+                </>
+              }
               results={
                 <Results
+                  ui={state.ui}
                   pastRounds={state.pastRounds}
                   currentRound={state.currentRound}
                   dispatch={dispatch}
@@ -60,6 +125,46 @@ export default function App() {
           )}
         </div>
         {tab === 'rules' && <Rules />}
+      </Content>
+    </>
+  );
+}
+
+export default function OutdatedStateWarning(props: {
+  initialState: InitialStateWithStatus;
+}) {
+  const [initialState, setInitialState] = useState(props.initialState);
+  if (initialState.status === GAME_STATE_OK) {
+    return <App initialState={initialState.state} />;
+  }
+
+  return (
+    <>
+      <Header>
+        <br />
+      </Header>
+      <Content style={{ textAlign: 'center' }}>
+        <br />
+        <h2>The game has been updated.</h2>
+        <h4>Your currently saved game might not work as expected</h4>
+        <Button
+          onClick={() =>
+            setInitialState({
+              state: initialState.state,
+              status: GAME_STATE_OK,
+            })
+          }
+        >
+          Continue anyways
+        </Button>
+        <Button
+          onClick={() =>
+            setInitialState({ state: INITIAL_STATE, status: GAME_STATE_OK })
+          }
+          primary
+        >
+          Restart Game
+        </Button>
       </Content>
     </>
   );

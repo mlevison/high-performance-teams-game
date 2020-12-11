@@ -1,4 +1,4 @@
-import { sumByProp } from 'lib';
+import { restartGame, sumByProp } from 'lib';
 import React from 'react';
 import { AppState, GameDispatch } from 'state';
 import CapStoryChart from './CapStoryChart';
@@ -26,18 +26,7 @@ export default function Results(props: Props) {
         <li>Attempted {storiesAttempted} user stories</li>
         <li>Completed {storiesCompleted} user stories</li>
       </ul>
-      <Button
-        primary
-        onClick={() => {
-          if (
-            window.confirm(
-              'Do you really want to start a new Game? You can not come back to this one afterwards.',
-            )
-          ) {
-            props.dispatch({ type: 'RESTART_GAME' });
-          }
-        }}
-      >
+      <Button primary onClick={restartGame(props.dispatch)}>
         Start New Game
       </Button>
       <CapStoryChart rounds={props.state.pastRounds} />

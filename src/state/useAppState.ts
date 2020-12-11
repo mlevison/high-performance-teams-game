@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, useReducer } from 'react';
-import { concatByProp, sumByProp } from '../lib';
+import { concatByProp, sumByProp, usePersistState } from '../lib';
 import {
   isVisibleEffect,
   VisibleEffect,
@@ -11,9 +11,9 @@ import {
 import {
   Action,
   gameReducer,
+  GameState,
   getAllEffects,
   getCapacity,
-  INITIAL_STATE,
 } from './game';
 import {
   getAvailableGameActions,
@@ -48,19 +48,18 @@ export type AppState = {
     storiesAttempted: number;
     storiesCompleted: number;
   }[];
+  ui: GameState['ui'];
 };
 
 function orZero(num: number): number {
   return num < 0 ? 0 : num;
 }
 
-export default function useAppState(): [
-  AppState,
-  Dispatch<Action>,
-  () => ClosedRound,
-  () => GremlinId | null,
-] {
-  const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
+export default function useAppState(
+  initialState: GameState,
+): [AppState, Dispatch<Action>, () => ClosedRound, () => GremlinId | null] {
+  const [state, dispatch] = useReducer(gameReducer, initialState);
+  usePersistState(state);
 
   const finishedActionIds = concatByProp(
     state.pastRounds,
@@ -147,6 +146,7 @@ export default function useAppState(): [
           number: i + 1,
         };
       }),
+      ui: state.ui,
     },
     dispatch,
     () => closeRound(state),

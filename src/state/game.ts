@@ -14,6 +14,10 @@ import { getGremlinEffects } from './gremlins';
 export type GameState = {
   currentRound: Round;
   pastRounds: ClosedRound[];
+  ui: {
+    view: 'welcome' | 'actions' | 'results';
+    closedRound?: ClosedRound;
+  };
 };
 export type RestartGameAction = {
   type: 'RESTART_GAME';
@@ -21,6 +25,14 @@ export type RestartGameAction = {
 export type SelectGameActionAction = {
   type: 'SELECT_GAME_ACTION';
   payload: GameActionId;
+};
+export type SetUiViewAction = {
+  type: 'SET_UI_VIEW_ACTION';
+  payload: GameState['ui']['view'];
+};
+export type SetUiClosedRoundAction = {
+  type: 'SET_UI_CLOSED_ROUND_ACTION';
+  payload: ClosedRound;
 };
 export type UnselectGameActionAction = {
   type: 'UNSELECT_GAME_ACTION';
@@ -37,7 +49,9 @@ export type Action =
   | NextRoundAction
   | SelectGameActionAction
   | UnselectGameActionAction
-  | RestartGameAction;
+  | RestartGameAction
+  | SetUiViewAction
+  | SetUiClosedRoundAction;
 
 export const INITIAL_STATE: GameState = {
   currentRound: {
@@ -45,10 +59,13 @@ export const INITIAL_STATE: GameState = {
     selectedGameActionIds: [],
   },
   pastRounds: [],
+  ui: {
+    view: 'welcome',
+  },
 };
 
 export function getAllEffects(
-  state: GameState,
+  state: Omit<GameState, 'ui'>,
   finishedActionIds: GameActionId[] = concatByProp(
     state.pastRounds,
     'selectedGameActionIds',
@@ -131,10 +148,29 @@ export function gameReducer(state: GameState, action: Action): GameState {
     case 'NEXT_ROUND': {
       return {
         ...state,
+        ui: {
+          view: 'welcome',
+        },
         pastRounds: [...state.pastRounds, action.payload.closedRound],
         currentRound: createRound(action.payload.gremlin),
       };
     }
+    case 'SET_UI_VIEW_ACTION':
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          view: action.payload,
+        },
+      };
+    case 'SET_UI_CLOSED_ROUND_ACTION':
+      return {
+        ...state,
+        ui: {
+          view: 'results',
+          closedRound: action.payload,
+        },
+      };
     case 'RESTART_GAME':
       return INITIAL_STATE;
   }
