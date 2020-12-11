@@ -38,8 +38,8 @@ export const gremlins: GremlinList<GremlinId> = {
     description: (
       <p>
         Your best tester is needed by another team for a while.&nbsp; If you
-        have already implemented: Cross Skilling and Protection from Outside
-        Distraction, they will reduce effects.
+        have already implemented: Cross Skilling, External Cross Training or
+        Protection from Outside Distraction, they will reduce effects.
       </p>
     ),
     effect(age, finishedActionIds) {
