@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "https://teamsgame.agilepainrelief.com/static/css/main.df5d3380.chunk.css",
-    "main.js": "https://teamsgame.agilepainrelief.com/static/js/main.62129c5a.chunk.js",
-    "main.js.map": "https://teamsgame.agilepainrelief.com/static/js/main.62129c5a.chunk.js.map",
+    "main.js": "https://teamsgame.agilepainrelief.com/static/js/main.564276dc.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/static/js/main.564276dc.chunk.js.map",
     "runtime-main.js": "https://teamsgame.agilepainrelief.com/static/js/runtime-main.e2711f29.js",
     "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/static/js/runtime-main.e2711f29.js.map",
     "static/js/2.84571de2.chunk.js": "https://teamsgame.agilepainrelief.com/static/js/2.84571de2.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.e2711f29.js",
     "static/js/2.84571de2.chunk.js",
     "static/css/main.df5d3380.chunk.css",
-    "static/js/main.62129c5a.chunk.js"
+    "static/js/main.564276dc.chunk.js"
   ]
 }
