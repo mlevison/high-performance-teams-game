@@ -15,6 +15,7 @@ import {
   Button,
   Welcome,
   Rows,
+  Container,
   Row,
 } from './components';
 import { GAME_STATE_OK, InitialStateWithStatus, restartGame } from 'lib';
@@ -29,7 +30,10 @@ export function App(props: Props) {
   );
 
   return (
-    <>
+    <Container
+      review={state.ui.review !== false}
+      onClose={() => dispatch({ type: 'SET_UI_REVIEW_ACTION', payload: false })}
+    >
       <Header>
         <Tabs>
           <Tab
@@ -50,7 +54,8 @@ export function App(props: Props) {
       </Header>
       <Content>
         <div style={{ display: tab === 'play' ? 'block' : 'none' }}>
-          {state.currentRound.number > TOTAL_ROUNDS ? (
+          {state.ui.review === false &&
+          state.currentRound.number > TOTAL_ROUNDS ? (
             <FinalResults state={state} dispatch={dispatch} />
           ) : (
             <Round
@@ -59,6 +64,7 @@ export function App(props: Props) {
               currentRound={state.currentRound}
               welcome={
                 <Welcome
+                  review={state.ui.review}
                   dispatch={dispatch}
                   gremlin={state.currentRound.gremlin}
                 >
@@ -86,7 +92,9 @@ export function App(props: Props) {
                       })
                     }
                   >
-                    Complete Round
+                    {state.ui.review === false
+                      ? 'Complete Round'
+                      : 'Show User Stories'}
                   </Button>
                   {state.currentRound.gremlin && (
                     <p>
@@ -97,6 +105,7 @@ export function App(props: Props) {
                   <Rows>
                     <Row>
                       <Actions
+                        ui={state.ui}
                         currentRound={state.currentRound.number}
                         availableCapacity={
                           state.currentRound.capacity.available
@@ -126,7 +135,7 @@ export function App(props: Props) {
         </div>
         {tab === 'rules' && <Rules />}
       </Content>
-    </>
+    </Container>
   );
 }
 

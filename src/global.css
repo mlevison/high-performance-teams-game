@@ -1,9 +1,9 @@
 :root {
-  --primary-background-color: #1f64a4;
-  --primary-background-color-light: #709bc4;
+  --header-background-color: #1f64a4;
+  --header-background-color-light: #709bc4;
+  --primary-background-color: var(--header-background-color);
+  --primary-background-color-light: var(--header-background-color-light);
   --primary-color: white;
-  --header-background-color: var(--primary-background-color);
-  --header-background-color-light: var(--primary-background-color-light);
   --header-color: var(--primary-color);
   --main-background-color: white;
   --main-color: #222;
@@ -17,6 +17,9 @@
   --error-color-20: rgba(240, 52, 35, 0.2);
   --disabled-color: #aaa;
   --selected-action-color: greenyellow;
+  --finished-action-color: rgb(81 136 0);
+  --review-background-color: #34ea7d;
+  --review-color: white;
 }
 
 body {

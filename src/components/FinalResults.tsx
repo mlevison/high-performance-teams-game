@@ -26,6 +26,13 @@ export default function Results(props: Props) {
         <li>Attempted {storiesAttempted} user stories</li>
         <li>Completed {storiesCompleted} user stories</li>
       </ul>
+      <Button
+        onClick={() =>
+          props.dispatch({ type: 'SET_UI_REVIEW_ACTION', payload: 0 })
+        }
+      >
+        Review Game
+      </Button>
       <Button primary onClick={restartGame(props.dispatch)}>
         Start New Game
       </Button>

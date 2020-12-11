@@ -15,6 +15,7 @@ export type GameState = {
   currentRound: Round;
   pastRounds: ClosedRound[];
   ui: {
+    review: false | number;
     view: 'welcome' | 'actions' | 'results';
     closedRound?: ClosedRound;
   };
@@ -25,6 +26,10 @@ export type RestartGameAction = {
 export type SelectGameActionAction = {
   type: 'SELECT_GAME_ACTION';
   payload: GameActionId;
+};
+export type SetUiReviewAction = {
+  type: 'SET_UI_REVIEW_ACTION';
+  payload: GameState['ui']['review'];
 };
 export type SetUiViewAction = {
   type: 'SET_UI_VIEW_ACTION';
@@ -51,7 +56,8 @@ export type Action =
   | UnselectGameActionAction
   | RestartGameAction
   | SetUiViewAction
-  | SetUiClosedRoundAction;
+  | SetUiClosedRoundAction
+  | SetUiReviewAction;
 
 export const INITIAL_STATE: GameState = {
   currentRound: {
@@ -60,6 +66,7 @@ export const INITIAL_STATE: GameState = {
   },
   pastRounds: [],
   ui: {
+    review: false,
     view: 'welcome',
   },
 };
@@ -149,6 +156,7 @@ export function gameReducer(state: GameState, action: Action): GameState {
       return {
         ...state,
         ui: {
+          review: false,
           view: 'welcome',
         },
         pastRounds: [...state.pastRounds, action.payload.closedRound],
@@ -167,8 +175,18 @@ export function gameReducer(state: GameState, action: Action): GameState {
       return {
         ...state,
         ui: {
+          ...state.ui,
           view: 'results',
           closedRound: action.payload,
+        },
+      };
+    case 'SET_UI_REVIEW_ACTION':
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          view: 'welcome',
+          review: action.payload,
         },
       };
     case 'RESTART_GAME':

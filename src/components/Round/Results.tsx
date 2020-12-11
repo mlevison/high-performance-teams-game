@@ -1,6 +1,6 @@
 import React from 'react';
 import { GremlinId } from '../../config';
-import { START_USER_STORY_CHANCE } from '../../constants';
+import { START_USER_STORY_CHANCE, TOTAL_ROUNDS } from '../../constants';
 import {
   AppState,
   GameDispatch,
@@ -77,21 +77,43 @@ export default function Results(props: Props) {
           ))}
       </ul>
       <div className={styles.center}>
-        <Button
-          disabled={!!props.ui.closedRound}
-          onClick={() => {
-            props.dispatch({
-              type: 'SET_UI_CLOSED_ROUND_ACTION',
-              payload: props.closeRound(),
-            });
-          }}
-        >
-          Roll for User Stories
-        </Button>
+        {props.ui.review === false ? (
+          <Button
+            disabled={!!props.ui.closedRound}
+            onClick={() => {
+              props.dispatch({
+                type: 'SET_UI_CLOSED_ROUND_ACTION',
+                payload: props.closeRound(),
+              });
+            }}
+          >
+            Roll for User Stories
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              props.dispatch({
+                type: 'SET_UI_VIEW_ACTION',
+                payload: 'actions',
+              });
+            }}
+          >
+            ◀ Back
+          </Button>
+        )}
         <Button
           primary
           disabled={!props.ui.closedRound}
           onClick={() => {
+            if (props.ui.review !== false) {
+              const nextRound = props.ui.review + 1;
+              props.dispatch({
+                type: 'SET_UI_REVIEW_ACTION',
+                payload: nextRound < TOTAL_ROUNDS ? nextRound : false,
+              });
+
+              return;
+            }
             if (!props.ui.closedRound) {
               throw new Error(
                 'Can not go to next round without closing this one',
@@ -106,7 +128,11 @@ export default function Results(props: Props) {
             });
           }}
         >
-          Next Round
+          {props.ui.review && props.ui.review + 1 >= TOTAL_ROUNDS
+            ? 'Close Review'
+            : props.pastRounds.length + 1 === TOTAL_ROUNDS
+            ? 'End Game'
+            : 'Next Round'}
         </Button>
       </div>
       <CapStoryChart

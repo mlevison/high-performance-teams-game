@@ -6,6 +6,7 @@ import Action from './Action';
 
 type Props = {
   round: number;
+  review: boolean;
   initialVisible: boolean;
   openGameActionId?: GameActionId;
   availableCapacity: number;
@@ -34,6 +35,7 @@ export default function RoundActions(props: Props) {
                   <li key={actionWithStatus.gameAction.id}>
                     <Action
                       {...actionWithStatus}
+                      review={props.review}
                       availableCapacity={props.availableCapacity}
                       isOpen={
                         props.openGameActionId ===

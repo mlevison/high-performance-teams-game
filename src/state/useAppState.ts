@@ -58,8 +58,20 @@ function orZero(num: number): number {
 export default function useAppState(
   initialState: GameState,
 ): [AppState, Dispatch<Action>, () => ClosedRound, () => GremlinId | null] {
-  const [state, dispatch] = useReducer(gameReducer, initialState);
-  usePersistState(state);
+  const [gameState, dispatch] = useReducer(gameReducer, initialState);
+  usePersistState(gameState);
+
+  const state: GameState =
+    gameState.ui.review === false
+      ? gameState
+      : {
+          currentRound: gameState.pastRounds[gameState.ui.review],
+          pastRounds: gameState.pastRounds.slice(0, gameState.ui.review),
+          ui: {
+            ...gameState.ui,
+            closedRound: gameState.pastRounds[gameState.ui.review],
+          },
+        };
 
   const finishedActionIds = concatByProp(
     state.pastRounds,

@@ -78,7 +78,11 @@ export function getAvailableGameActions(
       return {
         gameAction,
         status: selectedGameActionIds.includes(gameAction.id)
-          ? { type: 'SELECTED', times, dependencies }
+          ? {
+              type: 'SELECTED',
+              times,
+              dependencies,
+            }
           : { type: 'AVAILABLE', times, dependencies },
       };
     })
