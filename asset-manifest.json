@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "https://teamsgame.agilepainrelief.com/static/css/main.07a83d92.chunk.css",
-    "main.js": "https://teamsgame.agilepainrelief.com/static/js/main.c4881eae.chunk.js",
-    "main.js.map": "https://teamsgame.agilepainrelief.com/static/js/main.c4881eae.chunk.js.map",
+    "main.css": "https://teamsgame.agilepainrelief.com/static/css/main.df5d3380.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.com/static/js/main.62129c5a.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/static/js/main.62129c5a.chunk.js.map",
     "runtime-main.js": "https://teamsgame.agilepainrelief.com/static/js/runtime-main.e2711f29.js",
     "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/static/js/runtime-main.e2711f29.js.map",
-    "static/js/2.1a6846f8.chunk.js": "https://teamsgame.agilepainrelief.com/static/js/2.1a6846f8.chunk.js",
-    "static/js/2.1a6846f8.chunk.js.map": "https://teamsgame.agilepainrelief.com/static/js/2.1a6846f8.chunk.js.map",
+    "static/js/2.84571de2.chunk.js": "https://teamsgame.agilepainrelief.com/static/js/2.84571de2.chunk.js",
+    "static/js/2.84571de2.chunk.js.map": "https://teamsgame.agilepainrelief.com/static/js/2.84571de2.chunk.js.map",
     "index.html": "https://teamsgame.agilepainrelief.com/index.html",
-    "static/css/main.07a83d92.chunk.css.map": "https://teamsgame.agilepainrelief.com/static/css/main.07a83d92.chunk.css.map",
-    "static/js/2.1a6846f8.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/static/js/2.1a6846f8.chunk.js.LICENSE.txt"
+    "static/css/main.df5d3380.chunk.css.map": "https://teamsgame.agilepainrelief.com/static/css/main.df5d3380.chunk.css.map",
+    "static/js/2.84571de2.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/static/js/2.84571de2.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.e2711f29.js",
-    "static/js/2.1a6846f8.chunk.js",
-    "static/css/main.07a83d92.chunk.css",
-    "static/js/main.c4881eae.chunk.js"
+    "static/js/2.84571de2.chunk.js",
+    "static/css/main.df5d3380.chunk.css",
+    "static/js/main.62129c5a.chunk.js"
   ]
 }
