@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useAppState from '../state/useAppState';
+import useAppState, { AppState } from '../state/useAppState';
 import type { GameActionId, GremlinId } from '../config';
 import { INITIAL_STATE } from 'state';
 
@@ -43,12 +43,55 @@ export function getGame() {
   };
 }
 
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends string | undefined
+    ? string | RegExp
+    : DeepPartial<T[P]>;
+};
+function deepObjectContaining(input: unknown): unknown {
+  if (Array.isArray(input)) {
+    expect.arrayContaining(input.map((val) => deepObjectContaining(val)));
+  }
+
+  if (input instanceof RegExp) {
+    return expect.stringMatching(input);
+  }
+
+  if (typeof input !== 'object' || input === null) {
+    return input;
+  }
+
+  return expect.objectContaining(
+    Object.fromEntries(
+      Object.entries(input).map(([key, value]) => {
+        return [key, deepObjectContaining(value)];
+      }),
+    ),
+  );
+}
+
+export function testCurrentRound(
+  game: ReturnType<typeof getGame>,
+  round: DeepPartial<AppState['currentRound']>,
+) {
+  expect(game.state.currentRound).toEqual(deepObjectContaining(round));
+}
+
+export function testFutureRounds(
+  game: ReturnType<typeof getGame>,
+  futureRounds: DeepPartial<AppState['currentRound']>[],
+) {
+  futureRounds.forEach((round) => {
+    game.nextRound();
+    testCurrentRound(game, round);
+  });
+}
+
 export function testFutureCapacities(
   game: ReturnType<typeof getGame>,
-  capacities: number[],
+  capacitiesByRound: number[],
 ) {
-  // TODO Am always bugged when two variables differ only on the use of plurals
-  capacities.forEach((capacity) => {
+  capacitiesByRound.forEach((capacity) => {
     game.nextRound();
     expect(game.state.currentRound.capacity.total).toEqual(capacity);
   });

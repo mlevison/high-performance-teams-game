@@ -1,5 +1,8 @@
-import type { AppState } from '../../state';
-import { getGame, testFutureCapacities, testUserStoryChance, times } from '../../lib/testHelpers';
+import {
+  getGame,
+  testCurrentRound,
+  testFutureRounds,
+} from '../../lib/testHelpers';
 
 /* disable all other rounds */
 jest.mock('./index', () => ({
@@ -14,24 +17,17 @@ describe('round 1', () => {
   it('starts with capacity 10/10 and 30% userStoryChance in round 1', () => {
     const game = getGame();
 
-    const expectedCurrentRound: AppState['currentRound'] = expect.objectContaining(
-      {
-        capacity: {
-          total: 10,
-          available: 10,
-        },
-        gremlinChance: 0,
-        userStoryChance: 30,
-        number: 1,
-        activeEffects: [],
+    testCurrentRound(game, {
+      capacity: {
+        total: 10,
+        available: 10,
       },
-    );
-
-    expect(game.state.currentRound).toEqual(expectedCurrentRound);
-
-    expect(game.state.currentRound.title).toMatch(
-      /Welcome to the World’s Smallest Online Bookstore/i,
-    );
+      gremlinChance: 0,
+      userStoryChance: 30,
+      number: 1,
+      activeEffects: [],
+      title: /Welcome to the World’s Smallest Online Bookstore/i,
+    });
   });
 
   describe('actions', () => {
@@ -41,10 +37,16 @@ describe('round 1', () => {
 
         game.selectAction('TEAMS_ON_SAME_FLOOR');
         game.nextRound();
-        expect(game.state.currentRound.number).toEqual(2);
-        expect(game.state.currentRound.capacity.total).toEqual(11);
+        testCurrentRound(game, { number: 2, capacity: { total: 11 } });
 
-        testFutureCapacities(game, [12, 13, 14, 15]);
+        testFutureRounds(game, [
+          { capacity: { total: 12 } },
+          { capacity: { total: 13 } },
+          { capacity: { total: 14 } },
+          { capacity: { total: 15 } },
+          /* no more increase after 5 rounds */
+          { capacity: { total: 15 } },
+        ]);
       });
     });
 
@@ -54,7 +56,13 @@ describe('round 1', () => {
 
         game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
 
-        testUserStoryChance(game, [40, 40, 40, 40, 40]);
+        testFutureRounds(game, [
+          { userStoryChance: 40 },
+          { userStoryChance: 40 },
+          { userStoryChance: 40 },
+          { userStoryChance: 40 },
+          { userStoryChance: 40 },
+        ]);
       });
     });
 
@@ -64,12 +72,13 @@ describe('round 1', () => {
 
         game.selectAction('WORKING_AGREEMENTS');
 
-        // Capacity only ever increases by one in total
-        times(5, () => {
-          game.nextRound();
-          expect(game.state.currentRound.capacity.total).toEqual(11);
-          expect(game.state.currentRound.userStoryChance).toEqual(30);
-        });
+        testFutureRounds(game, [
+          { capacity: { total: 11 }, userStoryChance: 30 },
+          { capacity: { total: 11 }, userStoryChance: 30 },
+          { capacity: { total: 11 }, userStoryChance: 30 },
+          { capacity: { total: 11 }, userStoryChance: 30 },
+          { capacity: { total: 11 }, userStoryChance: 30 },
+        ]);
       });
     });
 
@@ -78,14 +87,16 @@ describe('round 1', () => {
         const game = getGame();
 
         game.selectAction('CLARIFY_PRODUCT_VISION');
-        expect(game.state.currentRound.userStoryChance).toEqual(40);
+        testCurrentRound(game, { userStoryChance: 40 });
 
         // proving it had no effect on capacity
-        times(5, () => {
-          game.nextRound();
-          expect(game.state.currentRound.capacity.total).toEqual(10);
-          expect(game.state.currentRound.userStoryChance).toEqual(40);
-        });
+        testFutureRounds(game, [
+          { capacity: { total: 10 }, userStoryChance: 40 },
+          { capacity: { total: 10 }, userStoryChance: 40 },
+          { capacity: { total: 10 }, userStoryChance: 40 },
+          { capacity: { total: 10 }, userStoryChance: 40 },
+          { capacity: { total: 10 }, userStoryChance: 40 },
+        ]);
       });
     });
   });
