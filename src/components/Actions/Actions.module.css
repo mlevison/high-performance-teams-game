@@ -74,7 +74,7 @@
   border-color: var(--selected-action-color);
 }
 .actionFinished .actionImage,
-.actionSelected .actionIcon {
+.actionFinished .actionIcon {
   border-color: var(--finished-action-color);
 }
 
