@@ -1,10 +1,31 @@
 import React, { useMemo } from 'react';
-import { Chart } from 'react-charts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 import styles from './CapStoryChart.module.css';
 
-type Data = { primary: number; secondary: number };
+const USC = 'Chance of completing User Stories';
+const SA = 'User Stories Attempted';
+const SC = 'User Stories Completed';
+const TC = 'Total Capacity';
+
+type Data = {
+  name: string;
+  [USC]: number;
+  [TC]: number;
+  [SA]: number;
+  [SC]?: number;
+};
 type Props = {
   rounds: {
+    userStoryChance: number;
     totalCapacity: number;
     storiesAttempted: number;
     storiesCompleted: number | undefined;
@@ -12,60 +33,62 @@ type Props = {
 };
 
 export default function CapStoryChart({ rounds }: Props) {
-  const data = useMemo(() => {
-    const totalCapacity: Data[] = [];
-    const storiesAttempted: Data[] = [];
-    const storiesCompleted: Data[] = [];
+  const [data, userStorySteps] = useMemo(() => {
+    const data: Data[] = [];
+    let maxUserStoryChance = 100;
 
     rounds.forEach((round, i) => {
-      totalCapacity.push({
-        primary: i + 1,
-        secondary: round.totalCapacity || 0.1,
+      maxUserStoryChance = Math.max(
+        maxUserStoryChance,
+        Math.ceil(round.userStoryChance / 10) * 10,
+      );
+      data.push({
+        name: `Round ${i + 1}`,
+        [USC]: round.userStoryChance,
+        [TC]: round.totalCapacity,
+        [SA]: round.storiesAttempted,
+        [SC]: round.storiesCompleted,
       });
-
-      storiesAttempted.push({
-        primary: i + 1,
-        secondary: round.storiesAttempted || 0.1,
-      });
-
-      if (round.storiesCompleted !== undefined) {
-        storiesCompleted.push({
-          primary: i + 1,
-          secondary: round.storiesCompleted || 0.1,
-        });
-      }
     });
-
     return [
-      { label: 'Stories Completed', data: storiesCompleted },
-      { label: 'Stories Attempted', data: storiesAttempted },
-      { label: 'Total Capacity', data: totalCapacity },
+      data,
+      Array.from({ length: 1 + maxUserStoryChance / 10 }).map((_, i) => i * 10),
     ];
   }, [rounds]);
 
-  const axes = useMemo(
-    () => [
-      {
-        primary: true,
-        type: 'ordinal',
-        position: 'bottom',
-        format(val: any) {
-          return `Round ${val}`;
-        },
-      },
-      {
-        type: 'linear',
-        position: 'left',
-        tickSizeInner: 1,
-        base: 0,
-      },
-    ],
-    [],
-  );
-
   return (
-    <div className={styles.chart}>
-      <Chart data={data} axes={axes} tooltip />
-    </div>
+    <ResponsiveContainer className={styles.chart} height={300} width="100%">
+      <LineChart
+        data={data}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis yAxisId="left" />
+        <YAxis
+          yAxisId="right"
+          orientation="right"
+          unit="%"
+          ticks={userStorySteps}
+        />
+        <Tooltip />
+        <Legend />
+        <Line yAxisId="left" type="monotone" dataKey={TC} stroke="#0c79df" />
+        <Line yAxisId="left" type="monotone" dataKey={SA} stroke="#e2d02f" />
+        <Line
+          yAxisId="right"
+          type="monotone"
+          dataKey={USC}
+          stroke="#cd66e7"
+          activeDot={{ r: 8 }}
+        />
+        <Line yAxisId="left" type="monotone" dataKey={SC} stroke="#1be400" />
+      </LineChart>
+    </ResponsiveContainer>
   );
 }

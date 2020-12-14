@@ -44,6 +44,7 @@ export type AppState = {
     activeEffects: VisibleEffect<BaseEffect>[];
   };
   pastRounds: {
+    userStoryChance: number;
     totalCapacity: number;
     storiesAttempted: number;
     storiesCompleted: number;
@@ -153,6 +154,10 @@ export default function useAppState(
 
         return {
           totalCapacity,
+          userStoryChance: sumByProp(
+            effects.filter(isUserStoryChanceEffect),
+            'userStoryChange',
+          ),
           storiesAttempted: orZero(totalCapacity - getCosts(round)),
           storiesCompleted: round.storiesCompleted,
           number: i + 1,
