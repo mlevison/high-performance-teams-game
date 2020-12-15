@@ -95,7 +95,9 @@ function orZero(num: number): number {
   return num < 0 ? 0 : num;
 }
 
-export function deriveAppRound(state: Omit<GameState, 'ui'>): AppRound {
+export function deriveAppRound(
+  state: Pick<GameState, 'currentRound' | 'pastRounds'>,
+): AppRound {
   const finishedActionIds = concatByProp(
     state.pastRounds,
     'selectedGameActionIds',

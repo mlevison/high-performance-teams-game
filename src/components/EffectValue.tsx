@@ -10,11 +10,12 @@ type Props = {
   effect: VisibleEffect<BaseEffect>;
 };
 
-function Sign(props: { value: number }) {
+export function Sign(props: { value: number; unit?: string }) {
   return (
     <span className={styles.value}>
       {props.value > 0 ? '+' : '-'}
       {String(props.value).replace(/^-/, '')}
+      {props.unit}
     </span>
   );
 }
@@ -31,7 +32,8 @@ export default function EffectValue(props: Props) {
   if (isGremlinChanceEffect(props.effect)) {
     return (
       <>
-        <Sign value={props.effect.gremlinChange} /> Chance of Gremlins occurring
+        <Sign value={props.effect.gremlinChange} unit="%" /> Chance of Gremlins
+        occurring
       </>
     );
   }
@@ -39,8 +41,8 @@ export default function EffectValue(props: Props) {
   if (isUserStoryChanceEffect(props.effect)) {
     return (
       <>
-        <Sign value={props.effect.userStoryChange} /> Chance of User Stories
-        succeeding
+        <Sign value={props.effect.userStoryChange} unit="%" /> Chance of User
+        Stories succeeding
       </>
     );
   }

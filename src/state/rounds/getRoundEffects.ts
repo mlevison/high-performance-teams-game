@@ -2,7 +2,9 @@ import { Effect, isEffect, isGremlinChanceEffect } from '../effects';
 import { rounds } from '../../config';
 import { GameState } from 'state/game';
 
-export function getRoundEffects(state: Omit<GameState, 'ui'>): Effect[] {
+export function getRoundEffects(
+  state: Pick<GameState, 'currentRound' | 'pastRounds'>,
+): Effect[] {
   const currentRound = state.pastRounds.length + 1;
   const roundEffects: (null | Effect)[] = [];
 

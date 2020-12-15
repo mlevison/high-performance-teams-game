@@ -24,13 +24,11 @@ export type GameState = {
     view: 'welcome' | 'actions' | 'results';
     closedRound?: ClosedGameRound;
   };
+  log: RunningGameAction[];
 };
+
 export type RestartGameAction = {
   type: 'RESTART_GAME';
-};
-export type SelectGameActionAction = {
-  type: 'SELECT_GAME_ACTION';
-  payload: GameActionId;
 };
 export type SetUiReviewAction = {
   type: 'SET_UI_REVIEW_ACTION';
@@ -44,6 +42,10 @@ export type SetUiClosedRoundAction = {
   type: 'SET_UI_CLOSED_ROUND_ACTION';
   payload: ClosedGameRound;
 };
+export type SelectGameActionAction = {
+  type: 'SELECT_GAME_ACTION';
+  payload: GameActionId;
+};
 export type UnselectGameActionAction = {
   type: 'UNSELECT_GAME_ACTION';
   payload: GameActionId;
@@ -55,14 +57,13 @@ export type NextRoundAction = {
     gremlin: GremlinId | null;
   };
 };
-export type Action =
-  | NextRoundAction
+export type GameActionAction =
   | SelectGameActionAction
-  | UnselectGameActionAction
-  | RestartGameAction
-  | SetUiViewAction
-  | SetUiClosedRoundAction
-  | SetUiReviewAction;
+  | UnselectGameActionAction;
+type RunningGameAction = GameActionAction | NextRoundAction;
+type UiAction = SetUiViewAction | SetUiClosedRoundAction | SetUiReviewAction;
+
+export type Action = RunningGameAction | RestartGameAction | UiAction;
 
 export const INITIAL_STATE: GameState = {
   currentRound: {
@@ -74,10 +75,11 @@ export const INITIAL_STATE: GameState = {
     review: false,
     view: 'welcome',
   },
+  log: [],
 };
 
 export function getAllEffects(
-  state: Omit<GameState, 'ui'>,
+  state: Pick<GameState, 'currentRound' | 'pastRounds'>,
   finishedActionIds: GameActionId[] = concatByProp(
     state.pastRounds,
     'selectedGameActionIds',
@@ -144,6 +146,7 @@ export function gameReducer(state: GameState, action: Action): GameState {
             action.payload,
           ],
         },
+        log: state.log.concat(action),
       };
     }
     case 'UNSELECT_GAME_ACTION': {
@@ -155,6 +158,7 @@ export function gameReducer(state: GameState, action: Action): GameState {
             (id) => id !== action.payload,
           ),
         },
+        log: state.log.concat(action),
       };
     }
     case 'NEXT_ROUND': {
@@ -166,6 +170,7 @@ export function gameReducer(state: GameState, action: Action): GameState {
         },
         pastRounds: [...state.pastRounds, action.payload.closedRound],
         currentRound: createRound(action.payload.gremlin),
+        log: state.log.concat(action),
       };
     }
     case 'SET_UI_VIEW_ACTION':

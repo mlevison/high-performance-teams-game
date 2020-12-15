@@ -1,10 +1,47 @@
 import React from 'react';
 import cx from 'classnames';
-import { AppState, isCapacityEffect } from '../state';
+import { AppState, isCapacityEffect, isUserStoryChanceEffect } from '../state';
+import EffectValue, { Sign } from './EffectValue';
 import styles from './Status.module.css';
 import { START_CAPACITY } from '../constants';
 
 type Props = AppState['currentRound'];
+
+export function ActiveEffects(props: {
+  effects: AppState['currentRound']['activeEffects'];
+  showUnit: boolean;
+}) {
+  return (
+    <>
+      {props.effects.map((effect) => {
+        const value = isCapacityEffect(effect)
+          ? effect.capacityChange
+          : isUserStoryChanceEffect(effect)
+          ? effect.userStoryChange
+          : effect.gremlinChange;
+
+        return (
+          <li key={effect.title} className={cx(value < 0 && styles.negative)}>
+            <span
+              className={cx(
+                !props.showUnit && styles.cap,
+                value < 0 && styles.negativeValue,
+              )}
+            >
+              {props.showUnit ? (
+                <EffectValue effect={effect} />
+              ) : (
+                <Sign value={value} />
+              )}
+            </span>
+            {props.showUnit ? <br /> : ' '}
+            {effect.title}
+          </li>
+        );
+      })}
+    </>
+  );
+}
 
 export default function Status(props: Props) {
   const percentOnUserStories = props.capacity.available / props.capacity.total;
@@ -14,6 +51,9 @@ export default function Status(props: Props) {
       : percentOnUserStories < 0.7
       ? 'WARNING'
       : 'OK';
+
+  const capacityEffects = props.activeEffects.filter(isCapacityEffect);
+
   return (
     <>
       <h2>Capacity Breakdown</h2>
@@ -21,30 +61,12 @@ export default function Status(props: Props) {
         <li>
           <span className={styles.cap}>{START_CAPACITY}</span> Start Capacity
         </li>
-        {props.activeEffects.length !== 0 && (
+        {capacityEffects.length ? (
           <>
             <li className={styles.title}>Active Effects</li>
-            {props.activeEffects.filter(isCapacityEffect).map((effect) => (
-              <li
-                key={effect.title}
-                className={cx(effect.capacityChange < 0 && styles.negative)}
-              >
-                <span
-                  className={cx(
-                    styles.cap,
-                    effect.capacityChange < 0 && styles.negativeValue,
-                  )}
-                >
-                  <span className={styles.sign}>
-                    {effect.capacityChange > 0 ? '+' : '-'}
-                  </span>
-                  {String(effect.capacityChange).replace(/^-/, '')}
-                </span>
-                {effect.title}
-              </li>
-            ))}
+            <ActiveEffects effects={capacityEffects} showUnit={false} />
           </>
-        )}
+        ) : null}
         <li className={styles.capThisRound}>
           <span className={styles.cap}>
             <span className={styles.sign}>=</span> {props.capacity.total}

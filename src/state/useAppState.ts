@@ -16,6 +16,7 @@ export type AppState = {
   currentRound: AppRound;
   pastRounds: PastRound[];
   ui: GameState['ui'];
+  log: GameState['log'];
 };
 
 export default function useAppState(
@@ -34,6 +35,7 @@ export default function useAppState(
             ...gameState.ui,
             closedRound: gameState.pastRounds[gameState.ui.review],
           },
+          log: gameState.log,
         };
 
   const availableGameActions = getAvailableGameActions(
@@ -59,6 +61,7 @@ export default function useAppState(
         };
       }),
       ui: state.ui,
+      log: state.log,
     },
     dispatch,
     () => closeRound(state),
