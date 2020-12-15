@@ -67,25 +67,26 @@ export default function CapStoryChart({ rounds }: Props) {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
-        <YAxis yAxisId="left" />
+        <YAxis yAxisId="right" orientation="right" />
         <YAxis
-          yAxisId="right"
-          orientation="right"
+          yAxisId="left"
+          orientation="left"
           unit="%"
           ticks={userStorySteps}
         />
         <Tooltip />
         <Legend />
-        <Line yAxisId="left" type="monotone" dataKey={TC} stroke="#0c79df" />
-        <Line yAxisId="left" type="monotone" dataKey={SA} stroke="#e2d02f" />
+        <Line yAxisId="right" type="monotone" dataKey={TC} stroke="#0c79df" />
+        <Line yAxisId="right" type="monotone" dataKey={SA} stroke="#e2d02f" />
         <Line
-          yAxisId="right"
+          yAxisId="left"
           type="monotone"
           dataKey={USC}
           stroke="#cd66e7"
+          unit="%"
           activeDot={{ r: 8 }}
         />
-        <Line yAxisId="left" type="monotone" dataKey={SC} stroke="#1be400" />
+        <Line yAxisId="right" type="monotone" dataKey={SC} stroke="#1be400" />
       </LineChart>
     </ResponsiveContainer>
   );
