@@ -172,7 +172,7 @@ export default function OutdatedStateWarning(props: {
           ) : null}
           <Button
             onClick={() => {
-              window.location.href = '/';
+              window.location.href = window.location.href.split('?')[0];
             }}
           >
             Continue to my previous game
@@ -180,7 +180,7 @@ export default function OutdatedStateWarning(props: {
           <Button
             onClick={() => {
               saveToLocalStorage(initialState.state, version);
-              window.location.href = '/';
+              window.location.href = window.location.href.split('?')[0];
             }}
             primary
           >
