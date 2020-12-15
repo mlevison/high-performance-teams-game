@@ -2,7 +2,7 @@
 function hashCode(string: string) {
   var hash = 0;
   if (string.length === 0) {
-    return hash;
+    return hash.toString(36).replace(/^-/, '');
   }
   for (var i = 0; i < string.length; i++) {
     var char = string.charCodeAt(i);
@@ -12,7 +12,7 @@ function hashCode(string: string) {
   return hash.toString(36).replace(/^-/, '');
 }
 
-export default new Promise(async (resolve, reject) => {
+export default new Promise<string>(async (resolve, reject) => {
   if (process.env.NODE_ENV === 'test') {
     resolve('test');
     return;

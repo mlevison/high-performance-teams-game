@@ -18,7 +18,13 @@ import {
   Container,
   Row,
 } from './components';
-import { GAME_STATE_OK, InitialStateWithStatus, restartGame } from 'lib';
+import {
+  GAME_STATE_OK,
+  InitialStateWithStatus,
+  restartGame,
+  useVersion,
+  saveToLocalStorage,
+} from './lib';
 
 type Props = { initialState: GameState };
 export function App(props: Props) {
@@ -142,7 +148,49 @@ export function App(props: Props) {
 export default function OutdatedStateWarning(props: {
   initialState: InitialStateWithStatus;
 }) {
+  const version = useVersion();
   const [initialState, setInitialState] = useState(props.initialState);
+  if (!version) {
+    return null;
+  }
+
+  if (initialState.restored) {
+    return (
+      <>
+        <Header>
+          <br />
+        </Header>
+        <Content style={{ textAlign: 'center' }}>
+          <br />
+          <h2>Do you want to load the game encoded in the link?</h2>
+          <p>This will overwrite any currently running game</p>
+          {initialState.status !== GAME_STATE_OK ? (
+            <p>
+              ⚠️ The saved game to be restored might not work as expected
+              because the game has been updated since then
+            </p>
+          ) : null}
+          <Button
+            onClick={() => {
+              window.location.href = '/';
+            }}
+          >
+            Continue to my previous game
+          </Button>
+          <Button
+            onClick={() => {
+              saveToLocalStorage(initialState.state, version);
+              window.location.href = '/';
+            }}
+            primary
+          >
+            Restore Game from {initialState.restored.toLocaleString()}
+          </Button>
+        </Content>
+      </>
+    );
+  }
+
   if (initialState.status === GAME_STATE_OK) {
     return <App initialState={initialState.state} />;
   }
