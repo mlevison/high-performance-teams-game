@@ -11,7 +11,9 @@ type Props = {
 
 export default function Results(props: Props) {
   const storiesAttempted = sumByProp(
-    props.state.pastRounds,
+    props.state.pastRounds.map((round) => ({
+      storiesAttempted: round.capacity.available,
+    })),
     'storiesAttempted',
   );
   const storiesCompleted = sumByProp(

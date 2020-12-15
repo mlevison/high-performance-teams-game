@@ -1,4 +1,9 @@
-import { Round, ClosedRound, createRound, getActionEffects } from './round';
+import {
+  GameRound,
+  ClosedGameRound,
+  createRound,
+  getActionEffects,
+} from './round';
 import {
   Effect,
   isCapacityEffect,
@@ -12,12 +17,12 @@ import { getEffects } from './gameActions';
 import { getGremlinEffects } from './gremlins';
 
 export type GameState = {
-  currentRound: Round;
-  pastRounds: ClosedRound[];
+  currentRound: GameRound;
+  pastRounds: ClosedGameRound[];
   ui: {
     review: false | number;
     view: 'welcome' | 'actions' | 'results';
-    closedRound?: ClosedRound;
+    closedRound?: ClosedGameRound;
   };
 };
 export type RestartGameAction = {
@@ -37,7 +42,7 @@ export type SetUiViewAction = {
 };
 export type SetUiClosedRoundAction = {
   type: 'SET_UI_CLOSED_ROUND_ACTION';
-  payload: ClosedRound;
+  payload: ClosedGameRound;
 };
 export type UnselectGameActionAction = {
   type: 'UNSELECT_GAME_ACTION';
@@ -46,7 +51,7 @@ export type UnselectGameActionAction = {
 export type NextRoundAction = {
   type: 'NEXT_ROUND';
   payload: {
-    closedRound: ClosedRound;
+    closedRound: ClosedGameRound;
     gremlin: GremlinId | null;
   };
 };

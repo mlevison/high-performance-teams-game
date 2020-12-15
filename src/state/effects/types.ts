@@ -1,4 +1,4 @@
-import { Round } from '../round';
+import { GameRound } from '../round';
 import { EFFECT_HIDDEN } from '../../constants';
 
 export const GREMLIN_CHANGE_KEY = 'gremlinChange';
@@ -44,4 +44,4 @@ export type GremlinChanceEffect<T extends EffectDescription> = T &
   GremlinChanceEffectProps;
 
 export type Effect = BaseEffect & EffectDescription;
-export type GameEffect = (rounds: Round[]) => Effect[] | Effect | null;
+export type GameEffect = (rounds: GameRound[]) => Effect[] | Effect | null;

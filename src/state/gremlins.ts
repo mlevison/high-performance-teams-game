@@ -4,7 +4,7 @@ import { ReactElement } from 'react';
 import { GameActionId, GremlinId, gremlins } from '../config';
 import { Effect, isGremlinChanceEffect } from './effects';
 import { GameState, getAllEffects } from './game';
-import { Round } from './round';
+import { GameRound } from './round';
 
 export type GremlinDescription = {
   name: string;
@@ -74,7 +74,7 @@ export function isGremlinId(thing: GremlinId | null): thing is GremlinId {
 }
 
 export function getGremlinEffects(
-  round: Round,
+  round: GameRound,
   age: number,
   finishedActionIds: GameActionId[],
 ): Effect[] {
@@ -92,7 +92,7 @@ export function getGremlinEffects(
 }
 
 export function getGremlin(
-  round: Round,
+  round: GameRound,
 ): (GremlinDescription & GremlinImplementation) | undefined {
   if (!round.gremlin) {
     return;

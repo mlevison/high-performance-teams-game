@@ -9,6 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { AppRound } from '../state';
 import styles from './CapStoryChart.module.css';
 
 const USC = 'Chance of completing User Stories';
@@ -24,12 +25,9 @@ type Data = {
   [SC]?: number;
 };
 type Props = {
-  rounds: {
-    userStoryChance: number;
-    totalCapacity: number;
-    storiesAttempted: number;
+  rounds: (AppRound & {
     storiesCompleted: number | undefined;
-  }[];
+  })[];
 };
 
 export default function CapStoryChart({ rounds }: Props) {
@@ -45,8 +43,8 @@ export default function CapStoryChart({ rounds }: Props) {
       data.push({
         name: `Round ${i + 1}`,
         [USC]: round.userStoryChance,
-        [TC]: round.totalCapacity,
-        [SA]: round.storiesAttempted,
+        [TC]: round.capacity.total,
+        [SA]: round.capacity.available,
         [SC]: round.storiesCompleted,
       });
     });

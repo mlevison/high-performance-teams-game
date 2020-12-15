@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import type { Action } from './game';
-export type { ClosedRound } from './round';
+export type { ClosedGameRound as ClosedRound, AppRound } from './round';
 export type { GameState } from './game';
 export type { AppState } from './useAppState';
 export type { GameActionWithStatus } from './gameActions';

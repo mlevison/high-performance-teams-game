@@ -139,9 +139,7 @@ export default function Results(props: Props) {
         rounds={[
           ...props.pastRounds,
           {
-            userStoryChance: props.currentRound.userStoryChance,
-            totalCapacity: props.currentRound.capacity.total,
-            storiesAttempted: props.currentRound.capacity.available,
+            ...props.currentRound,
             storiesCompleted: props.ui.closedRound?.storiesCompleted,
           },
         ]}
