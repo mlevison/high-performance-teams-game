@@ -1,38 +1,19 @@
+import React from 'react';
 import { TOTAL_ROUNDS } from '../../constants';
-import React, { ReactNode } from 'react';
-import { AppState, GameDispatch } from '../../state';
+import { GameDispatch } from '../../state';
 import Button from '../Button';
-import EffectValue from '../EffectValue';
+import Description, { Props as DescriptionProps } from './Description';
 import styles from './Round.module.css';
 
-type Props = {
-  children: ReactNode;
+type Props = DescriptionProps & {
   review: false | number;
-  gremlin: AppState['currentRound']['gremlin'];
   dispatch: GameDispatch;
 };
 export default function Welcome(props: Props) {
   const review = props.review;
   return (
     <>
-      {props.children ? (
-        <div className={styles.description}>{props.children}</div>
-      ) : null}
-      {props.gremlin && (
-        <>
-          <h3>Gremlin</h3>
-          Just happened:&nbsp;
-          <strong>⚠️ {props.gremlin.name}</strong>
-          {props.gremlin.description}
-          <ul className={styles.gremlinEffects}>
-            {props.gremlin.effect.map((effect) => (
-              <li key={effect.title}>
-                <EffectValue effect={effect} />
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      <Description gremlin={props.gremlin}>{props.children}</Description>
       <div className={styles.center}>
         {review ? (
           <Button

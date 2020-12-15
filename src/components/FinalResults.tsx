@@ -6,7 +6,7 @@ import Button from './Button';
 
 type Props = {
   state: AppState;
-  dispatch: GameDispatch;
+  dispatch?: GameDispatch;
 };
 
 export default function Results(props: Props) {
@@ -20,6 +20,7 @@ export default function Results(props: Props) {
     props.state.pastRounds,
     'storiesCompleted',
   );
+  const dispatch = props.dispatch;
   return (
     <>
       <h2>Results</h2>
@@ -28,16 +29,20 @@ export default function Results(props: Props) {
         <li>Attempted {storiesAttempted} user stories</li>
         <li>Completed {storiesCompleted} user stories</li>
       </ul>
-      <Button
-        onClick={() =>
-          props.dispatch({ type: 'SET_UI_REVIEW_ACTION', payload: 0 })
-        }
-      >
-        Review Game
-      </Button>
-      <Button primary onClick={restartGame(props.dispatch)}>
-        Start New Game
-      </Button>
+      {dispatch && (
+        <>
+          <Button
+            onClick={() =>
+              dispatch({ type: 'SET_UI_REVIEW_ACTION', payload: 0 })
+            }
+          >
+            Review Game
+          </Button>
+          <Button primary onClick={restartGame(dispatch)}>
+            Start New Game
+          </Button>
+        </>
+      )}
       <CapStoryChart rounds={props.state.pastRounds} />
     </>
   );

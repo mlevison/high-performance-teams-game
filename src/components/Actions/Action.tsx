@@ -1,13 +1,10 @@
 import React, { useRef, useState } from 'react';
 import cx from 'classnames';
-import {
-  GameActionWithStatus,
-  isGameActionWithIcon,
-  isGameActionWithImage,
-} from '../../state';
+import { GameActionWithStatus } from '../../state';
 import styles from './Actions.module.css';
 import Overlay from './Overlay';
-import { Button } from 'components';
+import Button from '../Button';
+import ActionImage from './ActionImage';
 
 type ActionProps = GameActionWithStatus & {
   review: boolean;
@@ -57,16 +54,7 @@ export default function Action(props: ActionProps) {
           props.status.type === 'FINISHED' && styles.actionFinished,
         )}
       >
-        {isGameActionWithImage(gameAction) && (
-          <span
-            className={styles.actionImage}
-            style={{ backgroundImage: `url(${gameAction.image})` }}
-          ></span>
-        )}
-        {isGameActionWithIcon(gameAction) && (
-          <span className={styles.actionIcon}>{gameAction.icon}</span>
-        )}
-
+        <ActionImage gameAction={props.gameAction} />
         <span>{props.gameAction.name}</span>
       </button>
       {props.isOpen && (

@@ -5,6 +5,7 @@
   width: 2.5em;
   padding-right: 0.5em;
   text-align: right;
+  font-weight: bold;
 }
 .sign {
   float: left;

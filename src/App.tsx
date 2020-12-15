@@ -17,6 +17,7 @@ import {
   Rows,
   Container,
   Row,
+  Log,
 } from './components';
 import { GAME_STATE_OK, InitialStateWithStatus, restartGame } from 'lib';
 
@@ -25,7 +26,7 @@ export function App(props: Props) {
   const [state, dispatch, closeRound, rollGremlin] = useAppState(
     props.initialState,
   );
-  const [tab, setTab] = useState<'play' | 'rules'>(
+  const [tab, setTab] = useState<'play' | 'rules' | 'log'>(
     props.initialState === INITIAL_STATE ? 'rules' : 'play',
   );
 
@@ -49,6 +50,9 @@ export function App(props: Props) {
           </Tab>
           <Tab active={tab === 'rules'} onClick={() => setTab('rules')}>
             Rules
+          </Tab>
+          <Tab active={tab === 'log'} onClick={() => setTab('log')}>
+            Log
           </Tab>
         </Tabs>
       </Header>
@@ -134,6 +138,7 @@ export function App(props: Props) {
           )}
         </div>
         {tab === 'rules' && <Rules />}
+        {tab === 'log' && <Log state={state} />}
       </Content>
     </Container>
   );
