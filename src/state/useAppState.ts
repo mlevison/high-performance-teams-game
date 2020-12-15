@@ -1,5 +1,5 @@
 import { Dispatch, useReducer } from 'react';
-import { concatByProp, usePersistState } from '../lib';
+import { concatByProp, usePersistState, useStateLink } from '../lib';
 import { Action, gameReducer, GameState } from './game';
 import { getAvailableGameActions } from './gameActions';
 import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
@@ -15,6 +15,7 @@ export type AppState = {
   availableGameActions: GameActionWithStatus[];
   currentRound: AppRound;
   pastRounds: PastRound[];
+  link: string;
   ui: GameState['ui'];
   log: GameState['log'];
 };
@@ -24,6 +25,7 @@ export default function useAppState(
 ): [AppState, Dispatch<Action>, () => ClosedGameRound, () => GremlinId | null] {
   const [gameState, dispatch] = useReducer(gameReducer, initialState);
   usePersistState(gameState);
+  const link = useStateLink(gameState);
 
   const state: GameState =
     gameState.ui.review === false
@@ -60,6 +62,7 @@ export default function useAppState(
           storiesCompleted: round.storiesCompleted,
         };
       }),
+      link,
       ui: state.ui,
       log: state.log,
     },

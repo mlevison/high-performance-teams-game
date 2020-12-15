@@ -44,6 +44,19 @@ export default function Results(props: Props) {
         </>
       )}
       <CapStoryChart rounds={props.state.pastRounds} />
+      <h3>Game Link</h3>
+      <p>
+        You can save or share this link. Opening it will restore this current
+        game.
+      </p>
+      <pre>
+        <input
+          style={{ width: '100%' }}
+          value={props.state.link}
+          readOnly
+          onClick={(ev) => (ev.target as HTMLInputElement).select()}
+        />
+      </pre>
     </>
   );
 }
