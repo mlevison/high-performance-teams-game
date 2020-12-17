@@ -2,7 +2,7 @@ import { sumByProp } from 'lib';
 import { random } from 'lib/random';
 import { ReactElement } from 'react';
 import { GameActionId, GremlinId, gremlins } from '../config';
-import { Effect, isGremlinChanceEffect } from './effects';
+import { Effect } from './effects';
 import { GameState, getAllEffects } from './game';
 import { GameRound } from './round';
 
@@ -27,10 +27,8 @@ export function rollGremlin(state: GameState): GremlinId | null {
     ...gremlin,
   }));
 
-  const gremlinChanceEffects = getAllEffects(state).filter(
-    isGremlinChanceEffect,
-  );
-  const gremlinChance = sumByProp(gremlinChanceEffects, 'gremlinChange');
+  const allEffects = getAllEffects(state);
+  const gremlinChance = sumByProp(allEffects, 'gremlinChange');
 
   if (random() * 100 > gremlinChance) {
     return null;

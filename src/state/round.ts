@@ -6,15 +6,7 @@ import {
   getCost as getActionCost,
   getEffects,
 } from './gameActions';
-import {
-  BaseEffect,
-  Effect,
-  isEffect,
-  isGremlinChanceEffect,
-  isUserStoryChanceEffect,
-  isVisibleEffect,
-  VisibleEffect,
-} from './effects';
+import { Effect, isEffect, isVisibleEffect, VisibleEffect } from './effects';
 import { getGremlin, GremlinDescription } from './gremlins';
 import { ReactNode } from 'react';
 import { GameAction } from './gameActions/types';
@@ -30,7 +22,7 @@ export type AppRound = {
   number: number;
   title?: string;
   gremlin?: GremlinDescription & {
-    effect: VisibleEffect<BaseEffect>[];
+    effect: VisibleEffect[];
   };
   description?: ReactNode;
   selectedGameActions: GameAction[];
@@ -40,7 +32,7 @@ export type AppRound = {
   };
   gremlinChance: number;
   userStoryChance: number;
-  activeEffects: VisibleEffect<BaseEffect>[];
+  activeEffects: VisibleEffect[];
 };
 
 export function createRound(gremlin: GremlinId | null): GameRound {
@@ -75,10 +67,7 @@ export function closeRound(state: GameState): ClosedGameRound {
   const effects = getAllEffects(state);
   const storiesAttempted = getCapacity(effects) - getCosts(state.currentRound);
 
-  const chance = sumByProp(
-    effects.filter(isUserStoryChanceEffect),
-    'userStoryChange',
-  );
+  const chance = sumByProp(effects, 'userStoryChange');
 
   return {
     ...state.currentRound,
@@ -105,10 +94,7 @@ export function deriveAppRound(
   const effects = getAllEffects(state, finishedActionIds);
   const roundCapacity = orZero(getCapacity(effects));
   const visibleEffects = effects.filter(isVisibleEffect);
-  const totalUserStoryChance = sumByProp(
-    effects.filter(isUserStoryChanceEffect),
-    'userStoryChange',
-  );
+  const totalUserStoryChance = sumByProp(effects, 'userStoryChange');
   const costs = getCosts(state.currentRound);
   const capacityAvailable = orZero(roundCapacity - costs);
   const currentRoundNumber = state.pastRounds.length + 1;
@@ -142,10 +128,7 @@ export function deriveAppRound(
       available: capacityAvailable,
       total: roundCapacity,
     },
-    gremlinChance: sumByProp(
-      effects.filter(isGremlinChanceEffect),
-      'gremlinChange',
-    ),
+    gremlinChance: sumByProp(effects, 'gremlinChange'),
     userStoryChance: totalUserStoryChance,
     activeEffects: visibleEffects,
   };

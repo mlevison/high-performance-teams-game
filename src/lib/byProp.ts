@@ -12,7 +12,7 @@ export function sumByProp<T extends object>(
 ): number {
   let sum = 0;
   objects.forEach((obj) => {
-    sum += (obj as any)[key];
+    sum += (obj as any)[key] || 0;
   });
   return sum;
 }

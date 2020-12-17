@@ -4,12 +4,7 @@ import {
   createRound,
   getActionEffects,
 } from './round';
-import {
-  Effect,
-  isCapacityEffect,
-  isEffect,
-  isUserStoryOrGremlinChanceEffect,
-} from './effects';
+import { Effect, isEffect } from './effects';
 import { concatByProp } from '../lib';
 import { GameActionId, gameEffects, GremlinId } from '../config';
 import { getRoundEffects } from './rounds';
@@ -90,13 +85,19 @@ export function getAllEffects(
   /* Base round effects of past rounds */
   effects.push(...getRoundEffects(state));
 
-  /* UserStory and gremlin-roll effects are directly active */
+  /* Current rounds effects */
   state.currentRound.selectedGameActionIds.forEach((id) => {
-    effects.push(
-      ...getEffects(id, 0, finishedActionIds).filter(
-        isUserStoryOrGremlinChanceEffect,
-      ),
-    );
+    const currentRoundEffects = getEffects(id, 0, finishedActionIds);
+
+    currentRoundEffects.forEach((effect) => {
+      if (
+        effect.userStoryChange !== undefined ||
+        effect.gremlinChange !== undefined
+      ) {
+        /* Unset capacityChange because it only gets active in next round */
+        effects.push({ ...effect, capacityChange: undefined });
+      }
+    });
   });
 
   /* current rounds gremlin */
@@ -129,8 +130,8 @@ export function getAllEffects(
 }
 
 export function getCapacity(effects: Effect[]) {
-  return effects.filter(isCapacityEffect).reduce((capacity, effect) => {
-    return capacity + effect.capacityChange;
+  return effects.reduce((capacity, effect) => {
+    return capacity + (effect.capacityChange || 0);
   }, 0);
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { AppState, isCapacityEffect, isUserStoryChanceEffect } from '../state';
+import { AppState, BaseEffect } from '../state';
 import EffectValue, { Sign } from './EffectValue';
 import styles from './Status.module.css';
 import { START_CAPACITY } from '../constants';
@@ -9,36 +9,42 @@ type Props = AppState['currentRound'];
 
 export function ActiveEffects(props: {
   effects: AppState['currentRound']['activeEffects'];
+  types?: (keyof BaseEffect)[];
   showUnit: boolean;
 }) {
   return (
     <>
-      {props.effects.map((effect) => {
-        const value = isCapacityEffect(effect)
-          ? effect.capacityChange
-          : isUserStoryChanceEffect(effect)
-          ? effect.userStoryChange
-          : effect.gremlinChange;
+      {(
+        props.types || ['capacityChange', 'userStoryChange', 'gremlinChange']
+      ).map((type) =>
+        props.effects
+          .filter((effect) => effect[type] !== undefined)
+          .map((effect) => {
+            const value = effect[type]!;
 
-        return (
-          <li key={effect.title} className={cx(value < 0 && styles.negative)}>
-            <span
-              className={cx(
-                !props.showUnit && styles.cap,
-                value < 0 && styles.negativeValue,
-              )}
-            >
-              {props.showUnit ? (
-                <EffectValue effect={effect} />
-              ) : (
-                <Sign value={value} />
-              )}
-            </span>
-            {props.showUnit ? <br /> : ' '}
-            {effect.title}
-          </li>
-        );
-      })}
+            return (
+              <li
+                key={effect.title}
+                className={cx(value < 0 && styles.negative)}
+              >
+                <span
+                  className={cx(
+                    !props.showUnit && styles.cap,
+                    value < 0 && styles.negativeValue,
+                  )}
+                >
+                  {props.showUnit ? (
+                    <EffectValue effect={effect} />
+                  ) : (
+                    <Sign value={value} />
+                  )}
+                </span>
+                {props.showUnit ? <br /> : ' '}
+                {effect.title}
+              </li>
+            );
+          }),
+      )}
     </>
   );
 }
@@ -52,7 +58,9 @@ export default function Status(props: Props) {
       ? 'WARNING'
       : 'OK';
 
-  const capacityEffects = props.activeEffects.filter(isCapacityEffect);
+  const capacityEffects = props.activeEffects.filter(
+    (effect) => effect.capacityChange !== undefined,
+  );
 
   return (
     <>
@@ -64,7 +72,11 @@ export default function Status(props: Props) {
         {capacityEffects.length ? (
           <>
             <li className={styles.title}>Active Effects</li>
-            <ActiveEffects effects={capacityEffects} showUnit={false} />
+            <ActiveEffects
+              effects={capacityEffects}
+              types={['capacityChange']}
+              showUnit={false}
+            />
           </>
         ) : null}
         <li className={styles.capThisRound}>
