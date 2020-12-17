@@ -1,4 +1,4 @@
-import { Effect, isEffect, isGremlinChanceEffect } from '../effects';
+import { Effect, isEffect } from '../effects';
 import { rounds } from '../../config';
 import { GameState } from 'state/game';
 
@@ -33,8 +33,14 @@ export function getRoundEffects(
   const nextRoundEffects = Array.isArray(nextRoundEffect)
     ? nextRoundEffect
     : [nextRoundEffect];
+  const nextRoundGremlinEffects = nextRoundEffects
+    .filter((effect) => effect.gremlinChange !== undefined)
+    .map((effect) => ({
+      ...effect,
+      /* Next rounds userStoryChange and capacityChange must not be active this round */
+      userStoryChange: undefined,
+      capacityChange: undefined,
+    }));
 
-  return roundEffects
-    .filter(isEffect)
-    .concat(nextRoundEffects.filter(isGremlinChanceEffect));
+  return roundEffects.filter(isEffect).concat(nextRoundGremlinEffects);
 }

@@ -1,4 +1,4 @@
-import { AppState, isCapacityEffect } from '../../state';
+import { AppState } from '../../state';
 import { getGame, testFutureCapacities } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
@@ -34,10 +34,6 @@ describe('round 4', () => {
     expect(game.state.currentRound).toEqual(expectedCurrentRound);
     expect(game.state.currentRound.activeEffects).toHaveLength(1);
     const round4Effect = game.state.currentRound.activeEffects[0];
-
-    if (!isCapacityEffect(round4Effect)) {
-      throw new Error('Expected effect of round 4 to be a capacity effect');
-    }
     expect(round4Effect.capacityChange).toBe(4);
     expect(round4Effect.title).toMatch(/Management is paying overtime/i);
 

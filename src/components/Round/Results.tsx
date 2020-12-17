@@ -1,12 +1,7 @@
 import React from 'react';
 import { GremlinId } from '../../config';
 import { START_USER_STORY_CHANCE, TOTAL_ROUNDS } from '../../constants';
-import {
-  AppState,
-  GameDispatch,
-  ClosedRound,
-  isUserStoryChanceEffect,
-} from '../../state';
+import { AppState, GameDispatch, ClosedRound } from '../../state';
 import Button from '../Button';
 import CapStoryChart from '../CapStoryChart';
 import styles from './Round.module.css';
@@ -21,7 +16,7 @@ type Props = {
 };
 export default function Results(props: Props) {
   const userStoryEffects = props.currentRound.activeEffects.filter(
-    isUserStoryChanceEffect,
+    (effect) => effect.userStoryChange !== undefined,
   );
 
   return (
@@ -32,8 +27,8 @@ export default function Results(props: Props) {
         <li>&nbsp;&nbsp;&nbsp;{START_USER_STORY_CHANCE}% base chance</li>
         {userStoryEffects.map((effect) => (
           <li key={effect.title}>
-            {effect.userStoryChange > 0 ? '+' : '-'}{' '}
-            {effect.userStoryChange.toString().replace(/^-/, '')}%{' '}
+            {effect.userStoryChange! > 0 ? '+' : '-'}{' '}
+            {effect.userStoryChange!.toString().replace(/^-/, '')}%{' '}
             {effect.title}
           </li>
         ))}
