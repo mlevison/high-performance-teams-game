@@ -11,6 +11,7 @@ import {
 import { GameActionId } from './config';
 
 jest.mock('./state');
+jest.mock('recharts');
 
 const BASE_STATE: AppState = {
   ui: {
@@ -29,7 +30,9 @@ const BASE_STATE: AppState = {
     },
     activeEffects: [],
   },
+  link: 'https://example.org',
   pastRounds: [],
+  log: [],
 };
 
 function renderApp(initialState: AppState) {

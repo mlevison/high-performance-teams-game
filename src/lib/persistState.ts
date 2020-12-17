@@ -63,8 +63,14 @@ export async function getInitialState(): Promise<InitialStateWithStatus> {
 }
 
 export function useVersion() {
-  const [version, setVersion] = useState<string | null>(null);
+  const [version, setVersion] = useState<string | null>(
+    process.env.NODE_ENV === 'test' ? 'test' : null,
+  );
   useEffect(() => {
+    if (process.env.NODE_ENV === 'test') {
+      return;
+    }
+
     let canceled = false;
     versionP
       .then((v) => {
