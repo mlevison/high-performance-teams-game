@@ -87,7 +87,7 @@ export const round1: RoundDescription<Round1ActionId> = {
     },
     TEAMS_ON_SAME_FLOOR: {
       image: example,
-      name: 'Team Members On SameFloor',
+      name: 'Team Members On Same Floor',
       type: 'COMMUNICATION',
       description:
         "Getting Team Members on the same floor reduces the cost of communication as they don't have to go far to ask questions",

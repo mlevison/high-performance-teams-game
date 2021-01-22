@@ -1,8 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useAppState, { AppState } from '../state/useAppState';
+import useAppState from '../state/useAppState';
 import type { GameActionId, GremlinId } from '../config';
-import { INITIAL_STATE } from 'state';
-
+import { BaseEffect, INITIAL_STATE } from 'state';
 export function getGame() {
   const wrapper = renderHook(() => useAppState(INITIAL_STATE));
 
@@ -43,43 +42,19 @@ export function getGame() {
   };
 }
 
-type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends string | undefined
-    ? string | RegExp
-    : DeepPartial<T[P]>;
-};
-function deepObjectContaining(input: unknown): unknown {
-  if (Array.isArray(input)) {
-    expect.arrayContaining(input.map((val) => deepObjectContaining(val)));
-  }
-
-  if (input instanceof RegExp) {
-    return expect.stringMatching(input);
-  }
-
-  if (typeof input !== 'object' || input === null) {
-    return input;
-  }
-
-  return expect.objectContaining(
-    Object.fromEntries(
-      Object.entries(input).map(([key, value]) => {
-        return [key, deepObjectContaining(value)];
-      }),
-    ),
-  );
-}
-
 export function testCurrentRound(
   game: ReturnType<typeof getGame>,
-  round: DeepPartial<AppState['currentRound']>,
+  round: BaseEffect,
 ) {
-  expect(game.state.currentRound).toEqual(deepObjectContaining(round));
+  expect(game.state.currentRound.userStoryChance).toEqual(
+    round.userStoryChange,
+  );
+  expect(game.state.currentRound.capacity.total).toEqual(round.capacityChange);
 }
 
 export function testFutureRounds(
   game: ReturnType<typeof getGame>,
-  futureRounds: DeepPartial<AppState['currentRound']>[],
+  futureRounds: BaseEffect[],
 ) {
   futureRounds.forEach((round) => {
     game.nextRound();
@@ -101,9 +76,11 @@ export function testUserStoryChance(
   game: ReturnType<typeof getGame>,
   userStoryChances: number[],
 ) {
-  userStoryChances.forEach((chance) => {
+  userStoryChances.forEach((chanceChange) => {
     game.nextRound();
-    expect(game.state.currentRound.userStoryChance).toEqual(chance);
+    expect(game.state.currentRound.userStoryChance).toEqual(
+      chanceChange + START_USER_STORY_CHANCE,
+    );
   });
 }
 
