@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import useAppState from '../state/useAppState';
 import type { GameActionId, GremlinId } from '../config';
 import { BaseEffect, INITIAL_STATE } from 'state';
+import { START_USER_STORY_CHANCE } from '../constants';
 export function getGame() {
   const wrapper = renderHook(() => useAppState(INITIAL_STATE));
 

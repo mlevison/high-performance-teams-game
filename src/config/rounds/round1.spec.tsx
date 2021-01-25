@@ -1,3 +1,4 @@
+import { BaseEffect } from 'state';
 import {
   getGame,
   testCurrentRound,
@@ -17,17 +18,7 @@ describe('round 1', () => {
   it('starts with capacity 10/10 and 30% userStoryChance in round 1', () => {
     const game = getGame();
 
-    testCurrentRound(game, {
-      capacity: {
-        total: 10,
-        available: 10,
-      },
-      gremlinChance: 0,
-      userStoryChance: 30,
-      number: 1,
-      activeEffects: [],
-      title: /Welcome to the World’s Smallest Online Bookstore/i,
-    });
+    testCurrentRound(game, { capacityChange: 10, userStoryChange: 30 });
   });
 
   describe('actions', () => {
@@ -37,15 +28,15 @@ describe('round 1', () => {
 
         game.selectAction('TEAMS_ON_SAME_FLOOR');
         game.nextRound();
-        testCurrentRound(game, { number: 2, capacity: { total: 11 } });
+        testCurrentRound(game, { capacityChange: 11, userStoryChange: 30 });
 
         testFutureRounds(game, [
-          { capacity: { total: 12 } },
-          { capacity: { total: 13 } },
-          { capacity: { total: 14 } },
-          { capacity: { total: 15 } },
+          { capacityChange: 12, userStoryChange: 30 },
+          { capacityChange: 13, userStoryChange: 30 },
+          { capacityChange: 14, userStoryChange: 30 },
+          { capacityChange: 15, userStoryChange: 30 },
           /* no more increase after 5 rounds */
-          { capacity: { total: 15 } },
+          { capacityChange: 15, userStoryChange: 30 },
         ]);
       });
     });
@@ -57,11 +48,10 @@ describe('round 1', () => {
         game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
 
         testFutureRounds(game, [
-          { userStoryChance: 40 },
-          { userStoryChance: 40 },
-          { userStoryChance: 40 },
-          { userStoryChance: 40 },
-          { userStoryChance: 40 },
+          { capacityChange: 10, userStoryChange: 40 },
+          { capacityChange: 10, userStoryChange: 40 },
+          { capacityChange: 10, userStoryChange: 40 },
+          { capacityChange: 10, userStoryChange: 40 },
         ]);
       });
     });
@@ -73,11 +63,11 @@ describe('round 1', () => {
         game.selectAction('WORKING_AGREEMENTS');
 
         testFutureRounds(game, [
-          { capacity: { total: 11 }, userStoryChance: 30 },
-          { capacity: { total: 11 }, userStoryChance: 30 },
-          { capacity: { total: 11 }, userStoryChance: 30 },
-          { capacity: { total: 11 }, userStoryChance: 30 },
-          { capacity: { total: 11 }, userStoryChance: 30 },
+          { capacityChange: 11, userStoryChange: 30 },
+          { capacityChange: 11, userStoryChange: 30 },
+          { capacityChange: 11, userStoryChange: 30 },
+          { capacityChange: 11, userStoryChange: 30 },
+          { capacityChange: 11, userStoryChange: 30 },
         ]);
       });
     });
@@ -87,15 +77,14 @@ describe('round 1', () => {
         const game = getGame();
 
         game.selectAction('CLARIFY_PRODUCT_VISION');
-        testCurrentRound(game, { userStoryChance: 40 });
+        testCurrentRound(game, { capacityChange: 10, userStoryChange: 40 });
 
         // proving it had no effect on capacity
         testFutureRounds(game, [
-          { capacity: { total: 10 }, userStoryChance: 40 },
-          { capacity: { total: 10 }, userStoryChance: 40 },
-          { capacity: { total: 10 }, userStoryChance: 40 },
-          { capacity: { total: 10 }, userStoryChance: 40 },
-          { capacity: { total: 10 }, userStoryChance: 40 },
+          { capacityChange: 10, userStoryChange: 40 },
+          { capacityChange: 10, userStoryChange: 40 },
+          { capacityChange: 10, userStoryChange: 40 },
+          { capacityChange: 10, userStoryChange: 40 },
         ]);
       });
     });
