@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import useAppState from '../state/useAppState';
 import type { GameActionId, GremlinId } from '../config';
 import { BaseEffect, INITIAL_STATE } from 'state';
-import { START_USER_STORY_CHANCE } from '../constants';
+import { START_CAPACITY, START_USER_STORY_CHANCE } from '../constants';
 export function getGame() {
   const wrapper = renderHook(() => useAppState(INITIAL_STATE));
 
@@ -47,10 +47,16 @@ export function testCurrentRound(
   game: ReturnType<typeof getGame>,
   round: BaseEffect,
 ) {
-  expect(game.state.currentRound.userStoryChance).toEqual(
-    round.userStoryChange,
-  );
-  expect(game.state.currentRound.capacity.total).toEqual(round.capacityChange);
+  if (round.userStoryChange !== undefined) {
+    expect(game.state.currentRound.userStoryChance).toEqual(
+      round.userStoryChange + START_USER_STORY_CHANCE,
+    );
+  }
+  if (round.capacityChange !== undefined) {
+    expect(game.state.currentRound.capacity.total).toEqual(
+      round.capacityChange + START_CAPACITY,
+    );
+  }
 }
 
 export function testFutureRounds(

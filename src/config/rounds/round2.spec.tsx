@@ -1,4 +1,9 @@
-import { getGame, testFutureCapacities, times } from '../../lib/testHelpers';
+import {
+  getGame,
+  testFutureCapacities,
+  testFutureRounds,
+  times,
+} from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
@@ -13,7 +18,7 @@ jest.mock('../gameEffects', () => ({
 }));
 
 describe('round2', () => {
-  it('does not change base values', () => {
+  it('does not enable gremlins', () => {
     const game = getGame();
 
     times(5, () => {
@@ -48,11 +53,13 @@ describe('round 2 Actions', () => {
       game.selectAction('UNIT_TESTING');
 
       // Capacity only ever increases by one in total
-      times(5, () => {
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(11);
-        expect(game.state.currentRound.userStoryChance).toEqual(30);
-      });
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+      ]);
     });
   });
 
@@ -63,11 +70,13 @@ describe('round 2 Actions', () => {
       game.selectAction('REMOTE_TEAM_AVATARS');
 
       // Capacity only ever increases by one in total
-      times(5, () => {
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(11);
-        expect(game.state.currentRound.userStoryChance).toEqual(30);
-      });
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+      ]);
     });
   });
 
@@ -78,11 +87,13 @@ describe('round 2 Actions', () => {
       game.selectAction('ELIMINATE_LONG_LIVED_FEATURE_BRANCHES');
 
       // Capacity only ever increases by one in total
-      times(5, () => {
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(11);
-        expect(game.state.currentRound.userStoryChance).toEqual(30);
-      });
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+      ]);
     });
   });
 
@@ -93,11 +104,13 @@ describe('round 2 Actions', () => {
       game.selectAction('SOCIAL_TIME');
 
       // Capacity only ever increases by one in total
-      times(5, () => {
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(11);
-        expect(game.state.currentRound.userStoryChance).toEqual(30);
-      });
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+      ]);
     });
   });
 
@@ -107,7 +120,13 @@ describe('round 2 Actions', () => {
 
       game.selectAction('PROBLEM_SOLVING_BONUS');
 
-      testFutureCapacities(game, [11, 10, 10, 10]);
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
     });
   });
 
@@ -118,11 +137,13 @@ describe('round 2 Actions', () => {
       game.selectAction('BACKLOG_REFINEMENT');
       expect(game.state.currentRound.userStoryChance).toEqual(45);
 
-      times(5, () => {
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(10);
-        expect(game.state.currentRound.userStoryChance).toEqual(45);
-      });
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 15 },
+      ]);
     });
   });
 });

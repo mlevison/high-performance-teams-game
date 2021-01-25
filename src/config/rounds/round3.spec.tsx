@@ -1,4 +1,5 @@
-import { getGame, times, testFutureCapacities } from '../../lib/testHelpers';
+import { START_USER_STORY_CHANCE } from '../../constants';
+import { getGame, times, testFutureRounds } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
@@ -48,7 +49,13 @@ describe('round 3 Actions', () => {
       game.nextRound();
       game.selectAction('TEST_DRIVEN_DEVELOPMENT');
 
-      testFutureCapacities(game, [10, 11, 12, 12, 12]);
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+      ]);
     });
   });
 

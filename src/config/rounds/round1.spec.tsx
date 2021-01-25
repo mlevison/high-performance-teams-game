@@ -1,4 +1,3 @@
-import { BaseEffect } from 'state';
 import {
   getGame,
   testCurrentRound,
@@ -18,7 +17,7 @@ describe('round 1', () => {
   it('starts with capacity 10/10 and 30% userStoryChance in round 1', () => {
     const game = getGame();
 
-    testCurrentRound(game, { capacityChange: 10, userStoryChange: 30 });
+    testCurrentRound(game, { capacityChange: 10, userStoryChange: 0 });
   });
 
   describe('actions', () => {
@@ -28,15 +27,15 @@ describe('round 1', () => {
 
         game.selectAction('TEAMS_ON_SAME_FLOOR');
         game.nextRound();
-        testCurrentRound(game, { capacityChange: 11, userStoryChange: 30 });
+        testCurrentRound(game, { capacityChange: 1, userStoryChange: 0 });
 
         testFutureRounds(game, [
-          { capacityChange: 12, userStoryChange: 30 },
-          { capacityChange: 13, userStoryChange: 30 },
-          { capacityChange: 14, userStoryChange: 30 },
-          { capacityChange: 15, userStoryChange: 30 },
+          { capacityChange: 2, userStoryChange: 0 },
+          { capacityChange: 3, userStoryChange: 0 },
+          { capacityChange: 4, userStoryChange: 0 },
+          { capacityChange: 5, userStoryChange: 0 },
           /* no more increase after 5 rounds */
-          { capacityChange: 15, userStoryChange: 30 },
+          { capacityChange: 5, userStoryChange: 0 },
         ]);
       });
     });
@@ -48,10 +47,10 @@ describe('round 1', () => {
         game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
 
         testFutureRounds(game, [
-          { capacityChange: 10, userStoryChange: 40 },
-          { capacityChange: 10, userStoryChange: 40 },
-          { capacityChange: 10, userStoryChange: 40 },
-          { capacityChange: 10, userStoryChange: 40 },
+          { capacityChange: 0, userStoryChange: 10 },
+          { capacityChange: 0, userStoryChange: 10 },
+          { capacityChange: 0, userStoryChange: 10 },
+          { capacityChange: 0, userStoryChange: 10 },
         ]);
       });
     });
@@ -63,11 +62,11 @@ describe('round 1', () => {
         game.selectAction('WORKING_AGREEMENTS');
 
         testFutureRounds(game, [
-          { capacityChange: 11, userStoryChange: 30 },
-          { capacityChange: 11, userStoryChange: 30 },
-          { capacityChange: 11, userStoryChange: 30 },
-          { capacityChange: 11, userStoryChange: 30 },
-          { capacityChange: 11, userStoryChange: 30 },
+          { capacityChange: 1, userStoryChange: 0 },
+          { capacityChange: 1, userStoryChange: 0 },
+          { capacityChange: 1, userStoryChange: 0 },
+          { capacityChange: 1, userStoryChange: 0 },
+          { capacityChange: 1, userStoryChange: 0 },
         ]);
       });
     });
@@ -77,14 +76,14 @@ describe('round 1', () => {
         const game = getGame();
 
         game.selectAction('CLARIFY_PRODUCT_VISION');
-        testCurrentRound(game, { capacityChange: 10, userStoryChange: 40 });
+        testCurrentRound(game, { capacityChange: 0, userStoryChange: 10 });
 
         // proving it had no effect on capacity
         testFutureRounds(game, [
-          { capacityChange: 10, userStoryChange: 40 },
-          { capacityChange: 10, userStoryChange: 40 },
-          { capacityChange: 10, userStoryChange: 40 },
-          { capacityChange: 10, userStoryChange: 40 },
+          { capacityChange: 0, userStoryChange: 10 },
+          { capacityChange: 0, userStoryChange: 10 },
+          { capacityChange: 0, userStoryChange: 10 },
+          { capacityChange: 0, userStoryChange: 10 },
         ]);
       });
     });
