@@ -17,7 +17,8 @@ describe('round 1', () => {
   it('starts with capacity 10/10 and 30% userStoryChance in round 1', () => {
     const game = getGame();
 
-    testCurrentRound(game, { capacityChange: 10, userStoryChange: 0 });
+    // Since the base capacity and userStory chance are embedded in the test helper we just pass in the change
+    testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
   });
 
   describe('actions', () => {
