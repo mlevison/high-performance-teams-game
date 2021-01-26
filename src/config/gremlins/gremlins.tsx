@@ -16,7 +16,7 @@ export const gremlins: GremlinList<GremlinId> = {
         Management yells at a team member in public for not pulling their
         weight. The team member who was yelled at feels their personal status
         was reduced. The whole team fears they will be next.&nbsp; If you have
-        already implemented: Protection from Outside Distraction - this will
+        already implemented: Protection from Outside Distraction, this will
         eliminate the effect.
       </p>
     ),
@@ -101,11 +101,11 @@ export const gremlins: GremlinList<GremlinId> = {
     name: 'Team Member consistently late or misses Daily Scrum',
     description: (
       <p>
-        When one team member is consistently late or worse missing, they signal
-        disrespect to their team. Other team members are annoyed that this
-        person feels that them. &nbsp; ScrumMaster conducts one on ones - you
-        will become aware of the problem early; Working Agreements - because
-        they empower team members to raise the issue.
+        When one team member is consistently late - or, worse, missing - they
+        signal disrespect to their team. Other team members are annoyed that
+        this person does that to them. &nbsp; ScrumMaster Conducts One on Ones -
+        you will become aware of the problem early; Working Agreements - empower
+        team members to raise the issue.
       </p>
     ),
     effect(age, finishedActionIds) {

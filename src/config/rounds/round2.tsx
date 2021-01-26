@@ -14,7 +14,7 @@ export const round2: RoundDescription<Round2ActionId> = {
   title: 'Failed Expectations',
   description: (
     <p>
-      Your team didn't met our expectations that you would complete 10 User
+      Your team didn't meet our expectations that you would complete 10 User
       Stories in the last round. Our vulture capitalists are becoming concerned
       and ask if you can really deliver? They have decided we need more problem
       solvers on the team.
@@ -26,13 +26,13 @@ export const round2: RoundDescription<Round2ActionId> = {
       name: 'Remote Team Avatars',
       description: (
         <p>
-          Remote Teams suffer from the start, in that team members don't get
-          know about their colleagues easily. To counter this run a short get to
-          know you session. Get team members to share things like - working
-          hours, city they live in, timezone, contact info. If people are open
+          Remote Teams suffer from the start, in that team members don't get to
+          know about their colleagues easily. To counter this, run a short get
+          to know you session. Get team members to share things like: working
+          hours, city they live in, time zone, contact info. If people are open,
           share some personal details such as hobbies, family status, favorite
           food and beverage. Some teams even create a wiki or site to share this
-          information
+          information.
         </p>
       ),
       cost: 1,
@@ -41,12 +41,12 @@ export const round2: RoundDescription<Round2ActionId> = {
     ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
       image: example,
       type: 'ENGINEERING',
-      name: 'All Work is done on Main or Trunk',
+      name: 'All Work is Done on Main or Trunk',
       description: (
         <p>
           When teams use Feature Branches – then they’re not really using
-          Continuous integration. Feature branching optimizes for the individual
-          while harming the Team
+          Continuous Integration. Feature branching optimizes for the individual
+          while harming the Team.
         </p>
       ),
       cost: 2,
@@ -116,8 +116,8 @@ export const round2: RoundDescription<Round2ActionId> = {
           The Development Team and the Product Owner sit down every Sprint. They
           take the time to better understand upcoming features. They might
           estimate or split stories, create acceptance criteria. They also
-          create new stories and delete one's that no longer make sense. All of
-          this improves their understanding the product they're building.
+          create new stories and delete ones that no longer make sense. All of
+          this improves their understanding of the product they're building.
         </p>
       ),
       cost: 3,

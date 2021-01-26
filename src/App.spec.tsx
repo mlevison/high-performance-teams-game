@@ -78,7 +78,7 @@ describe('App UI', () => {
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
 
     expect(
-      screen.getByRole('heading', { name: /Round 3 of 6/i }),
+      screen.getByRole('heading', { name: /Round 3 of/i }),
     ).toBeInTheDocument();
   });
 

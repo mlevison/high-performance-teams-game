@@ -69,9 +69,9 @@ export const round3: RoundDescription<Round3ActionId> = {
       available: { requires: 'CLARIFY_PRODUCT_VISION' },
       description: (
         <p>
-          Story Mapping is a strategic tool, that gets Developers and the
-          Product Owner to discuss strategy. Story mapping helps link
-          understanding of Product Vision with the individual User Stories.
+          Story Mapping is a strategic tool that gets Developers and the Product
+          Owner to discuss strategy. Story mapping helps link understanding of
+          Product Vision with the individual User Stories.
         </p>
       ),
       cost: 2,
@@ -84,11 +84,11 @@ export const round3: RoundDescription<Round3ActionId> = {
       available: { requires: 'BUILD_SERVER' },
       description: (
         <p>
-          Writing Unit level Tests before writing the code. TDD helps the
+          Writing Unit-level Tests before writing the code. TDD helps the
           quality by ensuring the developer understands what they're attempting
-          to build before they build it. As a side effect it reduces the volume
-          of code and its complexity. Thereby reduce the number of defects. This
-          skill is takes time to learn.
+          to build before they build it. As a side effect, it reduces the volume
+          of code and its complexity, thereby reducing the number of defects.
+          This skill takes time to learn.
         </p>
       ),
       cost: 3,

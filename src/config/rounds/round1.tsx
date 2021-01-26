@@ -22,7 +22,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       We hired you because you’re the best individuals in your respective areas.
       Please remember that we’re Vulture Capital funded and we have only a few
       months runway, so you must deliver. This first Sprint, the company really
-      needs you to prove that you can deliver a working …
+      needs you to prove that you can deliver a working Bookstore soon.
     </p>
   ),
   effect: () => ({
@@ -37,7 +37,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       name: 'Protected from Outside Distraction',
       description: (
         <p>
-          ScrumMaster protects the team from outside distraction. Example: A
+          ScrumMaster protects the team from outside distraction. Example: a
           manager asking a team member to do them a small favour as it will only
           take an hour.
         </p>
@@ -53,7 +53,7 @@ export const round1: RoundDescription<Round1ActionId> = {
           PO and Development Team collaborate on understanding Product Vision
           using an exercise like Product Box. Teams that aren’t involved in the
           creation of their product vision are doomed to build Product that
-          neither PO, Customers nor Stakeholders want.
+          neither PO, Customers, nor Stakeholders want.
         </p>
       ),
       cost: 2,
@@ -69,7 +69,7 @@ export const round1: RoundDescription<Round1ActionId> = {
           Working Agreements are a simple, powerful way of creating explicit
           guidelines for what kind of work culture you want for your Team. They
           are a reminder for everyone about how they can commit to respectful
-          behaviour and communication
+          behaviour and communication.
         </p>
       ),
       cost: 1,
@@ -82,17 +82,17 @@ export const round1: RoundDescription<Round1ActionId> = {
       description: (
         <p>
           Setup Build Server and Continuous Integration. This is required to
-          make future engineering improvements
+          make future engineering improvements.
         </p>
       ),
       cost: 2,
     },
     TEAMS_ON_SAME_FLOOR: {
       image: example,
-      name: 'Team Members On Same Floor',
+      name: 'Team Members on Same Floor',
       type: 'COMMUNICATION',
       description:
-        "Getting Team Members on the same floor reduces the cost of communication as they don't have to go far to ask questions",
+        "Getting Team Members on the same floor reduces the cost of communication as they don't have to go far to ask questions.",
       cost: 3,
       /* don't use arrow function in order to have "this" bound to action */
       effect(age) {

@@ -30,7 +30,7 @@ export const round4: RoundDescription<Round4ActionId> = {
   actions: {
     CROSS_SKILLING: {
       image: example,
-      name: 'Informal Cross Skilling',
+      name: 'Informal Cross-Skilling',
       description:
         'Informal cross-skilling for existing team members in an area the team is weak. This is often achieved through Pair Programming, Learning Time, etc (Testing anyone?)',
       cost: 4,
@@ -47,7 +47,7 @@ export const round4: RoundDescription<Round4ActionId> = {
     },
     EXTERNAL_CROSS_TRAINING: {
       image: example,
-      name: 'Send Team Members on a testing course',
+      name: 'Send Team Members on a Testing Course',
       description:
         'Take an outside course to improve the skills of one existing team members in an area the team is weak. (Testing anyone?)',
       cost: 3,
