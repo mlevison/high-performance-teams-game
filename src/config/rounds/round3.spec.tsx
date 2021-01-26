@@ -1,4 +1,3 @@
-import { START_USER_STORY_CHANCE } from '../../constants';
 import { getGame, times, testFutureRounds } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
