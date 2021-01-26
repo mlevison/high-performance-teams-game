@@ -8,7 +8,8 @@ export type Round3ActionId =
   | 'ONE_ON_ONES'
   | 'PAIR_PROGRAMMING'
   | 'TEST_DRIVEN_DEVELOPMENT'
-  | 'STORY_MAPPING_OR_OTHER';
+  | 'STORY_MAPPING_OR_OTHER'
+  | 'REFACTORING';
 
 export const round3: RoundDescription<Round3ActionId> = {
   title: 'Work Harder',
@@ -102,6 +103,25 @@ export const round3: RoundDescription<Round3ActionId> = {
           capacityChange: change,
         };
       },
+    },
+    REFACTORING: {
+      image: example,
+      type: 'ENGINEERING',
+      name: 'Refactoring',
+      description: (
+        <p>
+          Refactoring is the process of restructuring existing code without
+          changing its external behavior. It is intended to improve the design
+          and structure, while preserving its functionality. As a side effect,
+          it can reduces the volume of code and its complexity.
+        </p>
+      ),
+      cost: 1,
+      effect: () => ({
+        capacityChange: 1,
+        title:
+          'Refactoring leaves us with simplier code, allowing the team to work faster',
+      }),
     },
   },
 };

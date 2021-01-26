@@ -63,6 +63,21 @@ describe('round 3 Actions', () => {
     });
   });
 
+  describe('Refactoring', () => {
+    it('increases capacity , but have no effect on User Story Success', () => {
+      const game = getGame();
+      game.selectAction('REFACTORING');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+      ]);
+    });
+  });
   describe('Story Mapping or other Strategic tools', () => {
     it('is only available if the BuildServer was implemented', () => {
       const game = getGame();
