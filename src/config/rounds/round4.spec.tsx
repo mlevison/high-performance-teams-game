@@ -1,5 +1,9 @@
 import { AppState } from '../../state';
-import { getGame, testFutureCapacities } from '../../lib/testHelpers';
+import {
+  getGame,
+  testCurrentRound,
+  testFutureRounds,
+} from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
@@ -54,7 +58,15 @@ describe('round 4', () => {
       game.nextRound();
       game.selectAction('CROSS_SKILLING');
 
-      testFutureCapacities(game, [10, 11, 12, 13, 13]);
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+      ]);
     });
   });
 
@@ -68,37 +80,39 @@ describe('round 4', () => {
       game.nextRound();
       game.selectAction('EXTERNAL_CROSS_TRAINING');
 
-      testFutureCapacities(game, [10, 10, 12, 12, 12]);
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+      ]);
     });
   });
 
   describe('Personal Productivity Bonus', () => {
-    it('harms Capacity later.', () => {
+    it('increases User Story Success now harms Capacity later.', () => {
       const game = getGame();
 
       game.nextRound();
       game.nextRound();
       game.nextRound();
       game.nextRound();
-      game.selectAction('PERSONAL_PRODUCTIVITY_BONUS');
-
-      testFutureCapacities(game, [10, 9, 9, 9, 9]);
-    });
-
-    it('increases User Story Success now ', () => {
-      const game = getGame();
-
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
-      expect(game.state.currentRound.userStoryChance).toEqual(30);
       game.selectAction('PERSONAL_PRODUCTIVITY_BONUS');
 
       // Improves success by 50% one round only
-      expect(game.state.currentRound.userStoryChance).toEqual(80);
-      game.nextRound();
-      expect(game.state.currentRound.userStoryChance).toEqual(30);
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 50 });
+
+      // Then it has a detrimental effect on capacity
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+      ]);
     });
   });
 });

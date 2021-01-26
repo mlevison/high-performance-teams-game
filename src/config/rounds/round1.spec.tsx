@@ -18,7 +18,11 @@ describe('round 1', () => {
     const game = getGame();
 
     // Since the base capacity and userStory chance are embedded in the test helper we just pass in the change
-    testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+    testCurrentRound(game, {
+      capacityChange: 0,
+      userStoryChange: 0,
+      gremlinChange: 0,
+    });
   });
 
   describe('actions', () => {
@@ -46,6 +50,7 @@ describe('round 1', () => {
         const game = getGame();
 
         game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
+        testCurrentRound(game, { capacityChange: 0, userStoryChange: 10 });
 
         testFutureRounds(game, [
           { capacityChange: 0, userStoryChange: 10 },
@@ -61,6 +66,7 @@ describe('round 1', () => {
         const game = getGame();
 
         game.selectAction('WORKING_AGREEMENTS');
+        testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
         testFutureRounds(game, [
           { capacityChange: 1, userStoryChange: 0 },

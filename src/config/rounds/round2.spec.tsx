@@ -1,5 +1,6 @@
 import {
   getGame,
+  testCurrentRound,
   testFutureRounds,
   times,
 } from '../../lib/testHelpers';
@@ -20,13 +21,13 @@ describe('round2', () => {
   it('does not enable gremlins', () => {
     const game = getGame();
 
-    times(5, () => {
-      game.nextRound();
-
-      expect(game.state.currentRound.capacity.total).toEqual(10);
-      expect(game.state.currentRound.gremlinChance).toEqual(0);
-      expect(game.state.currentRound.userStoryChance).toEqual(30);
-    });
+    testFutureRounds(game, [
+      { capacityChange: 0, gremlinChange: 0, userStoryChange: 0 },
+      { capacityChange: 0, gremlinChange: 0, userStoryChange: 0 },
+      { capacityChange: 0, gremlinChange: 0, userStoryChange: 0 },
+      { capacityChange: 0, gremlinChange: 0, userStoryChange: 0 },
+      { capacityChange: 0, gremlinChange: 0, userStoryChange: 0 },
+    ]);
   });
 });
 
@@ -50,6 +51,7 @@ describe('round 2 Actions', () => {
       game.selectAction('BUILD_SERVER');
       game.nextRound();
       game.selectAction('UNIT_TESTING');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       // Capacity only ever increases by one in total
       testFutureRounds(game, [
@@ -67,6 +69,7 @@ describe('round 2 Actions', () => {
       const game = getGame();
 
       game.selectAction('REMOTE_TEAM_AVATARS');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       // Capacity only ever increases by one in total
       testFutureRounds(game, [

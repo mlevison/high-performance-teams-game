@@ -3,6 +3,7 @@ import type { RoundDescription } from '../../state';
 import {
   EFFECT_HIDDEN,
   START_CAPACITY,
+  START_GREMLIN_CHANCE,
   START_USER_STORY_CHANCE,
 } from '../../constants';
 import example from './images/example.jpg';
@@ -28,6 +29,7 @@ export const round1: RoundDescription<Round1ActionId> = {
     title: EFFECT_HIDDEN,
     capacityChange: START_CAPACITY,
     userStoryChange: START_USER_STORY_CHANCE,
+    gremlinChange: START_GREMLIN_CHANCE,
   }),
   actions: {
     PROTECTED_FROM_OUTSIDE_DISTRACTION: {

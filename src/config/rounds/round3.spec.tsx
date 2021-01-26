@@ -1,4 +1,8 @@
-import { getGame, times, testFutureRounds } from '../../lib/testHelpers';
+import {
+  getGame,
+  testFutureRounds,
+  testCurrentRound,
+} from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
@@ -17,13 +21,13 @@ describe('round 3', () => {
     const game = getGame();
 
     game.nextRound();
-    times(5, () => {
-      game.nextRound();
-
-      expect(game.state.currentRound.capacity.total).toEqual(10);
-      expect(game.state.currentRound.gremlinChance).toEqual(50);
-      expect(game.state.currentRound.userStoryChance).toEqual(30);
-    });
+    testFutureRounds(game, [
+      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
+      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
+      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
+      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
+      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
+    ]);
   });
 });
 
@@ -47,6 +51,7 @@ describe('round 3 Actions', () => {
       game.selectAction('BUILD_SERVER');
       game.nextRound();
       game.selectAction('TEST_DRIVEN_DEVELOPMENT');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [
         { capacityChange: 0, userStoryChange: 0 },
@@ -81,12 +86,17 @@ describe('round 3 Actions', () => {
       game.nextRound();
       game.selectAction('STORY_MAPPING_OR_OTHER');
 
-      // Improves by 10% and the change is effectively permanent
-      expect(game.state.currentRound.userStoryChance).toEqual(50);
-      game.nextRound();
-      expect(game.state.currentRound.userStoryChance).toEqual(50);
-      game.nextRound();
-      expect(game.state.currentRound.userStoryChance).toEqual(50);
+      // StoryMapping Improves by 10% and the change is permanent.
+      //   Test is for +20% since we account for CLARIFY_PRODUCT_VISION as well
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 20 });
+
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 20 },
+        { capacityChange: 0, userStoryChange: 20 },
+        { capacityChange: 0, userStoryChange: 20 },
+        { capacityChange: 0, userStoryChange: 20 },
+        { capacityChange: 0, userStoryChange: 20 },
+      ]);
     });
   });
 
@@ -95,13 +105,15 @@ describe('round 3 Actions', () => {
       const game = getGame();
 
       game.selectAction('OBSERVE_PEOPLE_AND_RELATIONSHIPS');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
-      // Capacity only ever increases by one in total
-      times(5, () => {
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(11);
-        expect(game.state.currentRound.userStoryChance).toEqual(30);
-      });
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+      ]);
     });
   });
 
@@ -110,13 +122,15 @@ describe('round 3 Actions', () => {
       const game = getGame();
 
       game.selectAction('ONE_ON_ONES');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
-      // Capacity only ever increases by one in total
-      times(5, () => {
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(10);
-        expect(game.state.currentRound.userStoryChance).toEqual(30);
-      });
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
     });
   });
 
@@ -126,12 +140,13 @@ describe('round 3 Actions', () => {
 
       game.selectAction('PAIR_PROGRAMMING');
 
-      // Capacity only ever increases by one in total
-      times(5, () => {
-        game.nextRound();
-        expect(game.state.currentRound.capacity.total).toEqual(11);
-        expect(game.state.currentRound.userStoryChance).toEqual(30);
-      });
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+      ]);
     });
   });
 });

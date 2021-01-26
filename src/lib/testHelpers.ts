@@ -2,7 +2,11 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import useAppState from '../state/useAppState';
 import type { GameActionId, GremlinId } from '../config';
 import { BaseEffect, INITIAL_STATE } from 'state';
-import { START_CAPACITY, START_USER_STORY_CHANCE } from '../constants';
+import {
+  START_CAPACITY,
+  START_GREMLIN_CHANCE,
+  START_USER_STORY_CHANCE,
+} from '../constants';
 export function getGame() {
   const wrapper = renderHook(() => useAppState(INITIAL_STATE));
 
@@ -57,6 +61,11 @@ export function testCurrentRound(
       round.capacityChange + START_CAPACITY,
     );
   }
+  if (round.gremlinChange !== undefined) {
+    expect(game.state.currentRound.gremlinChance).toEqual(
+      round.gremlinChange + START_GREMLIN_CHANCE,
+    );
+  }
 }
 
 export function testFutureRounds(
@@ -67,32 +76,4 @@ export function testFutureRounds(
     game.nextRound();
     testCurrentRound(game, round);
   });
-}
-
-export function testFutureCapacities(
-  game: ReturnType<typeof getGame>,
-  capacitiesByRound: number[],
-) {
-  capacitiesByRound.forEach((capacity) => {
-    game.nextRound();
-    expect(game.state.currentRound.capacity.total).toEqual(capacity);
-  });
-}
-
-export function testUserStoryChance(
-  game: ReturnType<typeof getGame>,
-  userStoryChances: number[],
-) {
-  userStoryChances.forEach((chanceChange) => {
-    game.nextRound();
-    expect(game.state.currentRound.userStoryChance).toEqual(
-      chanceChange + START_USER_STORY_CHANCE,
-    );
-  });
-}
-
-export function times(n: number, callback: (i: number) => void) {
-  for (let i = 0; i < n; i++) {
-    callback(i);
-  }
 }

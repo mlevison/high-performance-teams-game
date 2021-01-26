@@ -69,22 +69,21 @@ export const round4: RoundDescription<Round4ActionId> = {
         'The company will offer anyone who exceeds their performance goals an extra $5,000. A manager says team members working harder will increase the likelihood of completing features on time',
       cost: 2,
       effect(age) {
-        if (age >= 2) {
-          return [
-            {
-              capacityChange: -1,
-              title:
-                'Productivity Bonus helped in the short term and then the benefit waned. Along the way it harmed collaboration',
-            },
-          ];
-        }
-
         if (age === 0) {
           return [
             {
               userStoryChange: 50,
               title:
                 'Productivity Bonus helped in the short term - team members focused on individual productivity',
+            },
+          ];
+        }
+        if (age >= 2) {
+          return [
+            {
+              capacityChange: -1,
+              title:
+                'Productivity Bonus helped in the short term and then the benefit waned. Along the way it harmed collaboration',
             },
           ];
         }
