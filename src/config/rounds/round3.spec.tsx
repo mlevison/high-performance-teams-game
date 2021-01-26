@@ -57,8 +57,8 @@ describe('round 3 Actions', () => {
         { capacityChange: 0, userStoryChange: 0 },
         { capacityChange: 1, userStoryChange: 0 },
         { capacityChange: 2, userStoryChange: 0 },
-        { capacityChange: 2, userStoryChange: 0 },
-        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
       ]);
     });
   });

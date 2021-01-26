@@ -94,8 +94,8 @@ export const round3: RoundDescription<Round3ActionId> = {
       cost: 3,
       effect(age) {
         let change = age - 1;
-        if (age > 3) {
-          change = 2;
+        if (age > 4) {
+          change = 3;
         }
 
         return {
