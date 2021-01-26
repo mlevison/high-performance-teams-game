@@ -18,36 +18,6 @@ jest.mock('../gameEffects', () => ({
 }));
 
 describe('round 4', () => {
-  it('comes with a 4 capacity bump', () => {
-    const game = getGame();
-
-    game.nextRound();
-    game.nextRound();
-    game.nextRound();
-    const expectedCurrentRound: AppState['currentRound'] = expect.objectContaining(
-      {
-        capacity: {
-          total: 14,
-          available: 14,
-        },
-        number: 4,
-        activeEffects: expect.any(Array),
-      },
-    );
-
-    expect(game.state.currentRound).toEqual(expectedCurrentRound);
-    expect(game.state.currentRound.activeEffects).toHaveLength(1);
-    const round4Effect = game.state.currentRound.activeEffects[0];
-    expect(round4Effect.capacityChange).toBe(4);
-    expect(round4Effect.title).toMatch(/Management is paying overtime/i);
-
-    expect(game.state.currentRound.title).toMatch(/Go Live Soon/i);
-
-    /* make sure bump only lasts for 1 round*/
-    game.nextRound();
-    expect(game.state.currentRound.activeEffects).toHaveLength(0);
-  });
-
   describe('Cross Skilling', () => {
     it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
       const game = getGame();
@@ -66,6 +36,28 @@ describe('round 4', () => {
         { capacityChange: 2, userStoryChange: 0 },
         { capacityChange: 3, userStoryChange: 0 },
         { capacityChange: 3, userStoryChange: 0 },
+      ]);
+    });
+  });
+
+  describe('New Tester', () => {
+    it('sometimes helps speed up a team', () => {
+      const game = getGame();
+
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.selectAction('NEW_TESTER');
+
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
       ]);
     });
   });

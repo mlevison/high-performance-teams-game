@@ -5,28 +5,17 @@ import example from './images/example.jpg';
 export type Round4ActionId =
   | 'CROSS_SKILLING'
   | 'EXTERNAL_CROSS_TRAINING'
-  | 'PERSONAL_PRODUCTIVITY_BONUS';
+  | 'PERSONAL_PRODUCTIVITY_BONUS'
+  | 'NEW_TESTER';
 
 export const round4: RoundDescription<Round4ActionId> = {
-  title: 'Go Live Soon',
+  title: 'Team is Bottlenecked',
   description: (
     <p>
-      We must go live with an early version of the product this round, for a
-      tradeshow. Due to your limited productivity in past rounds, management are
-      prepared to offer some options to help you out. We will provide an extra
-      ‘4’ points of capacity for anything that helps. Another team member?
-      Overtime?
+      The team is suffering, their work is queueing up in front the tester.
+      Imploring them to work faster is failing.
     </p>
   ),
-  effect: (_, currentRound) => {
-    if (currentRound === 4) {
-      return {
-        capacityChange: 4,
-        title: 'Management is paying overtime',
-      };
-    }
-    return null;
-  },
   actions: {
     CROSS_SKILLING: {
       image: example,
@@ -39,7 +28,6 @@ export const round4: RoundDescription<Round4ActionId> = {
         if (age > 4) {
           change = 3;
         }
-
         return {
           capacityChange: change,
         };
@@ -59,6 +47,30 @@ export const round4: RoundDescription<Round4ActionId> = {
 
         return {
           capacityChange: change,
+        };
+      },
+    },
+    NEW_TESTER: {
+      image: example,
+      name: 'Hiring a new Tester',
+      description:
+        'Hire a new Tester for the team. This person will reduce the load on your existing tester and speed things up eventually.',
+      cost: 2,
+      effect(age) {
+        if (age <= 2) {
+          return {
+            title:
+              'Hiring a new person and bringing them up to speed slows the team down and damages existing Team member relationships',
+            capacityChange: -age,
+          };
+        }
+        if (age === 3) {
+          return {
+            capacityChange: 0,
+          };
+        }
+        return {
+          capacityChange: 2,
         };
       },
     },
