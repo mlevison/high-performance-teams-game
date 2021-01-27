@@ -88,6 +88,13 @@ export default function Rules() {
         previously made.
       </p>
       <p>
+        <em>
+          Actions not selected in round are still available for later use. To
+          keep the User Interface tidy they're left in the round where they were
+          first available.
+        </em>
+      </p>
+      <p>
         Hint play the game as often as you want. So if you want to run
         experiments to see what works go for it.
       </p>
