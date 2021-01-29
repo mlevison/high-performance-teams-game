@@ -6,7 +6,8 @@ export type Round4ActionId =
   | 'CROSS_SKILLING'
   | 'EXTERNAL_CROSS_TRAINING'
   | 'PERSONAL_PRODUCTIVITY_BONUS'
-  | 'NEW_TESTER';
+  | 'NEW_TESTER'
+  | 'BA_QA_DEV_COLLABORATION';
 
 export const round4: RoundDescription<Round4ActionId> = {
   title: 'Team is Bottlenecked',
@@ -66,11 +67,47 @@ export const round4: RoundDescription<Round4ActionId> = {
         }
         if (age === 3) {
           return {
-            capacityChange: 0,
+            title: 'Eventually the new person starts fit in',
+            capacityChange: -1,
+          };
+        }
+        let resultDesc = 'Finally the new person helps';
+        if (age === 4) {
+          return {
+            title: resultDesc,
+            capacityChange: 1,
           };
         }
         return {
+          title: resultDesc,
           capacityChange: 2,
+        };
+      },
+    },
+    BA_QA_DEV_COLLABORATION: {
+      image: example,
+      name: 'BA, Development, Testing Collaboration',
+      description: 'Work with team members to collaborate ',
+      cost: 2,
+      effect(age) {
+        let userStoryImprovement = 15;
+        if (age <= 2) {
+          return {
+            title:
+              'Improving Collaboration slows the team at first. Even from the start it improves quality and completition of User Stories',
+            capacityChange: -1,
+            userStoryChange: userStoryImprovement,
+          };
+        }
+        if (age === 3) {
+          return {
+            capacityChange: 0,
+            userStoryChange: userStoryImprovement,
+          };
+        }
+        return {
+          capacityChange: 1,
+          userStoryChange: userStoryImprovement,
         };
       },
     },

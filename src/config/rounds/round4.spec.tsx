@@ -54,9 +54,33 @@ describe('round 4', () => {
       testFutureRounds(game, [
         { capacityChange: -1, userStoryChange: 0 },
         { capacityChange: -2, userStoryChange: 0 },
-        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
         { capacityChange: 2, userStoryChange: 0 },
         { capacityChange: 2, userStoryChange: 0 },
+      ]);
+    });
+  });
+
+  describe('BA, Development Testing Collaboration', () => {
+    it('increases productivity, improves likelihood of completing a User Story', () => {
+      const game = getGame();
+
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.nextRound();
+      game.selectAction('BA_QA_DEV_COLLABORATION');
+
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 15 });
+
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 15 },
+        { capacityChange: -1, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 1, userStoryChange: 15 },
+        { capacityChange: 1, userStoryChange: 15 },
+        { capacityChange: 1, userStoryChange: 15 },
       ]);
     });
   });
