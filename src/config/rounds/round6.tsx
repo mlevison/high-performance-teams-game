@@ -28,7 +28,7 @@ export const round6: RoundDescription<Round6ActionId> = {
     IMPROVE_FORECASTING: {
       image: example,
       name: 'Improve Forecasting',
-      description: 'Blah Blah',
+      description: <p>Blah Blah</p>,
       cost: 0,
       effect: () => ({
         capacityChange: 0,

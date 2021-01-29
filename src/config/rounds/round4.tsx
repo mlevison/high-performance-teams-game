@@ -21,8 +21,13 @@ export const round4: RoundDescription<Round4ActionId> = {
     CROSS_SKILLING: {
       image: example,
       name: 'Informal Cross-Skilling',
-      description:
-        'Informal cross-skilling for existing team members in an area the team is weak. This is often achieved through Pair Programming, Learning Time, etc (Testing anyone?)',
+      description: (
+        <p>
+          Informal cross-skilling for existing team members in an area the team
+          is weak. This is often achieved through Pair Programming, Learning
+          Time, etc (Testing anyone?)
+        </p>
+      ),
       cost: 4,
       effect(age) {
         let change = age - 1;
@@ -37,8 +42,12 @@ export const round4: RoundDescription<Round4ActionId> = {
     EXTERNAL_CROSS_TRAINING: {
       image: example,
       name: 'Send Team Members on a Testing Course',
-      description:
-        'Take an outside course to improve the skills of one existing team members in an area the team is weak. (Testing anyone?)',
+      description: (
+        <p>
+          Take an outside course to improve the skills of one existing team
+          members in an area the team is weak. (Testing anyone?)
+        </p>
+      ),
       cost: 3,
       effect(age) {
         let change = 0;
@@ -54,8 +63,12 @@ export const round4: RoundDescription<Round4ActionId> = {
     NEW_TESTER: {
       image: example,
       name: 'Hiring a new Tester',
-      description:
-        'Hire a new Tester for the team. This person will reduce the load on your existing tester and speed things up eventually.',
+      description: (
+        <p>
+          Hire a new Tester for the team. This person will reduce the load on
+          your existing tester and speed things up eventually.'
+        </p>
+      ),
       cost: 2,
       effect(age) {
         if (age <= 2) {
@@ -87,7 +100,7 @@ export const round4: RoundDescription<Round4ActionId> = {
     BA_QA_DEV_COLLABORATION: {
       image: example,
       name: 'BA, Development, Testing Collaboration',
-      description: 'Work with team members to collaborate ',
+      description: <p>Work with team members to collaborate</p>,
       cost: 2,
       effect(age) {
         let userStoryImprovement = 15;
@@ -114,8 +127,13 @@ export const round4: RoundDescription<Round4ActionId> = {
     PERSONAL_PRODUCTIVITY_BONUS: {
       image: example,
       name: 'Personal Productivity Bonus',
-      description:
-        'The company will offer anyone who exceeds their performance goals an extra $5,000. A manager says team members working harder will increase the likelihood of completing features on time',
+      description: (
+        <p>
+          The company will offer anyone who exceeds their performance goals an
+          extra $5,000. A manager says team members working harder will increase
+          the likelihood of completing features on time
+        </p>
+      ),
       cost: 2,
       effect(age) {
         if (age === 0) {
