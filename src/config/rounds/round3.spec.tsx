@@ -2,6 +2,7 @@ import {
   getGame,
   testFutureRounds,
   testCurrentRound,
+  advanceGameToRound,
 } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
@@ -36,9 +37,9 @@ describe('round 3 Actions', () => {
     it('is only available if the BuildServer was implemented', () => {
       const game = getGame();
 
-      expect(game.availableActionIds).not.toContain('TEST_DRIVEN_DEVELOPMENT');
+      advanceGameToRound(game, 3);
+      expect(game.state.currentRound.number).toEqual(3);
 
-      game.nextRound();
       expect(game.availableActionIds).not.toContain('TEST_DRIVEN_DEVELOPMENT');
 
       game.selectAction('BUILD_SERVER');
@@ -64,8 +65,23 @@ describe('round 3 Actions', () => {
   });
 
   describe('Refactoring', () => {
+    it('is only available if the BuildServer was implemented', () => {
+      const game = getGame();
+      advanceGameToRound(game, 3);
+      expect(game.state.currentRound.number).toEqual(3);
+      
+      expect(game.availableActionIds).not.toContain('REFACTORING');
+
+      game.selectAction('BUILD_SERVER');
+      game.nextRound();
+      expect(game.availableActionIds).toContain('REFACTORING');
+    });
+
     it('increases capacity , but have no effect on User Story Success', () => {
       const game = getGame();
+      advanceGameToRound(game, 3);
+      expect(game.state.currentRound.number).toEqual(3);
+
       game.selectAction('REFACTORING');
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
@@ -118,6 +134,8 @@ describe('round 3 Actions', () => {
   describe('Observe People + Relationships', () => {
     it('increases capacity, but have no effect on User Story Success', () => {
       const game = getGame();
+      advanceGameToRound(game, 3);
+      expect(game.state.currentRound.number).toEqual(3);
 
       game.selectAction('OBSERVE_PEOPLE_AND_RELATIONSHIPS');
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
@@ -135,6 +153,8 @@ describe('round 3 Actions', () => {
   describe('One on Ones', () => {
     it('no effect on capacity or User Story Success', () => {
       const game = getGame();
+      advanceGameToRound(game, 3);
+      expect(game.state.currentRound.number).toEqual(3);
 
       game.selectAction('ONE_ON_ONES');
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
@@ -152,6 +172,8 @@ describe('round 3 Actions', () => {
   describe('Pair Programming', () => {
     it('increases capacity, but have no effect on User Story Success', () => {
       const game = getGame();
+      advanceGameToRound(game, 3);
+      expect(game.state.currentRound.number).toEqual(3);
 
       game.selectAction('PAIR_PROGRAMMING');
 

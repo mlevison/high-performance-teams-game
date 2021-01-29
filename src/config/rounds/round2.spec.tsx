@@ -1,4 +1,5 @@
 import {
+  advanceGameToRound,
   getGame,
   testCurrentRound,
   testFutureRounds,
@@ -34,10 +35,9 @@ describe('round 2 Actions', () => {
   describe('Unit Testing', () => {
     it('is only available if the BuildServer was implemented', () => {
       const game = getGame();
+      advanceGameToRound(game, 2);
+      expect(game.state.currentRound.number).toEqual(2);
 
-      expect(game.availableActionIds).not.toContain('UNIT_TESTING');
-
-      game.nextRound();
       expect(game.availableActionIds).not.toContain('UNIT_TESTING');
 
       game.selectAction('BUILD_SERVER');
@@ -47,6 +47,7 @@ describe('round 2 Actions', () => {
 
     it('increases capacity, but have no effect on User Story Success', () => {
       const game = getGame();
+
       game.selectAction('BUILD_SERVER');
       game.nextRound();
       game.selectAction('UNIT_TESTING');
@@ -84,6 +85,8 @@ describe('round 2 Actions', () => {
   describe('Eliminate Long Lived Feature Branches', () => {
     it('increases capacity, but have no effect on User Story Success', () => {
       const game = getGame();
+      advanceGameToRound(game, 2);
+      expect(game.state.currentRound.number).toEqual(2);
 
       game.selectAction('ELIMINATE_LONG_LIVED_FEATURE_BRANCHES');
 
@@ -101,6 +104,8 @@ describe('round 2 Actions', () => {
   describe('Social Time', () => {
     it('increases capacity, but have no effect on User Story Success', () => {
       const game = getGame();
+      advanceGameToRound(game, 2);
+      expect(game.state.currentRound.number).toEqual(2);
 
       game.selectAction('SOCIAL_TIME');
 
@@ -118,6 +123,8 @@ describe('round 2 Actions', () => {
   describe('Problem Solving Bonus', () => {
     it('increases capacity now at first but harms it in the future', () => {
       const game = getGame();
+      advanceGameToRound(game, 2);
+      expect(game.state.currentRound.number).toEqual(2);
 
       game.selectAction('PROBLEM_SOLVING_BONUS');
 
@@ -134,6 +141,8 @@ describe('round 2 Actions', () => {
   describe('Product Backlog Refinement', () => {
     it('increases User Story Success, but have no effect on increases capacity', () => {
       const game = getGame();
+      advanceGameToRound(game, 2);
+      expect(game.state.currentRound.number).toEqual(2);
 
       game.selectAction('BACKLOG_REFINEMENT');
       expect(game.state.currentRound.userStoryChance).toEqual(45);

@@ -1,4 +1,5 @@
 import {
+  advanceGameToRound,
   getGame,
   testCurrentRound,
   testFutureRounds,
@@ -20,11 +21,9 @@ describe('round 4', () => {
   describe('Cross Skilling', () => {
     it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
       const game = getGame();
+      advanceGameToRound(game, 4);
+      expect(game.state.currentRound.number).toEqual(4);
 
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
       game.selectAction('CROSS_SKILLING');
 
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
@@ -42,11 +41,9 @@ describe('round 4', () => {
   describe('New Tester', () => {
     it('sometimes helps speed up a team', () => {
       const game = getGame();
+      advanceGameToRound(game, 4);
+      expect(game.state.currentRound.number).toEqual(4);
 
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
       game.selectAction('NEW_TESTER');
 
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
@@ -65,11 +62,9 @@ describe('round 4', () => {
   describe('BA, Development Testing Collaboration', () => {
     it('increases productivity, improves likelihood of completing a User Story', () => {
       const game = getGame();
+      advanceGameToRound(game, 4);
+      expect(game.state.currentRound.number).toEqual(4);
 
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
       game.selectAction('BA_QA_DEV_COLLABORATION');
 
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 15 });
@@ -88,11 +83,9 @@ describe('round 4', () => {
   describe('Outside Course to learn testing', () => {
     it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
       const game = getGame();
+      advanceGameToRound(game, 4);
+      expect(game.state.currentRound.number).toEqual(4);
 
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
       game.selectAction('EXTERNAL_CROSS_TRAINING');
 
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
@@ -110,11 +103,9 @@ describe('round 4', () => {
   describe('Personal Productivity Bonus', () => {
     it('increases User Story Success now harms Capacity later.', () => {
       const game = getGame();
+      advanceGameToRound(game, 4);
+      expect(game.state.currentRound.number).toEqual(4);
 
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
-      game.nextRound();
       game.selectAction('PERSONAL_PRODUCTIVITY_BONUS');
 
       // Improves success by 50% one round only

@@ -47,6 +47,14 @@ export function getGame() {
   };
 }
 
+export function advanceGameToRound(
+  game: ReturnType<typeof getGame>,
+  desiredRound: number,
+) {
+  while (game.state.currentRound.number < desiredRound) {
+    game.nextRound();
+  }
+}
 export function testCurrentRound(
   game: ReturnType<typeof getGame>,
   round: BaseEffect,

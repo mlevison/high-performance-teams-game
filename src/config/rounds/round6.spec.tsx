@@ -1,4 +1,5 @@
 import {
+  advanceGameToRound,
   getGame,
   testCurrentRound,
   testFutureRounds,
@@ -20,11 +21,8 @@ describe('round 6', () => {
   it('comes with a 4 capacity bump', () => {
     const game = getGame();
 
-    game.nextRound();
-    game.nextRound();
-    game.nextRound();
-    game.nextRound();
-    game.nextRound();
+    advanceGameToRound(game, 6);
+    expect(game.state.currentRound.number).toEqual(6);
 
     testCurrentRound(game, { capacityChange: 4 });
 

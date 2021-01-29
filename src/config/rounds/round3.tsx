@@ -108,6 +108,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       image: example,
       type: 'ENGINEERING',
       name: 'Refactoring',
+      available: { requires: 'BUILD_SERVER' },
       description: (
         <p>
           Refactoring is the process of restructuring existing code without
