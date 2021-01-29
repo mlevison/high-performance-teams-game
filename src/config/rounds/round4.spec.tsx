@@ -9,6 +9,7 @@ import {
 jest.mock('./index', () => ({
   rounds: {
     1: require('./round1').round1,
+    3: require('./round3').round3,
     4: require('./round4').round4,
   },
 }));
@@ -18,6 +19,41 @@ jest.mock('../gameEffects', () => ({
 }));
 
 describe('round 4', () => {
+  describe('Test Driven Development', () => {
+    it('is only available if refactoring was implemented', () => {
+      const game = getGame();
+
+      advanceGameToRound(game, 4);
+      expect(game.state.currentRound.number).toEqual(4);
+
+      expect(game.availableActionIds).not.toContain('TEST_DRIVEN_DEVELOPMENT');
+
+      game.selectAction('REFACTORING');
+      game.nextRound();
+      expect(game.availableActionIds).toContain('TEST_DRIVEN_DEVELOPMENT');
+    });
+
+    it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
+      const game = getGame();
+      advanceGameToRound(game, 4);
+      expect(game.state.currentRound.number).toEqual(4);
+
+      game.selectAction('REFACTORING');
+      game.nextRound();
+      game.selectAction('TEST_DRIVEN_DEVELOPMENT');
+
+      // all these tests need to take into account that Refactoring already had +1 effect
+      testCurrentRound(game, { capacityChange: 1, userStoryChange: 0 });
+
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+        { capacityChange: 4, userStoryChange: 0 },
+        { capacityChange: 4, userStoryChange: 0 },
+      ]);
+    });
+  });
   describe('Cross Skilling', () => {
     it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
       const game = getGame();

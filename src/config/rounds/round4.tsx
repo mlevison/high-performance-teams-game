@@ -7,6 +7,7 @@ export type Round4ActionId =
   | 'EXTERNAL_CROSS_TRAINING'
   | 'PERSONAL_PRODUCTIVITY_BONUS'
   | 'NEW_TESTER'
+  | 'TEST_DRIVEN_DEVELOPMENT'
   | 'BA_QA_DEV_COLLABORATION';
 
 export const round4: RoundDescription<Round4ActionId> = {
@@ -121,6 +122,32 @@ export const round4: RoundDescription<Round4ActionId> = {
         return {
           capacityChange: 1,
           userStoryChange: userStoryImprovement,
+        };
+      },
+    },
+    TEST_DRIVEN_DEVELOPMENT: {
+      image: example,
+      type: 'ENGINEERING',
+      name: 'Test Driven Development',
+      available: { requires: 'REFACTORING' },
+      description: (
+        <p>
+          Writing Unit-level Tests before writing the code. TDD helps the
+          quality by ensuring the developer understands what they're attempting
+          to build before they build it. As a side effect, it reduces the volume
+          of code and its complexity, thereby reducing the number of defects.
+          This skill takes time to learn.
+        </p>
+      ),
+      cost: 3,
+      effect(age) {
+        let change = age - 1;
+        if (age > 4) {
+          change = 3;
+        }
+
+        return {
+          capacityChange: change,
         };
       },
     },

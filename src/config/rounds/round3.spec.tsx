@@ -33,43 +33,14 @@ describe('round 3', () => {
 });
 
 describe('round 3 Actions', () => {
-  describe('Test Driven Development', () => {
-    it('is only available if the BuildServer was implemented', () => {
-      const game = getGame();
-
-      advanceGameToRound(game, 3);
-      expect(game.state.currentRound.number).toEqual(3);
-
-      expect(game.availableActionIds).not.toContain('TEST_DRIVEN_DEVELOPMENT');
-
-      game.selectAction('BUILD_SERVER');
-      game.nextRound();
-      expect(game.availableActionIds).toContain('TEST_DRIVEN_DEVELOPMENT');
-    });
-
-    it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
-      const game = getGame();
-      game.selectAction('BUILD_SERVER');
-      game.nextRound();
-      game.selectAction('TEST_DRIVEN_DEVELOPMENT');
-      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
-
-      testFutureRounds(game, [
-        { capacityChange: 0, userStoryChange: 0 },
-        { capacityChange: 1, userStoryChange: 0 },
-        { capacityChange: 2, userStoryChange: 0 },
-        { capacityChange: 3, userStoryChange: 0 },
-        { capacityChange: 3, userStoryChange: 0 },
-      ]);
-    });
-  });
+  
 
   describe('Refactoring', () => {
     it('is only available if the BuildServer was implemented', () => {
       const game = getGame();
       advanceGameToRound(game, 3);
       expect(game.state.currentRound.number).toEqual(3);
-      
+
       expect(game.availableActionIds).not.toContain('REFACTORING');
 
       game.selectAction('BUILD_SERVER');
