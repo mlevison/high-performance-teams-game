@@ -22,6 +22,10 @@ export default function Results(props: Props) {
   return (
     <>
       <p>What is the chance that each User Story will successfully be built?</p>
+      <p>
+        When you're ready to see the results click: "Roll for User Stories".
+      </p>
+      <p>When you have reviewed the results click: "Next Round"</p>
       <h3>Calculation</h3>
       <ul className={styles.userStoryChanceList}>
         <li>&nbsp;&nbsp;&nbsp;{START_USER_STORY_CHANCE}% base chance</li>
@@ -40,8 +44,8 @@ export default function Results(props: Props) {
         {!props.ui.closedRound && (
           <>
             <li>
-              x &nbsp; {props.currentRound.capacity.available} capacity to spend
-              on user stories
+              x &nbsp; {props.currentRound.capacity.available} working capacity
+              that you elected to spend on user stories
             </li>
             <li>&nbsp;</li>
           </>
@@ -57,7 +61,6 @@ export default function Results(props: Props) {
           </>
         )}
       </ul>
-
       <ul className={styles.userStoryIcons}>
         {Array(props.currentRound.capacity.available)
           .fill('')

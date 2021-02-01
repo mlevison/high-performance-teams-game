@@ -102,9 +102,7 @@ describe('App UI', () => {
       ui: { review: false, view: 'results' },
     });
     expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
-    expect(
-      screen.getByText(/10 capacity to spend on user stories/),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/working capacity/)).toBeInTheDocument();
 
     const closedRound: ClosedRound = {
       gremlin: null,

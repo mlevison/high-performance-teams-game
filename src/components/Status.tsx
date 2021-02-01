@@ -64,7 +64,7 @@ export default function Status(props: Props) {
 
   return (
     <>
-      <h2>Capacity Breakdown</h2>
+      <h2>Working Capacity Breakdown</h2>
       <ul className={styles.status}>
         <li>
           <span className={styles.cap}>{START_CAPACITY}</span> Start Capacity

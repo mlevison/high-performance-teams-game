@@ -5,14 +5,15 @@ export default function Rules() {
     <>
       <h2>Welcome</h2>
       <p>
-        Purpose: To spark a discussion among your real team about improvements
-        they can make. To that end, the game is best played in a single web
-        browser where everyone can see what is happening and discuss the
-        options.
-        <em>
-          Eventually, each action will link to a blog post or section of our
-          reference library with more material.
-        </em>
+        Reading about improvements rarely sparks the deeper changes teams need
+        to be effective. This game exists for you to start to see the choices a
+        team has to improve.
+      </p>
+      <p>
+        In the longer term is here to spark a discussion among your real team
+        about improvements they can make. To that end, the game is best played
+        in a single web browser where everyone can see what is happening and
+        discuss the options.
       </p>
       <h3>Background</h3>
       <p>
@@ -122,6 +123,13 @@ export default function Rules() {
       <p>
         Hint: play the game as often as you want. So if you want to run
         experiments to see what happens, go for it.
+      </p>
+      <h2>Limitations</h2>
+      <p>
+        If you play well you could improve your teams effectiveness by four to
+        five times. In reality that would take more than the year implied in the
+        game. In addition in reality many improvements would have an ongoing
+        cost that is longer than the game simulates.
       </p>
     </>
   );

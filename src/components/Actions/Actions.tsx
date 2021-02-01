@@ -24,8 +24,12 @@ export default function Actions(props: Props) {
     <>
       <h2>Available Actions</h2>
       <p>
-        Select one or more actions to take this round.<br></br>Previous rounds
-        actions are still available, click the &#9658; to open the round
+        Select Improvements or Actions that will affect the team. Once selected,
+        the cot of the Actions cost will be deducted from the team's Working Capacity.
+      </p>
+      <p>
+        Previous rounds actions are still available, click the &#9658; to open
+        prior rounds.
       </p>
       <ul className={styles.roundList}>
         {Array(props.currentRound)
