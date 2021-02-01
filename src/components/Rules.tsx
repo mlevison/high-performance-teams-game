@@ -14,6 +14,7 @@ export default function Rules() {
           reference library with more material.
         </em>
       </p>
+      <h3>Background</h3>
       <p>
         Your team is working on the World’s Smallest Online Bookstore, a site
         that provides the best results (just a few) for every search, not every
@@ -21,36 +22,59 @@ export default function Rules() {
         deliver, our funding will be cut. My goal is to help you see the effects
         of choices/tradeoffs on productivity and team cohesion. While some of
         the benefits of Agile happen at the individual level, there are many
-        things that affect the relationships between team members and, therefore,
-        the overall cohesion and productivity of the team.
+        things that affect the relationships between team members and,
+        therefore, the overall cohesion and productivity of the team. The game
+        simulates a year in the life of a team. Each round represents 6 weeks of
+        work.
       </p>
       <h2>Rules</h2>
       <ul>
-        <li>
-          Rounds represent 6 weeks or 3 Sprints in the life of your team. This
-          has no effect on game play; the length was selected because most
-          improvements take more than 2 weeks to take root.
-        </li>
-        <li>The game lasts 10 rounds or 30 weeks.</li>
-        <li>Your team starts with a Capacity of 10 points.</li>
+        <li>The game lasts 10 rounds.</li>
+        <li>Your team starts with a working capacity of 10 points.</li>
         <ul>
-          <li>This Capacity can be spent on User Stories.</li>
           <li>
-            This Capacity can also be spent on Improvements (aka Actions). These
-            improvements cost the team Capacity in the round they are purchased round, and may provide
-            benefit in future rounds.
+            These points can be spent on delivering Features to your customers
+            or Improvements (aka Actions). Each improvement you select costs the
+            team Capacity in this round. They provide a benefit in future
+            rounds.
           </li>
         </ul>
         <li>
-          Teams that fail to improve both Communications and Engineering
-          Practice will eventually be penalized.
+          Improvements fall into three categories:
+          <ul>Engineering Practices - improve the quality of your code</ul>
+          <ul>
+            Communication Practices - improve the team members ability to work
+            together
+          </ul>
+          <ul>
+            Product Ownership Practices - make it more likely that the team will
+            build the right product
+          </ul>
         </li>
         <li>
-          Failure to invest in things that aid your resilience will harm your
-          team in later rounds.
+          Teams that fail to improve all of these categories will eventually be
+          penalized.
         </li>
         <li>
-          If you play well, your team's capacity will increase round by round.
+          Features - Just like real life, it is not certain the features you
+          deliver will be valuable to the customer. At the start of the game
+          there is only 30% chance that features committed will delight the
+          customer. If your team invests in Product Ownership improvements, that
+          chance will go up.
+        </li>
+        <li>
+          In addition the game has gremlins, challenges that crop up that effect
+          affect your teams ability to deliver. Examples: Another team borrows
+          your best tester; Management yells at a team member.{' '}
+          <em>
+            Some actions insulate your team against the effects of these
+            problems
+          </em>
+        </li>
+        <li>
+          If you play well, your team's working capacity will increase round by
+          round. Then you will have more points to invest in features and future
+          improvements.
         </li>
       </ul>
       <h2>Rounds</h2>
@@ -62,7 +86,8 @@ export default function Rules() {
         </li>
         <li>
           Select Improvements or Actions that will affect the team. Once
-          selected, the cot of the Actions cost will be deducted from the team's Capacity.
+          selected, the cot of the Actions cost will be deducted from the team's
+          Capacity.
           <br></br>
           &nbsp;&nbsp;&nbsp;<b>Click Complete Round</b>
         </li>
@@ -72,8 +97,8 @@ export default function Rules() {
           &nbsp;&nbsp;&nbsp;<b>Click Roll for User Stories</b>
         </li>
         <li>
-          The game rolls a die for each User Story to determine how many are actually
-          completed.<br></br>
+          The game rolls a die for each User Story to determine how many are
+          actually completed.<br></br>
           &nbsp;&nbsp;&nbsp;<b>Click Next Round</b>
         </li>
         <li>
@@ -82,16 +107,16 @@ export default function Rules() {
         </li>
       </ol>
       <p>
-        Notice each round that your Capacity increases or decreases depending on the
-        improvements you have made and the gremlins that affect you. After round
-        1, the game displays the active effects of Improvements that were
+        Notice each round that your Capacity increases or decreases depending on
+        the improvements you have made and the gremlins that affect you. After
+        round 1, the game displays the active effects of Improvements that were
         previously made.
       </p>
       <p>
         <em>
           Actions not selected in a round are still available for later use. To
-          keep the User Interface tidy, they can be found in the round where they were
-          first available.
+          keep the User Interface tidy, they can be found in the round where
+          they were first available.
         </em>
       </p>
       <p>
