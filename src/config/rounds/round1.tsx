@@ -50,10 +50,10 @@ export const round1: RoundDescription<Round1ActionId> = {
       name: 'Clarify Product Vision',
       description: (
         <p>
-          PO and Development Team collaborate on understanding Product Vision
-          using an exercise like Product Box. Teams that aren’t involved in the
-          creation of their product vision are doomed to build Product that
-          neither PO, Customers, nor Stakeholders want.
+          Product Owner and Development Team collaborate on understanding
+          Product Vision using an exercise like Product Box. Teams that aren’t
+          involved in the creation of their product vision are doomed to build
+          Product that neither Product Owner, Customers, nor Stakeholders want.
         </p>
       ),
       cost: 2,
