@@ -1,6 +1,9 @@
 import React from 'react';
 import { GremlinId } from '../../config';
-import { START_USER_STORY_CHANCE, TOTAL_ROUNDS } from '../../constants';
+import {
+  START_USER_STORY_CHANCE,
+  TOTAL_INTERACTIVE_ROUNDS,
+} from '../../constants';
 import { AppState, GameDispatch, ClosedRound } from '../../state';
 import Button from '../Button';
 import CapStoryChart from '../CapStoryChart';
@@ -107,7 +110,8 @@ export default function Results(props: Props) {
               const nextRound = props.ui.review + 1;
               props.dispatch({
                 type: 'SET_UI_REVIEW_ACTION',
-                payload: nextRound < TOTAL_ROUNDS ? nextRound : false,
+                payload:
+                  nextRound < TOTAL_INTERACTIVE_ROUNDS ? nextRound : false,
               });
 
               return;
@@ -117,19 +121,29 @@ export default function Results(props: Props) {
                 'Can not go to next round without closing this one',
               );
             }
-            props.dispatch({
-              type: 'NEXT_ROUND',
-              payload: {
-                closedRound: props.ui.closedRound,
-                gremlin: props.rollGremlin(),
-              },
-            });
+
+            if (props.pastRounds.length + 1 === TOTAL_INTERACTIVE_ROUNDS) {
+              props.dispatch({
+                type: 'FINISH_GAME',
+                payload: {
+                  closedRound: props.ui.closedRound,
+                },
+              });
+            } else {
+              props.dispatch({
+                type: 'NEXT_ROUND',
+                payload: {
+                  closedRound: props.ui.closedRound,
+                  gremlin: props.rollGremlin(),
+                },
+              });
+            }
           }}
         >
-          {props.ui.review && props.ui.review + 1 >= TOTAL_ROUNDS
+          {props.ui.review && props.ui.review + 1 >= TOTAL_INTERACTIVE_ROUNDS
             ? 'Close Review'
-            : props.pastRounds.length + 1 === TOTAL_ROUNDS
-            ? 'End Game'
+            : props.pastRounds.length + 1 === TOTAL_INTERACTIVE_ROUNDS
+            ? 'Finish Game'
             : 'Next Round'}
         </Button>
       </div>

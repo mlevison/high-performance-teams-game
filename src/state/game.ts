@@ -2,6 +2,7 @@ import {
   GameRound,
   ClosedGameRound,
   createRound,
+  closeRound,
   getActionEffects,
 } from './round';
 import { Effect, isEffect } from './effects';
@@ -10,6 +11,7 @@ import { GameActionId, gameEffects, GremlinId } from '../config';
 import { getRoundEffects } from './rounds';
 import { getEffects } from './gameActions';
 import { getGremlinEffects } from './gremlins';
+import { SIMULATED_TRAILING_ROUNDS } from '../constants';
 
 export type GameState = {
   currentRound: GameRound;
@@ -52,13 +54,23 @@ export type NextRoundAction = {
     gremlin: GremlinId | null;
   };
 };
+export type FinishGameAction = {
+  type: 'FINISH_GAME';
+  payload: {
+    closedRound: ClosedGameRound;
+  };
+};
 export type GameActionAction =
   | SelectGameActionAction
   | UnselectGameActionAction;
 type RunningGameAction = GameActionAction | NextRoundAction;
 type UiAction = SetUiViewAction | SetUiClosedRoundAction | SetUiReviewAction;
 
-export type Action = RunningGameAction | RestartGameAction | UiAction;
+export type Action =
+  | RunningGameAction
+  | RestartGameAction
+  | FinishGameAction
+  | UiAction;
 
 export const INITIAL_STATE: GameState = {
   currentRound: {
@@ -135,6 +147,19 @@ export function getCapacity(effects: Effect[]) {
   }, 0);
 }
 
+function nextRound(state: GameState, action: NextRoundAction): GameState {
+  return {
+    ...state,
+    ui: {
+      review: false,
+      view: 'welcome',
+    },
+    pastRounds: [...state.pastRounds, action.payload.closedRound],
+    currentRound: createRound(action.payload.gremlin),
+    log: state.log.concat(action),
+  };
+}
+
 export function gameReducer(state: GameState, action: Action): GameState {
   switch (action.type) {
     case 'SELECT_GAME_ACTION': {
@@ -163,16 +188,25 @@ export function gameReducer(state: GameState, action: Action): GameState {
       };
     }
     case 'NEXT_ROUND': {
-      return {
-        ...state,
-        ui: {
-          review: false,
-          view: 'welcome',
+      return nextRound(state, action);
+    }
+    case 'FINISH_GAME': {
+      return Array.from({ length: SIMULATED_TRAILING_ROUNDS + 1 }).reduce<
+        [GameState, ClosedGameRound]
+      >(
+        ([state, closedRound]) => {
+          const nextState = nextRound(state, {
+            type: 'NEXT_ROUND',
+            payload: {
+              closedRound,
+              gremlin: null,
+            },
+          });
+
+          return [nextState, closeRound(nextState)];
         },
-        pastRounds: [...state.pastRounds, action.payload.closedRound],
-        currentRound: createRound(action.payload.gremlin),
-        log: state.log.concat(action),
-      };
+        [state, action.payload.closedRound],
+      )[0];
     }
     case 'SET_UI_VIEW_ACTION':
       return {
