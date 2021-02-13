@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import {
-  LineChart,
+  ComposedChart,
   Line,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -56,7 +57,7 @@ export default function CapStoryChart({ rounds }: Props) {
 
   return (
     <ResponsiveContainer className={styles.chart} height={300} width="100%">
-      <LineChart
+      <ComposedChart
         data={data}
         margin={{
           top: 5,
@@ -76,18 +77,17 @@ export default function CapStoryChart({ rounds }: Props) {
         />
         <Tooltip />
         <Legend />
-        <Line yAxisId="right" type="monotone" dataKey={TC} stroke="#0c79df" />
-        <Line yAxisId="right" type="monotone" dataKey={SA} stroke="#e2d02f" />
-        <Line
+        <Bar
           yAxisId="left"
-          type="monotone"
           dataKey={USC}
-          stroke="#cd66e7"
+          fill="#e2d02f"
           unit="%"
-          activeDot={{ r: 8 }}
+          barSize={30}
         />
+        <Line yAxisId="right" type="monotone" dataKey={TC} stroke="#0c79df" />
+        <Line yAxisId="right" type="monotone" dataKey={SA} stroke="#cd66e7" />
         <Line yAxisId="right" type="monotone" dataKey={SC} stroke="#1be400" />
-      </LineChart>
+      </ComposedChart>
     </ResponsiveContainer>
   );
 }
