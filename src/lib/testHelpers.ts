@@ -7,6 +7,7 @@ import {
   START_GREMLIN_CHANCE,
   START_USER_STORY_CHANCE,
 } from '../constants';
+
 export function getGame() {
   const wrapper = renderHook(() => useAppState(INITIAL_STATE));
 
@@ -60,17 +61,17 @@ export function testCurrentRound(
   round: BaseEffect,
 ) {
   if (round.userStoryChange !== undefined) {
-    expect(game.state.currentRound.userStoryChance).toEqual(
+    expect(game.state.currentRound).toHaveUserStoryChance(
       round.userStoryChange + START_USER_STORY_CHANCE,
     );
   }
   if (round.capacityChange !== undefined) {
-    expect(game.state.currentRound.capacity.total).toEqual(
+    expect(game.state.currentRound).toHaveTotalCapacity(
       round.capacityChange + START_CAPACITY,
     );
   }
   if (round.gremlinChange !== undefined) {
-    expect(game.state.currentRound.gremlinChance).toEqual(
+    expect(game.state.currentRound).toHaveGremlinChance(
       round.gremlinChange + START_GREMLIN_CHANCE,
     );
   }
@@ -85,3 +86,77 @@ export function testFutureRounds(
     testCurrentRound(game, round);
   });
 }
+
+function matchRound(
+  matcherName: string,
+  propName: string,
+  extractValue: (round: any) => any,
+): jest.CustomMatcher {
+  return function (received: any, expected: any) {
+    const matcherHint = `${this.utils.matcherHint(
+      matcherName,
+      undefined,
+      undefined,
+      {
+        isNot: this.isNot,
+        promise: this.promise,
+      },
+    )}\n\n`;
+
+    try {
+      var actual = extractValue(received);
+      if (typeof received.number !== 'number') {
+        throw new TypeError();
+      }
+      var pass = actual === expected;
+    } catch (err) {
+      if (err.name === 'TypeError') {
+        return {
+          pass: false,
+          message: () =>
+            `${matcherHint}Expected: ${this.utils.printReceived(
+              received,
+            )} to be of type AppRound`,
+        };
+      }
+      throw err;
+    }
+
+    return {
+      message: () =>
+        `${matcherHint}Expected ${propName} ${this.utils.printReceived(
+          actual,
+        )} of round ${received.number} ${
+          pass ? 'not ' : ''
+        }to be ${this.utils.printExpected(expected)}`,
+      pass,
+    };
+  };
+}
+
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toHaveUserStoryChance(chance: number): R;
+      toHaveGremlinChance(chance: number): R;
+      toHaveTotalCapacity(chance: number): R;
+    }
+  }
+}
+expect.extend({
+  toHaveGremlinChance: matchRound(
+    'toHaveGremlinChance',
+    'gremlinChance',
+    (round) => round.gremlinChance,
+  ),
+  toHaveUserStoryChance: matchRound(
+    'toHaveUserStoryChance',
+    'userStoryChance',
+    (round) => round.userStoryChance,
+  ),
+  toHaveTotalCapacity: matchRound(
+    'toHaveTotalCapacity',
+    'capacity.total',
+    (round) => round.capacity.total,
+  ),
+});
