@@ -8,7 +8,7 @@ import {
 jest.mock('./index', () => ({
   rounds: {
     1: require('./round1').round1,
-    5: require('./round5').round3,
+    5: require('./round5').round5,
   },
 }));
 /* disable game effect to only tests single actions */
