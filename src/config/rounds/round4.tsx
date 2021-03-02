@@ -101,7 +101,20 @@ export const round4: RoundDescription<Round4ActionId> = {
     BA_QA_DEV_COLLABORATION: {
       image: example,
       name: 'BA, Development, Testing Collaboration',
-      description: <p>Work with team members to collaborate</p>,
+      description: (
+        <p>
+          Work with team members to collaborate. Before starting work on
+          developing a User Story team members review and establish basic
+          acceptance criteria.
+          <br>
+            <br></br>
+          </br>
+          For more see:{' '}
+          <a href="https://agilepainrelief.com/blog/scrummaster-tales-team-collaborate-acceptance-criteria.html">
+            Scrum By Example - The Team Collaborate on Acceptance Criteria
+          </a>
+        </p>
+      ),
       cost: 2,
       effect(age) {
         let userStoryImprovement = 15;
