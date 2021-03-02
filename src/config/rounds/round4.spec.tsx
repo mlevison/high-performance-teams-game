@@ -13,6 +13,7 @@ jest.mock('./index', () => ({
     4: require('./round4').round4,
   },
 }));
+
 /* disable game effect to only tests single actions */
 jest.mock('../gameEffects', () => ({
   gameEffects: [],
