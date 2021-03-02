@@ -119,7 +119,7 @@ export const round2: RoundDescription<Round2ActionId> = {
           create new stories and delete ones that no longer make sense. All of
           this improves their understanding of the product they're building.
           <br></br>
-          <br></br>For more see:{' '}
+          <br></br>For a deeper understanding see:{' '}
           <a href="https://agilepainrelief.com/blog/scrum-product-backlog-refinement.html">
             Scrum by Example – Product Backlog Refinement in Action
           </a>

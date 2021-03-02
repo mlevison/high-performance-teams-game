@@ -18,7 +18,7 @@ jest.mock('../gameEffects', () => ({
 
 describe('round 5', () => {
   describe('Bypass Definition of Done', () => {
-    it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
+    it('This might seem like a good idea but always comes back to cause harm later', () => {
       const game = getGame();
       advanceGameToRound(game, 5);
       game.selectAction('BYPASS_DEFINITION_OF_DONE');
@@ -29,6 +29,21 @@ describe('round 5', () => {
         { capacityChange: 0, userStoryChange: -10 },
         { capacityChange: 0, userStoryChange: -10 },
         { capacityChange: 0, userStoryChange: -10 },
+      ]);
+    });
+  });
+  describe('Include Stakeholders in updating Vision', () => {
+    it('Time consuming but improves the likelihood that we will build the right product', () => {
+      const game = getGame();
+      advanceGameToRound(game, 5);
+      game.selectAction('INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE');
+
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 0, userStoryChange: 10 },
       ]);
     });
   });

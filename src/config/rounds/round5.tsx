@@ -2,7 +2,9 @@ import React from 'react';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
-export type Round5ActionId = 'BYPASS_DEFINITION_OF_DONE';
+export type Round5ActionId =
+  | 'BYPASS_DEFINITION_OF_DONE'
+  | 'INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE';
 
 export const round5: RoundDescription<Round5ActionId> = {
   title: 'Nearly There',
@@ -31,6 +33,26 @@ export const round5: RoundDescription<Round5ActionId> = {
         return {
           capacityChange: 0,
           userStoryChange: -10,
+        };
+      },
+    },
+    INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE: {
+      image: example,
+      name: 'Include Stakeholders in updating Vision',
+      description: (
+        <p>
+          When we include our stakeholders (end users and customers etc) in
+          building our Product Vision and Strategy it makes it more likely, that
+          our product will meet their needs.
+        </p>
+      ),
+      cost: 1,
+      effect(age) {
+        if (age === 1) {
+          return { userStoryChange: 0 };
+        }
+        return {
+          userStoryChange: 10,
         };
       },
     },

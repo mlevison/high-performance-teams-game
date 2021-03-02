@@ -40,7 +40,7 @@ export const round1: RoundDescription<Round1ActionId> = {
           ScrumMaster protects the team from outside distraction. Example: a
           manager asking a team member to do them a small favour as it will only
           take an hour.<br></br>
-          <br></br> For more see:{' '}
+          <br></br>For a deeper understanding see:{' '}
           <a href="https://agilepainrelief.com/blog/scrum-master-tales-more-interruptions.html">
             Scrum By Example – Interruptions Hurt the Team
           </a>{' '}
