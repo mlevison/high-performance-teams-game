@@ -48,23 +48,23 @@ describe('round 5', () => {
       ]);
     });
   });
-  describe('BA, Development Testing Collaboration', () => {
-    it('increases productivity, improves likelihood of completing a User Story', () => {
+  describe('Adopting BDD', () => {
+    it('increases productivity by increasing collaboration between ppl on the team, improves likelihood of completing a User Story', () => {
       const game = getGame();
-      advanceGameToRound(game, 4);
-      expect(game.state.currentRound.number).toEqual(4);
+      advanceGameToRound(game, 5);
+      expect(game.state.currentRound.number).toEqual(5);
 
-      game.selectAction('BA_QA_DEV_COLLABORATION');
+      game.selectAction('ADOPT_BDD');
 
-      testCurrentRound(game, { capacityChange: 0, userStoryChange: 15 });
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: 10 });
 
       testFutureRounds(game, [
-        { capacityChange: -1, userStoryChange: 15 },
-        { capacityChange: -1, userStoryChange: 15 },
+        { capacityChange: -1, userStoryChange: 10 },
+        { capacityChange: -1, userStoryChange: 10 },
         { capacityChange: 0, userStoryChange: 15 },
-        { capacityChange: 1, userStoryChange: 15 },
-        { capacityChange: 1, userStoryChange: 15 },
-        { capacityChange: 1, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 1, userStoryChange: 20 },
+        { capacityChange: 1, userStoryChange: 20 },
       ]);
     });
   });

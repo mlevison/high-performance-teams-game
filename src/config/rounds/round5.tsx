@@ -5,7 +5,7 @@ import example from './images/example.jpg';
 export type Round5ActionId =
   | 'BYPASS_DEFINITION_OF_DONE'
   | 'INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE'
-  | 'BA_QA_DEV_COLLABORATION';
+  | 'ADOPT_BDD';
 
 export const round5: RoundDescription<Round5ActionId> = {
   title: 'Nearly There',
@@ -57,14 +57,16 @@ export const round5: RoundDescription<Round5ActionId> = {
         };
       },
     },
-    BA_QA_DEV_COLLABORATION: {
+    ADOPT_BDD: {
       image: example,
-      name: 'BA, Development, Testing Collaboration',
+      name: 'Adopt Behaviour Driven Development',
       description: (
         <p>
-          Work with team members to collaborate. Before starting work on
-          developing a User Story team members review and establish basic
-          acceptance criteria.
+          Team members collaborate before starting work on developing a User
+          Story team members review and establish basic acceptance criteria. As
+          they grow in skill, they often write the acceptance criteria as
+          automated acceptance tests in a language that can be read by all
+          members of the team.
           <br>
             <br></br>
           </br>
@@ -76,24 +78,23 @@ export const round5: RoundDescription<Round5ActionId> = {
       ),
       cost: 2,
       effect(age) {
-        let userStoryImprovement = 15;
         if (age <= 2) {
           return {
             title:
               'Improving Collaboration slows the team at first. Even from the start it improves quality and completition of User Stories',
             capacityChange: -1,
-            userStoryChange: userStoryImprovement,
+            userStoryChange: 10,
           };
         }
-        if (age === 3) {
+        if (age === 3 || age === 4) {
           return {
             capacityChange: 0,
-            userStoryChange: userStoryImprovement,
+            userStoryChange: 15,
           };
         }
         return {
           capacityChange: 1,
-          userStoryChange: userStoryImprovement,
+          userStoryChange: 20,
         };
       },
     },
