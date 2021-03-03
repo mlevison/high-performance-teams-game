@@ -56,8 +56,6 @@ describe('round 5', () => {
 
       game.selectAction('ADOPT_BDD');
 
-      testCurrentRound(game, { capacityChange: -1, userStoryChange: 10 });
-
       testFutureRounds(game, [
         { capacityChange: -1, userStoryChange: 10 },
         { capacityChange: -1, userStoryChange: 10 },
