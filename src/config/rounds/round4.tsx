@@ -8,8 +8,7 @@ export type Round4ActionId =
   | 'PERSONAL_PRODUCTIVITY_BONUS'
   | 'NEW_TESTER'
   | 'TEST_DRIVEN_DEVELOPMENT'
-  | 'LIMIT_WIP'
-  | 'BA_QA_DEV_COLLABORATION';
+  | 'LIMIT_WIP';
 
 export const round4: RoundDescription<Round4ActionId> = {
   title: 'Team is Bottlenecked',
