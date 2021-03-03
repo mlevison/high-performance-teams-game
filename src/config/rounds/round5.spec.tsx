@@ -2,7 +2,6 @@ import {
   getGame,
   testFutureRounds,
   advanceGameToRound,
-  testCurrentRound,
 } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
@@ -81,6 +80,24 @@ describe('round 5', () => {
         { capacityChange: 1, userStoryChange: 0 },
         { capacityChange: 1, userStoryChange: 0 },
         { capacityChange: 1, userStoryChange: 0 },
+      ]);
+    });
+  });
+  describe('Establish Sprint Goals', () => {
+    it('By Establishing Sprint Goals', () => {
+      const game = getGame();
+      advanceGameToRound(game, 5);
+      expect(game.state.currentRound.number).toEqual(5);
+
+      game.selectAction('ESTABLISH_SPRINT_GOALS');
+
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 5 },
+        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 15 },
       ]);
     });
   });

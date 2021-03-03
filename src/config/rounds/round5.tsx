@@ -6,7 +6,8 @@ export type Round5ActionId =
   | 'BYPASS_DEFINITION_OF_DONE'
   | 'INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE'
   | 'ADOPT_BDD'
-  | 'WORK_WITH_PO_LIMIT_PB_SIZE';
+  | 'WORK_WITH_PO_LIMIT_PB_SIZE'
+  | 'ESTABLISH_SPRINT_GOALS';
 
 export const round5: RoundDescription<Round5ActionId> = {
   title: 'Nearly There',
@@ -126,6 +127,42 @@ export const round5: RoundDescription<Round5ActionId> = {
         }
         return {
           capacityChange: 1,
+        };
+      },
+    },
+    ESTABLISH_SPRINT_GOALS: {
+      image: example,
+      name: 'Establish Sprint Goals',
+      description: (
+        <>
+          <p>
+            Sprint Goals help the team by giving them focus in the Sprint, by
+            helping the team better understand what they're trying to achieve.
+            If the team is having trouble in Sprint the Goal is a refocusing
+            tool.
+          </p>
+          <p>
+            For more see:{' '}
+            <a href="https://agilepainrelief.com/blog/sprint-goals-provide-purpose.html">
+              Sprint Goals Provide Purpose
+            </a>
+          </p>
+        </>
+      ),
+      cost: 1,
+      effect(age) {
+        if (age === 1) {
+          return {
+            userStoryChange: 5,
+          };
+        }
+        if (age <= 3) {
+          return {
+            userStoryChange: 10,
+          };
+        }
+        return {
+          userStoryChange: 15,
         };
       },
     },
