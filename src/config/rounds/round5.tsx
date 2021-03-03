@@ -7,7 +7,8 @@ export type Round5ActionId =
   | 'INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE'
   | 'ADOPT_BDD'
   | 'WORK_WITH_PO_LIMIT_PB_SIZE'
-  | 'ESTABLISH_SPRINT_GOALS';
+  | 'ESTABLISH_SPRINT_GOALS'
+  | 'MAKE_IMPEDIMENTS_LIST_PUBLIC';
 
 export const round5: RoundDescription<Round5ActionId> = {
   title: 'Nearly There',
@@ -164,6 +165,31 @@ export const round5: RoundDescription<Round5ActionId> = {
         }
         return {
           userStoryChange: 15,
+        };
+      },
+    },
+    MAKE_IMPEDIMENTS_LIST_PUBLIC: {
+      image: example,
+      name: 'Post a List of the Teams Impediments',
+
+      description: (
+        <>
+          <p>
+            All teams have impediments and slow downs. Good teams make them
+            visible. Great teams eliminate them. In Scrum we expect the
+            ScrumMaster to maintain a public list of these impediments and then
+            work to resolve them.
+          </p>
+        </>
+      ),
+      cost: 1,
+      effect(age) {
+        let change = age - 1;
+        if (age > 4) {
+          change = 3;
+        }
+        return {
+          capacityChange: change,
         };
       },
     },

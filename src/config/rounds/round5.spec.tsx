@@ -115,4 +115,22 @@ describe('round 5', () => {
       ]);
     });
   });
+  describe('Post a public impediments list', () => {
+    it('By making the teams impediments public', () => {
+      const game = getGame();
+      advanceGameToRound(game, 5);
+      expect(game.state.currentRound.number).toEqual(5);
+
+      game.selectAction('MAKE_IMPEDIMENTS_LIST_PUBLIC');
+
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+      ]);
+    });
+  });
 });
