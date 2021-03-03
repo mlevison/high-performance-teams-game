@@ -133,6 +133,7 @@ export const round5: RoundDescription<Round5ActionId> = {
     ESTABLISH_SPRINT_GOALS: {
       image: example,
       name: 'Establish Sprint Goals',
+      available: { requires: 'BACKLOG_REFINEMENT' },
       description: (
         <>
           <p>

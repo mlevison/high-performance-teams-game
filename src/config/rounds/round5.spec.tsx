@@ -8,9 +8,11 @@ import {
 jest.mock('./index', () => ({
   rounds: {
     1: require('./round1').round1,
+    2: require('./round2').round2,
     5: require('./round5').round5,
   },
 }));
+
 /* disable game effect to only tests single actions */
 jest.mock('../gameEffects', () => ({
   gameEffects: [],
@@ -84,6 +86,18 @@ describe('round 5', () => {
     });
   });
   describe('Establish Sprint Goals', () => {
+    it('is only available if refactoring was Backlog Refinement was implemented', () => {
+      const game = getGame();
+
+      advanceGameToRound(game, 5);
+      expect(game.state.currentRound.number).toEqual(5);
+
+      expect(game.availableActionIds).not.toContain('ESTABLISH_SPRINT_GOALS');
+
+      game.selectAction('BACKLOG_REFINEMENT');
+      game.nextRound();
+      expect(game.availableActionIds).toContain('ESTABLISH_SPRINT_GOALS');
+    });
     it('By Establishing Sprint Goals', () => {
       const game = getGame();
       advanceGameToRound(game, 5);
