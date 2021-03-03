@@ -47,18 +47,18 @@ describe('round 5', () => {
       ]);
     });
   });
-    describe('Limit WIP', () => {
-      it('Slows us down at first but eventually speeds us up', () => {
-        const game = getGame();
+  describe('Limit WIP', () => {
+    it('Slows us down at first but eventually speeds us up', () => {
+      const game = getGame();
       advanceGameToRound(game, 5);
-      game.selectAction('INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE');
+      game.selectAction('LIMIT_WIP');
 
       testFutureRounds(game, [
         { capacityChange: 0, userStoryChange: 0 },
-        { capacityChange: 0, userStoryChange: 10 },
-        { capacityChange: 0, userStoryChange: 10 },
-        { capacityChange: 0, userStoryChange: 10 },
-        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
       ]);
     });
   });

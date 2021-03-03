@@ -112,18 +112,22 @@ export const round2: RoundDescription<Round2ActionId> = {
       type: 'COMMUNICATION',
       name: 'Backlog Refinement',
       description: (
-        <p>
-          The Development Team and the Product Owner sit down every Sprint. They
-          take the time to better understand upcoming features. They might
-          estimate or split stories, create acceptance criteria. They also
-          create new stories and delete ones that no longer make sense. All of
-          this improves their understanding of the product they're building.
-          <br></br>
-          <br></br>For a deeper understanding see:{' '}
-          <a href="https://agilepainrelief.com/blog/scrum-product-backlog-refinement.html">
-            Scrum by Example – Product Backlog Refinement in Action
-          </a>
-        </p>
+        <>
+          <p>
+            The Development Team and the Product Owner sit down every Sprint.
+            They take the time to better understand upcoming features. They
+            might estimate or split stories, create acceptance criteria. They
+            also create new stories and delete ones that no longer make sense.
+            All of this improves their understanding of the product they're
+            building.
+          </p>
+          <p>
+            For a deeper understanding see:{' '}
+            <a href="https://agilepainrelief.com/blog/scrum-product-backlog-refinement.html">
+              Scrum by Example – Product Backlog Refinement in Action
+            </a>
+          </p>
+        </>
       ),
       cost: 3,
       effect: () => ({ userStoryChange: 15 }),

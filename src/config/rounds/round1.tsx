@@ -36,19 +36,23 @@ export const round1: RoundDescription<Round1ActionId> = {
       image: 'https://placekitten.com/100/100',
       name: 'Protected from Outside Distraction',
       description: (
-        <p>
-          ScrumMaster protects the team from outside distraction. Example: a
-          manager asking a team member to do them a small favour as it will only
-          take an hour.<br></br>
-          <br></br>For a deeper understanding see:{' '}
-          <a href="https://agilepainrelief.com/blog/scrum-master-tales-more-interruptions.html">
-            Scrum By Example – Interruptions Hurt the Team
-          </a>{' '}
-          and Agile Glossary and Reference Library:{' '}
-          <a href="https://agilepainrelief.com/glossary/interruptions">
-            Interruptions
-          </a>
-        </p>
+        <>
+          <p>
+            ScrumMaster protects the team from outside distraction. Example: a
+            manager asking a team member to do them a small favour as it will
+            only take an hour.
+          </p>
+          <p>
+            For a deeper understanding see:{' '}
+            <a href="https://agilepainrelief.com/blog/scrum-master-tales-more-interruptions.html">
+              Scrum By Example – Interruptions Hurt the Team
+            </a>{' '}
+            and Agile Glossary and Reference Library:{' '}
+            <a href="https://agilepainrelief.com/glossary/interruptions">
+              Interruptions
+            </a>
+          </p>
+        </>
       ),
       cost: 1,
       effect: () => ({ userStoryChange: 10 }),
