@@ -96,27 +96,6 @@ describe('round 4', () => {
     });
   });
 
-  describe('BA, Development Testing Collaboration', () => {
-    it('increases productivity, improves likelihood of completing a User Story', () => {
-      const game = getGame();
-      advanceGameToRound(game, 4);
-      expect(game.state.currentRound.number).toEqual(4);
-
-      game.selectAction('BA_QA_DEV_COLLABORATION');
-
-      testCurrentRound(game, { capacityChange: 0, userStoryChange: 15 });
-
-      testFutureRounds(game, [
-        { capacityChange: -1, userStoryChange: 15 },
-        { capacityChange: -1, userStoryChange: 15 },
-        { capacityChange: 0, userStoryChange: 15 },
-        { capacityChange: 1, userStoryChange: 15 },
-        { capacityChange: 1, userStoryChange: 15 },
-        { capacityChange: 1, userStoryChange: 15 },
-      ]);
-    });
-  });
-
   describe('Outside Course to learn testing', () => {
     it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
       const game = getGame();
@@ -155,6 +134,22 @@ describe('round 4', () => {
         { capacityChange: -1, userStoryChange: 0 },
         { capacityChange: -1, userStoryChange: 0 },
         { capacityChange: -1, userStoryChange: 0 },
+      ]);
+    });
+  });
+
+  describe('Limit WIP', () => {
+    it('Slows us down at first but eventually speeds us up', () => {
+      const game = getGame();
+      advanceGameToRound(game, 4);
+      game.selectAction('LIMIT_WIP');
+
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
       ]);
     });
   });

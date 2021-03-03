@@ -2,6 +2,7 @@ import {
   getGame,
   testFutureRounds,
   advanceGameToRound,
+  testCurrentRound,
 } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
@@ -47,18 +48,23 @@ describe('round 5', () => {
       ]);
     });
   });
-  describe('Limit WIP', () => {
-    it('Slows us down at first but eventually speeds us up', () => {
+  describe('BA, Development Testing Collaboration', () => {
+    it('increases productivity, improves likelihood of completing a User Story', () => {
       const game = getGame();
-      advanceGameToRound(game, 5);
-      game.selectAction('LIMIT_WIP');
+      advanceGameToRound(game, 4);
+      expect(game.state.currentRound.number).toEqual(4);
+
+      game.selectAction('BA_QA_DEV_COLLABORATION');
+
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 15 });
 
       testFutureRounds(game, [
-        { capacityChange: 0, userStoryChange: 0 },
-        { capacityChange: 1, userStoryChange: 0 },
-        { capacityChange: 2, userStoryChange: 0 },
-        { capacityChange: 3, userStoryChange: 0 },
-        { capacityChange: 3, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 15 },
+        { capacityChange: -1, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 1, userStoryChange: 15 },
+        { capacityChange: 1, userStoryChange: 15 },
+        { capacityChange: 1, userStoryChange: 15 },
       ]);
     });
   });

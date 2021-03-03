@@ -5,7 +5,7 @@ import example from './images/example.jpg';
 export type Round5ActionId =
   | 'BYPASS_DEFINITION_OF_DONE'
   | 'INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE'
-  | 'LIMIT_WIP';
+  | 'BA_QA_DEV_COLLABORATION';
 
 export const round5: RoundDescription<Round5ActionId> = {
   title: 'Nearly There',
@@ -57,30 +57,43 @@ export const round5: RoundDescription<Round5ActionId> = {
         };
       },
     },
-    LIMIT_WIP: {
+    BA_QA_DEV_COLLABORATION: {
       image: example,
-      name: 'Limit Work In Progress',
+      name: 'BA, Development, Testing Collaboration',
       description: (
         <p>
-          Too many teams start their Sprint with each team member grabbing their
-          own User Story Card. So with a team of 6 people there are now 6 items
-          in progress. The challenge is that no one team member can complete
-          their work independantly from the others. As result there will be work
-          that was started at the beginning of the Sprint, that is incomplete at
-          the end. The more work in progress, the less work gets done. Kanban
-          has a saying for this: "Stop Starting and Start Finishing". In
-          practice this means Limiting Work in Progress.
+          Work with team members to collaborate. Before starting work on
+          developing a User Story team members review and establish basic
+          acceptance criteria.
+          <br>
+            <br></br>
+          </br>
+          For more see:{' '}
+          <a href="https://agilepainrelief.com/blog/scrummaster-tales-team-collaborate-acceptance-criteria.html">
+            Scrum By Example - The Team Collaborate on Acceptance Criteria
+          </a>
         </p>
       ),
       cost: 2,
       effect(age) {
-        let change = age - 1;
-        console.log('WIP Limit age', age, 'and change ', change);
-        if (age > 4) {
-          change = 3;
+        let userStoryImprovement = 15;
+        if (age <= 2) {
+          return {
+            title:
+              'Improving Collaboration slows the team at first. Even from the start it improves quality and completition of User Stories',
+            capacityChange: -1,
+            userStoryChange: userStoryImprovement,
+          };
+        }
+        if (age === 3) {
+          return {
+            capacityChange: 0,
+            userStoryChange: userStoryImprovement,
+          };
         }
         return {
-          capacityChange: change,
+          capacityChange: 1,
+          userStoryChange: userStoryImprovement,
         };
       },
     },
