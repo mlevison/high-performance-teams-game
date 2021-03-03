@@ -2,6 +2,7 @@ import {
   getGame,
   testFutureRounds,
   advanceGameToRound,
+  testCurrentRound,
 } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
@@ -62,6 +63,24 @@ describe('round 5', () => {
         { capacityChange: 0, userStoryChange: 15 },
         { capacityChange: 1, userStoryChange: 20 },
         { capacityChange: 1, userStoryChange: 20 },
+      ]);
+    });
+  });
+  describe('Limit Product Backlog size', () => {
+    it('By Limiting Product Backlog Size the PO avoids making unrealistic promise', () => {
+      const game = getGame();
+      advanceGameToRound(game, 5);
+      expect(game.state.currentRound.number).toEqual(5);
+
+      game.selectAction('WORK_WITH_PO_LIMIT_PB_SIZE');
+
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 1, userStoryChange: 0 },
       ]);
     });
   });

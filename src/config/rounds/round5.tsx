@@ -5,7 +5,8 @@ import example from './images/example.jpg';
 export type Round5ActionId =
   | 'BYPASS_DEFINITION_OF_DONE'
   | 'INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE'
-  | 'ADOPT_BDD';
+  | 'ADOPT_BDD'
+  | 'WORK_WITH_PO_LIMIT_PB_SIZE';
 
 export const round5: RoundDescription<Round5ActionId> = {
   title: 'Nearly There',
@@ -95,6 +96,36 @@ export const round5: RoundDescription<Round5ActionId> = {
         return {
           capacityChange: 1,
           userStoryChange: 20,
+        };
+      },
+    },
+    WORK_WITH_PO_LIMIT_PB_SIZE: {
+      image: example,
+      name: 'Limit the Size of the Product Backlog',
+      description: (
+        <>
+          <p>
+            The ScrumMaster works with the Product Owner to make sure the
+            ProductBacklog remains a manageable size. My recommendation max 3
+            months work. Items that are further away are still visible in the
+            Story Map but haven't be broken done into smaller parts. They also
+            work to ensure the Product Backlog is prioritized and up to date.
+          </p>
+          <p>
+            This helps the Product Owner because it will be easier to keep track
+            of important items. It helps the team because they will wasted less
+            time in Product Backlog Refinement. Last it helps the stakeholders
+            because we're able to give them honest forecasts.
+          </p>
+        </>
+      ),
+      cost: 1,
+      effect(age) {
+        if (age < 2) {
+          return { capacityChange: 0 };
+        }
+        return {
+          capacityChange: 1,
         };
       },
     },
