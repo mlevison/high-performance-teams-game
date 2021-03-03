@@ -2,7 +2,6 @@ import {
   getGame,
   testFutureRounds,
   advanceGameToRound,
-  testCurrentRound,
 } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
