@@ -25,7 +25,7 @@ export default function Actions(props: Props) {
       <h2>Available Actions</h2>
       <p>
         Select Improvements or Actions that will affect the team. Once selected,
-        the cot of the Actions cost will be deducted from the team's Working Capacity.
+        the Actions cost will be deducted from the team's Working Capacity.
       </p>
       <p>
         Previous rounds actions are still available, click the &#9658; to open
