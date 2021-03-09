@@ -61,20 +61,21 @@ export const round1: RoundDescription<Round1ActionId> = {
       image: 'https://placekitten.com/100/100',
       name: 'Clarify Product Vision',
       description: (
-        <p>
-          Product Owner and Development Team collaborate on understanding
-          Product Vision using an exercise like Product Box. Teams that aren’t
-          involved in the creation of their product vision are doomed to build
-          Product that neither Product Owner, Customers, nor Stakeholders want.
-        </p>
-        <p>
-            For more on Product Vision, see Agile Glossary and Reference Library:{' '}
-            <a href="https://agilepainrelief.com/glossary/vision">
-              Vision
-            </a>
+        <>
+          <p>
+            Product Owner and Development Team collaborate on understanding
+            Product Vision using an exercise like Product Box. Teams that aren’t
+            involved in the creation of their product vision are doomed to build
+            Product that neither Product Owner, Customers, nor Stakeholders
+            want.
           </p>
-  	</>
-     ),
+          <p>
+            For more on Product Vision, see Agile Glossary and Reference
+            Library:{' '}
+            <a href="https://agilepainrelief.com/glossary/vision">Vision</a>
+          </p>
+        </>
+      ),
       cost: 2,
       effect: () => ({ userStoryChange: 10 }),
     },
