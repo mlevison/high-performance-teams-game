@@ -72,7 +72,9 @@ export const round1: RoundDescription<Round1ActionId> = {
             <a href="https://agilepainrelief.com/glossary/vision">
               Vision
             </a>
-          </p>     ),
+          </p>
+  	</>
+     ),
       cost: 2,
       effect: () => ({ userStoryChange: 10 }),
     },
