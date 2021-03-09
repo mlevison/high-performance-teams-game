@@ -44,11 +44,11 @@ export const round1: RoundDescription<Round1ActionId> = {
           </p>
           <p>
             For a deeper understanding see:{' '}
-            <a href="https://agilepainrelief.com/blog/scrum-master-tales-more-interruptions.html">
+            <a href="https://agilepainrelief.com/blog/scrum-master-tales-more-interruptions.html" target="_blank">
               Scrum By Example – Interruptions Hurt the Team
             </a>{' '}
             and Agile Glossary and Reference Library:{' '}
-            <a href="https://agilepainrelief.com/glossary/interruptions">
+            <a href="https://agilepainrelief.com/glossary/interruptions" target="_blank">
               Interruptions
             </a>
           </p>
