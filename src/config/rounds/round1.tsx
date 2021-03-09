@@ -48,7 +48,7 @@ export const round1: RoundDescription<Round1ActionId> = {
               Scrum By Example – Interruptions Hurt the Team
             </a>{' '}
             and Agile Glossary and Reference Library:{' '}
-            <a href="https://agilepainrelief.com/glossary/interruptions" target=_blank>
+            <a href="https://agilepainrelief.com/glossary/interruptions">
               Interruptions
             </a>
           </p>
