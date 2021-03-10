@@ -103,7 +103,7 @@ export function App(props: Props) {
                     }
                   >
                     {state.ui.review === false
-                      ? 'Complete Round'
+                      ? 'Begin Development'
                       : 'Show User Stories'}
                   </Button>
                   {state.currentRound.gremlin && (

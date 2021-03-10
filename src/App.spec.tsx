@@ -91,7 +91,7 @@ describe('App UI', () => {
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
     expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /Complete Round/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Begin Development/i }));
     expect(dispatch).toHaveBeenCalledWith({
       type: 'SET_UI_VIEW_ACTION',
       payload: 'results',
