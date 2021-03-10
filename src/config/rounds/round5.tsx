@@ -64,20 +64,20 @@ export const round5: RoundDescription<Round5ActionId> = {
       image: example,
       name: 'Adopt Behaviour Driven Development',
       description: (
-        <p>
-          Team members collaborate before starting work on developing a User
-          Story team members review and establish basic acceptance criteria. As
-          they grow in skill, they often write the acceptance criteria as
-          automated acceptance tests in a language that can be read by all
-          members of the team.
-          <br>
-            <br></br>
-          </br>
-          For more see:{' '}
-          <a href="https://agilepainrelief.com/blog/scrummaster-tales-team-collaborate-acceptance-criteria.html">
-            Scrum By Example - The Team Collaborate on Acceptance Criteria
-          </a>
-        </p>
+        <>
+          <p>
+            Team members collaborate before starting work on developing a User
+            Story team members review and establish basic acceptance criteria.
+            As they grow in skill, they often write the acceptance criteria as
+            automated acceptance tests in a language that can be read by all
+            members of the team.
+            </p><p>
+            For more see:{' '}
+            <a href="https://agilepainrelief.com/blog/scrummaster-tales-team-collaborate-acceptance-criteria.html">
+              Scrum By Example - The Team Collaborate on Acceptance Criteria
+            </a>
+          </p>
+        </>
       ),
       cost: 2,
       effect(age) {
