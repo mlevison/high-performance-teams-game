@@ -4,7 +4,8 @@ import example from './images/example.jpg';
 
 export type Round6ActionId =
   | 'IMPROVE_FORECASTING'
-  | 'SPRINT_BACKLOG_IMPROVEMENT';
+  | 'SPRINT_BACKLOG_IMPROVEMENT'
+  | 'DAILY_SCRUM_MORE_EFFECTIVE';
 
 export const round6: RoundDescription<Round6ActionId> = {
   title: 'Go Live Soon',
@@ -13,7 +14,8 @@ export const round6: RoundDescription<Round6ActionId> = {
       We must go live with an early version of the product at the end of this
       round. Due to your limited productivity in past rounds, management are
       prepared to offer some options to help you out. We will provide an extra
-      ‘4’ points of capacity for anything that helps. Overtime?
+      ‘4’ points of capacity for anything that helps. Overtime? Don\'t worry a
+      little overtime won't hurt.
     </p>
   ),
   effect: (_, currentRound) => {
@@ -37,7 +39,7 @@ export const round6: RoundDescription<Round6ActionId> = {
     SPRINT_BACKLOG_IMPROVEMENT: {
       image: example,
       name: 'Improve Sprint Backlog',
-      description: <p>Teams that take ownership of their Sprint Backlog</p>,
+      description: <p>Team takes ownership of their Sprint Backlog</p>,
       cost: 1,
       effect(age) {
         if (age < 2) {
@@ -46,6 +48,24 @@ export const round6: RoundDescription<Round6ActionId> = {
         return {
           capacityChange: 1,
           userStoryChange: 5,
+        };
+      },
+    },
+    DAILY_SCRUM_MORE_EFFECTIVE: {
+      image: example,
+      name: 'Make Daily Scrum more Effective',
+      description: <p>Refocus Daily Scrum on the Sprint Goal</p>,
+      cost: 1,
+      effect(age) {
+        if (age < 2) {
+          return { capacityChange: 0, userStoryChange: 0 };
+        }
+        if (age === 2) {
+          return { capacityChange: 1, userStoryChange: 5 };
+        }
+        return {
+          capacityChange: 2,
+          userStoryChange: 10,
         };
       },
     },

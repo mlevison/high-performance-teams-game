@@ -73,3 +73,22 @@ describe('Teams that take ownership of their Sprint Backlog', () => {
     ]);
   });
 });
+describe('Daily Scrum', () => {
+  it('When daily Scrum is more effective problems get solved sooner and the team collaborates more', () => {
+    const game = getGame();
+    advanceGameToRound(game, 6);
+    expect(game.state.currentRound.number).toEqual(6);
+
+    game.selectAction('DAILY_SCRUM_MORE_EFFECTIVE');
+    testCurrentRound(game, { capacityChange: 4, userStoryChange: 0 });
+
+    testFutureRounds(game, [
+      { capacityChange: 0, userStoryChange: 0 },
+      { capacityChange: 1, userStoryChange: 5 },
+      { capacityChange: 2, userStoryChange: 10 },
+      { capacityChange: 2, userStoryChange: 10 },
+      { capacityChange: 2, userStoryChange: 10 },
+      { capacityChange: 2, userStoryChange: 10 },
+    ]);
+  });
+});
