@@ -19,6 +19,8 @@ describe('Gremlins', () => {
         gremlins.GREMLIN_EMERGENCY_ON_OTHER_TEAM.probability({
           currentRound: { gremlin: null, selectedGameActionIds: [] },
           pastRounds: [],
+          ui: { review: false, view: 'welcome' },
+          log: [],
         }),
       ).toBe(10);
     });
