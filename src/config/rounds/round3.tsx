@@ -4,6 +4,7 @@ import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
 export type Round3ActionId =
+  | 'IMPROVE_RETROSPECTIVES_CHANGE_AGENDA'
   | 'OBSERVE_PEOPLE_AND_RELATIONSHIPS'
   | 'ONE_ON_ONES'
   | 'PAIR_PROGRAMMING'
@@ -20,6 +21,52 @@ export const round3: RoundDescription<Round3ActionId> = {
   ),
   effect: () => ({ title: EFFECT_HIDDEN, gremlinChange: 50 }),
   actions: {
+    IMPROVE_RETROSPECTIVES_CHANGE_AGENDA: {
+      image: example,
+      type: 'COMMUNICATION',
+      name: 'Change Retrospective Style',
+      description: (
+        <>
+          <p>
+            ScrumMaster changes the Retrospective Agenda and activies every
+            Sprint
+          </p>
+          <p>
+            For a deeper understanding see:{' '}
+            <a href="https://agilepainrelief.com/blog/agile-retrospectives.html">
+              Agile Retrospectives
+            </a>
+          </p>
+        </>
+      ),
+      cost: 2,
+      effect(age) {
+        let description =
+          'Changing Retrospective Agendas reengergizes them and tends to find different problems each title';
+        if (age === 0) {
+          return {
+            title: description,
+            capacityChange: 0,
+          };
+        }
+        if (age < 2) {
+          return {
+            title: description,
+            capacityChange: 1,
+          };
+        }
+        if (age === 2 || age === 3) {
+          return {
+            title: description,
+            capacityChange: 2,
+          };
+        }
+        return {
+          title: description,
+          capacityChange: 3,
+        };
+      },
+    },
     OBSERVE_PEOPLE_AND_RELATIONSHIPS: {
       image: example,
       type: 'COMMUNICATION',

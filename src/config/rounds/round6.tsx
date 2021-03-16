@@ -63,7 +63,17 @@ export const round6: RoundDescription<Round6ActionId> = {
     DAILY_SCRUM_MORE_EFFECTIVE: {
       image: example,
       name: 'Make Daily Scrum more Effective',
-      description: <p>Refocus Daily Scrum on the Sprint Goal</p>,
+      description: (
+        <>
+          <p>Refocus Daily Scrum on the Sprint Goal</p>
+          <p>
+            For a deeper understanding see:{' '}
+            <a href="https://agilepainrelief.com/blog/daily-scrum-pain.html">
+              Scrum by Example – Feeling Pain from Your Daily Scrum?
+            </a>
+          </p>
+        </>
+      ),
       cost: 1,
       effect(age) {
         if (age < 2) {

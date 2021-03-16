@@ -33,8 +33,6 @@ describe('round 3', () => {
 });
 
 describe('round 3 Actions', () => {
-  
-
   describe('Refactoring', () => {
     it('is only available if the BuildServer was implemented', () => {
       const game = getGame();
@@ -154,6 +152,23 @@ describe('round 3 Actions', () => {
         { capacityChange: 1, userStoryChange: 0 },
         { capacityChange: 1, userStoryChange: 0 },
         { capacityChange: 1, userStoryChange: 0 },
+      ]);
+    });
+  });
+  describe('Improve Retrospective', () => {
+    it('increases capacity', () => {
+      const game = getGame();
+      advanceGameToRound(game, 3);
+      expect(game.state.currentRound.number).toEqual(3);
+
+      game.selectAction('IMPROVE_RETROSPECTIVES_CHANGE_AGENDA');
+
+      testFutureRounds(game, [
+        { capacityChange: 1, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 2, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
       ]);
     });
   });
