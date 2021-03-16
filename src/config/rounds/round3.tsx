@@ -39,7 +39,7 @@ export const round3: RoundDescription<Round3ActionId> = {
           </p>
         </>
       ),
-      cost: 2,
+      cost: 1,
       effect(age) {
         let description =
           'Changing Retrospective Agendas reengergizes them and tends to find different problems each title';

@@ -4,10 +4,12 @@ import example from './images/example.jpg';
 
 export type Round6ActionId =
   | 'IMPROVE_FORECASTING'
+  | 'IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS'
   | 'SPRINT_BACKLOG_IMPROVEMENT'
   | 'DAILY_SCRUM_MORE_EFFECTIVE';
 
 export const overtimeUserStoryChance = -20;
+export const overtimeCapacityBump = 4;
 
 export const round6: RoundDescription<Round6ActionId> = {
   title: 'Go Live Soon',
@@ -23,8 +25,7 @@ export const round6: RoundDescription<Round6ActionId> = {
   effect: (_, currentRound) => {
     if (currentRound === 6) {
       return {
-        capacityChange: 4,
-
+        capacityChange: overtimeCapacityBump,
         title: 'Management is paying overtime',
       };
     }
@@ -44,6 +45,31 @@ export const round6: RoundDescription<Round6ActionId> = {
         <p>Switch from a simple velocity model to probablistic forecasts.</p>
       ),
       cost: 1,
+    },
+    IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS: {
+      image: example,
+      name: 'Make Retrospective Action Items Concrete',
+      description: (
+        <>
+          <p>Team make Retrospective Action Items Concrete and Actionable</p>
+          <p>
+            For examples and depth see:{' '}
+            <a href="https://agilepainrelief.com/guide-to-effective-agile-retrospectives">
+              The Guide to Effective Agile Retrospectives
+            </a>
+          </p>
+        </>
+      ),
+      cost: 1,
+      effect(age) {
+        if (age < 2) {
+          return { capacityChange: 0 };
+        }
+        if (age === 2) {
+          return { capacityChange: 1 };
+        }
+        return { capacityChange: 2 };
+      },
     },
     SPRINT_BACKLOG_IMPROVEMENT: {
       image: example,
