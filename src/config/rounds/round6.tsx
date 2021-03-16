@@ -7,6 +7,8 @@ export type Round6ActionId =
   | 'SPRINT_BACKLOG_IMPROVEMENT'
   | 'DAILY_SCRUM_MORE_EFFECTIVE';
 
+export const overtimeUserStoryChance = -20;
+
 export const round6: RoundDescription<Round6ActionId> = {
   title: 'Go Live Soon',
   description: (
@@ -22,7 +24,14 @@ export const round6: RoundDescription<Round6ActionId> = {
     if (currentRound === 6) {
       return {
         capacityChange: 4,
+
         title: 'Management is paying overtime',
+      };
+    }
+    if (currentRound === 7 || currentRound === 8) {
+      return {
+        userStoryChange: overtimeUserStoryChance,
+        title: 'Overtime harmed focus and qualityq',
       };
     }
     return null;

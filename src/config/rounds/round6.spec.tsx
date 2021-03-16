@@ -4,6 +4,7 @@ import {
   testCurrentRound,
   testFutureRounds,
 } from '../../lib/testHelpers';
+import { overtimeUserStoryChance } from './round6';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
@@ -28,8 +29,8 @@ describe('round 6', () => {
 
     // ensure that the effect only lasts one round
     testFutureRounds(game, [
-      { capacityChange: 0, userStoryChange: 0 },
-      { capacityChange: 0, userStoryChange: 0 },
+      { capacityChange: 0, userStoryChange: overtimeUserStoryChance },
+      { capacityChange: 0, userStoryChange: overtimeUserStoryChance },
       { capacityChange: 0, userStoryChange: 0 },
       { capacityChange: 0, userStoryChange: 0 },
       { capacityChange: 0, userStoryChange: 0 },
@@ -47,8 +48,8 @@ describe('Improve Forecasting', () => {
     testCurrentRound(game, { capacityChange: 4, userStoryChange: 0 });
 
     testFutureRounds(game, [
-      { capacityChange: 0, userStoryChange: 0 },
-      { capacityChange: 0, userStoryChange: 0 },
+      { capacityChange: 0, userStoryChange: 0 + overtimeUserStoryChance },
+      { capacityChange: 0, userStoryChange: 0 + overtimeUserStoryChance },
       { capacityChange: 0, userStoryChange: 0 },
       { capacityChange: 0, userStoryChange: 0 },
     ]);
@@ -64,8 +65,8 @@ describe('Teams that take ownership of their Sprint Backlog', () => {
     testCurrentRound(game, { capacityChange: 4, userStoryChange: 0 });
 
     testFutureRounds(game, [
-      { capacityChange: 0, userStoryChange: 0 },
-      { capacityChange: 1, userStoryChange: 5 },
+      { capacityChange: 0, userStoryChange: 0 + overtimeUserStoryChance },
+      { capacityChange: 1, userStoryChange: 5 + overtimeUserStoryChance },
       { capacityChange: 1, userStoryChange: 5 },
       { capacityChange: 1, userStoryChange: 5 },
       { capacityChange: 1, userStoryChange: 5 },
@@ -83,8 +84,8 @@ describe('Daily Scrum', () => {
     testCurrentRound(game, { capacityChange: 4, userStoryChange: 0 });
 
     testFutureRounds(game, [
-      { capacityChange: 0, userStoryChange: 0 },
-      { capacityChange: 1, userStoryChange: 5 },
+      { capacityChange: 0, userStoryChange: 0 + overtimeUserStoryChance },
+      { capacityChange: 1, userStoryChange: 5 + overtimeUserStoryChance },
       { capacityChange: 2, userStoryChange: 10 },
       { capacityChange: 2, userStoryChange: 10 },
       { capacityChange: 2, userStoryChange: 10 },
