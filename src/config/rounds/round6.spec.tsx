@@ -124,3 +124,27 @@ describe('Improve Retrospectives', () => {
     ]);
   });
 });
+describe('Learing Time', () => {
+  it('Teams that take a limited amount of time to learn every Sprint grow', () => {
+    const game = getGame();
+    advanceGameToRound(game, 6);
+    expect(game.state.currentRound.number).toEqual(6);
+
+    game.selectAction('LEARNING_TIME');
+    testCurrentRound(game, {
+      capacityChange: overtimeCapacityBump,
+      userStoryChange: 0,
+    });
+
+    testFutureRounds(game, [
+      {
+        capacityChange: 1,
+        userStoryChange: 0 + overtimeUserStoryChance,
+      },
+      { capacityChange: 2, userStoryChange: 0 + overtimeUserStoryChance },
+      { capacityChange: 2, userStoryChange: 0 },
+      { capacityChange: 3, userStoryChange: 0 },
+      { capacityChange: 3, userStoryChange: 0 },
+    ]);
+  });
+});

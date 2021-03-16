@@ -5,6 +5,7 @@ import example from './images/example.jpg';
 export type Round6ActionId =
   | 'IMPROVE_FORECASTING'
   | 'IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS'
+  | 'LEARNING_TIME'
   | 'SPRINT_BACKLOG_IMPROVEMENT'
   | 'DAILY_SCRUM_MORE_EFFECTIVE';
 
@@ -49,6 +50,7 @@ export const round6: RoundDescription<Round6ActionId> = {
     IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS: {
       image: example,
       name: 'Make Retrospective Action Items Concrete',
+      type: 'COMMUNICATION',
       description: (
         <>
           <p>Team make Retrospective Action Items Concrete and Actionable</p>
@@ -71,9 +73,55 @@ export const round6: RoundDescription<Round6ActionId> = {
         return { capacityChange: 2 };
       },
     },
+    LEARNING_TIME: {
+      image: example,
+      name: 'Learning time',
+      description: (
+        <>
+          <p>
+            Take a few hours every Sprint and use that time to learn or practice
+            a new skill as a team.
+          </p>
+          <p>
+            For a deeper understanding see:{' '}
+            <a href="https://agilepainrelief.com/blog/scrummaster-tales-the-team-learn-how-to-learn.html">
+              Scrum By Example – The Team Learn How to Learn
+            </a>
+          </p>
+        </>
+      ),
+      cost: 2,
+      effect(age) {
+        let description =
+          'Setting aside time to learn and practice speeds all kinds of skill acquistion and improvement';
+        if (age === 0) {
+          return {
+            title: description,
+            capacityChange: 0,
+          };
+        }
+        if (age < 2) {
+          return {
+            title: description,
+            capacityChange: 1,
+          };
+        }
+        if (age === 2 || age === 3) {
+          return {
+            title: description,
+            capacityChange: 2,
+          };
+        }
+        return {
+          title: description,
+          capacityChange: 3,
+        };
+      },
+    },
     SPRINT_BACKLOG_IMPROVEMENT: {
       image: example,
       name: 'Improve Sprint Backlog',
+      type: 'COMMUNICATION',
       description: <p>Team takes ownership of their Sprint Backlog</p>,
       cost: 1,
       effect(age) {
@@ -89,6 +137,7 @@ export const round6: RoundDescription<Round6ActionId> = {
     DAILY_SCRUM_MORE_EFFECTIVE: {
       image: example,
       name: 'Make Daily Scrum more Effective',
+      type: 'COMMUNICATION',
       description: (
         <>
           <p>Refocus Daily Scrum on the Sprint Goal</p>

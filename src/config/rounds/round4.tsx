@@ -23,11 +23,19 @@ export const round4: RoundDescription<Round4ActionId> = {
       image: example,
       name: 'Informal Cross-Skilling',
       description: (
-        <p>
-          Informal cross-skilling for existing team members in an area the team
-          is weak. This is often achieved through Pair Programming, Learning
-          Time, etc (Testing anyone?)
-        </p>
+        <>
+          <p>
+            Informal cross-skilling for existing team members in an area the
+            team is weak. This is often achieved through Pair Programming,
+            Learning Time, etc (Testing anyone?)
+          </p>
+          <p>
+            For a deeper understanding see:{' '}
+            <a href="https://agilepainrelief.com/blog/how-to-cross-skill-and-grow-t-shaped-team-members.html">
+              How to Cross-Skill and Grow T-shaped Team Members
+            </a>
+          </p>
+        </>
       ),
       cost: 4,
       effect(age) {

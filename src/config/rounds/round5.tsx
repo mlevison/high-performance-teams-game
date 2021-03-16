@@ -71,7 +71,8 @@ export const round5: RoundDescription<Round5ActionId> = {
             As they grow in skill, they often write the acceptance criteria as
             automated acceptance tests in a language that can be read by all
             members of the team.
-            </p><p>
+          </p>
+          <p>
             For more see:{' '}
             <a href="https://agilepainrelief.com/blog/scrummaster-tales-team-collaborate-acceptance-criteria.html">
               Scrum By Example - The Team Collaborate on Acceptance Criteria
@@ -171,7 +172,7 @@ export const round5: RoundDescription<Round5ActionId> = {
     MAKE_IMPEDIMENTS_LIST_PUBLIC: {
       image: example,
       name: 'Post a List of the Teams Impediments',
-
+      type: 'COMMUNICATION',
       description: (
         <>
           <p>
