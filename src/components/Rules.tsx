@@ -5,12 +5,12 @@ export default function Rules() {
     <>
       <h2>Welcome</h2>
       <p>
-        Reading about improvements rarely sparks the deeper changes teams need
-        to be effective. This game exists for you to start to see the choices a
+        Reading about improvements rarely sparks the deeper changes that teams need
+        to be effective. This game exists so you can start to see the choices a
         team has to improve.
       </p>
       <p>
-        In the longer term is here to spark a discussion among your real team
+        In the longer term, the game is here to spark a discussion among your real team
         about improvements they can make. To that end, the game is best played
         in a single web browser where everyone can see what is happening and
         discuss the options.<br></br>Some people have fun playing the game by
@@ -51,14 +51,14 @@ export default function Rules() {
             costs the team feature development capacity, just like real life.
             And, also like in real life, these actions may or may not provide a
             benefit in future rounds. We certainly hope they'll give us a
-            benefit. But not everything works out as planned.
+            benefit, but not everything works out as planned.
           </li>
         </ul>
         <li>
           Improvements fall into three categories:
           <ul>Engineering Practices - improve the quality of your code</ul>
           <ul>
-            Communication Practices - improve the team members ability to work
+            Communication Practices - improve the ability of team members to work
             together
           </ul>
           <ul>
@@ -85,7 +85,7 @@ export default function Rules() {
           software that our customers will love.
         </li>
         <li>
-          And while your goal is to deliver features the leaders of this company
+          And while your goal is to deliver features, the leaders of this company
           have decided to give you a chance to get the team started on the right
           foot. They've agreed to allow you to consider some possible
           Improvements even before you've delivered one Story. But, they do
@@ -105,7 +105,7 @@ export default function Rules() {
           Select Improvements or Actions that will affect the team.{' '}
           <ul>
             <li>
-              Once selected, the cot of the Actions cost will be deducted from
+              Once selected, the cost of the Action will be deducted from
               the team's Capacity.
             </li>
             <li>
@@ -123,7 +123,7 @@ export default function Rules() {
         </li>
         <li>
           The game shows you how much capacity there is remaining to develop
-          your User Stories
+          your User Stories.
         </li>
         <li>
           Click <b>Roll for User Stories</b>
@@ -173,8 +173,8 @@ export default function Rules() {
       <h2>Limitations</h2>
       <p>
         If you play well you could improve your teams effectiveness by four to
-        five times. In reality that would take more than the year implied in the
-        game. In addition in reality many improvements would have an ongoing
+        five times. In reality, that would take more than the year implied in the
+        game. In addition, in reality many improvements would have an ongoing
         cost that is longer than the game simulates.
       </p>
     </>
