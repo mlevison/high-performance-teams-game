@@ -70,8 +70,7 @@ export const round1: RoundDescription<Round1ActionId> = {
             want.
           </p>
           <p>
-            For a deeper understanding see Agile Glossary and Reference
-            Library:{' '}
+            For a deeper understanding see Agile Glossary and Reference Library:{' '}
             <a href="https://agilepainrelief.com/glossary/vision">Vision</a>
           </p>
         </>
@@ -88,14 +87,19 @@ export const round1: RoundDescription<Round1ActionId> = {
         <>
           <p>
             Working Agreements are a simple, powerful way of creating explicit
-            guidelines for what kind of work culture you want for your Team. They
-            are a reminder for everyone about how they can commit to respectful
-            behaviour and communication.
+            guidelines for what kind of work culture you want for your Team.
+            They are a reminder for everyone about how they can commit to
+            respectful behaviour and communication.
           </p>
           <p>
-            For a deeper understanding see Agile Glossary and Reference
-            Library:{' '}
-            <a href="https://agilepainrelief.com/glossary/working-agreements">Working Agreement</a>
+            For a deeper understanding see
+            <a href="https://agilepainrelief.com/blog/team-friction-inspires-working-agreements.html">
+              Scrum by Example – Team Friction Inspires Working Agreements
+            </a>{' '}
+            Agile Glossary and Reference Library:{' '}
+            <a href="https://agilepainrelief.com/glossary/working-agreements">
+              Working Agreement
+            </a>
           </p>
         </>
       ),
@@ -113,9 +117,10 @@ export const round1: RoundDescription<Round1ActionId> = {
             make future engineering improvements.
           </p>
           <p>
-              For a deeper understanding see Agile Glossary and Reference
-              Library:{' '}
-              <a href="https://agilepainrelief.com/glossary/continuous-integration">Continuous Integration</a>
+            For a deeper understanding see Agile Glossary and Reference Library:{' '}
+            <a href="https://agilepainrelief.com/glossary/continuous-integration">
+              Continuous Integration
+            </a>
           </p>
         </>
       ),
