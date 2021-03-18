@@ -39,3 +39,24 @@ describe('Pre-Allocate Capacity for fires', () => {
     ]);
   });
 });
+describe('Sacrifice One Team Member for fires', () => {
+  it('By finding one team member who is willing to be point person for a defect the rest of the team is able to focus', () => {
+    const game = getGame();
+    advanceGameToRound(game, 7);
+    expect(game.state.currentRound.number).toEqual(7);
+
+    game.selectAction('ONE_PERSON_DEALS_WITH_DEFECTS');
+    // round capacity bump still in effect
+    testCurrentRound(game, {
+      capacityChange: 0,
+      userStoryChange: 0,
+    });
+
+    testFutureRounds(game, [
+      { capacityChange: 0, userStoryChange: 0 },
+      { capacityChange: 0, userStoryChange: 0 },
+      { capacityChange: 0, userStoryChange: 0 },
+      { capacityChange: 0, userStoryChange: 0 },
+    ]);
+  });
+});
