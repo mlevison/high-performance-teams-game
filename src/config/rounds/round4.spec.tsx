@@ -103,7 +103,6 @@ describe('round 4', () => {
       expect(game.state.currentRound.number).toEqual(4);
 
       game.selectAction('EXTERNAL_CROSS_TRAINING');
-
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [

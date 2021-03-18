@@ -2,6 +2,7 @@ import {
   getGame,
   testFutureRounds,
   advanceGameToRound,
+  testCurrentRound,
 } from '../../lib/testHelpers';
 
 /* disable irrelevant other rounds */
@@ -39,6 +40,7 @@ describe('round 5', () => {
       const game = getGame();
       advanceGameToRound(game, 5);
       game.selectAction('INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [
         { capacityChange: 0, userStoryChange: 0 },
