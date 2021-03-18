@@ -82,7 +82,6 @@ describe('round 4', () => {
       expect(game.state.currentRound.number).toEqual(4);
 
       game.selectAction('NEW_TESTER');
-
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [

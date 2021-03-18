@@ -10,6 +10,8 @@ export type Round2ActionId =
   | 'PROBLEM_SOLVING_BONUS'
   | 'BACKLOG_REFINEMENT';
 
+export const BR_USER_STORY_CHANGE = 15;
+
 export const round2: RoundDescription<Round2ActionId> = {
   title: 'Failed Expectations',
   description: (
@@ -130,7 +132,7 @@ export const round2: RoundDescription<Round2ActionId> = {
         </>
       ),
       cost: 3,
-      effect: () => ({ userStoryChange: 15 }),
+      effect: () => ({ userStoryChange: BR_USER_STORY_CHANGE }),
     },
   },
 };

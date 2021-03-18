@@ -4,6 +4,7 @@ import {
   advanceGameToRound,
   testCurrentRound,
 } from '../../lib/testHelpers';
+import { BR_USER_STORY_CHANGE } from './round2';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
@@ -58,6 +59,7 @@ describe('round 5', () => {
       expect(game.state.currentRound.number).toEqual(5);
 
       game.selectAction('ADOPT_BDD');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 10 });
 
       testFutureRounds(game, [
         { capacityChange: -1, userStoryChange: 10 },
@@ -76,6 +78,7 @@ describe('round 5', () => {
       expect(game.state.currentRound.number).toEqual(5);
 
       game.selectAction('WORK_WITH_PO_LIMIT_PB_SIZE');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [
         { capacityChange: 0, userStoryChange: 0 },
@@ -102,18 +105,24 @@ describe('round 5', () => {
     });
     it('By Establishing Sprint Goals', () => {
       const game = getGame();
-      advanceGameToRound(game, 5);
+      advanceGameToRound(game, 4);
+      game.selectAction('BACKLOG_REFINEMENT');
+      game.nextRound();
       expect(game.state.currentRound.number).toEqual(5);
 
       game.selectAction('ESTABLISH_SPRINT_GOALS');
+      testCurrentRound(game, {
+        capacityChange: 0,
+        userStoryChange: 5 + BR_USER_STORY_CHANGE,
+      });
 
       testFutureRounds(game, [
-        { capacityChange: 0, userStoryChange: 5 },
-        { capacityChange: 0, userStoryChange: 10 },
-        { capacityChange: 0, userStoryChange: 10 },
-        { capacityChange: 0, userStoryChange: 15 },
-        { capacityChange: 0, userStoryChange: 15 },
-        { capacityChange: 0, userStoryChange: 15 },
+        { capacityChange: 0, userStoryChange: 5 + BR_USER_STORY_CHANGE },
+        { capacityChange: 0, userStoryChange: 10 + BR_USER_STORY_CHANGE },
+        { capacityChange: 0, userStoryChange: 10 + BR_USER_STORY_CHANGE },
+        { capacityChange: 0, userStoryChange: 15 + BR_USER_STORY_CHANGE },
+        { capacityChange: 0, userStoryChange: 15 + BR_USER_STORY_CHANGE },
+        { capacityChange: 0, userStoryChange: 15 + BR_USER_STORY_CHANGE },
       ]);
     });
   });
@@ -124,6 +133,7 @@ describe('round 5', () => {
       expect(game.state.currentRound.number).toEqual(5);
 
       game.selectAction('MAKE_IMPEDIMENTS_LIST_PUBLIC');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [
         { capacityChange: 0, userStoryChange: 0 },

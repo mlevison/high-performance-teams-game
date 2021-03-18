@@ -154,7 +154,7 @@ export const round5: RoundDescription<Round5ActionId> = {
       ),
       cost: 1,
       effect(age) {
-        if (age === 1) {
+        if (age <= 1) {
           return {
             userStoryChange: 5,
           };

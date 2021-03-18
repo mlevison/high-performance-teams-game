@@ -24,7 +24,6 @@ describe('round 6', () => {
 
     advanceGameToRound(game, 6);
     expect(game.state.currentRound.number).toEqual(6);
-
     testCurrentRound(game, { capacityChange: overtimeCapacityBump });
 
     // ensure that the effect only lasts one round
