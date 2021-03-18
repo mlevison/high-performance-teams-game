@@ -70,7 +70,7 @@ export const round1: RoundDescription<Round1ActionId> = {
             want.
           </p>
           <p>
-            For more on Product Vision, see Agile Glossary and Reference
+            For a deeper understanding see Agile Glossary and Reference
             Library:{' '}
             <a href="https://agilepainrelief.com/glossary/vision">Vision</a>
           </p>
@@ -85,12 +85,19 @@ export const round1: RoundDescription<Round1ActionId> = {
       type: 'COMMUNICATION',
       name: 'Working Agreements',
       description: (
-        <p>
-          Working Agreements are a simple, powerful way of creating explicit
-          guidelines for what kind of work culture you want for your Team. They
-          are a reminder for everyone about how they can commit to respectful
-          behaviour and communication.
-        </p>
+        <>
+          <p>
+            Working Agreements are a simple, powerful way of creating explicit
+            guidelines for what kind of work culture you want for your Team. They
+            are a reminder for everyone about how they can commit to respectful
+            behaviour and communication.
+          </p>
+          <p>
+            For a deeper understanding see Agile Glossary and Reference
+            Library:{' '}
+            <a href="https://agilepainrelief.com/glossary/working-agreements">Working Agreement</a>
+          </p>
+        </>
       ),
       cost: 1,
       effect: () => ({ capacityChange: 1 }),
@@ -100,10 +107,17 @@ export const round1: RoundDescription<Round1ActionId> = {
       type: 'ENGINEERING',
       name: 'Build Server',
       description: (
-        <p>
-          Setup Build Server and Continuous Integration. This is required to
-          make future engineering improvements.
-        </p>
+        <>
+          <p>
+            Setup Build Server and Continuous Integration. This is required to
+            make future engineering improvements.
+          </p>
+          <p>
+              For a deeper understanding see Agile Glossary and Reference
+              Library:{' '}
+              <a href="https://agilepainrelief.com/glossary/continuous-integration">Continuous Integration</a>
+          </p>
+        </>
       ),
       cost: 2,
     },
