@@ -89,6 +89,7 @@ describe('round 2 Actions', () => {
       expect(game.state.currentRound.number).toEqual(2);
 
       game.selectAction('ELIMINATE_LONG_LIVED_FEATURE_BRANCHES');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       // Capacity only ever increases by one in total
       testFutureRounds(game, [
@@ -108,6 +109,7 @@ describe('round 2 Actions', () => {
       expect(game.state.currentRound.number).toEqual(2);
 
       game.selectAction('SOCIAL_TIME');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       // Capacity only ever increases by one in total
       testFutureRounds(game, [
@@ -127,6 +129,7 @@ describe('round 2 Actions', () => {
       expect(game.state.currentRound.number).toEqual(2);
 
       game.selectAction('PROBLEM_SOLVING_BONUS');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [
         { capacityChange: 1, userStoryChange: 0 },
@@ -145,7 +148,7 @@ describe('round 2 Actions', () => {
       expect(game.state.currentRound.number).toEqual(2);
 
       game.selectAction('BACKLOG_REFINEMENT');
-      expect(game.state.currentRound.userStoryChance).toEqual(45);
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 15 });
 
       testFutureRounds(game, [
         { capacityChange: 0, userStoryChange: 15 },

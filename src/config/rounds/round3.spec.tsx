@@ -64,7 +64,7 @@ describe('round 3 Actions', () => {
     });
   });
   describe('Story Mapping or other Strategic tools', () => {
-    it('is only available if the BuildServer was implemented', () => {
+    it('is only available if the Clarify Product Vision was implemented', () => {
       const game = getGame();
 
       expect(game.availableActionIds).not.toContain('');
@@ -162,6 +162,7 @@ describe('round 3 Actions', () => {
       expect(game.state.currentRound.number).toEqual(3);
 
       game.selectAction('IMPROVE_RETROSPECTIVES_CHANGE_AGENDA');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [
         { capacityChange: 1, userStoryChange: 0 },
