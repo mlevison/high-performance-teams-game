@@ -14,9 +14,9 @@ import { AppRound } from '../state';
 import styles from './CapStoryChart.module.css';
 
 const USC = 'Chance of completing User Stories';
-const SA = 'User Stories Attempted';
-const SC = 'User Stories Completed';
-const TC = 'Total Capacity';
+const SA = 'Total User Stories Attempted';
+const SC = 'Total User Stories Completed';
+const TC = 'Round Capacity';
 
 type Data = {
   name: string;
@@ -76,7 +76,7 @@ export default function CapStoryChart({ rounds }: Props) {
           ticks={userStorySteps}
         />
         <Tooltip />
-        <Legend />
+        <Legend layout="vertical" />
         <Bar
           yAxisId="left"
           dataKey={USC}
@@ -84,7 +84,14 @@ export default function CapStoryChart({ rounds }: Props) {
           unit="%"
           barSize={30}
         />
-        <Line yAxisId="right" type="monotone" dataKey={TC} stroke="#0c79df" />
+        <Line
+          yAxisId="right"
+          type="monotone"
+          dataKey={TC}
+          strokeWidth={3}
+          legendType="star"
+          stroke="#0c79df"
+        />
         <Line yAxisId="right" type="monotone" dataKey={SA} stroke="#cd66e7" />
         <Line yAxisId="right" type="monotone" dataKey={SC} stroke="#1be400" />
       </ComposedChart>
