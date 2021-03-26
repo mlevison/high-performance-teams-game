@@ -1,5 +1,5 @@
 import React from 'react';
-import { TOTAL_INTERACTIVE_ROUNDS } from '../../constants';
+import { TOTAL_ROUNDS } from '../../constants';
 import { GameDispatch } from '../../state';
 import Button from '../Button';
 import Description, { Props as DescriptionProps } from './Description';
@@ -35,7 +35,7 @@ export default function Welcome(props: Props) {
         >
           {review === false ? 'Start Round' : 'Show Actions'}
         </Button>
-        {review !== false && review + 1 < TOTAL_INTERACTIVE_ROUNDS ? (
+        {review !== false && review + 1 < TOTAL_ROUNDS ? (
           <Button
             onClick={() => {
               props.dispatch({

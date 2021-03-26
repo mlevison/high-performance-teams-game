@@ -11,7 +11,7 @@ import { GameActionId, gameEffects, GremlinId } from '../config';
 import { getRoundEffects } from './rounds';
 import { getEffects } from './gameActions';
 import { getGremlinEffects } from './gremlins';
-import { SIMULATED_TRAILING_ROUNDS } from '../constants';
+import { TOTAL_ROUNDS } from '../constants';
 
 export type GameState = {
   currentRound: GameRound;
@@ -191,9 +191,9 @@ export function gameReducer(state: GameState, action: Action): GameState {
       return nextRound(state, action);
     }
     case 'FINISH_GAME': {
-      return Array.from({ length: SIMULATED_TRAILING_ROUNDS + 1 }).reduce<
-        [GameState, ClosedGameRound]
-      >(
+      return Array.from({
+        length: TOTAL_ROUNDS - state.pastRounds.length,
+      }).reduce<[GameState, ClosedGameRound]>(
         ([state, closedRound]) => {
           const nextState = nextRound(state, {
             type: 'NEXT_ROUND',
