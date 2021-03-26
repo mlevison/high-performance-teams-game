@@ -2,7 +2,8 @@ import React from 'react';
 import { GremlinId } from '../../config';
 import {
   START_USER_STORY_CHANCE,
-  TOTAL_INTERACTIVE_ROUNDS,
+  TOTAL_ROUNDS,
+  GAME_ROUNDS,
 } from '../../constants';
 import { AppState, GameDispatch, ClosedRound } from '../../state';
 import Button from '../Button';
@@ -102,34 +103,26 @@ export default function Results(props: Props) {
             ◀ Back
           </Button>
         )}
-        <Button
-          primary
-          disabled={!props.ui.closedRound}
-          onClick={() => {
-            if (props.ui.review !== false) {
-              const nextRound = props.ui.review + 1;
-              props.dispatch({
-                type: 'SET_UI_REVIEW_ACTION',
-                payload:
-                  nextRound < TOTAL_INTERACTIVE_ROUNDS ? nextRound : false,
-              });
+        {props.pastRounds.length + 1 < TOTAL_ROUNDS ? (
+          <Button
+            primary
+            disabled={!props.ui.closedRound}
+            onClick={() => {
+              if (props.ui.review !== false) {
+                props.dispatch({
+                  type: 'SET_UI_REVIEW_ACTION',
+                  payload: props.ui.review + 1,
+                });
 
-              return;
-            }
-            if (!props.ui.closedRound) {
-              throw new Error(
-                'Can not go to next round without closing this one',
-              );
-            }
+                return;
+              }
 
-            if (props.pastRounds.length + 1 === TOTAL_INTERACTIVE_ROUNDS) {
-              props.dispatch({
-                type: 'FINISH_GAME',
-                payload: {
-                  closedRound: props.ui.closedRound,
-                },
-              });
-            } else {
+              if (!props.ui.closedRound) {
+                throw new Error(
+                  'Can not go to next round without closing this one',
+                );
+              }
+
               props.dispatch({
                 type: 'NEXT_ROUND',
                 payload: {
@@ -137,15 +130,48 @@ export default function Results(props: Props) {
                   gremlin: props.rollGremlin(),
                 },
               });
-            }
-          }}
-        >
-          {props.ui.review && props.ui.review + 1 >= TOTAL_INTERACTIVE_ROUNDS
-            ? 'Close Review'
-            : props.pastRounds.length + 1 === TOTAL_INTERACTIVE_ROUNDS
-            ? 'Finish Game'
-            : 'Next Round'}
-        </Button>
+            }}
+          >
+            Next Round
+          </Button>
+        ) : null}
+        {!props.ui.review && props.pastRounds.length + 1 >= GAME_ROUNDS ? (
+          <Button
+            primary
+            disabled={!props.ui.closedRound}
+            onClick={() => {
+              if (!props.ui.closedRound) {
+                throw new Error(
+                  'Can not go to next round without closing this one',
+                );
+              }
+
+              props.dispatch({
+                type: 'FINISH_GAME',
+                payload: {
+                  closedRound: props.ui.closedRound,
+                },
+              });
+            }}
+          >
+            {props.pastRounds.length + 1 >= TOTAL_ROUNDS
+              ? 'Finish Game'
+              : 'Finish Game (simulate remaining rounds)'}
+          </Button>
+        ) : null}
+        {props.ui.review && props.ui.review + 1 >= TOTAL_ROUNDS ? (
+          <Button
+            primary
+            onClick={() => {
+              props.dispatch({
+                type: 'SET_UI_REVIEW_ACTION',
+                payload: false,
+              });
+            }}
+          >
+            Close Review
+          </Button>
+        ) : null}
       </div>
       <CapStoryChart
         rounds={[
