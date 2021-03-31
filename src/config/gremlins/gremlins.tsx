@@ -5,7 +5,8 @@ export type GremlinId =
   | 'GREMLIN_MANAGEMENT_YELLS'
   | 'GREMLIN_EMERGENCY_ON_OTHER_TEAM'
   | 'GREMLIN_NOT_PULLING_THEIR_WEIGHT'
-  | 'GREMLIN_NOT_AT_DAILY_SCRUM';
+  | 'GREMLIN_NOT_AT_DAILY_SCRUM'
+  | 'GREMLIN_NEW_STORY_MID_SPRINT';
 
 export const gremlins: GremlinList<GremlinId> = {
   GREMLIN_MANAGEMENT_YELLS: {
@@ -119,6 +120,56 @@ export const gremlins: GremlinList<GremlinId> = {
       return {
         capacityChange: capacityChange,
         title: 'Team Member consistently late or misses Daily Scrum',
+      };
+    },
+  },
+  GREMLIN_NEW_STORY_MID_SPRINT: {
+    probability: () => 5,
+    name: 'PO discovers a new Emergency Story Mid-Sprint',
+    description: (
+      <p>
+        The Team is in the middle of a Sprint, but the Product Owner has
+        discovered unplanned work and interrupts their flow mid-Sprint to deal
+        with it because it’s now “high-priority.” &nbsp; Teams that particpate
+        in regular Product Backlog Refinment avoid this problem because they
+        continually stay up to date on the Product Owners needs
+      </p>
+    ),
+    effect(age, finishedActionIds) {
+      if (
+        finishedActionIds.includes('BACKLOG_REFINEMENT') &&
+        finishedActionIds.includes('STORY_MAPPING_OR_OTHER')
+      ) {
+        return {
+          capacityChange: 0,
+          userStoryChance: 0,
+          title:
+            'Emergency Story Mid-Sprint effect avoided by the combined effect of Ongoing Backlog Refinement and good Strategic work with the Product Owner',
+        };
+      }
+      if (age === 0) {
+        if (
+          finishedActionIds.includes('BACKLOG_REFINEMENT') ||
+          finishedActionIds.includes('STORY_MAPPING_OR_OTHER')
+        ) {
+          return {
+            capacityChange: -1,
+            userStoryChance: -10,
+            title:
+              'Emergency Story Mid-Sprint effect reduce by either the effect of Ongoing Backlog Refinement or good Strategic work with the Product Owner',
+          };
+        }
+
+        return {
+          capacityChange: -2,
+          userStoryChance: -10,
+          title: 'Emergency Story Mid-Sprint is hurting',
+        };
+      }
+      return {
+        capacityChange: 0,
+        userStoryChance: 0,
+        title: 'Emergency Story Mid-Sprint -> Emergency over',
       };
     },
   },

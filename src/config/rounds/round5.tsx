@@ -29,7 +29,7 @@ export const round5: RoundDescription<Round5ActionId> = {
           faster.
         </p>
       ),
-      cost: 1,
+      cost: 0,
       effect(age) {
         if (age === 1) {
           return { capacityChange: 2 };

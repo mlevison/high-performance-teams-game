@@ -1,4 +1,6 @@
-import { getGame } from '../../lib/testHelpers';
+import { START_CAPACITY } from '../../constants';
+import { START_USER_STORY_CHANCE } from '../../constants';
+import { advanceGameToRound, getGame } from '../../lib/testHelpers';
 import { gremlins } from './gremlins';
 
 /* Disable round, game and action effects */
@@ -205,6 +207,68 @@ describe('Gremlins', () => {
       game.selectAction('WORKING_AGREEMENTS');
       game.nextRound('GREMLIN_NOT_AT_DAILY_SCRUM');
       expect(game.state.currentRound.capacity.available).toBe(10);
+    });
+  });
+
+  describe('New Story from PO MidSprint ', () => {
+    it('reduces capacity by 2 and userStorySuccessChance by 10 goes away one round', () => {
+      const game = getGame();
+      advanceGameToRound(game, 2);
+
+      game.nextRound('GREMLIN_NEW_STORY_MID_SPRINT');
+      // testCurrentRound(game, { capacityChange: -2, userStoryChange: -10 });
+
+      expect(game.state.currentRound.capacity.available).toBe(
+        START_CAPACITY - 2,
+      );
+      // Gremlins can't seem to test userStoryChance or perhaps effect it
+      // expect(game.state.currentRound.userStoryChance).toBe(
+      //   START_USER_STORY_CHANCE - 10,
+      // );
+
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(START_CAPACITY);
+      // expect(game.state.currentRound.userStoryChance).toBe(
+      //   START_USER_STORY_CHANCE,
+      // );
+    });
+
+    it('has reduced effect on capacity when team does Product Backlog refinement', () => {
+      const game = getGame();
+
+      game.selectAction('BACKLOG_REFINEMENT');
+      game.nextRound('GREMLIN_NEW_STORY_MID_SPRINT');
+      expect(game.state.currentRound.capacity.available).toBe(
+        START_CAPACITY - 1,
+      );
+
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(START_CAPACITY);
+    });
+
+    it('has reduced effect on capacity when team does Stpry Mapping to maintain a good Strategic view', () => {
+      const game = getGame();
+
+      game.selectAction('STORY_MAPPING_OR_OTHER');
+      game.nextRound('GREMLIN_NEW_STORY_MID_SPRINT');
+      expect(game.state.currentRound.capacity.available).toBe(
+        START_CAPACITY - 1,
+      );
+
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(START_CAPACITY);
+    });
+
+    it('has no effect on capacity when team does Product Backlog refinement and Story Mapping', () => {
+      const game = getGame();
+
+      game.selectAction('BACKLOG_REFINEMENT');
+      game.selectAction('STORY_MAPPING_OR_OTHER');
+      game.nextRound('GREMLIN_NEW_STORY_MID_SPRINT');
+      expect(game.state.currentRound.capacity.available).toBe(START_CAPACITY);
+
+      game.nextRound();
+      expect(game.state.currentRound.capacity.available).toBe(START_CAPACITY);
     });
   });
 });
