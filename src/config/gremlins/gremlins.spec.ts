@@ -1,5 +1,4 @@
 import { START_CAPACITY } from '../../constants';
-import { START_USER_STORY_CHANCE } from '../../constants';
 import { advanceGameToRound, getGame } from '../../lib/testHelpers';
 import { gremlins } from './gremlins';
 
