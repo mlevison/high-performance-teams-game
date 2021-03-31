@@ -4,7 +4,7 @@ import {
   START_USER_STORY_CHANCE,
   TOTAL_ROUNDS,
   GAME_ROUNDS,
-} from '../../constants';
+} from '../../gameConstants';
 import { AppState, GameDispatch, ClosedRound } from '../../state';
 import Button from '../Button';
 import CapStoryChart from '../CapStoryChart';

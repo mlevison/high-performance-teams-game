@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { AppState, BaseEffect } from '../state';
 import EffectValue, { Sign } from './EffectValue';
 import styles from './Status.module.css';
-import { START_CAPACITY } from '../constants';
+import { START_CAPACITY } from '../gameConstants';
 
 type Props = AppState['currentRound'];
 

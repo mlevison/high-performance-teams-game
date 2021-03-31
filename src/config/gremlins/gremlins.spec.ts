@@ -1,4 +1,4 @@
-import { START_CAPACITY } from '../../constants';
+import { START_CAPACITY } from '../../gameConstants';
 import { advanceGameToRound, getGame } from '../../lib/testHelpers';
 import { gremlins } from './gremlins';
 

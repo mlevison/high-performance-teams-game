@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppState, GameState, INITIAL_STATE } from './state';
-import { TOTAL_ROUNDS } from './constants';
+import { TOTAL_ROUNDS } from './gameConstants';
 import {
   Results,
   FinalResults,

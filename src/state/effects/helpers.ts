@@ -1,5 +1,5 @@
 import { Effect, VisibleEffect } from './types';
-import { EFFECT_HIDDEN } from '../../constants';
+import { EFFECT_HIDDEN } from '../../gameConstants';
 
 export function isEffect(e: Effect | null): e is Effect {
   return e !== null;

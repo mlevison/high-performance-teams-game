@@ -1,4 +1,4 @@
-import { TOTAL_ROUNDS } from '../constants';
+import { TOTAL_ROUNDS } from '../gameConstants';
 import React from 'react';
 import {
   AppRound,

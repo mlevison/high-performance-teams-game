@@ -5,7 +5,7 @@ import {
   START_CAPACITY,
   START_GREMLIN_CHANCE,
   START_USER_STORY_CHANCE,
-} from '../../constants';
+} from '../../gameConstants';
 import example from './images/example.jpg';
 
 export type Round1ActionId =

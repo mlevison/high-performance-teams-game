@@ -1,5 +1,5 @@
 import React from 'react';
-import { EFFECT_HIDDEN } from '../../constants';
+import { EFFECT_HIDDEN } from '../../gameConstants';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 

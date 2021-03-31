@@ -2,7 +2,7 @@ import * as game from './game';
 import * as config from '../config';
 import { rollGremlin } from './gremlins';
 import { reset, addRolls } from '../lib/notRandom';
-import { EFFECT_HIDDEN } from '../constants';
+import { EFFECT_HIDDEN } from '../gameConstants';
 
 jest.mock('../lib/random', () => require('../lib/notRandom'));
 

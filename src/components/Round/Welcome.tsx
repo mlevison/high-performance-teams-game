@@ -1,5 +1,5 @@
 import React from 'react';
-import { TOTAL_ROUNDS } from '../../constants';
+import { TOTAL_ROUNDS } from '../../gameConstants';
 import { GameDispatch } from '../../state';
 import Button from '../Button';
 import Description, { Props as DescriptionProps } from './Description';

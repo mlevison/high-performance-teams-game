@@ -1,5 +1,5 @@
 import { GameRound } from '../round';
-import { EFFECT_HIDDEN } from '../../constants';
+import { EFFECT_HIDDEN } from '../../gameConstants';
 
 type InvisibleEffectProps = {
   title: typeof EFFECT_HIDDEN;

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { TOTAL_ROUNDS } from '../../constants';
+import { TOTAL_ROUNDS } from '../../gameConstants';
 import { AppState } from '../../state';
 import styles from './Round.module.css';
 

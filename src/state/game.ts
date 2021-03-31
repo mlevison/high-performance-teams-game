@@ -11,7 +11,7 @@ import { GameActionId, gameEffects, GremlinId } from '../config';
 import { getRoundEffects } from './rounds';
 import { getEffects } from './gameActions';
 import { getGremlinEffects } from './gremlins';
-import { TOTAL_ROUNDS } from '../constants';
+import { TOTAL_ROUNDS } from '../gameConstants';
 
 export type GameState = {
   currentRound: GameRound;
