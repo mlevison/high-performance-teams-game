@@ -8,7 +8,8 @@ export type GremlinId =
   | 'GREMLIN_NOT_AT_DAILY_SCRUM'
   | 'GREMLIN_NEW_STORY_MID_SPRINT'
   | 'GREMLIN_UNREADABLE_CODE'
-  | 'GREMLIN_PRODUCT_BACKLOG_MESS';
+  | 'GREMLIN_PRODUCT_BACKLOG_MESS'
+  | 'GREMLIN_SKIP_RETRO';
 
 export const gremlins: GremlinList<GremlinId> = {
   GREMLIN_MANAGEMENT_YELLS: {
@@ -71,7 +72,7 @@ export const gremlins: GremlinList<GremlinId> = {
     },
   },
   GREMLIN_NOT_PULLING_THEIR_WEIGHT: {
-    probability: () => 10,
+    probability: () => 5,
     name: "Team member isn't pulling their weight",
     description: (
       <p>
@@ -208,6 +209,37 @@ export const gremlins: GremlinList<GremlinId> = {
         capacityChange: capacityChange,
         userStoryChange: userStoryChange,
         title: 'Large Product Backlog ' + additionalComment,
+      };
+    },
+  },
+  GREMLIN_SKIP_RETRO: {
+    probability: () => 10,
+    name: 'Team decide to skip Retrospective',
+    description: (
+      <p>
+        Teams skip retrospectives when they percieve the activity is boring or
+        believe that improvements don't happen. &nbsp; Changing the
+        Retrospective Agenda; Making Retrospective items more concrete all avoid
+        the problem
+      </p>
+    ),
+    effect(age, finishedActionIds) {
+      if (
+        finishedActionIds.includes('IMPROVE_RETROSPECTIVES_CHANGE_AGENDA') ||
+        finishedActionIds.includes('IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS')
+      ) {
+        return {
+          capacityChange: 0,
+          title: 'Retrospective skipped - problem avoided',
+        };
+      }
+      let capacityChange = -age;
+      if (age >= 4) {
+        capacityChange = -4;
+      }
+      return {
+        capacityChange: capacityChange,
+        title: 'Retrospective skipped',
       };
     },
   },

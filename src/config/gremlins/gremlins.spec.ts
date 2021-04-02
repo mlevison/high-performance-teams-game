@@ -363,4 +363,70 @@ describe('Gremlins', () => {
       ]);
     });
   });
+
+  describe('Skip a Retro', () => {
+    it('reduces capacity by -1 per round', () => {
+      const game = getGame();
+
+      game.nextRound('GREMLIN_SKIP_RETRO');
+      // no effect in the current round since the damage is in the future
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: -3, userStoryChange: 0 },
+        { capacityChange: -4, userStoryChange: 0 },
+        { capacityChange: -4, userStoryChange: 0 },
+      ]);
+    });
+
+    it('avoided if the agenda is changed', () => {
+      const game = getGame();
+
+      game.selectAction('IMPROVE_RETROSPECTIVES_CHANGE_AGENDA');
+      game.nextRound('GREMLIN_SKIP_RETRO');
+      // no effect in the current round since the damage is in the future
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
+    });
+
+    it('avoided if Retrospectives implement Concrete actions', () => {
+      const game = getGame();
+
+      game.selectAction('IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS');
+      game.nextRound('GREMLIN_SKIP_RETRO');
+      // no effect in the current round since the damage is in the future
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
+    });
+
+    it('If improvements are implemented later they still help', () => {
+      const game = getGame();
+
+      game.nextRound('GREMLIN_SKIP_RETRO');
+      // no effect in the current round since the damage is in the future
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+      ]);
+      game.selectAction('IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS');
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
+    });
+  });
 });
