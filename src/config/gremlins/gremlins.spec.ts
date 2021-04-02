@@ -99,7 +99,7 @@ describe('Gremlins', () => {
       ]);
     });
 
-    it('has no effect on capacity when team is protected by outside distractions', () => {
+    it('has less effect on capacity when team is protected by outside distractions', () => {
       const game = getGame();
 
       game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
@@ -110,6 +110,20 @@ describe('Gremlins', () => {
         { capacityChange: -1, userStoryChange: 0 },
       ]);
     });
+
+    // it('adding protected by outside distractions after the fact has no effect', () => {
+    //   const game = getGame();
+
+    //   game.nextRound('GREMLIN_MANAGEMENT_YELLS');
+    //   testCurrentRound(game, { capacityChange: -2, userStoryChange: 0 });
+    //   game.nextRound();
+    //   game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
+
+    //   testFutureRounds(game, [
+    //     { capacityChange: -2, userStoryChange: 0 },
+    //     { capacityChange: -2, userStoryChange: 0 },
+    //   ]);
+    // });
   });
 
   describe('Team Member not pulling their weight', () => {
