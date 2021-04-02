@@ -7,7 +7,8 @@ export type GremlinId =
   | 'GREMLIN_NOT_PULLING_THEIR_WEIGHT'
   | 'GREMLIN_NOT_AT_DAILY_SCRUM'
   | 'GREMLIN_NEW_STORY_MID_SPRINT'
-  | 'GREMLIN_UNREADABLE_CODE';
+  | 'GREMLIN_UNREADABLE_CODE'
+  | 'GREMLIN_PRODUCT_BACKLOG_MESS';
 
 export const gremlins: GremlinList<GremlinId> = {
   GREMLIN_MANAGEMENT_YELLS: {
@@ -170,6 +171,43 @@ export const gremlins: GremlinList<GremlinId> = {
         capacityChange: 0,
         userStoryChange: 0,
         title: 'Emergency Story Mid-Sprint -> Emergency over',
+      };
+    },
+  },
+  GREMLIN_PRODUCT_BACKLOG_MESS: {
+    probability: () => 5,
+    name: 'Product Backlog has become a quagmire',
+    description: (
+      <p>
+        The Product Backlog has become a large difficult to manage mess. Items
+        sometimes get lost. &nbsp; Teams that particpate in regular Product
+        Backlog Refinment or Story Mapping reduce this problem because they work
+        with Product Owners to keep more manageable. Teams that Limit Product
+        Backlog size avoid this problem altogether.
+      </p>
+    ),
+    effect(age, finishedActionIds) {
+      let additionalComment = '';
+      let capacityChange = -1;
+      let userStoryChange = -20;
+      if (
+        finishedActionIds.includes('STORY_MAPPING_OR_OTHER') ||
+        finishedActionIds.includes('BACKLOG_REFINEMENT')
+      ) {
+        userStoryChange = -10;
+        additionalComment =
+          '- Story Mapping or Backlog Refinement reduce the effect';
+      }
+      if (finishedActionIds.includes('WORK_WITH_PO_LIMIT_PB_SIZE')) {
+        capacityChange = 0;
+        userStoryChange = 0;
+        additionalComment =
+          '- avoided because the team that Limited Product Backlog size';
+      }
+      return {
+        capacityChange: capacityChange,
+        userStoryChange: userStoryChange,
+        title: 'Large Product Backlog ' + additionalComment,
       };
     },
   },

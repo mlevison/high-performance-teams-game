@@ -313,4 +313,54 @@ describe('Gremlins', () => {
       ]);
     });
   });
+
+  describe('Product Backlog is a Mess ', () => {
+    it('reduces capacity by 1 and userStorySuccessChance by 20 goes away one round', () => {
+      const game = getGame();
+      advanceGameToRound(game, 2);
+
+      game.nextRound('GREMLIN_PRODUCT_BACKLOG_MESS');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: -20 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: -20 },
+        { capacityChange: -1, userStoryChange: -20 },
+      ]);
+    });
+
+    it('has reduced effect on capacity when team does Product Backlog refinement', () => {
+      const game = getGame();
+
+      game.selectAction('BACKLOG_REFINEMENT');
+      game.nextRound('GREMLIN_PRODUCT_BACKLOG_MESS');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: -10 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: -10 },
+        { capacityChange: -1, userStoryChange: -10 },
+      ]);
+    });
+
+    it('has reduced effect on capacity when team does Story Mapping to maintain a good Strategic view', () => {
+      const game = getGame();
+
+      game.selectAction('STORY_MAPPING_OR_OTHER');
+      game.nextRound('GREMLIN_PRODUCT_BACKLOG_MESS');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: -10 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: -10 },
+        { capacityChange: -1, userStoryChange: -10 },
+      ]);
+    });
+
+    it('has no effect on capacity when team does Product Backlog refinement and Story Mapping', () => {
+      const game = getGame();
+
+      game.selectAction('WORK_WITH_PO_LIMIT_PB_SIZE');
+      game.nextRound('GREMLIN_PRODUCT_BACKLOG_MESS');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
+    });
+  });
 });
