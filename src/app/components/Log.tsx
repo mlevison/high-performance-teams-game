@@ -1,12 +1,16 @@
 import React from 'react';
-import type { AppRound, AppState, GameActionAction } from '../state';
+import type {
+  AppRound,
+  AppState,
+  GameActionAction,
+  GameConfig,
+} from '../../state';
+import { findGameActionById } from '../../lib';
 import { RoundDescription } from './Round';
 import { ActionImage } from './Actions';
 import styles from './Log.module.css';
-import { FinalResults } from 'components';
+import FinalResults from './FinalResults';
 import { ActiveEffects } from './Status';
-import { GameConfig } from '../state/game';
-import { findGameActionById } from '../lib';
 
 type RoundLogEntry = AppRound & {
   storiesCompleted?: number;

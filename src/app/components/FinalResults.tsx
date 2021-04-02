@@ -1,6 +1,6 @@
-import { restartGame, sumByProp } from 'lib';
 import React from 'react';
-import { AppState, GameDispatch } from 'state';
+import type { AppState, GameDispatch } from '../../state';
+import { restartGame, sumByProp } from '../../lib';
 import CapStoryChart from './CapStoryChart';
 import Button from './Button';
 

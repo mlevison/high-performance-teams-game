@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { AppState, BaseEffect } from '../state';
+import type { AppState, BaseEffect } from '../../state';
 import EffectValue, { Sign } from './EffectValue';
 import styles from './Status.module.css';
 

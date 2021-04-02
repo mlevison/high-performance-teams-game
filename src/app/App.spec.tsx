@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import { App } from './App';
+import App from './App';
 import {
   AppState,
   useAppState,
   UNIQUE_ACTION,
   ClosedRound,
   INITIAL_STATE,
-} from './state';
-import { config } from './config';
+} from '../state';
+import { config } from '../config';
 
 jest.mock('./state');
 jest.mock('recharts');

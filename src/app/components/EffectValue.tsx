@@ -1,5 +1,5 @@
 import React from 'react';
-import { VisibleEffect } from '../state';
+import type { VisibleEffect } from '../../state';
 import styles from './EffectValue.module.css';
 
 type Props = {

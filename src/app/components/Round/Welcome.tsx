@@ -1,5 +1,5 @@
 import React from 'react';
-import { GameDispatch } from '../../state';
+import type { GameDispatch } from '../../../state';
 import Button from '../Button';
 import Description, { Props as DescriptionProps } from './Description';
 import styles from './Round.module.css';

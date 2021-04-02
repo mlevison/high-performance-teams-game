@@ -18,11 +18,7 @@ type Image = {
    */
   image: string;
 };
-export function isGameActionWithImage(
-  action: GameAction,
-): action is FullGameAction & Image {
-  return Object.getOwnPropertyNames(action).includes('image');
-}
+
 type Icon = {
   /**
    * Unicode Character to be displayed instead of image
@@ -30,12 +26,15 @@ type Icon = {
    */
   icon: string;
 };
-export function isGameActionWithIcon(
-  action: GameAction,
-): action is FullGameAction & Icon {
-  return Object.getOwnPropertyNames(action).includes('icon');
-}
+// export function isGameActionWithIcon(
+//   action: GameAction,
+// ): action is FullGameAction & Icon {
+//   return Object.getOwnPropertyNames(action).includes('icon');
+// }
 type ImageOrIcon = Image | Icon;
+
+export type GameActionWithImage = FullGameAction & Image;
+export type GameActionWithIcon = FullGameAction & Icon;
 
 type GameActionImplementation = {
   type?: string;

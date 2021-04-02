@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GameActionWithStatus } from '../../state';
+import type { GameActionWithStatus } from '../../../state';
 import styles from './Actions.module.css';
 import Action from './Action';
 

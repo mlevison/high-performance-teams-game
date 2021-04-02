@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { GameDispatch, AppState, GameActionWithStatus } from '../../state';
+import type {
+  GameDispatch,
+  AppState,
+  GameActionWithStatus,
+} from '../../../state';
 import styles from './Actions.module.css';
 import RoundActions from './RoundActions';
 

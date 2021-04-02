@@ -4,3 +4,4 @@ export * from './persistState';
 export * from './restartGame';
 export * from './findGameActionById';
 export * from './getAllGameActions';
+export * from './isGameActionWithImage';

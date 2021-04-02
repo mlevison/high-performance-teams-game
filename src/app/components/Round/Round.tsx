@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { AppState } from '../../state';
+import type { AppState } from '../../../state';
 import styles from './Round.module.css';
 
 type Props = {

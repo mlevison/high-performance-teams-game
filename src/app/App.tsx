@@ -5,7 +5,7 @@ import {
   INITIAL_STATE,
   GameConfig,
   Effect,
-} from './state';
+} from '../state';
 import {
   Results,
   FinalResults,
@@ -31,7 +31,7 @@ import {
   useVersion,
   saveToLocalStorage,
   sumByProp,
-} from './lib';
+} from '../lib';
 
 type Props = { initialState: GameState; config: GameConfig };
 export function App(props: Props) {
