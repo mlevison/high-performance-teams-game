@@ -1,5 +1,4 @@
 import React from 'react';
-import { EFFECT_HIDDEN } from '../../gameConstants';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
@@ -11,7 +10,7 @@ export const round3: RoundDescription = {
       in the next Sprint.
     </p>
   ),
-  effect: () => ({ title: EFFECT_HIDDEN, gremlinChange: 50 }),
+  effect: () => ({ title: false, gremlinChange: 50 }),
   actions: {
     IMPROVE_RETROSPECTIVES_CHANGE_AGENDA: {
       image: example,

@@ -1,4 +1,3 @@
-import { TOTAL_ROUNDS } from '../gameConstants';
 import React from 'react';
 import type { AppRound, AppState, GameActionAction } from '../state';
 import { RoundDescription } from './Round';
@@ -16,6 +15,7 @@ type RoundLogEntry = AppRound & {
 type Props = {
   state: AppState;
   config: GameConfig;
+  totalRounds: number;
 };
 export default function Log(props: Props) {
   const rounds = [...props.state.pastRounds, props.state.currentRound];
@@ -24,7 +24,7 @@ export default function Log(props: Props) {
   roundsLog.push(currentRound);
   props.state.log.forEach((action) => {
     if (action.type === 'NEXT_ROUND') {
-      if (roundsLog.length < TOTAL_ROUNDS) {
+      if (roundsLog.length < props.totalRounds) {
         currentRound = { ...rounds[roundsLog.length], actions: [] };
         roundsLog.push(currentRound);
       }

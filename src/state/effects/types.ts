@@ -1,8 +1,7 @@
 import { GameRound } from '../round';
-import { EFFECT_HIDDEN } from '../../gameConstants';
 
 type InvisibleEffectProps = {
-  title: typeof EFFECT_HIDDEN;
+  title: false;
   description?: never;
 };
 type VisibleEffectProps = {

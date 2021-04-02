@@ -2,11 +2,6 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import useAppState from '../state/useAppState';
 import { BaseEffect, INITIAL_STATE, RoundDescription } from '../state';
 import { config } from '../config';
-import {
-  START_CAPACITY,
-  START_GREMLIN_CHANCE,
-  START_USER_STORY_CHANCE,
-} from '../gameConstants';
 
 export function emptyRound(): RoundDescription {
   return {
@@ -70,18 +65,16 @@ export function testCurrentRound(
 ) {
   if (round.userStoryChange !== undefined) {
     expect(game.state.currentRound).toHaveUserStoryChance(
-      round.userStoryChange + START_USER_STORY_CHANCE,
+      round.userStoryChange + 30,
     );
   }
   if (round.capacityChange !== undefined) {
     expect(game.state.currentRound).toHaveTotalCapacity(
-      round.capacityChange + START_CAPACITY,
+      round.capacityChange + 10,
     );
   }
   if (round.gremlinChange !== undefined) {
-    expect(game.state.currentRound).toHaveGremlinChance(
-      round.gremlinChange + START_GREMLIN_CHANCE,
-    );
+    expect(game.state.currentRound).toHaveGremlinChance(round.gremlinChange);
   }
 }
 

@@ -3,9 +3,10 @@ import cx from 'classnames';
 import { AppState, BaseEffect } from '../state';
 import EffectValue, { Sign } from './EffectValue';
 import styles from './Status.module.css';
-import { START_CAPACITY } from '../gameConstants';
 
-type Props = AppState['currentRound'];
+type Props = AppState['currentRound'] & {
+  startCapacity: number;
+};
 
 export function ActiveEffects(props: {
   effects: AppState['currentRound']['activeEffects'];
@@ -67,7 +68,8 @@ export default function Status(props: Props) {
       <h2>Working Capacity Breakdown</h2>
       <ul className={styles.status}>
         <li>
-          <span className={styles.cap}>{START_CAPACITY}</span> Start Capacity
+          <span className={styles.cap}>{props.startCapacity}</span> Start
+          Capacity
         </li>
         {capacityEffects.length ? (
           <>

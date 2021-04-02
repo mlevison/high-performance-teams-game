@@ -1,9 +1,4 @@
 import React from 'react';
-import {
-  START_USER_STORY_CHANCE,
-  TOTAL_ROUNDS,
-  GAME_ROUNDS,
-} from '../../gameConstants';
 import { AppState, GameDispatch, ClosedRound } from '../../state';
 import Button from '../Button';
 import CapStoryChart from '../CapStoryChart';
@@ -16,6 +11,9 @@ type Props = {
   closeRound: () => ClosedRound;
   rollGremlin: () => string | null;
   dispatch: GameDispatch;
+  initialUserStoryChance: number;
+  totalRounds: number;
+  interactiveRounds: number;
 };
 export default function Results(props: Props) {
   const userStoryEffects = props.currentRound.activeEffects.filter(
@@ -31,7 +29,7 @@ export default function Results(props: Props) {
       <p>When you have reviewed the results click: "Next Round"</p>
       <h3>Calculation</h3>
       <ul className={styles.userStoryChanceList}>
-        <li>&nbsp;&nbsp;&nbsp;{START_USER_STORY_CHANCE}% base chance</li>
+        <li>&nbsp;&nbsp;&nbsp;{props.initialUserStoryChance}% base chance</li>
         {userStoryEffects.map((effect) => (
           <li key={effect.title}>
             {effect.userStoryChange! > 0 ? '+' : '-'}{' '}
@@ -102,7 +100,7 @@ export default function Results(props: Props) {
             ◀ Back
           </Button>
         )}
-        {props.pastRounds.length + 1 < TOTAL_ROUNDS ? (
+        {props.pastRounds.length + 1 < props.totalRounds ? (
           <Button
             primary
             disabled={!props.ui.closedRound}
@@ -134,7 +132,8 @@ export default function Results(props: Props) {
             Next Round
           </Button>
         ) : null}
-        {!props.ui.review && props.pastRounds.length + 1 >= GAME_ROUNDS ? (
+        {!props.ui.review &&
+        props.pastRounds.length + 1 >= props.interactiveRounds ? (
           <Button
             primary
             disabled={!props.ui.closedRound}
@@ -153,12 +152,12 @@ export default function Results(props: Props) {
               });
             }}
           >
-            {props.pastRounds.length + 1 >= TOTAL_ROUNDS
+            {props.pastRounds.length + 1 >= props.totalRounds
               ? 'Finish Game'
               : 'Finish Game (simulate remaining rounds)'}
           </Button>
         ) : null}
-        {props.ui.review && props.ui.review + 1 >= TOTAL_ROUNDS ? (
+        {props.ui.review && props.ui.review + 1 >= props.totalRounds ? (
           <Button
             primary
             onClick={() => {

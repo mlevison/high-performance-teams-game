@@ -2,7 +2,6 @@ import * as game from './game';
 import { config } from '../config';
 import { rollGremlin } from './gremlins';
 import { reset, addRolls } from '../lib/notRandom';
-import { EFFECT_HIDDEN } from '../gameConstants';
 
 jest.mock('../lib/random', () => require('../lib/notRandom'));
 
@@ -12,7 +11,7 @@ describe('rollGremlin', () => {
 
     jest
       .spyOn(game, 'getAllEffects')
-      .mockImplementation(() => [{ gremlinChange: 50, title: EFFECT_HIDDEN }]);
+      .mockImplementation(() => [{ gremlinChange: 50, title: false }]);
   });
 
   it('rolls nothing when occur roll does not meet gremlinChance', () => {

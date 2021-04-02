@@ -1,11 +1,5 @@
 import React from 'react';
 import type { RoundDescription } from '../../state';
-import {
-  EFFECT_HIDDEN,
-  START_CAPACITY,
-  START_GREMLIN_CHANCE,
-  START_USER_STORY_CHANCE,
-} from '../../gameConstants';
 import example from './images/example.jpg';
 
 export const round1: RoundDescription = {
@@ -19,10 +13,10 @@ export const round1: RoundDescription = {
     </p>
   ),
   effect: () => ({
-    title: EFFECT_HIDDEN,
-    capacityChange: START_CAPACITY,
-    userStoryChange: START_USER_STORY_CHANCE,
-    gremlinChange: START_GREMLIN_CHANCE,
+    title: false,
+    capacityChange: 10,
+    userStoryChange: 30,
+    gremlinChange: 0,
   }),
   actions: {
     PROTECTED_FROM_OUTSIDE_DISTRACTION: {

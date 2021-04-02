@@ -10,7 +10,6 @@ import { concatByProp } from '../lib';
 import { getRoundEffects } from './rounds';
 import { getEffects } from './gameActions';
 import { getGremlinEffects, GremlinList } from './gremlins';
-import { TOTAL_ROUNDS } from '../gameConstants';
 import { RoundDescription } from './rounds/types';
 export type { GameAction } from './gameActions';
 
@@ -216,7 +215,10 @@ export function createGameReducer(config: GameConfig) {
       }
       case 'FINISH_GAME': {
         return Array.from({
-          length: TOTAL_ROUNDS - state.pastRounds.length,
+          length:
+            config.rounds.length +
+            config.trailingRounds -
+            state.pastRounds.length,
         }).reduce<[GameState, ClosedGameRound]>(
           ([state, closedRound]) => {
             const nextState = nextRound(state, {

@@ -8,7 +8,7 @@ import {
   ClosedRound,
   INITIAL_STATE,
 } from './state';
-import { GameActionId } from './config';
+import { config } from './config';
 
 jest.mock('./state');
 jest.mock('recharts');
@@ -47,7 +47,9 @@ function renderApp(initialState: AppState) {
     rollGremlin,
   ]);
 
-  const { rerender } = render(<App initialState={INITIAL_STATE} />);
+  const { rerender } = render(
+    <App initialState={INITIAL_STATE} config={config} />,
+  );
 
   return {
     dispatch,
@@ -60,7 +62,7 @@ function renderApp(initialState: AppState) {
         closeRound,
         rollGremlin,
       ]);
-      rerender(<App initialState={INITIAL_STATE} />);
+      rerender(<App initialState={INITIAL_STATE} config={config} />);
     },
   };
 }
@@ -146,7 +148,7 @@ describe('App UI', () => {
         {
           status: { type: 'AVAILABLE', times: UNIQUE_ACTION, dependencies: [] },
           gameAction: {
-            id: 'MY_ACTION_ID' as GameActionId,
+            id: 'MY_ACTION_ID',
             icon: '👋',
             round: 1,
             name: 'My Action',
