@@ -101,6 +101,8 @@ export const round2: RoundDescription<Round2ActionId> = {
         let change = 0;
         if (age === 1) {
           change = 1;
+        } else if (age > 1) {
+          change = -1;
         }
 
         return {

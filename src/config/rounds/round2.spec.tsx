@@ -133,10 +133,8 @@ describe('round 2 Actions', () => {
 
       testFutureRounds(game, [
         { capacityChange: 1, userStoryChange: 0 },
-        { capacityChange: 0, userStoryChange: 0 },
-        { capacityChange: 0, userStoryChange: 0 },
-        { capacityChange: 0, userStoryChange: 0 },
-        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
       ]);
     });
   });
