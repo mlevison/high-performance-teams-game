@@ -142,7 +142,7 @@ export const gremlins: GremlinList<GremlinId> = {
       ) {
         return {
           capacityChange: 0,
-          userStoryChance: 0,
+          userStoryChange: 0,
           title:
             'Emergency Story Mid-Sprint effect avoided by the combined effect of Ongoing Backlog Refinement and good Strategic work with the Product Owner',
         };
@@ -154,7 +154,7 @@ export const gremlins: GremlinList<GremlinId> = {
         ) {
           return {
             capacityChange: -1,
-            userStoryChance: -10,
+            userStoryChange: -10,
             title:
               'Emergency Story Mid-Sprint effect reduce by either the effect of Ongoing Backlog Refinement or good Strategic work with the Product Owner',
           };
@@ -162,13 +162,13 @@ export const gremlins: GremlinList<GremlinId> = {
 
         return {
           capacityChange: -2,
-          userStoryChance: -10,
+          userStoryChange: -10,
           title: 'Emergency Story Mid-Sprint is hurting',
         };
       }
       return {
         capacityChange: 0,
-        userStoryChance: 0,
+        userStoryChange: 0,
         title: 'Emergency Story Mid-Sprint -> Emergency over',
       };
     },
