@@ -14,8 +14,8 @@ import { AppRound } from '../state';
 import styles from './CapStoryChart.module.css';
 
 const USC = 'Chance of completing User Stories';
-const SA = 'Total User Stories Attempted';
-const SC = 'Total User Stories Completed';
+const SA = 'Total User Stories Attempted this round';
+const SC = 'Total User Stories Completed this round';
 const TC = 'Round Capacity';
 
 type Data = {
