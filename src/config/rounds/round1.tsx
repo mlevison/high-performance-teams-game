@@ -8,14 +8,7 @@ import {
 } from '../../gameConstants';
 import example from './images/example.jpg';
 
-export type Round1ActionId =
-  | 'PROTECTED_FROM_OUTSIDE_DISTRACTION'
-  | 'CLARIFY_PRODUCT_VISION'
-  | 'WORKING_AGREEMENTS'
-  | 'BUILD_SERVER'
-  | 'TEAMS_ON_SAME_FLOOR';
-
-export const round1: RoundDescription<Round1ActionId> = {
+export const round1: RoundDescription = {
   title: 'Team, welcome to the World’s Smallest Online Bookstore',
   description: (
     <p>

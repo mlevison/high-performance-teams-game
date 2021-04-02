@@ -1,13 +1,14 @@
-import { GameActionId } from '../../config';
 import { Effect } from '../effects';
-import { findGameActionById } from './findGameActionById';
+import { findGameActionById } from '../../lib/findGameActionById';
+import { GameConfig } from '../game';
 
 export function getEffects(
-  gameActionId: GameActionId,
+  gameActionId: string,
   age: number,
-  finishedActionIds: GameActionId[],
+  finishedActionIds: string[],
+  rounds: GameConfig['rounds'],
 ): Effect[] {
-  const gameAction = findGameActionById(gameActionId);
+  const gameAction = findGameActionById(gameActionId, rounds);
   const effect = gameAction.effect?.(age, finishedActionIds) || null;
   if (effect === null) {
     return [];

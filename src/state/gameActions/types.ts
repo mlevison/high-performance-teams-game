@@ -1,13 +1,12 @@
 import { ReactNode } from 'react';
-import { GameActionId } from '../../config';
 import { EffectDescription, BaseEffect, Effect } from '../effects';
 
 type EffectWithOptionalTitle = Partial<EffectDescription> & BaseEffect;
 export type AvailabilityCheck = (
   currentRound: number,
-  finishedActionIds: GameActionId[],
-  selectedGameActionIds: GameActionId[],
-  id: GameActionId,
+  finishedActionIds: string[],
+  selectedGameActionIds: string[],
+  id: string,
 ) => boolean;
 type Image = {
   /**
@@ -39,25 +38,25 @@ export function isGameActionWithIcon(
 type ImageOrIcon = Image | Icon;
 
 type GameActionImplementation = {
-  type?: 'ENGINEERING' | 'COMMUNICATION';
+  type?: string;
   available?: {
-    requires?: GameActionId[] | GameActionId;
+    requires?: string[] | string;
     unique?: false;
   };
   effect?: (
     age: number,
-    finishedActionIds: GameActionId[],
+    finishedActionIds: string[],
   ) => Effect[] | EffectWithOptionalTitle | null;
   name: string;
   description: ReactNode;
   cost: number;
 };
 type FullGameAction = GameActionImplementation & {
-  id: GameActionId;
+  id: string;
   round: number;
 };
-export type GameActionList<T extends string> = {
-  [K in T]: ImageOrIcon & GameActionImplementation;
+export type GameActionList = {
+  [key: string]: ImageOrIcon & GameActionImplementation;
 };
 
 export type GameAction = ImageOrIcon & FullGameAction;

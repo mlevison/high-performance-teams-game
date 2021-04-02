@@ -10,11 +10,10 @@ export type { GameEffect, VisibleEffect, BaseEffect } from './effects';
 export type GameDispatch = Dispatch<Action>;
 export { getCosts, closeRound } from './round';
 export {
-  findGameActionById,
   getAvailableGameActions,
   isGameActionWithIcon,
   isGameActionWithImage,
   UNIQUE_ACTION,
 } from './gameActions';
 export { default as useAppState } from './useAppState';
-export { gameReducer, INITIAL_STATE } from './game';
+export { createGameReducer, INITIAL_STATE } from './game';

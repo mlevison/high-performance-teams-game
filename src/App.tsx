@@ -26,11 +26,13 @@ import {
   useVersion,
   saveToLocalStorage,
 } from './lib';
+import { config } from './config';
 
 type Props = { initialState: GameState };
 export function App(props: Props) {
   const [state, dispatch, closeRound, rollGremlin] = useAppState(
     props.initialState,
+    config,
   );
   const [tab, setTab] = useState<'play' | 'rules' | 'log'>(
     props.initialState === INITIAL_STATE ? 'rules' : 'play',
@@ -144,7 +146,7 @@ export function App(props: Props) {
           )}
         </div>
         {tab === 'rules' && <Rules />}
-        {tab === 'log' && <Log state={state} />}
+        {tab === 'log' && <Log state={state} config={config} />}
       </Content>
     </Container>
   );

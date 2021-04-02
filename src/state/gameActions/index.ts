@@ -4,7 +4,6 @@ export {
   getAvailableGameActions,
   UNIQUE as UNIQUE_ACTION,
 } from './getAvailableGameActions';
-export { findGameActionById } from './findGameActionById';
 export { getEffects } from './getEffects';
 export { getCost } from './getCost';
 export { isGameActionWithIcon, isGameActionWithImage } from './types';

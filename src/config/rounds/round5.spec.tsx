@@ -8,11 +8,13 @@ import { BR_USER_STORY_CHANGE } from './round2';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
-  rounds: {
-    1: require('./round1').round1,
-    2: require('./round2').round2,
-    5: require('./round5').round5,
-  },
+  rounds: [
+    require('./round1').round1,
+    require('./round2').round2,
+    require('../../lib/testHelpers').emptyRound(),
+    require('../../lib/testHelpers').emptyRound(),
+    require('./round5').round5,
+  ],
 }));
 
 /* disable game effect to only tests single actions */

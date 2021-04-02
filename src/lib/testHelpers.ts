@@ -1,15 +1,23 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import useAppState from '../state/useAppState';
-import type { GameActionId, GremlinId } from '../config';
-import { BaseEffect, INITIAL_STATE } from 'state';
+import { BaseEffect, INITIAL_STATE, RoundDescription } from '../state';
+import { config } from '../config';
 import {
   START_CAPACITY,
   START_GREMLIN_CHANCE,
   START_USER_STORY_CHANCE,
 } from '../gameConstants';
 
+export function emptyRound(): RoundDescription {
+  return {
+    title: 'EmptyRound',
+    description: null,
+    actions: {},
+  };
+}
+
 export function getGame() {
-  const wrapper = renderHook(() => useAppState(INITIAL_STATE));
+  const wrapper = renderHook(() => useAppState(INITIAL_STATE, config));
 
   return {
     get state() {
@@ -25,7 +33,7 @@ export function getGame() {
     closeRound: () => {
       return wrapper.result.current[2]();
     },
-    nextRound: (gremlin: GremlinId | null = null) => {
+    nextRound: (gremlin: string | null = null) => {
       const closedRound = {
         ...wrapper.result.current[2](),
       };
@@ -37,7 +45,7 @@ export function getGame() {
         });
       });
     },
-    selectAction: (gameActionId: GameActionId) => {
+    selectAction: (gameActionId: string) => {
       act(() => {
         wrapper.result.current[1]({
           type: 'SELECT_GAME_ACTION',

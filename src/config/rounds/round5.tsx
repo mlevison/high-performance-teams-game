@@ -2,15 +2,7 @@ import React from 'react';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
-export type Round5ActionId =
-  | 'BYPASS_DEFINITION_OF_DONE'
-  | 'INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE'
-  | 'ADOPT_BDD'
-  | 'WORK_WITH_PO_LIMIT_PB_SIZE'
-  | 'ESTABLISH_SPRINT_GOALS'
-  | 'MAKE_IMPEDIMENTS_LIST_PUBLIC';
-
-export const round5: RoundDescription<Round5ActionId> = {
+export const round5: RoundDescription = {
   title: 'Nearly There',
   description: (
     <p>

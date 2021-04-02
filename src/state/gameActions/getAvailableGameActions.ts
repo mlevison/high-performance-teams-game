@@ -1,7 +1,7 @@
-import { GameActionId } from '../../config';
 import { GameAction } from './types';
-import { gameActions } from './gameActions';
-import { findGameActionById } from './findGameActionById';
+import { getAllGameActions } from '../../lib/getAllGameActions';
+import { findGameActionById } from '../../lib/findGameActionById';
+import { GameConfig } from '../game';
 
 export const UNIQUE = Symbol('UNIQUE');
 
@@ -15,7 +15,7 @@ type GameActionStatus = {
   | { type: 'FINISHED' }
 );
 
-function getDependencies(gameAction: GameAction): GameActionId[] {
+function getDependencies(gameAction: GameAction): string[] {
   const req = gameAction.available?.requires;
   if (!req) {
     return [];
@@ -32,13 +32,14 @@ export type GameActionWithStatus = {
 };
 
 export function getAvailableGameActions(
-  currentRound: number,
-  finishedActionIds: GameActionId[],
-  selectedGameActionIds: GameActionId[],
+  currentRoundIndex: number,
+  finishedActionIds: string[],
+  selectedGameActionIds: string[],
+  rounds: GameConfig['rounds'],
 ): GameActionWithStatus[] {
-  return gameActions
+  return getAllGameActions(rounds)
     .map((gameAction): GameActionWithStatus | null => {
-      if (currentRound < gameAction.round) {
+      if (currentRoundIndex + 1 < gameAction.round) {
         return null;
       }
 
@@ -47,7 +48,7 @@ export function getAvailableGameActions(
         (id) => !finishedActionIds.includes(id),
       );
       const dependencies = allDependencies
-        .map(findGameActionById)
+        .map((id) => findGameActionById(id, rounds))
         .map((gameAction) => ({
           ...gameAction,
           missing: unmetDependencies.includes(gameAction.id),

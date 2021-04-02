@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { GameActionId } from '../../config';
 import { GameDispatch, AppState, GameActionWithStatus } from '../../state';
 import styles from './Actions.module.css';
 import RoundActions from './RoundActions';
@@ -18,7 +17,7 @@ type Props = {
 };
 
 export default function Actions(props: Props) {
-  const [openActionId, setOpenActionId] = useState<GameActionId>();
+  const [openActionId, setOpenActionId] = useState<string>();
 
   return (
     <>

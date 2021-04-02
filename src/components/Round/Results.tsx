@@ -1,5 +1,4 @@
 import React from 'react';
-import { GremlinId } from '../../config';
 import {
   START_USER_STORY_CHANCE,
   TOTAL_ROUNDS,
@@ -15,7 +14,7 @@ type Props = {
   pastRounds: AppState['pastRounds'];
   currentRound: AppState['currentRound'];
   closeRound: () => ClosedRound;
-  rollGremlin: () => GremlinId | null;
+  rollGremlin: () => string | null;
   dispatch: GameDispatch;
 };
 export default function Results(props: Props) {

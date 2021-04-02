@@ -7,11 +7,12 @@ import {
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
-  rounds: {
-    1: require('./round1').round1,
-    3: require('./round3').round3,
-    4: require('./round4').round4,
-  },
+  rounds: [
+    require('./round1').round1,
+    require('../../lib/testHelpers').emptyRound(),
+    require('./round3').round3,
+    require('./round4').round4,
+  ],
 }));
 
 /* disable game effect to only tests single actions */

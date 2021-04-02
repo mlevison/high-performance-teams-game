@@ -3,10 +3,10 @@ import { GameActionList } from '../gameActions/types';
 import { Effect } from '../effects/types';
 import { GameRound } from '../round';
 
-export type RoundDescription<T extends string> = {
+export type RoundDescription = {
   description: ReactNode;
   title: string;
-  actions: GameActionList<T>;
+  actions: GameActionList;
   effect?: (
     previousRounds: GameRound[],
     currentRound: number,

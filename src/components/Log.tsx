@@ -1,16 +1,13 @@
 import { TOTAL_ROUNDS } from '../gameConstants';
 import React from 'react';
-import {
-  AppRound,
-  AppState,
-  GameActionAction,
-  findGameActionById,
-} from '../state';
+import type { AppRound, AppState, GameActionAction } from '../state';
 import { RoundDescription } from './Round';
 import { ActionImage } from './Actions';
 import styles from './Log.module.css';
 import { FinalResults } from 'components';
 import { ActiveEffects } from './Status';
+import { GameConfig } from '../state/game';
+import { findGameActionById } from '../lib';
 
 type RoundLogEntry = AppRound & {
   storiesCompleted?: number;
@@ -18,6 +15,7 @@ type RoundLogEntry = AppRound & {
 };
 type Props = {
   state: AppState;
+  config: GameConfig;
 };
 export default function Log(props: Props) {
   const rounds = [...props.state.pastRounds, props.state.currentRound];
@@ -69,7 +67,10 @@ export default function Log(props: Props) {
                   <h4>Actions Taken</h4>
                   <ul className={styles.actionList}>
                     {round.actions.map((action, i) => {
-                      const gameAction = findGameActionById(action.payload);
+                      const gameAction = findGameActionById(
+                        action.payload,
+                        props.config.rounds,
+                      );
                       const isReSelect = round.actions
                         .slice(0, i)
                         .map((action) => action.payload)

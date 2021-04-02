@@ -1,11 +1,10 @@
-import { Dispatch, useReducer } from 'react';
+import { Dispatch, useMemo, useReducer } from 'react';
 import { concatByProp, usePersistState, useStateLink } from '../lib';
-import { Action, gameReducer, GameState } from './game';
+import { Action, createGameReducer, GameConfig, GameState } from './game';
 import { getAvailableGameActions } from './gameActions';
 import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
 import { rollGremlin } from './gremlins';
 import { AppRound, ClosedGameRound, closeRound, deriveAppRound } from './round';
-import { GremlinId } from '../config';
 
 type PastRound = AppRound & {
   storiesCompleted: number;
@@ -22,7 +21,9 @@ export type AppState = {
 
 export default function useAppState(
   initialState: GameState,
-): [AppState, Dispatch<Action>, () => ClosedGameRound, () => GremlinId | null] {
+  config: GameConfig,
+): [AppState, Dispatch<Action>, () => ClosedGameRound, () => string | null] {
+  const gameReducer = useMemo(() => createGameReducer(config), [config]);
   const [gameState, dispatch] = useReducer(gameReducer, initialState);
   usePersistState(gameState);
   const link = useStateLink(gameState);
@@ -41,24 +42,28 @@ export default function useAppState(
         };
 
   const availableGameActions = getAvailableGameActions(
-    state.pastRounds.length + 1,
+    state.pastRounds.length,
     concatByProp(state.pastRounds, 'selectedGameActionIds'),
     state.currentRound.selectedGameActionIds,
+    config.rounds,
   );
 
   return [
     {
       availableGameActions,
-      currentRound: deriveAppRound(state),
+      currentRound: deriveAppRound(state, config),
       pastRounds: state.pastRounds.map((round, i) => {
         const pastRounds = state.pastRounds.slice(0, i);
         const currentRound = state.pastRounds[i];
 
         return {
-          ...deriveAppRound({
-            pastRounds,
-            currentRound,
-          }),
+          ...deriveAppRound(
+            {
+              pastRounds,
+              currentRound,
+            },
+            config,
+          ),
           storiesCompleted: round.storiesCompleted,
         };
       }),
@@ -67,7 +72,7 @@ export default function useAppState(
       log: state.log,
     },
     dispatch,
-    () => closeRound(state),
-    () => rollGremlin(state),
+    () => closeRound(state, config),
+    () => rollGremlin(state, config),
   ];
 }
