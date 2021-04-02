@@ -1,6 +1,9 @@
 import { gameEffects as gameEffectsMock } from './gameEffects';
-import { getGame } from '../../lib/testHelpers';
+import { getGame, testFutureRounds } from '../../lib/testHelpers';
 
+jest.mock('../../state/rounds/getRoundEffects', () => ({
+  getRoundEffects: () => [{ capacityChange: 10, userStoryChange: 30 }],
+}));
 const { gameEffects } = jest.requireActual('./gameEffects');
 jest.mock('./gameEffects', () => ({ gameEffects: [] }));
 jest.mock('../rounds', () => {
@@ -40,41 +43,27 @@ describe('game effects', () => {
       // Precondition
       expect(game.state.currentRound.number).toEqual(1);
 
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(2);
-      expect(game.state.currentRound.capacity.total).toEqual(9);
-
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(3);
-      expect(game.state.currentRound.capacity.total).toEqual(8);
-
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(4);
-      expect(game.state.currentRound.capacity.total).toEqual(7);
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: -3, userStoryChange: 0 },
+        { capacityChange: -4, userStoryChange: 0 },
+        { capacityChange: -5, userStoryChange: 0 },
+      ]);
     });
 
     it('stops reducing capacity when team added a BuildServer', () => {
       const game = getGame();
-
-      // Ideally Stated as a precondition
+      // precondition
       expect(game.state.currentRound.number).toEqual(1);
 
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(2);
-      expect(game.state.currentRound.capacity.total).toEqual(9);
+      testFutureRounds(game, [{ capacityChange: -1, userStoryChange: 0 }]);
 
       game.selectAction('BUILD_SERVER');
-      expect(game.state.currentRound.capacity.available).toEqual(7);
-
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(3);
-      // Capacity unchanged because we eliminate the drag effect
-      expect(game.state.currentRound.capacity.total).toEqual(9);
-
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(4);
-      // Capacity still **unchanged**
-      expect(game.state.currentRound.capacity.total).toEqual(9);
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+      ]);
     });
   });
 
@@ -89,17 +78,13 @@ describe('game effects', () => {
       // Precondition
       expect(game.state.currentRound.number).toEqual(1);
 
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(2);
-      expect(game.state.currentRound.capacity.total).toEqual(9);
-
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(3);
-      expect(game.state.currentRound.capacity.total).toEqual(8);
-
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(4);
-      expect(game.state.currentRound.capacity.total).toEqual(7);
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: -3, userStoryChange: 0 },
+        { capacityChange: -4, userStoryChange: 0 },
+        { capacityChange: -5, userStoryChange: 0 },
+      ]);
     });
 
     it('stops reducing capacity when team added a Working Agreement', () => {
@@ -108,22 +93,13 @@ describe('game effects', () => {
       // Ideally Stated as a precondition
       expect(game.state.currentRound.number).toEqual(1);
 
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(2);
-      expect(game.state.currentRound.capacity.total).toEqual(9);
+      testFutureRounds(game, [{ capacityChange: -1, userStoryChange: 0 }]);
 
       game.selectAction('WORKING_AGREEMENTS');
-      expect(game.state.currentRound.capacity.available).toEqual(7);
-
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(3);
-      // Capacity unchanged because we eliminate the drag effect
-      expect(game.state.currentRound.capacity.total).toEqual(9);
-
-      game.nextRound();
-      expect(game.state.currentRound.number).toEqual(4);
-      // Capacity still **unchanged**
-      expect(game.state.currentRound.capacity.total).toEqual(9);
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+      ]);
     });
   });
 });
