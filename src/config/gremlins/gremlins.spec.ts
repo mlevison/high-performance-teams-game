@@ -1,4 +1,3 @@
-import { START_CAPACITY } from '../../gameConstants';
 import {
   advanceGameToRound,
   getGame,
@@ -105,10 +104,10 @@ describe('Gremlins', () => {
 
       game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
       game.nextRound('GREMLIN_MANAGEMENT_YELLS');
-      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: 0 });
       testFutureRounds(game, [
-        { capacityChange: 0, userStoryChange: 0 },
-        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
       ]);
     });
   });

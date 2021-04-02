@@ -22,14 +22,13 @@ export const gremlins: GremlinList<GremlinId> = {
       </p>
     ),
     effect(age, finishedActionIds) {
+      let name = 'Management yells at a team member in public';
       if (finishedActionIds.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION')) {
-        // TODO - Hannes are we better to return null or 0 capacity change with details on why zero?
-        return null;
+        return { capacityChange: -1, title: name };
       }
       return {
-        // TODO - Hannes did I get this wrong? I want this effect to be permanent - even if they add the PROTECTED_FROM_OUTSIDE_DISTRACTION later
         capacityChange: -2,
-        title: 'Management yells at a team member in public',
+        title: name,
       };
     },
   },
