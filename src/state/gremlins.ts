@@ -24,6 +24,11 @@ export function rollGremlin(
   state: GameState,
   config: GameConfig,
 ): string | null {
+  /* No gremlins in trailing rounds */
+  if (state.pastRounds.length + 1 >= config.rounds.length) {
+    return null;
+  }
+
   const gremlinArray = Object.entries(config.gremlins).map(([id, gremlin]) => ({
     id,
     ...gremlin,
