@@ -6,7 +6,8 @@ export type GremlinId =
   | 'GREMLIN_EMERGENCY_ON_OTHER_TEAM'
   | 'GREMLIN_NOT_PULLING_THEIR_WEIGHT'
   | 'GREMLIN_NOT_AT_DAILY_SCRUM'
-  | 'GREMLIN_NEW_STORY_MID_SPRINT';
+  | 'GREMLIN_NEW_STORY_MID_SPRINT'
+  | 'GREMLIN_UNREADABLE_CODE';
 
 export const gremlins: GremlinList<GremlinId> = {
   GREMLIN_MANAGEMENT_YELLS: {
@@ -169,6 +170,41 @@ export const gremlins: GremlinList<GremlinId> = {
         capacityChange: 0,
         userStoryChange: 0,
         title: 'Emergency Story Mid-Sprint -> Emergency over',
+      };
+    },
+  },
+  GREMLIN_UNREADABLE_CODE: {
+    probability: () => 10,
+    name: 'Unreadable Code',
+    description: (
+      <p>
+        Code base is becoming harder and harder to read. As it becomes harder to
+        read, it takes more time to add new features. In addition messier code
+        often contains more bugs. &nbsp; Teams that practice TDD and/or Pair
+        Programming suffer this effect less.
+      </p>
+    ),
+    effect(age, finishedActionIds) {
+      let additionalComment = '';
+      let capacityChange = -2;
+      if (
+        finishedActionIds.includes('TEST_DRIVEN_DEVELOPMENT') ||
+        finishedActionIds.includes('PAIR_PROGRAMMING')
+      ) {
+        capacityChange = -1;
+        additionalComment = '- TDD or Pair Programming Reduce the effect';
+      }
+      if (
+        finishedActionIds.includes('TEST_DRIVEN_DEVELOPMENT') &&
+        finishedActionIds.includes('PAIR_PROGRAMMING')
+      ) {
+        capacityChange = 0;
+        additionalComment =
+          '- TDD and Pair Programming Reduce elimintate the effect';
+      }
+      return {
+        capacityChange: capacityChange,
+        title: 'Unreadable code ' + additionalComment,
       };
     },
   },

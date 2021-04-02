@@ -241,7 +241,7 @@ describe('Gremlins', () => {
       ]);
     });
 
-    it('has reduced effect on capacity when team does Stpry Mapping to maintain a good Strategic view', () => {
+    it('has reduced effect on capacity when team does Story Mapping to maintain a good Strategic view', () => {
       const game = getGame();
 
       game.selectAction('STORY_MAPPING_OR_OTHER');
@@ -259,6 +259,53 @@ describe('Gremlins', () => {
       game.selectAction('BACKLOG_REFINEMENT');
       game.selectAction('STORY_MAPPING_OR_OTHER');
       game.nextRound('GREMLIN_NEW_STORY_MID_SPRINT');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
+    });
+  });
+  describe('Messy Code Found', () => {
+    it('Unreadable code has a -ve effect on speed since we have to spend time on rereading it.', () => {
+      const game = getGame();
+
+      game.nextRound('GREMLIN_UNREADABLE_CODE');
+      testCurrentRound(game, { capacityChange: -2, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+      ]);
+    });
+    it('has effect reduced if Pair Programming is done', () => {
+      const game = getGame();
+
+      game.selectAction('PAIR_PROGRAMMING');
+      game.nextRound('GREMLIN_UNREADABLE_CODE');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+      ]);
+    });
+    it('has effect reduced if TDD is done', () => {
+      const game = getGame();
+
+      game.selectAction('TEST_DRIVEN_DEVELOPMENT');
+      game.nextRound('GREMLIN_UNREADABLE_CODE');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+      ]);
+    });
+    it('has no effect if TDD and Pair Programming is done', () => {
+      const game = getGame();
+
+      game.selectAction('TEST_DRIVEN_DEVELOPMENT');
+      game.selectAction('PAIR_PROGRAMMING');
+      game.nextRound('GREMLIN_UNREADABLE_CODE');
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
       testFutureRounds(game, [
         { capacityChange: 0, userStoryChange: 0 },
