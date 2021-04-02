@@ -1,5 +1,10 @@
 import { START_CAPACITY } from '../../gameConstants';
-import { advanceGameToRound, getGame } from '../../lib/testHelpers';
+import {
+  advanceGameToRound,
+  getGame,
+  testCurrentRound,
+  testFutureRounds,
+} from '../../lib/testHelpers';
 import { gremlins } from './gremlins';
 
 /* Disable round, game and action effects */
@@ -215,21 +220,11 @@ describe('Gremlins', () => {
       advanceGameToRound(game, 2);
 
       game.nextRound('GREMLIN_NEW_STORY_MID_SPRINT');
-      // testCurrentRound(game, { capacityChange: -2, userStoryChange: -10 });
-
-      expect(game.state.currentRound.capacity.available).toBe(
-        START_CAPACITY - 2,
-      );
-      // Gremlins can't seem to test userStoryChance or perhaps effect it
-      // expect(game.state.currentRound.userStoryChance).toBe(
-      //   START_USER_STORY_CHANCE - 10,
-      // );
-
-      game.nextRound();
-      expect(game.state.currentRound.capacity.available).toBe(START_CAPACITY);
-      // expect(game.state.currentRound.userStoryChance).toBe(
-      //   START_USER_STORY_CHANCE,
-      // );
+      testCurrentRound(game, { capacityChange: -2, userStoryChange: -10 });
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
     });
 
     it('has reduced effect on capacity when team does Product Backlog refinement', () => {
