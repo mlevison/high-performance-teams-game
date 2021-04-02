@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useAppState from '../state/useAppState';
-import { BaseEffect, INITIAL_STATE, RoundDescription } from '../state';
+import { useAppState } from './useAppState';
+import { INITIAL_STATE } from './initialState';
+import { BaseEffect, RoundDescription } from '../state';
 import { config } from '../config';
 
 export function emptyRound(): RoundDescription {
@@ -26,15 +27,15 @@ export function getGame() {
         .map((actionWithStatus) => actionWithStatus.gameAction.id);
     },
     closeRound: () => {
-      return wrapper.result.current[2]();
+      return wrapper.result.current[1]();
     },
     nextRound: (gremlin: string | null = null) => {
       const closedRound = {
-        ...wrapper.result.current[2](),
+        ...wrapper.result.current[1](),
       };
 
       act(() => {
-        wrapper.result.current[1]({
+        wrapper.result.current[4]({
           type: 'NEXT_ROUND',
           payload: { closedRound, gremlin },
         });
@@ -42,7 +43,7 @@ export function getGame() {
     },
     selectAction: (gameActionId: string) => {
       act(() => {
-        wrapper.result.current[1]({
+        wrapper.result.current[4]({
           type: 'SELECT_GAME_ACTION',
           payload: gameActionId,
         });

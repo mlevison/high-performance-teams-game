@@ -1,5 +1,6 @@
 import React from 'react';
-import type { AppState, GameDispatch, ClosedRound } from '../../../state';
+import type { AppState, ClosedRound } from '../../../state';
+import type { GameDispatch } from '../../../lib';
 import Button from '../Button';
 import CapStoryChart from '../CapStoryChart';
 import styles from './Round.module.css';

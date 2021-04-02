@@ -5,3 +5,5 @@ export * from './restartGame';
 export * from './findGameActionById';
 export * from './getAllGameActions';
 export * from './isGameActionWithImage';
+export * from './initialState';
+export * from './useAppState';

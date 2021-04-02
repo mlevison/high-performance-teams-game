@@ -19,6 +19,7 @@ type RoundLogEntry = AppRound & {
 type Props = {
   state: AppState;
   config: GameConfig;
+  link: string;
   totalRounds: number;
 };
 export default function Log(props: Props) {
@@ -118,7 +119,7 @@ export default function Log(props: Props) {
           );
         })}
       </ol>
-      <FinalResults state={props.state} />
+      <FinalResults state={props.state} link={props.link} />
     </>
   );
 }

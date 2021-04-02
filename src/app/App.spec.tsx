@@ -1,16 +1,11 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import App from './App';
-import {
-  AppState,
-  useAppState,
-  UNIQUE_ACTION,
-  ClosedRound,
-  INITIAL_STATE,
-} from '../state';
+import { App } from './App';
+import { AppState, UNIQUE_ACTION, ClosedRound } from '../state';
+import { INITIAL_STATE, useAppState } from '../lib';
 import { config } from '../config';
 
-jest.mock('./state');
+jest.mock('../lib');
 jest.mock('recharts');
 
 const BASE_STATE: AppState = {
@@ -30,7 +25,6 @@ const BASE_STATE: AppState = {
     },
     activeEffects: [],
   },
-  link: 'https://example.org',
   pastRounds: [],
   log: [],
 };
@@ -42,9 +36,10 @@ function renderApp(initialState: AppState) {
 
   (useAppState as jest.Mock).mockReturnValue([
     initialState,
-    dispatch,
     closeRound,
     rollGremlin,
+    'https://example.org',
+    dispatch,
   ]);
 
   const { rerender } = render(
@@ -58,9 +53,10 @@ function renderApp(initialState: AppState) {
     rerender: (newState: AppState) => {
       (useAppState as jest.Mock).mockReturnValue([
         newState,
-        dispatch,
         closeRound,
         rollGremlin,
+        'https://example.org',
+        dispatch,
       ]);
       rerender(<App initialState={INITIAL_STATE} config={config} />);
     },

@@ -1,8 +1,7 @@
-import { Dispatch } from 'react';
-import type { Action } from './game';
+export type { Action } from './game';
 export type { ClosedGameRound as ClosedRound, AppRound } from './round';
 export type { GameState, GameActionAction, GameConfig } from './game';
-export type { AppState } from './useAppState';
+export type { AppState } from './deriveAppState';
 export type {
   GameActionWithStatus,
   GameAction,
@@ -11,8 +10,7 @@ export type {
 export type { RoundDescription } from './rounds';
 export type { GremlinList } from './gremlins';
 export type { GameEffect, VisibleEffect, BaseEffect, Effect } from './effects';
-export type GameDispatch = Dispatch<Action>;
 export { getCosts, closeRound } from './round';
 export { getAvailableGameActions, UNIQUE_ACTION } from './gameActions';
-export { default as useAppState } from './useAppState';
-export { createGameReducer, INITIAL_STATE } from './game';
+export { deriveAppState } from './deriveAppState';
+export { createGameReducer } from './game';

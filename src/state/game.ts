@@ -1,3 +1,4 @@
+import { concatByProp, INITIAL_STATE } from '../lib';
 import {
   GameRound,
   ClosedGameRound,
@@ -6,7 +7,6 @@ import {
   getActionEffects,
 } from './round';
 import { Effect, GameEffect, isEffect } from './effects';
-import { concatByProp } from '../lib';
 import { getRoundEffects } from './rounds';
 import { getEffects } from './gameActions';
 import { getGremlinEffects, GremlinList } from './gremlins';
@@ -71,19 +71,6 @@ export type Action =
   | RestartGameAction
   | FinishGameAction
   | UiAction;
-
-export const INITIAL_STATE: GameState = {
-  currentRound: {
-    gremlin: null,
-    selectedGameActionIds: [],
-  },
-  pastRounds: [],
-  ui: {
-    review: false,
-    view: 'welcome',
-  },
-  log: [],
-};
 
 export type GameConfig = {
   trailingRounds: number;

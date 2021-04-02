@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import type {
-  GameDispatch,
-  AppState,
-  GameActionWithStatus,
-} from '../../../state';
+import type { AppState, GameActionWithStatus } from '../../../state';
+import type { GameDispatch } from '../../../lib';
 import styles from './Actions.module.css';
 import RoundActions from './RoundActions';
 

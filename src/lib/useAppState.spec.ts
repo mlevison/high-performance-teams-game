@@ -1,5 +1,5 @@
-import { getGame } from '../lib/testHelpers';
-import { storySucceeds } from '../lib';
+import { getGame } from './testHelpers';
+import { storySucceeds } from '.';
 
 jest.mock('../lib/storySucceeds');
 

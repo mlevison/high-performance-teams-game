@@ -1,11 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import {
-  useAppState,
-  GameState,
-  INITIAL_STATE,
-  GameConfig,
-  Effect,
-} from '../state';
+import type { GameState, GameConfig, Effect } from '../state';
 import {
   Results,
   FinalResults,
@@ -25,17 +19,19 @@ import {
   Log,
 } from './components';
 import {
+  INITIAL_STATE,
   GAME_STATE_OK,
   InitialStateWithStatus,
   restartGame,
   useVersion,
   saveToLocalStorage,
   sumByProp,
+  useAppState,
 } from '../lib';
 
 type Props = { initialState: GameState; config: GameConfig };
 export function App(props: Props) {
-  const [state, dispatch, closeRound, rollGremlin] = useAppState(
+  const [state, closeRound, rollGremlin, link, dispatch] = useAppState(
     props.initialState,
     props.config,
   );
@@ -88,7 +84,7 @@ export function App(props: Props) {
         <div style={{ display: tab === 'play' ? 'block' : 'none' }}>
           {state.ui.review === false &&
           state.currentRound.number > totalRounds ? (
-            <FinalResults state={state} dispatch={dispatch} />
+            <FinalResults state={state} dispatch={dispatch} link={link} />
           ) : (
             <Round
               ui={state.ui}
@@ -175,7 +171,12 @@ export function App(props: Props) {
         </div>
         {tab === 'rules' && <Rules />}
         {tab === 'log' && (
-          <Log state={state} config={props.config} totalRounds={totalRounds} />
+          <Log
+            state={state}
+            config={props.config}
+            totalRounds={totalRounds}
+            link={link}
+          />
         )}
       </Content>
     </Container>

@@ -1,4 +1,5 @@
 import * as game from './game';
+import { INITIAL_STATE } from '../lib';
 import { config } from '../config';
 import { rollGremlin } from './gremlins';
 import { reset, addRolls } from '../lib/notRandom';
@@ -16,12 +17,12 @@ describe('rollGremlin', () => {
 
   it('rolls nothing when occur roll does not meet gremlinChance', () => {
     addRolls([0.51]);
-    expect(rollGremlin(game.INITIAL_STATE, config)).toBe(null);
+    expect(rollGremlin(INITIAL_STATE, config)).toBe(null);
   });
 
   it('has a gremlin when roll meets chance', () => {
     addRolls([0.49, 0.5]);
-    expect(rollGremlin(game.INITIAL_STATE, config)).toEqual(expect.any(String));
+    expect(rollGremlin(INITIAL_STATE, config)).toEqual(expect.any(String));
   });
 
   it('rolls nothing when no gremlin has probability', () => {
@@ -30,7 +31,7 @@ describe('rollGremlin', () => {
     });
 
     addRolls([0.49, 0.5]);
-    expect(rollGremlin(game.INITIAL_STATE, config)).toBe(null);
+    expect(rollGremlin(INITIAL_STATE, config)).toBe(null);
   });
 
   it('rolls the gremlin with probability', () => {
@@ -43,11 +44,9 @@ describe('rollGremlin', () => {
       .mockImplementation(() => 1);
 
     addRolls([0.49, 0.5]);
-    expect(rollGremlin(game.INITIAL_STATE, config)).toBe(
-      'GREMLIN_MANAGEMENT_YELLS',
-    );
+    expect(rollGremlin(INITIAL_STATE, config)).toBe('GREMLIN_MANAGEMENT_YELLS');
     expect(
       config.gremlins.GREMLIN_MANAGEMENT_YELLS.probability,
-    ).toHaveBeenCalledWith(game.INITIAL_STATE);
+    ).toHaveBeenCalledWith(INITIAL_STATE);
   });
 });

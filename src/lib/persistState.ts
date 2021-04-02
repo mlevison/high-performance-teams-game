@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { INITIAL_STATE } from 'state';
-import { GameState } from 'state/game';
+import type { GameState } from '../state/game';
+import { INITIAL_STATE } from './initialState';
 import versionP from './version';
 
 const LOCAL_STATE_KEY = 'TEAM_GAME_STATE';
