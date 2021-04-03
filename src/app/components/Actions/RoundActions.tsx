@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { GameActionId } from '../../config';
-import { GameActionWithStatus } from '../../state';
+import type { GameActionWithStatus } from '../../../state';
 import styles from './Actions.module.css';
 import Action from './Action';
 
@@ -8,10 +7,10 @@ type Props = {
   round: number;
   review: boolean;
   initialVisible: boolean;
-  openGameActionId?: GameActionId;
+  openGameActionId?: string;
   availableCapacity: number;
-  onOpen: (open: boolean, id: GameActionId) => void;
-  onSelect: (selected: boolean, actionWithStatus: GameActionId) => void;
+  onOpen: (open: boolean, id: string) => void;
+  onSelect: (selected: boolean, actionWithStatus: string) => void;
   actionsWithStatus: GameActionWithStatus[];
 };
 

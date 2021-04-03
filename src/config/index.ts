@@ -1,6 +1,12 @@
-export type { GameActionId } from './rounds';
-export type { GremlinId } from './gremlins';
+import type { GameConfig } from '../state/game';
 
-export { rounds } from './rounds';
-export { gremlins } from './gremlins';
-export { gameEffects } from './gameEffects';
+import { rounds } from './rounds';
+import { gremlins } from './gremlins';
+import { gameEffects } from './gameEffects';
+
+export const config: GameConfig = {
+  rounds,
+  gremlins,
+  gameEffects,
+  trailingRounds: 6,
+};

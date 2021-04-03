@@ -2,17 +2,9 @@ import React from 'react';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
-export type Round2ActionId =
-  | 'REMOTE_TEAM_AVATARS'
-  | 'ELIMINATE_LONG_LIVED_FEATURE_BRANCHES'
-  | 'UNIT_TESTING'
-  | 'SOCIAL_TIME'
-  | 'PROBLEM_SOLVING_BONUS'
-  | 'BACKLOG_REFINEMENT';
-
 export const BR_USER_STORY_CHANGE = 15;
 
-export const round2: RoundDescription<Round2ActionId> = {
+export const round2: RoundDescription = {
   title: 'Failed Expectations',
   description: (
     <p>

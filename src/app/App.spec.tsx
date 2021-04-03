@@ -1,16 +1,11 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { App } from './App';
-import {
-  AppState,
-  useAppState,
-  UNIQUE_ACTION,
-  ClosedRound,
-  INITIAL_STATE,
-} from './state';
-import { GameActionId } from './config';
+import { AppState, UNIQUE_ACTION, ClosedRound, GameConfig } from '../state';
+import { INITIAL_STATE, useAppState } from '../lib';
+import { emptyRound } from '../lib/testHelpers';
 
-jest.mock('./state');
+jest.mock('../lib');
 jest.mock('recharts');
 
 const BASE_STATE: AppState = {
@@ -30,24 +25,33 @@ const BASE_STATE: AppState = {
     },
     activeEffects: [],
   },
-  link: 'https://example.org',
   pastRounds: [],
   log: [],
 };
 
-function renderApp(initialState: AppState) {
+const BASE_CONFIG: GameConfig = {
+  rounds: [emptyRound(), emptyRound(), emptyRound(), emptyRound()],
+  trailingRounds: 0,
+  gameEffects: {},
+  gremlins: {},
+};
+
+function renderApp(initialState: AppState, config: GameConfig) {
   const dispatch = jest.fn();
   const closeRound = jest.fn();
   const rollGremlin = jest.fn();
 
   (useAppState as jest.Mock).mockReturnValue([
     initialState,
-    dispatch,
     closeRound,
     rollGremlin,
+    'https://example.org',
+    dispatch,
   ]);
 
-  const { rerender } = render(<App initialState={INITIAL_STATE} />);
+  const { rerender } = render(
+    <App initialState={INITIAL_STATE} config={config} />,
+  );
 
   return {
     dispatch,
@@ -56,40 +60,47 @@ function renderApp(initialState: AppState) {
     rerender: (newState: AppState) => {
       (useAppState as jest.Mock).mockReturnValue([
         newState,
-        dispatch,
         closeRound,
         rollGremlin,
+        'https://example.org',
+        dispatch,
       ]);
-      rerender(<App initialState={INITIAL_STATE} />);
+      rerender(<App initialState={INITIAL_STATE} config={config} />);
     },
   };
 }
 
 describe('App UI', () => {
   it('displays current round', () => {
-    renderApp({
-      ...BASE_STATE,
-      currentRound: {
-        ...BASE_STATE.currentRound,
-        number: 3,
+    renderApp(
+      {
+        ...BASE_STATE,
+        currentRound: {
+          ...BASE_STATE.currentRound,
+          number: 2,
+        },
       },
-    });
+      BASE_CONFIG,
+    );
 
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
 
     expect(
-      screen.getByRole('heading', { name: /Round 3 of/i }),
+      screen.getByRole('heading', { name: /Round 2 of 4/i }),
     ).toBeInTheDocument();
   });
 
   it('has buttons to move between round views and to next round', () => {
-    const { dispatch, closeRound, rerender } = renderApp({
-      ...BASE_STATE,
-      ui: { review: false, view: 'actions' },
-    });
+    const { dispatch, closeRound, rerender } = renderApp(
+      {
+        ...BASE_STATE,
+        ui: { review: false, view: 'actions' },
+      },
+      BASE_CONFIG,
+    );
 
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
-    expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
+    expect(screen.getByText(/Round 1 of 4/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /Begin Development/i }));
     expect(dispatch).toHaveBeenCalledWith({
@@ -101,7 +112,7 @@ describe('App UI', () => {
       ...BASE_STATE,
       ui: { review: false, view: 'results' },
     });
-    expect(screen.getByText(/Round 1 of/)).toBeInTheDocument();
+    expect(screen.getByText(/Round 1 of 4/)).toBeInTheDocument();
     expect(screen.getByText(/working capacity/)).toBeInTheDocument();
 
     const closedRound: ClosedRound = {
@@ -136,27 +147,34 @@ describe('App UI', () => {
   });
 
   it('can select actions in round 1', () => {
-    const { dispatch } = renderApp({
-      ...BASE_STATE,
-      ui: {
-        review: false,
-        view: 'actions',
-      },
-      availableGameActions: [
-        {
-          status: { type: 'AVAILABLE', times: UNIQUE_ACTION, dependencies: [] },
-          gameAction: {
-            id: 'MY_ACTION_ID' as GameActionId,
-            icon: '👋',
-            round: 1,
-            name: 'My Action',
-            effect: () => null,
-            description: '',
-            cost: 2,
-          },
+    const { dispatch } = renderApp(
+      {
+        ...BASE_STATE,
+        ui: {
+          review: false,
+          view: 'actions',
         },
-      ],
-    });
+        availableGameActions: [
+          {
+            status: {
+              type: 'AVAILABLE',
+              times: UNIQUE_ACTION,
+              dependencies: [],
+            },
+            gameAction: {
+              id: 'MY_ACTION_ID',
+              icon: '👋',
+              round: 1,
+              name: 'My Action',
+              effect: () => null,
+              description: '',
+              cost: 2,
+            },
+          },
+        ],
+      },
+      BASE_CONFIG,
+    );
 
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
     fireEvent.doubleClick(screen.getByRole('button', { name: /My Action/i }));
@@ -169,38 +187,41 @@ describe('App UI', () => {
   });
 
   it('can not select an action when not enough capacity is available', () => {
-    const { dispatch } = renderApp({
-      ...BASE_STATE,
-      ui: {
-        review: false,
-        view: 'actions',
-      },
-      currentRound: {
-        ...BASE_STATE.currentRound,
-        capacity: {
-          available: 2,
-          total: 10,
+    const { dispatch } = renderApp(
+      {
+        ...BASE_STATE,
+        ui: {
+          review: false,
+          view: 'actions',
         },
-      },
-      availableGameActions: [
-        {
-          status: {
-            type: 'AVAILABLE',
-            times: UNIQUE_ACTION,
-            dependencies: [],
-          },
-          gameAction: {
-            id: 'BUILD_SERVER',
-            icon: '',
-            round: 1,
-            name: 'My Action',
-            effect: () => null,
-            description: '',
-            cost: 3,
+        currentRound: {
+          ...BASE_STATE.currentRound,
+          capacity: {
+            available: 2,
+            total: 10,
           },
         },
-      ],
-    });
+        availableGameActions: [
+          {
+            status: {
+              type: 'AVAILABLE',
+              times: UNIQUE_ACTION,
+              dependencies: [],
+            },
+            gameAction: {
+              id: 'BUILD_SERVER',
+              icon: '',
+              round: 1,
+              name: 'My Action',
+              effect: () => null,
+              description: '',
+              cost: 3,
+            },
+          },
+        ],
+      },
+      BASE_CONFIG,
+    );
 
     fireEvent.click(screen.getByRole('button', { name: /play/i }));
     fireEvent.doubleClick(screen.getByRole('button', { name: /My Action/i }));

@@ -1,6 +1,7 @@
 import React, { HTMLAttributes } from 'react';
 import cx from 'classnames';
-import { GameAction, isGameActionWithImage } from '../../state';
+import type { GameAction } from '../../../state';
+import { isGameActionWithImage } from '../../../lib';
 import styles from './Actions.module.css';
 
 type Props = Omit<HTMLAttributes<HTMLSpanElement>, 'children'> & {

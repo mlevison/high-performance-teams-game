@@ -1,15 +1,15 @@
-import { TOTAL_ROUNDS } from '../gameConstants';
 import React from 'react';
-import {
+import type {
   AppRound,
   AppState,
   GameActionAction,
-  findGameActionById,
-} from '../state';
+  GameConfig,
+} from '../../state';
+import { findGameActionById } from '../../lib';
 import { RoundDescription } from './Round';
 import { ActionImage } from './Actions';
 import styles from './Log.module.css';
-import { FinalResults } from 'components';
+import FinalResults from './FinalResults';
 import { ActiveEffects } from './Status';
 
 type RoundLogEntry = AppRound & {
@@ -18,6 +18,9 @@ type RoundLogEntry = AppRound & {
 };
 type Props = {
   state: AppState;
+  config: GameConfig;
+  link: string;
+  totalRounds: number;
 };
 export default function Log(props: Props) {
   const rounds = [...props.state.pastRounds, props.state.currentRound];
@@ -26,7 +29,7 @@ export default function Log(props: Props) {
   roundsLog.push(currentRound);
   props.state.log.forEach((action) => {
     if (action.type === 'NEXT_ROUND') {
-      if (roundsLog.length < TOTAL_ROUNDS) {
+      if (roundsLog.length < props.totalRounds) {
         currentRound = { ...rounds[roundsLog.length], actions: [] };
         roundsLog.push(currentRound);
       }
@@ -69,7 +72,10 @@ export default function Log(props: Props) {
                   <h4>Actions Taken</h4>
                   <ul className={styles.actionList}>
                     {round.actions.map((action, i) => {
-                      const gameAction = findGameActionById(action.payload);
+                      const gameAction = findGameActionById(
+                        action.payload,
+                        props.config.rounds,
+                      );
                       const isReSelect = round.actions
                         .slice(0, i)
                         .map((action) => action.payload)
@@ -113,7 +119,7 @@ export default function Log(props: Props) {
           );
         })}
       </ol>
-      <FinalResults state={props.state} />
+      <FinalResults state={props.state} link={props.link} />
     </>
   );
 }

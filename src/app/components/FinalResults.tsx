@@ -1,11 +1,12 @@
-import { restartGame, sumByProp } from 'lib';
 import React from 'react';
-import { AppState, GameDispatch } from 'state';
+import type { AppState } from '../../state';
+import { restartGame, sumByProp, GameDispatch } from '../../lib';
 import CapStoryChart from './CapStoryChart';
 import Button from './Button';
 
 type Props = {
   state: AppState;
+  link: string;
   dispatch?: GameDispatch;
 };
 
@@ -52,7 +53,7 @@ export default function Results(props: Props) {
       <pre>
         <input
           style={{ width: '100%' }}
-          value={props.state.link}
+          value={props.link}
           readOnly
           onClick={(ev) => (ev.target as HTMLInputElement).select()}
         />

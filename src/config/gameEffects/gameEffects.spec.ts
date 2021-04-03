@@ -8,8 +8,8 @@ const { gameEffects } = jest.requireActual('./gameEffects');
 jest.mock('./gameEffects', () => ({ gameEffects: [] }));
 jest.mock('../rounds', () => {
   return {
-    rounds: {
-      1: {
+    rounds: [
+      {
         actions: {
           BUILD_SERVER: {
             type: 'ENGINEERING',
@@ -22,7 +22,7 @@ jest.mock('../rounds', () => {
         },
         effect: () => ({ capacityChange: 10 }),
       },
-    },
+    ],
   };
 });
 

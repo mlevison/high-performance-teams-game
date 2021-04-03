@@ -1,17 +1,8 @@
 import React from 'react';
-import { EFFECT_HIDDEN } from '../../gameConstants';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
-export type Round3ActionId =
-  | 'IMPROVE_RETROSPECTIVES_CHANGE_AGENDA'
-  | 'OBSERVE_PEOPLE_AND_RELATIONSHIPS'
-  | 'ONE_ON_ONES'
-  | 'PAIR_PROGRAMMING'
-  | 'STORY_MAPPING_OR_OTHER'
-  | 'REFACTORING';
-
-export const round3: RoundDescription<Round3ActionId> = {
+export const round3: RoundDescription = {
   title: 'Work Harder',
   description: (
     <p>
@@ -19,7 +10,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       in the next Sprint.
     </p>
   ),
-  effect: () => ({ title: EFFECT_HIDDEN, gremlinChange: 50 }),
+  effect: () => ({ title: false, gremlinChange: 50 }),
   actions: {
     IMPROVE_RETROSPECTIVES_CHANGE_AGENDA: {
       image: example,

@@ -1,21 +1,8 @@
 import React from 'react';
 import type { RoundDescription } from '../../state';
-import {
-  EFFECT_HIDDEN,
-  START_CAPACITY,
-  START_GREMLIN_CHANCE,
-  START_USER_STORY_CHANCE,
-} from '../../gameConstants';
 import example from './images/example.jpg';
 
-export type Round1ActionId =
-  | 'PROTECTED_FROM_OUTSIDE_DISTRACTION'
-  | 'CLARIFY_PRODUCT_VISION'
-  | 'WORKING_AGREEMENTS'
-  | 'BUILD_SERVER'
-  | 'TEAMS_ON_SAME_FLOOR';
-
-export const round1: RoundDescription<Round1ActionId> = {
+export const round1: RoundDescription = {
   title: 'Team, welcome to the World’s Smallest Online Bookstore',
   description: (
     <p>
@@ -26,10 +13,10 @@ export const round1: RoundDescription<Round1ActionId> = {
     </p>
   ),
   effect: () => ({
-    title: EFFECT_HIDDEN,
-    capacityChange: START_CAPACITY,
-    userStoryChange: START_USER_STORY_CHANCE,
-    gremlinChange: START_GREMLIN_CHANCE,
+    title: false,
+    capacityChange: 10,
+    userStoryChange: 30,
+    gremlinChange: 0,
   }),
   actions: {
     PROTECTED_FROM_OUTSIDE_DISTRACTION: {

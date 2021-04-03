@@ -1,12 +1,14 @@
-import { findGameActionById, GameEffect } from '../../state';
+import { rounds as roundConfigs } from '../rounds';
+import { findGameActionById } from '../../lib';
+import type { GameEffect } from '../../state';
 
 export const gameEffects: { [key: string]: GameEffect } = {
   technicalDebtDrag(rounds) {
     let roundsWithoutEngAction = 0;
 
     for (const round of rounds) {
-      const roundsGameActions = round.selectedGameActionIds.map(
-        findGameActionById,
+      const roundsGameActions = round.selectedGameActionIds.map((id) =>
+        findGameActionById(id, roundConfigs),
       );
       const engineeringAction = roundsGameActions.find(
         ({ type }) => type === 'ENGINEERING',
@@ -35,8 +37,8 @@ export const gameEffects: { [key: string]: GameEffect } = {
     let roundsWithoutCommunicationAction = 0;
 
     for (const round of rounds) {
-      const roundsGameActions = round.selectedGameActionIds.map(
-        findGameActionById,
+      const roundsGameActions = round.selectedGameActionIds.map((id) =>
+        findGameActionById(id, roundConfigs),
       );
       const communicationAction = roundsGameActions.find(
         ({ type }) => type === 'COMMUNICATION',

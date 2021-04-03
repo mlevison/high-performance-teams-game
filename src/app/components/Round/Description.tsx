@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { AppState } from '../../state';
+import type { AppState } from '../../../state';
 import EffectValue from '../EffectValue';
 import styles from './Round.module.css';
 

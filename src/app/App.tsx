@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { useAppState, GameState, INITIAL_STATE } from './state';
-import { TOTAL_ROUNDS } from './gameConstants';
+import React, { useMemo, useState } from 'react';
+import type { GameState, GameConfig, Effect } from '../state';
 import {
   Results,
   FinalResults,
@@ -20,18 +19,37 @@ import {
   Log,
 } from './components';
 import {
+  INITIAL_STATE,
   GAME_STATE_OK,
   InitialStateWithStatus,
   restartGame,
   useVersion,
   saveToLocalStorage,
-} from './lib';
+  sumByProp,
+  useAppState,
+} from '../lib';
 
-type Props = { initialState: GameState };
+type Props = { initialState: GameState; config: GameConfig };
 export function App(props: Props) {
-  const [state, dispatch, closeRound, rollGremlin] = useAppState(
+  const [state, closeRound, rollGremlin, link, dispatch] = useAppState(
     props.initialState,
+    props.config,
   );
+  const {
+    rounds: [firstRound],
+  } = props.config;
+  const interactiveRounds = props.config.rounds.length;
+  const totalRounds = interactiveRounds + props.config.trailingRounds;
+  const [initialCapacity, initialUserStoryChance] = useMemo(() => {
+    const initialEffects = ([] as Effect[]).concat(
+      (!firstRound.effect ? null : firstRound.effect([], 1)) || [],
+    );
+
+    return [
+      sumByProp(initialEffects, 'capacityChange'),
+      sumByProp(initialEffects, 'userStoryChange'),
+    ];
+  }, [firstRound]);
   const [tab, setTab] = useState<'play' | 'rules' | 'log'>(
     props.initialState === INITIAL_STATE ? 'rules' : 'play',
   );
@@ -65,17 +83,19 @@ export function App(props: Props) {
       <Content>
         <div style={{ display: tab === 'play' ? 'block' : 'none' }}>
           {state.ui.review === false &&
-          state.currentRound.number > TOTAL_ROUNDS ? (
-            <FinalResults state={state} dispatch={dispatch} />
+          state.currentRound.number > totalRounds ? (
+            <FinalResults state={state} dispatch={dispatch} link={link} />
           ) : (
             <Round
               ui={state.ui}
               key={state.currentRound.number}
               currentRound={state.currentRound}
+              totalRounds={totalRounds}
               welcome={
                 <Welcome
                   review={state.ui.review}
                   dispatch={dispatch}
+                  totalRounds={totalRounds}
                   gremlin={state.currentRound.gremlin}
                 >
                   {state.currentRound.description}
@@ -125,7 +145,10 @@ export function App(props: Props) {
                       />
                     </Row>
                     <Row>
-                      <Status {...state.currentRound} />
+                      <Status
+                        {...state.currentRound}
+                        startCapacity={initialCapacity}
+                      />
                     </Row>
                   </Rows>
                 </>
@@ -138,13 +161,23 @@ export function App(props: Props) {
                   dispatch={dispatch}
                   closeRound={closeRound}
                   rollGremlin={rollGremlin}
+                  initialUserStoryChance={initialUserStoryChance}
+                  totalRounds={totalRounds}
+                  interactiveRounds={interactiveRounds}
                 />
               }
             />
           )}
         </div>
         {tab === 'rules' && <Rules />}
-        {tab === 'log' && <Log state={state} />}
+        {tab === 'log' && (
+          <Log
+            state={state}
+            config={props.config}
+            totalRounds={totalRounds}
+            link={link}
+          />
+        )}
       </Content>
     </Container>
   );
@@ -152,6 +185,7 @@ export function App(props: Props) {
 
 export default function OutdatedStateWarning(props: {
   initialState: InitialStateWithStatus;
+  config: GameConfig;
 }) {
   const version = useVersion();
   const [initialState, setInitialState] = useState(props.initialState);
@@ -197,7 +231,7 @@ export default function OutdatedStateWarning(props: {
   }
 
   if (initialState.status === GAME_STATE_OK) {
-    return <App initialState={initialState.state} />;
+    return <App initialState={initialState.state} config={props.config} />;
   }
 
   return (

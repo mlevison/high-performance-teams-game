@@ -10,7 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { AppRound } from '../state';
+import type { AppRound } from '../../state';
 import styles from './CapStoryChart.module.css';
 
 const USC = 'Chance of completing User Stories';

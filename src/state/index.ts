@@ -1,20 +1,16 @@
-import { Dispatch } from 'react';
-import type { Action } from './game';
+export type { Action } from './game';
 export type { ClosedGameRound as ClosedRound, AppRound } from './round';
-export type { GameState, GameActionAction } from './game';
-export type { AppState } from './useAppState';
-export type { GameActionWithStatus, GameAction } from './gameActions';
+export type { GameState, GameActionAction, GameConfig } from './game';
+export type { AppState } from './deriveAppState';
+export type {
+  GameActionWithStatus,
+  GameAction,
+  GameActionWithImage,
+} from './gameActions';
 export type { RoundDescription } from './rounds';
 export type { GremlinList } from './gremlins';
-export type { GameEffect, VisibleEffect, BaseEffect } from './effects';
-export type GameDispatch = Dispatch<Action>;
+export type { GameEffect, VisibleEffect, BaseEffect, Effect } from './effects';
 export { getCosts, closeRound } from './round';
-export {
-  findGameActionById,
-  getAvailableGameActions,
-  isGameActionWithIcon,
-  isGameActionWithImage,
-  UNIQUE_ACTION,
-} from './gameActions';
-export { default as useAppState } from './useAppState';
-export { gameReducer, INITIAL_STATE } from './game';
+export { getAvailableGameActions, UNIQUE_ACTION } from './gameActions';
+export { deriveAppState } from './deriveAppState';
+export { createGameReducer } from './game';

@@ -1,20 +1,20 @@
 import { Effect, isEffect } from '../effects';
-import { rounds } from '../../config';
-import { GameState } from 'state/game';
+import { GameState, GameConfig } from '../game';
 
 export function getRoundEffects(
   state: Pick<GameState, 'currentRound' | 'pastRounds'>,
+  rounds: GameConfig['rounds'],
 ): Effect[] {
-  const currentRound = state.pastRounds.length + 1;
+  const currentRoundIndex = state.pastRounds.length;
   const roundEffects: (null | Effect)[] = [];
 
-  for (let i = 0; i < currentRound; i++) {
-    const desc = rounds[i + 1];
+  for (let i = 0; i <= currentRoundIndex; i++) {
+    const desc = rounds[i];
     if (!desc) {
       continue;
     }
     const previousRounds = state.pastRounds.slice(0, i);
-    const effect = desc.effect?.(previousRounds, currentRound) || null;
+    const effect = desc.effect?.(previousRounds, currentRoundIndex + 1) || null;
 
     if (Array.isArray(effect)) {
       roundEffects.push(...effect);
@@ -26,9 +26,9 @@ export function getRoundEffects(
   /* Since gremlins are rolled at the end of previous round we need to look
    * at the next rounds effect for gremlin modification */
   const nextRoundEffect =
-    rounds[currentRound + 1]?.effect?.(
+    rounds[currentRoundIndex + 1]?.effect?.(
       [...state.pastRounds, state.currentRound],
-      currentRound + 1,
+      currentRoundIndex + 1,
     ) || [];
   const nextRoundEffects = Array.isArray(nextRoundEffect)
     ? nextRoundEffect

@@ -1,3 +1,4 @@
+import { concatByProp, INITIAL_STATE } from '../lib';
 import {
   GameRound,
   ClosedGameRound,
@@ -5,13 +6,12 @@ import {
   closeRound,
   getActionEffects,
 } from './round';
-import { Effect, isEffect } from './effects';
-import { concatByProp } from '../lib';
-import { GameActionId, gameEffects, GremlinId } from '../config';
+import { Effect, GameEffect, isEffect } from './effects';
 import { getRoundEffects } from './rounds';
 import { getEffects } from './gameActions';
-import { getGremlinEffects } from './gremlins';
-import { TOTAL_ROUNDS } from '../gameConstants';
+import { getGremlinEffects, GremlinList } from './gremlins';
+import { RoundDescription } from './rounds/types';
+export type { GameAction } from './gameActions';
 
 export type GameState = {
   currentRound: GameRound;
@@ -41,17 +41,17 @@ export type SetUiClosedRoundAction = {
 };
 export type SelectGameActionAction = {
   type: 'SELECT_GAME_ACTION';
-  payload: GameActionId;
+  payload: string;
 };
 export type UnselectGameActionAction = {
   type: 'UNSELECT_GAME_ACTION';
-  payload: GameActionId;
+  payload: string;
 };
 export type NextRoundAction = {
   type: 'NEXT_ROUND';
   payload: {
     closedRound: ClosedGameRound;
-    gremlin: GremlinId | null;
+    gremlin: string | null;
   };
 };
 export type FinishGameAction = {
@@ -72,22 +72,17 @@ export type Action =
   | FinishGameAction
   | UiAction;
 
-export const INITIAL_STATE: GameState = {
-  currentRound: {
-    gremlin: null,
-    selectedGameActionIds: [],
-  },
-  pastRounds: [],
-  ui: {
-    review: false,
-    view: 'welcome',
-  },
-  log: [],
+export type GameConfig = {
+  trailingRounds: number;
+  rounds: RoundDescription[];
+  gremlins: GremlinList;
+  gameEffects: { [key: string]: GameEffect };
 };
 
 export function getAllEffects(
   state: Pick<GameState, 'currentRound' | 'pastRounds'>,
-  finishedActionIds: GameActionId[] = concatByProp(
+  config: GameConfig,
+  finishedActionIds: string[] = concatByProp(
     state.pastRounds,
     'selectedGameActionIds',
   ),
@@ -95,11 +90,16 @@ export function getAllEffects(
   const effects: Effect[] = [];
 
   /* Base round effects of past rounds */
-  effects.push(...getRoundEffects(state));
+  effects.push(...getRoundEffects(state, config.rounds));
 
   /* Current rounds effects */
   state.currentRound.selectedGameActionIds.forEach((id) => {
-    const currentRoundEffects = getEffects(id, 0, finishedActionIds);
+    const currentRoundEffects = getEffects(
+      id,
+      0,
+      finishedActionIds,
+      config.rounds,
+    );
 
     currentRoundEffects.forEach((effect) => {
       if (
@@ -113,7 +113,14 @@ export function getAllEffects(
   });
 
   /* current rounds gremlin */
-  effects.push(...getGremlinEffects(state.currentRound, 0, finishedActionIds));
+  effects.push(
+    ...getGremlinEffects(
+      state.currentRound,
+      0,
+      finishedActionIds,
+      config.gremlins,
+    ),
+  );
 
   /* Get action and gremlin effects from past rounds */
   const roundAmounts = state.pastRounds.length;
@@ -122,14 +129,16 @@ export function getAllEffects(
 
     effects.push(
       /* gremlins occur on current round, so they're at age +1 in next */
-      ...getGremlinEffects(round, age, finishedActionIds),
+      ...getGremlinEffects(round, age, finishedActionIds, config.gremlins),
       /* actions get active in next */
-      ...getActionEffects(round, age, finishedActionIds).filter(isEffect),
+      ...getActionEffects(round, age, finishedActionIds, config.rounds).filter(
+        isEffect,
+      ),
     );
   });
 
   /* Add game Effects */
-  Object.values(gameEffects).forEach((gameEffect) => {
+  Object.values(config.gameEffects).forEach((gameEffect) => {
     const effect = gameEffect(state.pastRounds);
     if (Array.isArray(effect)) {
       effects.push(...effect);
@@ -160,81 +169,86 @@ function nextRound(state: GameState, action: NextRoundAction): GameState {
   };
 }
 
-export function gameReducer(state: GameState, action: Action): GameState {
-  switch (action.type) {
-    case 'SELECT_GAME_ACTION': {
-      return {
-        ...state,
-        currentRound: {
-          ...state.currentRound,
-          selectedGameActionIds: [
-            ...state.currentRound.selectedGameActionIds,
-            action.payload,
-          ],
-        },
-        log: state.log.concat(action),
-      };
-    }
-    case 'UNSELECT_GAME_ACTION': {
-      return {
-        ...state,
-        currentRound: {
-          ...state.currentRound,
-          selectedGameActionIds: state.currentRound.selectedGameActionIds.filter(
-            (id) => id !== action.payload,
-          ),
-        },
-        log: state.log.concat(action),
-      };
-    }
-    case 'NEXT_ROUND': {
-      return nextRound(state, action);
-    }
-    case 'FINISH_GAME': {
-      return Array.from({
-        length: TOTAL_ROUNDS - state.pastRounds.length,
-      }).reduce<[GameState, ClosedGameRound]>(
-        ([state, closedRound]) => {
-          const nextState = nextRound(state, {
-            type: 'NEXT_ROUND',
-            payload: {
-              closedRound,
-              gremlin: null,
-            },
-          });
+export function createGameReducer(config: GameConfig) {
+  return (state: GameState, action: Action): GameState => {
+    switch (action.type) {
+      case 'SELECT_GAME_ACTION': {
+        return {
+          ...state,
+          currentRound: {
+            ...state.currentRound,
+            selectedGameActionIds: [
+              ...state.currentRound.selectedGameActionIds,
+              action.payload,
+            ],
+          },
+          log: state.log.concat(action),
+        };
+      }
+      case 'UNSELECT_GAME_ACTION': {
+        return {
+          ...state,
+          currentRound: {
+            ...state.currentRound,
+            selectedGameActionIds: state.currentRound.selectedGameActionIds.filter(
+              (id) => id !== action.payload,
+            ),
+          },
+          log: state.log.concat(action),
+        };
+      }
+      case 'NEXT_ROUND': {
+        return nextRound(state, action);
+      }
+      case 'FINISH_GAME': {
+        return Array.from({
+          length:
+            config.rounds.length +
+            config.trailingRounds -
+            state.pastRounds.length,
+        }).reduce<[GameState, ClosedGameRound]>(
+          ([state, closedRound]) => {
+            const nextState = nextRound(state, {
+              type: 'NEXT_ROUND',
+              payload: {
+                closedRound,
+                gremlin: null,
+              },
+            });
 
-          return [nextState, closeRound(nextState)];
-        },
-        [state, action.payload.closedRound],
-      )[0];
+            return [nextState, closeRound(nextState, config)];
+          },
+          [state, action.payload.closedRound],
+        )[0];
+      }
+      case 'SET_UI_VIEW_ACTION':
+        return {
+          ...state,
+          ui: {
+            ...state.ui,
+            view: action.payload,
+          },
+        };
+      case 'SET_UI_CLOSED_ROUND_ACTION':
+        return {
+          ...state,
+          ui: {
+            ...state.ui,
+            view: 'results',
+            closedRound: action.payload,
+          },
+        };
+      case 'SET_UI_REVIEW_ACTION':
+        return {
+          ...state,
+          ui: {
+            ...state.ui,
+            view: 'welcome',
+            review: action.payload,
+          },
+        };
+      case 'RESTART_GAME':
+        return INITIAL_STATE;
     }
-    case 'SET_UI_VIEW_ACTION':
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          view: action.payload,
-        },
-      };
-    case 'SET_UI_CLOSED_ROUND_ACTION':
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          view: 'results',
-          closedRound: action.payload,
-        },
-      };
-    case 'SET_UI_REVIEW_ACTION':
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          view: 'welcome',
-          review: action.payload,
-        },
-      };
-    case 'RESTART_GAME':
-      return INITIAL_STATE;
-  }
+  };
 }

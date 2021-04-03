@@ -1,4 +1,4 @@
-import { GameDispatch } from '../state';
+import { GameDispatch } from './useAppState';
 
 export function restartGame(dispatch: GameDispatch) {
   return () => {

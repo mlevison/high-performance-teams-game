@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import cx from 'classnames';
-import { GameActionWithStatus } from '../../state';
+import type { GameActionWithStatus } from '../../../state';
 import styles from './Actions.module.css';
 import Overlay from './Overlay';
 import Button from '../Button';

@@ -1,15 +1,19 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useAppState from '../state/useAppState';
-import type { GameActionId, GremlinId } from '../config';
-import { BaseEffect, INITIAL_STATE } from 'state';
-import {
-  START_CAPACITY,
-  START_GREMLIN_CHANCE,
-  START_USER_STORY_CHANCE,
-} from '../gameConstants';
+import { useAppState } from './useAppState';
+import { INITIAL_STATE } from './initialState';
+import { BaseEffect, RoundDescription } from '../state';
+import { config } from '../config';
+
+export function emptyRound(): RoundDescription {
+  return {
+    title: 'EmptyRound',
+    description: null,
+    actions: {},
+  };
+}
 
 export function getGame() {
-  const wrapper = renderHook(() => useAppState(INITIAL_STATE));
+  const wrapper = renderHook(() => useAppState(INITIAL_STATE, config));
 
   return {
     get state() {
@@ -23,23 +27,23 @@ export function getGame() {
         .map((actionWithStatus) => actionWithStatus.gameAction.id);
     },
     closeRound: () => {
-      return wrapper.result.current[2]();
+      return wrapper.result.current[1]();
     },
-    nextRound: (gremlin: GremlinId | null = null) => {
+    nextRound: (gremlin: string | null = null) => {
       const closedRound = {
-        ...wrapper.result.current[2](),
+        ...wrapper.result.current[1](),
       };
 
       act(() => {
-        wrapper.result.current[1]({
+        wrapper.result.current[4]({
           type: 'NEXT_ROUND',
           payload: { closedRound, gremlin },
         });
       });
     },
-    selectAction: (gameActionId: GameActionId) => {
+    selectAction: (gameActionId: string) => {
       act(() => {
-        wrapper.result.current[1]({
+        wrapper.result.current[4]({
           type: 'SELECT_GAME_ACTION',
           payload: gameActionId,
         });
@@ -62,18 +66,16 @@ export function testCurrentRound(
 ) {
   if (round.userStoryChange !== undefined) {
     expect(game.state.currentRound).toHaveUserStoryChance(
-      round.userStoryChange + START_USER_STORY_CHANCE,
+      round.userStoryChange + 30,
     );
   }
   if (round.capacityChange !== undefined) {
     expect(game.state.currentRound).toHaveTotalCapacity(
-      round.capacityChange + START_CAPACITY,
+      round.capacityChange + 10,
     );
   }
   if (round.gremlinChange !== undefined) {
-    expect(game.state.currentRound).toHaveGremlinChance(
-      round.gremlinChange + START_GREMLIN_CHANCE,
-    );
+    expect(game.state.currentRound).toHaveGremlinChance(round.gremlinChange);
   }
 }
 

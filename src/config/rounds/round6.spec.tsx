@@ -8,10 +8,14 @@ import { overtimeCapacityBump, overtimeUserStoryChance } from './round6';
 
 /* disable irrelevant other rounds */
 jest.mock('./index', () => ({
-  rounds: {
-    1: require('./round1').round1,
-    6: require('./round6').round6,
-  },
+  rounds: [
+    require('./round1').round1,
+    require('../../lib/testHelpers').emptyRound(),
+    require('../../lib/testHelpers').emptyRound(),
+    require('../../lib/testHelpers').emptyRound(),
+    require('../../lib/testHelpers').emptyRound(),
+    require('./round6').round6,
+  ],
 }));
 /* disable game effect to only tests single actions */
 jest.mock('../gameEffects', () => ({

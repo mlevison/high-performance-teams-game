@@ -1,19 +1,19 @@
-import { sumByProp, storySucceeds, concatByProp } from '../lib';
-import { GameActionId, GremlinId, rounds } from '../config';
-import { GameState, getCapacity, getAllEffects } from './game';
 import {
+  sumByProp,
+  storySucceeds,
+  concatByProp,
   findGameActionById,
-  getCost as getActionCost,
-  getEffects,
-} from './gameActions';
+} from '../lib';
+import { GameState, getCapacity, getAllEffects, GameConfig } from './game';
+import { getCost as getActionCost, getEffects } from './gameActions';
 import { Effect, isEffect, isVisibleEffect, VisibleEffect } from './effects';
 import { getGremlin, GremlinDescription } from './gremlins';
 import { ReactNode } from 'react';
 import { GameAction } from './gameActions/types';
 
 export type GameRound = {
-  gremlin: GremlinId | null;
-  selectedGameActionIds: GameActionId[];
+  gremlin: string | null;
+  selectedGameActionIds: string[];
 };
 export type ClosedGameRound = GameRound & {
   storiesCompleted: number;
@@ -35,7 +35,7 @@ export type AppRound = {
   activeEffects: VisibleEffect[];
 };
 
-export function createRound(gremlin: GremlinId | null): GameRound {
+export function createRound(gremlin: string | null): GameRound {
   return {
     gremlin,
     selectedGameActionIds: [],
@@ -45,27 +45,32 @@ export function createRound(gremlin: GremlinId | null): GameRound {
 export function getActionEffects(
   round: ClosedGameRound,
   age: number,
-  finishedActionIds: GameActionId[],
+  finishedActionIds: string[],
+  rounds: GameConfig['rounds'],
 ): Effect[] {
   const effects: Effect[] = [];
   round.selectedGameActionIds.forEach((id) => {
-    effects.push(...getEffects(id, age, finishedActionIds));
+    effects.push(...getEffects(id, age, finishedActionIds, rounds));
   });
   return effects;
 }
 
-export function getCosts(round: GameRound) {
+export function getCosts(round: GameRound, rounds: GameConfig['rounds']) {
   return sumByProp(
     round.selectedGameActionIds.map((id) => ({
-      cost: getActionCost(findGameActionById(id)),
+      cost: getActionCost(findGameActionById(id, rounds)),
     })),
     'cost',
   );
 }
 
-export function closeRound(state: GameState): ClosedGameRound {
-  const effects = getAllEffects(state);
-  const storiesAttempted = getCapacity(effects) - getCosts(state.currentRound);
+export function closeRound(
+  state: GameState,
+  config: GameConfig,
+): ClosedGameRound {
+  const effects = getAllEffects(state, config);
+  const storiesAttempted =
+    getCapacity(effects) - getCosts(state.currentRound, config.rounds);
 
   const chance = sumByProp(effects, 'userStoryChange');
 
@@ -86,24 +91,25 @@ function orZero(num: number): number {
 
 export function deriveAppRound(
   state: Pick<GameState, 'currentRound' | 'pastRounds'>,
+  config: GameConfig,
 ): AppRound {
   const finishedActionIds = concatByProp(
     state.pastRounds,
     'selectedGameActionIds',
   );
-  const effects = getAllEffects(state, finishedActionIds);
+  const effects = getAllEffects(state, config, finishedActionIds);
   const roundCapacity = orZero(getCapacity(effects));
   const visibleEffects = effects.filter(isVisibleEffect);
   const totalUserStoryChance = sumByProp(effects, 'userStoryChange');
-  const costs = getCosts(state.currentRound);
+  const costs = getCosts(state.currentRound, config.rounds);
   const capacityAvailable = orZero(roundCapacity - costs);
-  const currentRoundNumber = state.pastRounds.length + 1;
+  const currentRoundIndex = state.pastRounds.length;
   const selectedGameActions = state.currentRound.selectedGameActionIds.map(
-    findGameActionById,
+    (id) => findGameActionById(id, config.rounds),
   );
-  const currentRoundTitle = rounds[currentRoundNumber]?.title;
-  const currentRoundDescription = rounds[currentRoundNumber]?.description;
-  const gremlin = getGremlin(state.currentRound);
+  const currentRoundTitle = config.rounds[currentRoundIndex]?.title;
+  const currentRoundDescription = config.rounds[currentRoundIndex]?.description;
+  const gremlin = getGremlin(state.currentRound, config.gremlins);
   const gremlinEffect = gremlin?.effect(0, finishedActionIds) || null;
   const visibleGremlinEffects = (Array.isArray(gremlinEffect)
     ? gremlinEffect
@@ -123,7 +129,7 @@ export function deriveAppRound(
           effect: visibleGremlinEffects,
         }
       : undefined,
-    number: currentRoundNumber,
+    number: currentRoundIndex + 1,
     capacity: {
       available: capacityAvailable,
       total: roundCapacity,
