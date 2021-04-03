@@ -1,52 +1,73 @@
-import * as game from './game';
 import { INITIAL_STATE } from '../lib';
-import { config } from '../config';
+import { emptyRound } from '../lib/testHelpers';
 import { rollGremlin } from './gremlins';
 import { reset, addRolls } from '../lib/notRandom';
+import type { GameConfig } from './game';
 
 jest.mock('../lib/random', () => require('../lib/notRandom'));
 
 describe('rollGremlin', () => {
+  let config: GameConfig;
   beforeEach(() => {
     reset();
-
-    jest
-      .spyOn(game, 'getAllEffects')
-      .mockImplementation(() => [{ gremlinChange: 50, title: false }]);
+    config = {
+      rounds: [
+        {
+          title: 'FirstRound',
+          description: null,
+          actions: {},
+          effect: () => ({ title: false, gremlinChange: 50 }),
+        },
+        emptyRound(),
+      ],
+      trailingRounds: 0,
+      gameEffects: {},
+      gremlins: {
+        MY_GREMLIN: {
+          name: 'Example Gremlin',
+          probability: () => 0,
+          effect: () => null,
+        },
+      },
+    };
   });
 
   it('rolls nothing when occur roll does not meet gremlinChance', () => {
     addRolls([0.51]);
+    config.gremlins.MY_GREMLIN.probability = jest.fn(() => 0);
+
     expect(rollGremlin(INITIAL_STATE, config)).toBe(null);
+    expect(config.gremlins.MY_GREMLIN.probability).not.toHaveBeenCalled();
   });
 
   it('has a gremlin when roll meets chance', () => {
     addRolls([0.49, 0.5]);
-    expect(rollGremlin(INITIAL_STATE, config)).toEqual(expect.any(String));
+    config.gremlins.MY_GREMLIN.probability = jest.fn(() => 10);
+
+    expect(rollGremlin(INITIAL_STATE, config)).toBe('MY_GREMLIN');
+    expect(config.gremlins.MY_GREMLIN.probability).toHaveBeenCalledTimes(1);
   });
 
-  it('rolls nothing when no gremlin has probability', () => {
-    Object.values(config.gremlins).forEach((gremlin) => {
-      jest.spyOn(gremlin, 'probability').mockImplementation(() => 0);
-    });
-
+  it('returns nothing when no gremlin has probability', () => {
     addRolls([0.49, 0.5]);
+    config.gremlins.MY_GREMLIN.probability = jest.fn(() => 0);
+
     expect(rollGremlin(INITIAL_STATE, config)).toBe(null);
+    expect(config.gremlins.MY_GREMLIN.probability).toHaveBeenCalledTimes(1);
   });
 
   it('rolls the gremlin with probability', () => {
-    Object.values(config.gremlins).forEach((gremlin) => {
-      jest.spyOn(gremlin, 'probability').mockImplementation(() => 0);
-    });
-
-    jest
-      .spyOn(config.gremlins.GREMLIN_MANAGEMENT_YELLS, 'probability')
-      .mockImplementation(() => 1);
+    config.gremlins.MY_GREMLIN.probability = jest.fn(() => 0);
+    config.gremlins.MY_OTHER_GREMLIN = {
+      name: 'Other Gremlin',
+      probability: jest.fn(() => 1),
+      effect: () => null,
+    };
 
     addRolls([0.49, 0.5]);
-    expect(rollGremlin(INITIAL_STATE, config)).toBe('GREMLIN_MANAGEMENT_YELLS');
-    expect(
-      config.gremlins.GREMLIN_MANAGEMENT_YELLS.probability,
-    ).toHaveBeenCalledWith(INITIAL_STATE);
+    expect(rollGremlin(INITIAL_STATE, config)).toBe('MY_OTHER_GREMLIN');
+    expect(config.gremlins.MY_OTHER_GREMLIN.probability).toHaveBeenCalledWith(
+      INITIAL_STATE,
+    );
   });
 });
