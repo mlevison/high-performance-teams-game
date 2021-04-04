@@ -2,11 +2,11 @@ import { Effect } from '../effects';
 import { findGameActionById } from '../../lib/findGameActionById';
 import { GameConfig } from '../game';
 
-export function getEffects(
-  gameActionId: string,
+export function getEffects<GameActionId extends string>(
+  gameActionId: GameActionId,
   age: number,
-  finishedActionIds: string[],
-  rounds: GameConfig['rounds'],
+  finishedActionIds: GameActionId[],
+  rounds: GameConfig<GameActionId>['rounds'],
 ): Effect[] {
   const gameAction = findGameActionById(gameActionId, rounds);
   const effect = gameAction.effect?.(age, finishedActionIds) || null;

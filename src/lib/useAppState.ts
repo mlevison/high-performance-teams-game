@@ -8,19 +8,31 @@ import type {
 } from '../state';
 import { createGameReducer, deriveAppState } from '../state';
 import { usePersistState, useStateLink } from '../lib';
+import { createInitialState } from './initialState';
 
-export type GameDispatch = Dispatch<Action>;
+export type GameDispatch<GameActionId extends string = string> = Dispatch<
+  Action<GameActionId>
+>;
 
-export function useAppState(
-  initialState: GameState,
-  config: GameConfig,
-): [AppState, () => ClosedRound, () => string | null, string, GameDispatch] {
-  const gameReducer = useMemo(() => createGameReducer(config), [config]);
+export function useAppState<GameActionId extends string>(
+  config: GameConfig<GameActionId>,
+  initialState: GameState<GameActionId>,
+): [
+  AppState<GameActionId>,
+  () => ClosedRound<GameActionId>,
+  () => string | null,
+  string,
+  GameDispatch<GameActionId>,
+] {
+  const gameReducer = useMemo(
+    () => createGameReducer(config, createInitialState()),
+    [config],
+  );
   const [gameState, dispatch] = useReducer(gameReducer, initialState);
   usePersistState(gameState);
   const link = useStateLink(gameState);
 
-  const state: GameState =
+  const state: GameState<GameActionId> =
     gameState.ui.review === false
       ? gameState
       : {

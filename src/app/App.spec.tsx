@@ -2,12 +2,13 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { App } from './App';
 import { AppState, UNIQUE_ACTION, ClosedRound, GameConfig } from '../state';
-import { INITIAL_STATE, useAppState } from '../lib';
+import { createInitialState, useAppState } from '../lib';
 import { emptyRound } from '../lib/testHelpers';
 
-jest.mock('../lib');
+jest.mock('../lib/useAppState');
 jest.mock('recharts');
 
+const INITIAL_STATE = createInitialState();
 const BASE_STATE: AppState = {
   ui: {
     review: false,

@@ -2,10 +2,8 @@ import React, { ReactElement } from 'react';
 import type { AppState } from '../../../state';
 import styles from './Round.module.css';
 
-type Props = {
-  currentRound: AppState['currentRound'];
+type Props = Pick<AppState, 'currentRound' | 'ui'> & {
   totalRounds: number;
-  ui: AppState['ui'];
   welcome: ReactElement;
   actions: ReactElement;
   results?: ReactElement;

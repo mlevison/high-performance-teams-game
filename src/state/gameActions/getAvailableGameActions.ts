@@ -6,8 +6,8 @@ import { GameConfig } from '../game';
 export const UNIQUE = Symbol('UNIQUE');
 
 type Times = typeof UNIQUE | number;
-type GameActionStatus = {
-  dependencies: (GameAction & { missing: boolean })[];
+type GameActionStatus<GameActionId extends string> = {
+  dependencies: (GameAction<GameActionId> & { missing: boolean })[];
 } & (
   | { type: 'MISSING_DEP' }
   | { type: 'AVAILABLE'; times: Times }
@@ -15,7 +15,9 @@ type GameActionStatus = {
   | { type: 'FINISHED' }
 );
 
-function getDependencies(gameAction: GameAction): string[] {
+function getDependencies<GameActionId extends string>(
+  gameAction: GameAction<GameActionId>,
+): GameActionId[] {
   const req = gameAction.available?.requires;
   if (!req) {
     return [];
@@ -26,19 +28,19 @@ function getDependencies(gameAction: GameAction): string[] {
   return req;
 }
 
-export type GameActionWithStatus = {
-  gameAction: GameAction;
-  status: GameActionStatus;
+export type GameActionWithStatus<GameActionId extends string = string> = {
+  gameAction: GameAction<GameActionId>;
+  status: GameActionStatus<GameActionId>;
 };
 
-export function getAvailableGameActions(
+export function getAvailableGameActions<GameActionId extends string>(
   currentRoundIndex: number,
-  finishedActionIds: string[],
-  selectedGameActionIds: string[],
-  rounds: GameConfig['rounds'],
-): GameActionWithStatus[] {
+  finishedActionIds: GameActionId[],
+  selectedGameActionIds: GameActionId[],
+  rounds: GameConfig<GameActionId>['rounds'],
+): GameActionWithStatus<GameActionId>[] {
   return getAllGameActions(rounds)
-    .map((gameAction): GameActionWithStatus | null => {
+    .map((gameAction): GameActionWithStatus<GameActionId> | null => {
       if (currentRoundIndex + 1 < gameAction.round) {
         return null;
       }
@@ -87,5 +89,5 @@ export function getAvailableGameActions(
           : { type: 'AVAILABLE', times, dependencies },
       };
     })
-    .filter((e): e is GameActionWithStatus => e !== null);
+    .filter((e): e is GameActionWithStatus<GameActionId> => e !== null);
 }

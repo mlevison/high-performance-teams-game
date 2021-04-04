@@ -1,9 +1,9 @@
 import { Effect, isEffect } from '../effects';
 import { GameState, GameConfig } from '../game';
 
-export function getRoundEffects(
-  state: Pick<GameState, 'currentRound' | 'pastRounds'>,
-  rounds: GameConfig['rounds'],
+export function getRoundEffects<GameActionId extends string>(
+  state: Pick<GameState<GameActionId>, 'currentRound' | 'pastRounds'>,
+  rounds: GameConfig<GameActionId>['rounds'],
 ): Effect[] {
   const currentRoundIndex = state.pastRounds.length;
   const roundEffects: (null | Effect)[] = [];

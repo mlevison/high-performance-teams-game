@@ -1,4 +1,4 @@
-import { INITIAL_STATE } from '../lib';
+import { createInitialState } from '../lib';
 import { emptyRound } from '../lib/testHelpers';
 import { rollGremlin } from './gremlins';
 import { reset, addRolls } from '../lib/notRandom';
@@ -7,6 +7,7 @@ import type { GameConfig } from './game';
 jest.mock('../lib/random', () => require('../lib/notRandom'));
 
 describe('rollGremlin', () => {
+  const INITIAL_STATE = createInitialState();
   let config: GameConfig;
   beforeEach(() => {
     reset();

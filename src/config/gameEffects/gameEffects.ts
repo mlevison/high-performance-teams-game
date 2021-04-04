@@ -1,8 +1,9 @@
+import type { GameEffect } from '../../state';
+import type { GameActionId } from '../rounds';
 import { rounds as roundConfigs } from '../rounds';
 import { findGameActionById } from '../../lib';
-import type { GameEffect } from '../../state';
 
-export const gameEffects: { [key: string]: GameEffect } = {
+export const gameEffects: { [key: string]: GameEffect<GameActionId> } = {
   technicalDebtDrag(rounds) {
     let roundsWithoutEngAction = 0;
 

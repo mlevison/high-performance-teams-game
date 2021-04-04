@@ -11,21 +11,23 @@ import { getGremlin, GremlinDescription } from './gremlins';
 import { ReactNode } from 'react';
 import { GameAction } from './gameActions/types';
 
-export type GameRound = {
+export type GameRound<GameActionId extends string> = {
   gremlin: string | null;
-  selectedGameActionIds: string[];
+  selectedGameActionIds: GameActionId[];
 };
-export type ClosedGameRound = GameRound & {
+export type ClosedGameRound<GameActionId extends string = string> = GameRound<
+  GameActionId
+> & {
   storiesCompleted: number;
 };
-export type AppRound = {
+export type AppRound<GameActionId extends string = string> = {
   number: number;
   title?: string;
   gremlin?: GremlinDescription & {
     effect: VisibleEffect[];
   };
   description?: ReactNode;
-  selectedGameActions: GameAction[];
+  selectedGameActions: GameAction<GameActionId>[];
   capacity: {
     available: number;
     total: number;
@@ -35,18 +37,20 @@ export type AppRound = {
   activeEffects: VisibleEffect[];
 };
 
-export function createRound(gremlin: string | null): GameRound {
+export function createRound<GameActionId extends string = string>(
+  gremlin: string | null,
+): GameRound<GameActionId> {
   return {
     gremlin,
     selectedGameActionIds: [],
   };
 }
 
-export function getActionEffects(
-  round: ClosedGameRound,
+export function getActionEffects<GameActionId extends string>(
+  round: ClosedGameRound<GameActionId>,
   age: number,
-  finishedActionIds: string[],
-  rounds: GameConfig['rounds'],
+  finishedActionIds: GameActionId[],
+  rounds: GameConfig<GameActionId>['rounds'],
 ): Effect[] {
   const effects: Effect[] = [];
   round.selectedGameActionIds.forEach((id) => {
@@ -55,7 +59,10 @@ export function getActionEffects(
   return effects;
 }
 
-export function getCosts(round: GameRound, rounds: GameConfig['rounds']) {
+export function getCosts<GameActionId extends string>(
+  round: GameRound<GameActionId>,
+  rounds: GameConfig<GameActionId>['rounds'],
+) {
   return sumByProp(
     round.selectedGameActionIds.map((id) => ({
       cost: getActionCost(findGameActionById(id, rounds)),
@@ -64,10 +71,10 @@ export function getCosts(round: GameRound, rounds: GameConfig['rounds']) {
   );
 }
 
-export function closeRound(
-  state: GameState,
-  config: GameConfig,
-): ClosedGameRound {
+export function closeRound<GameActionId extends string>(
+  state: GameState<GameActionId>,
+  config: GameConfig<GameActionId>,
+): ClosedGameRound<GameActionId> {
   const effects = getAllEffects(state, config);
   const storiesAttempted =
     getCapacity(effects) - getCosts(state.currentRound, config.rounds);
@@ -89,10 +96,10 @@ function orZero(num: number): number {
   return num < 0 ? 0 : num;
 }
 
-export function deriveAppRound(
-  state: Pick<GameState, 'currentRound' | 'pastRounds'>,
-  config: GameConfig,
-): AppRound {
+export function deriveAppRound<GameActionId extends string>(
+  state: Pick<GameState<GameActionId>, 'currentRound' | 'pastRounds'>,
+  config: GameConfig<GameActionId>,
+): AppRound<GameActionId> {
   const finishedActionIds = concatByProp(
     state.pastRounds,
     'selectedGameActionIds',

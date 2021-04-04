@@ -1,8 +1,17 @@
 import React from 'react';
+import type { GameActionId } from './index';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
-export const round4: RoundDescription = {
+export type Round4ActionId =
+  | 'CROSS_SKILLING'
+  | 'EXTERNAL_CROSS_TRAINING'
+  | 'PERSONAL_PRODUCTIVITY_BONUS'
+  | 'NEW_TESTER'
+  | 'TEST_DRIVEN_DEVELOPMENT'
+  | 'LIMIT_WIP';
+
+export const round4: RoundDescription<Round4ActionId, GameActionId> = {
   title: 'Team is Bottlenecked',
   description: (
     <p>

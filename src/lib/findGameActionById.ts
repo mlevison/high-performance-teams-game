@@ -1,10 +1,10 @@
 import { getAllGameActions } from './getAllGameActions';
 import type { GameAction, GameConfig } from '../state/game';
 
-export function findGameActionById(
-  gameActionId: string,
-  rounds: GameConfig['rounds'],
-): GameAction {
+export function findGameActionById<GameActionId extends string>(
+  gameActionId: GameActionId,
+  rounds: GameConfig<GameActionId>['rounds'],
+): GameAction<GameActionId> {
   const gameActions = getAllGameActions(rounds);
 
   const gameAction = gameActions.find(

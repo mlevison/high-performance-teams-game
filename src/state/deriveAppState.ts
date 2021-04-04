@@ -5,22 +5,26 @@ import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
 import { rollGremlin } from './gremlins';
 import { AppRound, ClosedGameRound, closeRound, deriveAppRound } from './round';
 
-type PastRound = AppRound & {
+type PastRound<GameActionId extends string> = AppRound<GameActionId> & {
   storiesCompleted: number;
 };
 
-export type AppState = {
-  availableGameActions: GameActionWithStatus[];
-  currentRound: AppRound;
-  pastRounds: PastRound[];
-  ui: GameState['ui'];
-  log: GameState['log'];
+export type AppState<GameActionId extends string = string> = {
+  availableGameActions: GameActionWithStatus<GameActionId>[];
+  currentRound: AppRound<GameActionId>;
+  pastRounds: PastRound<GameActionId>[];
+  ui: GameState<GameActionId>['ui'];
+  log: GameState<GameActionId>['log'];
 };
 
-export function deriveAppState(
-  state: GameState,
-  config: GameConfig,
-): [AppState, () => ClosedGameRound, () => string | null] {
+export function deriveAppState<GameActionId extends string>(
+  state: GameState<GameActionId>,
+  config: GameConfig<GameActionId>,
+): [
+  AppState<GameActionId>,
+  () => ClosedGameRound<GameActionId>,
+  () => string | null,
+] {
   const availableGameActions = getAvailableGameActions(
     state.pastRounds.length,
     concatByProp(state.pastRounds, 'selectedGameActionIds'),

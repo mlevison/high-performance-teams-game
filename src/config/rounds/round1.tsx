@@ -1,8 +1,16 @@
 import React from 'react';
+import type { GameActionId } from './index';
 import type { RoundDescription } from '../../state';
 import example from './images/example.jpg';
 
-export const round1: RoundDescription = {
+export type Round1ActionId =
+  | 'PROTECTED_FROM_OUTSIDE_DISTRACTION'
+  | 'CLARIFY_PRODUCT_VISION'
+  | 'WORKING_AGREEMENTS'
+  | 'BUILD_SERVER'
+  | 'TEAMS_ON_SAME_FLOOR';
+
+export const round1: RoundDescription<Round1ActionId, GameActionId> = {
   title: 'Team, welcome to the World’s Smallest Online Bookstore',
   description: (
     <p>

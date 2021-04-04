@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { GameState } from '../state/game';
-import { INITIAL_STATE } from './initialState';
+import { createInitialState } from './initialState';
 import versionP from './version';
 
 const LOCAL_STATE_KEY = 'TEAM_GAME_STATE';
@@ -45,7 +45,7 @@ export async function getInitialState(): Promise<InitialStateWithStatus> {
   }
 
   if (localStateData === null) {
-    return { state: INITIAL_STATE, status: GAME_STATE_OK };
+    return { state: createInitialState(), status: GAME_STATE_OK };
   }
 
   try {
@@ -58,7 +58,7 @@ export async function getInitialState(): Promise<InitialStateWithStatus> {
     };
   } catch (err) {
     console.warn(err);
-    return { state: INITIAL_STATE, status: GAME_STATE_OK };
+    return { state: createInitialState(), status: GAME_STATE_OK };
   }
 }
 

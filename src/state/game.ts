@@ -1,4 +1,4 @@
-import { concatByProp, INITIAL_STATE } from '../lib';
+import { concatByProp } from '../lib';
 import {
   GameRound,
   ClosedGameRound,
@@ -13,15 +13,15 @@ import { getGremlinEffects, GremlinList } from './gremlins';
 import { RoundDescription } from './rounds/types';
 export type { GameAction } from './gameActions';
 
-export type GameState = {
-  currentRound: GameRound;
-  pastRounds: ClosedGameRound[];
+export type GameState<GameActionId extends string = string> = {
+  currentRound: GameRound<GameActionId>;
+  pastRounds: ClosedGameRound<GameActionId>[];
   ui: {
     review: false | number;
     view: 'welcome' | 'actions' | 'results';
-    closedRound?: ClosedGameRound;
+    closedRound?: ClosedGameRound<GameActionId>;
   };
-  log: RunningGameAction[];
+  log: RunningGameAction<GameActionId>[];
 };
 
 export type RestartGameAction = {
@@ -35,54 +35,59 @@ export type SetUiViewAction = {
   type: 'SET_UI_VIEW_ACTION';
   payload: GameState['ui']['view'];
 };
-export type SetUiClosedRoundAction = {
+export type SetUiClosedRoundAction<GameActionId extends string> = {
   type: 'SET_UI_CLOSED_ROUND_ACTION';
-  payload: ClosedGameRound;
+  payload: ClosedGameRound<GameActionId>;
 };
-export type SelectGameActionAction = {
+export type SelectGameActionAction<GameActionId extends string> = {
   type: 'SELECT_GAME_ACTION';
-  payload: string;
+  payload: GameActionId;
 };
-export type UnselectGameActionAction = {
+export type UnselectGameActionAction<GameActionId extends string> = {
   type: 'UNSELECT_GAME_ACTION';
-  payload: string;
+  payload: GameActionId;
 };
-export type NextRoundAction = {
+export type NextRoundAction<GameActionId extends string> = {
   type: 'NEXT_ROUND';
   payload: {
-    closedRound: ClosedGameRound;
+    closedRound: ClosedGameRound<GameActionId>;
     gremlin: string | null;
   };
 };
-export type FinishGameAction = {
+export type FinishGameAction<GameActionId extends string> = {
   type: 'FINISH_GAME';
   payload: {
-    closedRound: ClosedGameRound;
+    closedRound: ClosedGameRound<GameActionId>;
   };
 };
-export type GameActionAction =
-  | SelectGameActionAction
-  | UnselectGameActionAction;
-type RunningGameAction = GameActionAction | NextRoundAction;
-type UiAction = SetUiViewAction | SetUiClosedRoundAction | SetUiReviewAction;
+export type GameActionAction<GameActionId extends string = string> =
+  | SelectGameActionAction<GameActionId>
+  | UnselectGameActionAction<GameActionId>;
+type RunningGameAction<GameActionId extends string> =
+  | GameActionAction<GameActionId>
+  | NextRoundAction<GameActionId>;
+type UiAction<GameActionId extends string> =
+  | SetUiViewAction
+  | SetUiClosedRoundAction<GameActionId>
+  | SetUiReviewAction;
 
-export type Action =
-  | RunningGameAction
+export type Action<GameActionId extends string> =
+  | RunningGameAction<GameActionId>
   | RestartGameAction
-  | FinishGameAction
-  | UiAction;
+  | FinishGameAction<GameActionId>
+  | UiAction<GameActionId>;
 
-export type GameConfig = {
+export type GameConfig<GameActionId extends string = string> = {
   trailingRounds: number;
-  rounds: RoundDescription[];
-  gremlins: GremlinList;
-  gameEffects: { [key: string]: GameEffect };
+  rounds: RoundDescription<string, GameActionId>[];
+  gremlins: GremlinList<GameActionId>;
+  gameEffects: { [key: string]: GameEffect<GameActionId> };
 };
 
-export function getAllEffects(
-  state: Pick<GameState, 'currentRound' | 'pastRounds'>,
-  config: GameConfig,
-  finishedActionIds: string[] = concatByProp(
+export function getAllEffects<GameActionId extends string>(
+  state: Pick<GameState<GameActionId>, 'currentRound' | 'pastRounds'>,
+  config: GameConfig<GameActionId>,
+  finishedActionIds: GameActionId[] = concatByProp(
     state.pastRounds,
     'selectedGameActionIds',
   ),
@@ -156,7 +161,10 @@ export function getCapacity(effects: Effect[]) {
   }, 0);
 }
 
-function nextRound(state: GameState, action: NextRoundAction): GameState {
+function nextRound<GameActionId extends string>(
+  state: GameState<GameActionId>,
+  action: NextRoundAction<GameActionId>,
+): GameState<GameActionId> {
   return {
     ...state,
     ui: {
@@ -169,8 +177,14 @@ function nextRound(state: GameState, action: NextRoundAction): GameState {
   };
 }
 
-export function createGameReducer(config: GameConfig) {
-  return (state: GameState, action: Action): GameState => {
+export function createGameReducer<GameActionId extends string>(
+  config: GameConfig<GameActionId>,
+  initialState: GameState<GameActionId>,
+) {
+  return (
+    state: GameState<GameActionId>,
+    action: Action<GameActionId>,
+  ): GameState<GameActionId> => {
     switch (action.type) {
       case 'SELECT_GAME_ACTION': {
         return {
@@ -206,7 +220,7 @@ export function createGameReducer(config: GameConfig) {
             config.rounds.length +
             config.trailingRounds -
             state.pastRounds.length,
-        }).reduce<[GameState, ClosedGameRound]>(
+        }).reduce<[GameState<GameActionId>, ClosedGameRound<GameActionId>]>(
           ([state, closedRound]) => {
             const nextState = nextRound(state, {
               type: 'NEXT_ROUND',
@@ -216,7 +230,7 @@ export function createGameReducer(config: GameConfig) {
               },
             });
 
-            return [nextState, closeRound(nextState, config)];
+            return [nextState, closeRound<GameActionId>(nextState, config)];
           },
           [state, action.payload.closedRound],
         )[0];
@@ -248,7 +262,7 @@ export function createGameReducer(config: GameConfig) {
           },
         };
       case 'RESTART_GAME':
-        return INITIAL_STATE;
+        return initialState;
     }
   };
 }

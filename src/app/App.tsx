@@ -19,7 +19,7 @@ import {
   Log,
 } from './components';
 import {
-  INITIAL_STATE,
+  createInitialState,
   GAME_STATE_OK,
   InitialStateWithStatus,
   restartGame,
@@ -32,8 +32,8 @@ import {
 type Props = { initialState: GameState; config: GameConfig };
 export function App(props: Props) {
   const [state, closeRound, rollGremlin, link, dispatch] = useAppState(
-    props.initialState,
     props.config,
+    props.initialState,
   );
   const {
     rounds: [firstRound],
@@ -51,7 +51,7 @@ export function App(props: Props) {
     ];
   }, [firstRound]);
   const [tab, setTab] = useState<'play' | 'rules' | 'log'>(
-    props.initialState === INITIAL_STATE ? 'rules' : 'play',
+    props.initialState.log.length === 0 ? 'rules' : 'play',
   );
 
   return (
@@ -185,7 +185,7 @@ export function App(props: Props) {
 
 export default function OutdatedStateWarning(props: {
   initialState: InitialStateWithStatus;
-  config: GameConfig;
+  config: GameConfig<any>;
 }) {
   const version = useVersion();
   const [initialState, setInitialState] = useState(props.initialState);
@@ -255,7 +255,10 @@ export default function OutdatedStateWarning(props: {
         </Button>
         <Button
           onClick={() =>
-            setInitialState({ state: INITIAL_STATE, status: GAME_STATE_OK })
+            setInitialState({
+              state: createInitialState(),
+              status: GAME_STATE_OK,
+            })
           }
           primary
         >

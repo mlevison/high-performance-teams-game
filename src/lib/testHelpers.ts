@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useAppState } from './useAppState';
-import { INITIAL_STATE } from './initialState';
+import { createInitialState } from './initialState';
 import { BaseEffect, RoundDescription } from '../state';
-import { config } from '../config';
+import { config, GameActionId } from '../config';
 
-export function emptyRound(): RoundDescription {
+export function emptyRound(): RoundDescription<never, any> {
   return {
     title: 'EmptyRound',
     description: null,
@@ -13,7 +13,7 @@ export function emptyRound(): RoundDescription {
 }
 
 export function getGame() {
-  const wrapper = renderHook(() => useAppState(INITIAL_STATE, config));
+  const wrapper = renderHook(() => useAppState(config, createInitialState()));
 
   return {
     get state() {
@@ -41,7 +41,7 @@ export function getGame() {
         });
       });
     },
-    selectAction: (gameActionId: string) => {
+    selectAction: (gameActionId: GameActionId) => {
       act(() => {
         wrapper.result.current[4]({
           type: 'SELECT_GAME_ACTION',

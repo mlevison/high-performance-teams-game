@@ -1,7 +1,8 @@
 import React from 'react';
+import type { GameActionId } from '../rounds';
 import type { GremlinList } from '../../state';
 
-export const gremlins: GremlinList = {
+export const gremlins: GremlinList<GameActionId> = {
   GREMLIN_MANAGEMENT_YELLS: {
     name: 'Management yells at a team member in public',
     probability: () => 10,
