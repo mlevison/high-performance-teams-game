@@ -1,5 +1,5 @@
 import { createInitialState } from '../lib';
-import { emptyRound } from '../lib/testHelpers';
+import { round } from '../lib/testHelpers';
 import { rollGremlin } from './gremlins';
 import { reset, addRolls } from '../lib/notRandom';
 import type { GameConfig } from './game';
@@ -13,7 +13,7 @@ describe('rollGremlin', () => {
     reset();
     config = {
       initialScores: { gremlinChange: 50, userStoryChange: 30 },
-      rounds: [emptyRound(), emptyRound()],
+      rounds: [round(), round()],
       trailingRounds: 0,
       gameEffects: {},
       gremlins: {

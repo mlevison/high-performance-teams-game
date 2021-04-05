@@ -1,30 +1,25 @@
+import { rounds } from './index';
 import {
   advanceGameToRound,
   getGame,
   testCurrentRound,
   testFutureRounds,
+  config,
+  defuseRounds,
 } from '../../lib/testHelpers';
 import { overtimeCapacityBump, overtimeUserStoryChance } from './round6';
 
-/* disable irrelevant other rounds */
-jest.mock('./index', () => ({
+const testConfig = config({
   rounds: [
-    require('./round1').round1,
-    require('../../lib/testHelpers').emptyRound(),
-    require('../../lib/testHelpers').emptyRound(),
-    require('../../lib/testHelpers').emptyRound(),
-    require('../../lib/testHelpers').emptyRound(),
-    require('./round6').round6,
+    ...defuseRounds(rounds.slice(0, 5)),
+    rounds[5],
+    ...defuseRounds(rounds.slice(6)),
   ],
-}));
-/* disable game effect to only tests single actions */
-jest.mock('../gameEffects', () => ({
-  gameEffects: [],
-}));
+});
 
 describe('round 6', () => {
   it('comes with a 4 capacity bump', () => {
-    const game = getGame();
+    const game = getGame(testConfig);
 
     advanceGameToRound(game, 6);
     expect(game.state.currentRound.number).toEqual(6);
@@ -42,7 +37,7 @@ describe('round 6', () => {
 });
 describe('Improve Forecasting', () => {
   it("Doesn't have an immediate effect instead it protects against later gremlins since you can help people make better product decisions", () => {
-    const game = getGame();
+    const game = getGame(testConfig);
     advanceGameToRound(game, 6);
     expect(game.state.currentRound.number).toEqual(6);
 
@@ -63,7 +58,7 @@ describe('Improve Forecasting', () => {
 });
 describe('Teams that take ownership of their Sprint Backlog', () => {
   it('Will make better use of the board improving both productivity and completion percentage by a bit', () => {
-    const game = getGame();
+    const game = getGame(testConfig);
     advanceGameToRound(game, 6);
     expect(game.state.currentRound.number).toEqual(6);
 
@@ -85,7 +80,7 @@ describe('Teams that take ownership of their Sprint Backlog', () => {
 });
 describe('Daily Scrum', () => {
   it('When daily Scrum is more effective problems get solved sooner and the team collaborates more', () => {
-    const game = getGame();
+    const game = getGame(testConfig);
     advanceGameToRound(game, 6);
     expect(game.state.currentRound.number).toEqual(6);
 
@@ -107,7 +102,7 @@ describe('Daily Scrum', () => {
 });
 describe('Improve Retrospectives', () => {
   it('Teams that make their retrospective action items concrete succeed in making more of their improvements', () => {
-    const game = getGame();
+    const game = getGame(testConfig);
     advanceGameToRound(game, 6);
     expect(game.state.currentRound.number).toEqual(6);
 
@@ -129,7 +124,7 @@ describe('Improve Retrospectives', () => {
 });
 describe('Learing Time', () => {
   it('Teams that take a limited amount of time to learn every Sprint grow', () => {
-    const game = getGame();
+    const game = getGame(testConfig);
     advanceGameToRound(game, 6);
     expect(game.state.currentRound.number).toEqual(6);
 

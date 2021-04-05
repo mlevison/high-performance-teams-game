@@ -19,7 +19,7 @@ type Image = {
   image: string;
 };
 
-type Icon = {
+export type Icon = {
   /**
    * Unicode Character to be displayed instead of image
    * can be emoji or any other char
@@ -38,7 +38,7 @@ export type GameActionWithIcon<GameActionId extends string> = FullGameAction<
 > &
   Icon;
 
-type GameActionImplementation<GameActionId extends string> = {
+export type GameActionImplementation<GameActionId extends string> = {
   type?: string;
   available?: {
     requires?: GameActionId[] | GameActionId;

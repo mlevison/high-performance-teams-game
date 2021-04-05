@@ -22,7 +22,7 @@ export function useAppState<
   config: GameConfig<GameActionId, GremlinId>,
   initialState: GameState<GameActionId, GremlinId>,
 ): [
-  AppState<GameActionId>,
+  AppState<GameActionId, GremlinId>,
   () => ClosedRound<GameActionId, GremlinId>,
   () => GremlinId | null,
   string,

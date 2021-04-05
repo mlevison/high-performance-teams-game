@@ -1,21 +1,19 @@
+import { rounds } from './index';
 import {
   getGame,
+  config,
   testCurrentRound,
   testFutureRounds,
+  defuseRounds,
 } from '../../lib/testHelpers';
 
-/* disable all other rounds */
-jest.mock('./index', () => ({
-  rounds: [require('./round1').round1],
-}));
-/* disable game effect to only tests single actions */
-jest.mock('../gameEffects', () => ({
-  gameEffects: [],
-}));
+const testConfig = config({
+  rounds: [rounds[0], ...defuseRounds(rounds).slice(1)],
+});
 
 describe('round 1', () => {
   it('starts with capacity 10/10 and 30% userStoryChance in round 1', () => {
-    const game = getGame();
+    const game = getGame(testConfig);
 
     // Since the base capacity and userStory chance are embedded in the test helper we just pass in the change
     testCurrentRound(game, {
@@ -28,7 +26,7 @@ describe('round 1', () => {
   describe('actions', () => {
     describe('Teams on same floor', () => {
       it('increases capacity over many rounds', () => {
-        const game = getGame();
+        const game = getGame(testConfig);
 
         game.selectAction('TEAMS_ON_SAME_FLOOR');
         game.nextRound();
@@ -47,7 +45,7 @@ describe('round 1', () => {
 
     describe('Protected from Outside Distraction', () => {
       it('increases the chance user-stories succeed', () => {
-        const game = getGame();
+        const game = getGame(testConfig);
 
         game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
         testCurrentRound(game, { capacityChange: 0, userStoryChange: 10 });
@@ -63,7 +61,7 @@ describe('round 1', () => {
 
     describe('Working Agreements', () => {
       it('increases capacity, but have no effect on User Story Success', () => {
-        const game = getGame();
+        const game = getGame(testConfig);
 
         game.selectAction('WORKING_AGREEMENTS');
         testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
@@ -80,7 +78,7 @@ describe('round 1', () => {
 
     describe('Clarify Product Vision', () => {
       it('increases UserStory success and has no effect on capacity', () => {
-        const game = getGame();
+        const game = getGame(testConfig);
 
         game.selectAction('CLARIFY_PRODUCT_VISION');
         testCurrentRound(game, { capacityChange: 0, userStoryChange: 10 });

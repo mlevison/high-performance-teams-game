@@ -1,22 +1,24 @@
+import { rounds } from './index';
 import {
   advanceGameToRound,
   getGame,
   testCurrentRound,
   testFutureRounds,
+  config,
+  defuseRounds,
 } from '../../lib/testHelpers';
 
-/* disable irrelevant other rounds */
-jest.mock('./index', () => ({
-  rounds: [require('./round1').round1, require('./round2').round2],
-}));
-/* disable game effect to only tests single actions */
-jest.mock('../gameEffects', () => ({
-  gameEffects: [],
-}));
+const testConfig = config({
+  rounds: [
+    ...defuseRounds(rounds.slice(0, 1)),
+    rounds[1],
+    ...defuseRounds(rounds.slice(2)),
+  ],
+});
 
 describe('round2', () => {
   it('does not enable gremlins', () => {
-    const game = getGame();
+    const game = getGame(testConfig);
 
     testFutureRounds(game, [
       { capacityChange: 0, gremlinChange: 0, userStoryChange: 0 },
@@ -31,7 +33,7 @@ describe('round2', () => {
 describe('round 2 Actions', () => {
   describe('Unit Testing', () => {
     it('is only available if the BuildServer was implemented', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 2);
       expect(game.state.currentRound.number).toEqual(2);
 
@@ -43,7 +45,7 @@ describe('round 2 Actions', () => {
     });
 
     it('increases capacity, but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
 
       game.selectAction('BUILD_SERVER');
       game.nextRound();
@@ -63,7 +65,7 @@ describe('round 2 Actions', () => {
 
   describe('Remote Avatars', () => {
     it('increases capacity, but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
 
       game.selectAction('REMOTE_TEAM_AVATARS');
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
@@ -81,7 +83,7 @@ describe('round 2 Actions', () => {
 
   describe('Eliminate Long Lived Feature Branches', () => {
     it('increases capacity, but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 2);
       expect(game.state.currentRound.number).toEqual(2);
 
@@ -101,7 +103,7 @@ describe('round 2 Actions', () => {
 
   describe('Social Time', () => {
     it('increases capacity, but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 2);
       expect(game.state.currentRound.number).toEqual(2);
 
@@ -121,7 +123,7 @@ describe('round 2 Actions', () => {
 
   describe('Problem Solving Bonus', () => {
     it('increases capacity now at first but harms it in the future', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 2);
       expect(game.state.currentRound.number).toEqual(2);
 
@@ -138,7 +140,7 @@ describe('round 2 Actions', () => {
 
   describe('Product Backlog Refinement', () => {
     it('increases User Story Success, but have no effect on increases capacity', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 2);
       expect(game.state.currentRound.number).toEqual(2);
 

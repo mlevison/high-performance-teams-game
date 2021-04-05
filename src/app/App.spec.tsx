@@ -3,7 +3,7 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import { App } from './App';
 import { AppState, UNIQUE_ACTION, ClosedRound, GameConfig } from '../state';
 import { createInitialState, useAppState } from '../lib';
-import { emptyRound } from '../lib/testHelpers';
+import { round } from '../lib/testHelpers';
 
 jest.mock('../lib/useAppState');
 jest.mock('recharts');
@@ -32,7 +32,7 @@ const BASE_STATE: AppState = {
 
 const BASE_CONFIG: GameConfig = {
   initialScores: {},
-  rounds: [emptyRound(), emptyRound(), emptyRound(), emptyRound()],
+  rounds: [round(), round(), round(), round()],
   trailingRounds: 0,
   gameEffects: {},
   gremlins: {},
