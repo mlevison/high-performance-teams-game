@@ -1,3 +1,6 @@
+import type { RoundDescription as Rd } from '../../state';
+import type { GremlinId } from '../gremlins';
+
 import { round1, Round1ActionId } from './round1';
 import { round2, Round2ActionId } from './round2';
 import { round3, Round3ActionId } from './round3';
@@ -15,6 +18,12 @@ export type GameActionId =
   | Round5ActionId
   | Round6ActionId
   | Round7ActionId;
+
+export type RoundDescription<RoundActionId extends string> = Rd<
+  RoundActionId,
+  GameActionId,
+  GremlinId
+>;
 
 export const rounds = [
   round1,

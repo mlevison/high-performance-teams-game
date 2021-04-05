@@ -1,6 +1,5 @@
 import React from 'react';
-import type { GameActionId } from './index';
-import type { RoundDescription } from '../../state';
+import type { RoundDescription } from './index';
 import example from './images/example.jpg';
 
 export type Round3ActionId =
@@ -11,7 +10,7 @@ export type Round3ActionId =
   | 'STORY_MAPPING_OR_OTHER'
   | 'REFACTORING';
 
-export const round3: RoundDescription<Round3ActionId, GameActionId> = {
+export const round3: RoundDescription<Round3ActionId> = {
   title: 'Work Harder',
   description: (
     <p>

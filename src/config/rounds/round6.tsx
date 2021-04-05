@@ -1,6 +1,5 @@
 import React from 'react';
-import type { GameActionId } from './index';
-import type { RoundDescription } from '../../state';
+import type { RoundDescription } from './index';
 import example from './images/example.jpg';
 
 export type Round6ActionId =
@@ -13,7 +12,7 @@ export type Round6ActionId =
 export const overtimeUserStoryChance = -20;
 export const overtimeCapacityBump = 4;
 
-export const round6: RoundDescription<Round6ActionId, GameActionId> = {
+export const round6: RoundDescription<Round6ActionId> = {
   title: 'Go Live Soon',
   description: (
     <p>

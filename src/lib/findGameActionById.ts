@@ -1,9 +1,12 @@
 import { getAllGameActions } from './getAllGameActions';
 import type { GameAction, GameConfig } from '../state/game';
 
-export function findGameActionById<GameActionId extends string>(
+export function findGameActionById<
+  GameActionId extends string,
+  GremlinId extends string
+>(
   gameActionId: GameActionId,
-  rounds: GameConfig<GameActionId>['rounds'],
+  rounds: GameConfig<GameActionId, GremlinId>['rounds'],
 ): GameAction<GameActionId> {
   const gameActions = getAllGameActions(rounds);
 

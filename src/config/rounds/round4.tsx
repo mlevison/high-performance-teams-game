@@ -1,6 +1,5 @@
 import React from 'react';
-import type { GameActionId } from './index';
-import type { RoundDescription } from '../../state';
+import type { RoundDescription } from './index';
 import example from './images/example.jpg';
 
 export type Round4ActionId =
@@ -11,7 +10,7 @@ export type Round4ActionId =
   | 'TEST_DRIVEN_DEVELOPMENT'
   | 'LIMIT_WIP';
 
-export const round4: RoundDescription<Round4ActionId, GameActionId> = {
+export const round4: RoundDescription<Round4ActionId> = {
   title: 'Team is Bottlenecked',
   description: (
     <p>

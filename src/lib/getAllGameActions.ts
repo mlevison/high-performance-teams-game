@@ -2,8 +2,8 @@ import memoizeOne from 'memoize-one';
 import { GameConfig, GameAction } from '../state/game';
 
 export const getAllGameActions = memoizeOne(
-  <GameActionId extends string>(
-    rounds: GameConfig<GameActionId>['rounds'],
+  <GameActionId extends string, GremlinId extends string>(
+    rounds: GameConfig<GameActionId, GremlinId>['rounds'],
   ): GameAction<GameActionId>[] => {
     return rounds
       .map((round, i) => {

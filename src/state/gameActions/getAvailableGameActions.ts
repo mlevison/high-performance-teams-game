@@ -33,11 +33,14 @@ export type GameActionWithStatus<GameActionId extends string = string> = {
   status: GameActionStatus<GameActionId>;
 };
 
-export function getAvailableGameActions<GameActionId extends string>(
+export function getAvailableGameActions<
+  GameActionId extends string,
+  GremlinId extends string
+>(
   currentRoundIndex: number,
   finishedActionIds: GameActionId[],
   selectedGameActionIds: GameActionId[],
-  rounds: GameConfig<GameActionId>['rounds'],
+  rounds: GameConfig<GameActionId, GremlinId>['rounds'],
 ): GameActionWithStatus<GameActionId>[] {
   return getAllGameActions(rounds)
     .map((gameAction): GameActionWithStatus<GameActionId> | null => {

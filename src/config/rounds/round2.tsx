@@ -1,6 +1,5 @@
 import React from 'react';
-import type { GameActionId } from './index';
-import type { RoundDescription } from '../../state';
+import type { RoundDescription } from './index';
 import example from './images/example.jpg';
 
 export type Round2ActionId =
@@ -13,7 +12,7 @@ export type Round2ActionId =
 
 export const BR_USER_STORY_CHANGE = 15;
 
-export const round2: RoundDescription<Round2ActionId, GameActionId> = {
+export const round2: RoundDescription<Round2ActionId> = {
   title: 'Failed Expectations',
   description: (
     <p>

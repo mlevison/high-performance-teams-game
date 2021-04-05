@@ -2,9 +2,9 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { useAppState } from './useAppState';
 import { createInitialState } from './initialState';
 import { BaseEffect, RoundDescription } from '../state';
-import { config, GameActionId } from '../config';
+import { config, GameActionId, GremlinId } from '../config';
 
-export function emptyRound(): RoundDescription<never, any> {
+export function emptyRound(): RoundDescription<never, any, any> {
   return {
     title: 'EmptyRound',
     description: null,
@@ -29,7 +29,7 @@ export function getGame() {
     closeRound: () => {
       return wrapper.result.current[1]();
     },
-    nextRound: (gremlin: string | null = null) => {
+    nextRound: (gremlin: GremlinId | null = null) => {
       const closedRound = {
         ...wrapper.result.current[1](),
       };

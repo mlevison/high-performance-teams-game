@@ -185,7 +185,7 @@ export function App(props: Props) {
 
 export default function OutdatedStateWarning(props: {
   initialState: InitialStateWithStatus;
-  config: GameConfig<any>;
+  config: GameConfig<any, any>;
 }) {
   const version = useVersion();
   const [initialState, setInitialState] = useState(props.initialState);

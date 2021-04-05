@@ -2,7 +2,17 @@ import React from 'react';
 import type { GameActionId } from '../rounds';
 import type { GremlinList } from '../../state';
 
-export const gremlins: GremlinList<GameActionId> = {
+export type GremlinId =
+  | 'GREMLIN_MANAGEMENT_YELLS'
+  | 'GREMLIN_EMERGENCY_ON_OTHER_TEAM'
+  | 'GREMLIN_NOT_PULLING_THEIR_WEIGHT'
+  | 'GREMLIN_NOT_AT_DAILY_SCRUM'
+  | 'GREMLIN_NEW_STORY_MID_SPRINT'
+  | 'GREMLIN_UNREADABLE_CODE'
+  | 'GREMLIN_PRODUCT_BACKLOG_MESS'
+  | 'GREMLIN_SKIP_RETRO';
+
+export const gremlins: GremlinList<GremlinId, GameActionId> = {
   GREMLIN_MANAGEMENT_YELLS: {
     name: 'Management yells at a team member in public',
     probability: () => 10,

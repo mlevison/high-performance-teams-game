@@ -16,22 +16,31 @@ type GremlinImplementation<GameActionId extends string> = GremlinDescription & {
     finishedActionIds: GameActionId[],
   ) => null | Effect | Effect[];
 };
-export type GremlinList<GameActionId extends string> = {
-  [key: string]: GremlinImplementation<GameActionId>;
+export type GremlinList<
+  GremlinId extends string,
+  GameActionId extends string
+> = {
+  [K in GremlinId]: GremlinImplementation<GameActionId>;
 };
 
-export function rollGremlin<GameActionId extends string>(
-  state: GameState<GameActionId>,
-  config: GameConfig<GameActionId>,
-): string | null {
+export function rollGremlin<
+  GameActionId extends string,
+  GremlinId extends string
+>(
+  state: GameState<GameActionId, GremlinId>,
+  config: GameConfig<GameActionId, GremlinId>,
+): GremlinId | null {
   /* No gremlins in trailing rounds */
   if (state.pastRounds.length + 1 >= config.rounds.length) {
     return null;
   }
 
-  const gremlinArray = Object.entries(config.gremlins).map(([id, gremlin]) => ({
+  const ids = Object.keys(config.gremlins) as GremlinId[];
+  const gremlinArray: (GremlinImplementation<GameActionId> & {
+    id: GremlinId;
+  })[] = ids.map((id) => ({
+    ...config.gremlins[id],
     id,
-    ...gremlin,
   }));
 
   const allEffects = getAllEffects(state, config);
@@ -74,11 +83,14 @@ export function rollGremlin<GameActionId extends string>(
   return gremlin?.id || null;
 }
 
-export function getGremlinEffects<GameActionId extends string>(
-  round: GameRound<GameActionId>,
+export function getGremlinEffects<
+  GameActionId extends string,
+  GremlinId extends string
+>(
+  round: GameRound<GameActionId, GremlinId>,
   age: number,
   finishedActionIds: GameActionId[],
-  gremlins: GameConfig<GameActionId>['gremlins'],
+  gremlins: GremlinList<GremlinId, GameActionId>,
 ): Effect[] {
   if (round.gremlin) {
     const effect = gremlins[round.gremlin].effect(age, finishedActionIds);
@@ -93,9 +105,12 @@ export function getGremlinEffects<GameActionId extends string>(
   return [];
 }
 
-export function getGremlin<GameActionId extends string>(
-  round: GameRound<GameActionId>,
-  gremlins: GameConfig<GameActionId>['gremlins'],
+export function getGremlin<
+  GameActionId extends string,
+  GremlinId extends string
+>(
+  round: GameRound<GameActionId, GremlinId>,
+  gremlins: GremlinList<GremlinId, GameActionId>,
 ): (GremlinDescription & GremlinImplementation<GameActionId>) | undefined {
   if (!round.gremlin) {
     return;

@@ -23,6 +23,7 @@ export type BaseEffect = {
 export type InvisibleEffect = BaseEffect & InvisibleEffectProps;
 export type VisibleEffect = BaseEffect & VisibleEffectProps;
 export type Effect = BaseEffect & EffectDescription;
-export type GameEffect<GameActionId extends string> = (
-  rounds: GameRound<GameActionId>[],
-) => Effect[] | Effect | null;
+export type GameEffect<
+  GameActionId extends string,
+  GremlinId extends string
+> = (rounds: GameRound<GameActionId, GremlinId>[]) => Effect[] | Effect | null;

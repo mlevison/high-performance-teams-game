@@ -1,8 +1,9 @@
 import type { GameState } from '../state';
 
-export function createInitialState<GameActionId extends string>(): GameState<
-  GameActionId
-> {
+export function createInitialState<
+  GameActionId extends string,
+  GremlinId extends string
+>(): GameState<GameActionId, GremlinId> {
   return {
     currentRound: {
       gremlin: null,

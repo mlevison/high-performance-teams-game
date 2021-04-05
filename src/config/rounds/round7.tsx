@@ -1,13 +1,12 @@
 import React from 'react';
-import type { GameActionId } from './index';
-import type { RoundDescription } from '../../state';
+import type { RoundDescription } from './index';
 import example from './images/example.jpg';
 
 export type Round7ActionId =
   | 'PREALLOCATE_CAPACITY_FOR_PRODUCTION_SUPPORT'
   | 'ONE_PERSON_DEALS_WITH_DEFECTS';
 
-export const round7: RoundDescription<Round7ActionId, GameActionId> = {
+export const round7: RoundDescription<Round7ActionId> = {
   title: "We're Live and We Have Real Customers",
   description: (
     <p>

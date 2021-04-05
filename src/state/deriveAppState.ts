@@ -9,21 +9,27 @@ type PastRound<GameActionId extends string> = AppRound<GameActionId> & {
   storiesCompleted: number;
 };
 
-export type AppState<GameActionId extends string = string> = {
+export type AppState<
+  GameActionId extends string = string,
+  GremlinId extends string = string
+> = {
   availableGameActions: GameActionWithStatus<GameActionId>[];
   currentRound: AppRound<GameActionId>;
   pastRounds: PastRound<GameActionId>[];
-  ui: GameState<GameActionId>['ui'];
-  log: GameState<GameActionId>['log'];
+  ui: GameState<GameActionId, GremlinId>['ui'];
+  log: GameState<GameActionId, GremlinId>['log'];
 };
 
-export function deriveAppState<GameActionId extends string>(
-  state: GameState<GameActionId>,
-  config: GameConfig<GameActionId>,
+export function deriveAppState<
+  GameActionId extends string,
+  GremlinId extends string
+>(
+  state: GameState<GameActionId, GremlinId>,
+  config: GameConfig<GameActionId, GremlinId>,
 ): [
-  AppState<GameActionId>,
-  () => ClosedGameRound<GameActionId>,
-  () => string | null,
+  AppState<GameActionId, GremlinId>,
+  () => ClosedGameRound<GameActionId, GremlinId>,
+  () => GremlinId | null,
 ] {
   const availableGameActions = getAvailableGameActions(
     state.pastRounds.length,
