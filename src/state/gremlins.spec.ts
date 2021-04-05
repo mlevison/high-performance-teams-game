@@ -12,15 +12,8 @@ describe('rollGremlin', () => {
   beforeEach(() => {
     reset();
     config = {
-      rounds: [
-        {
-          title: 'FirstRound',
-          description: null,
-          actions: {},
-          effect: () => ({ title: false, gremlinChange: 50 }),
-        },
-        emptyRound(),
-      ],
+      initialScores: { gremlinChange: 50, userStoryChange: 30 },
+      rounds: [emptyRound(), emptyRound()],
       trailingRounds: 0,
       gameEffects: {},
       gremlins: {

@@ -6,7 +6,7 @@ import {
   closeRound,
   getActionEffects,
 } from './round';
-import { Effect, GameEffect, isEffect } from './effects';
+import { BaseEffect, Effect, GameEffect, isEffect } from './effects';
 import { getRoundEffects } from './rounds';
 import { getEffects } from './gameActions';
 import { getGremlinEffects, GremlinList } from './gremlins';
@@ -93,6 +93,7 @@ export type GameConfig<
   GameActionId extends string = string,
   GremlinId extends string = string
 > = {
+  initialScores: BaseEffect;
   trailingRounds: number;
   rounds: RoundDescription<string, GameActionId, GremlinId>[];
   gremlins: GremlinList<GremlinId, GameActionId>;
@@ -113,7 +114,7 @@ export function getAllEffects<
     'selectedGameActionIds',
   ),
 ) {
-  const effects: Effect[] = [];
+  const effects: Effect[] = [{ title: false, ...config.initialScores }];
 
   /* Base round effects of past rounds */
   effects.push(...getRoundEffects(state, config.rounds));

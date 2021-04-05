@@ -2,7 +2,7 @@ import { gameEffects as gameEffectsMock } from './gameEffects';
 import { getGame, testFutureRounds } from '../../lib/testHelpers';
 
 jest.mock('../../state/rounds/getRoundEffects', () => ({
-  getRoundEffects: () => [{ capacityChange: 10, userStoryChange: 30 }],
+  getRoundEffects: () => [],
 }));
 const { gameEffects } = jest.requireActual('./gameEffects');
 jest.mock('./gameEffects', () => ({ gameEffects: [] }));

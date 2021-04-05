@@ -66,12 +66,12 @@ export function testCurrentRound(
 ) {
   if (round.userStoryChange !== undefined) {
     expect(game.state.currentRound).toHaveUserStoryChance(
-      round.userStoryChange + 30,
+      round.userStoryChange + (config.initialScores.userStoryChange || 0),
     );
   }
   if (round.capacityChange !== undefined) {
     expect(game.state.currentRound).toHaveTotalCapacity(
-      round.capacityChange + 10,
+      round.capacityChange + (config.initialScores.capacityChange || 0),
     );
   }
   if (round.gremlinChange !== undefined) {

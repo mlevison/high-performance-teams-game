@@ -19,12 +19,6 @@ export const round1: RoundDescription<Round1ActionId> = {
       needs you to prove that you can deliver a working Bookstore soon.
     </p>
   ),
-  effect: () => ({
-    title: false,
-    capacityChange: 10,
-    userStoryChange: 30,
-    gremlinChange: 0,
-  }),
   actions: {
     PROTECTED_FROM_OUTSIDE_DISTRACTION: {
       image: 'https://placekitten.com/100/100',

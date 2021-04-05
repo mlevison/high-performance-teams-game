@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import type { GameState, GameConfig, Effect } from '../state';
+import React, { useState } from 'react';
+import type { GameState, GameConfig } from '../state';
 import {
   Results,
   FinalResults,
@@ -25,7 +25,6 @@ import {
   restartGame,
   useVersion,
   saveToLocalStorage,
-  sumByProp,
   useAppState,
 } from '../lib';
 
@@ -35,21 +34,9 @@ export function App(props: Props) {
     props.config,
     props.initialState,
   );
-  const {
-    rounds: [firstRound],
-  } = props.config;
   const interactiveRounds = props.config.rounds.length;
   const totalRounds = interactiveRounds + props.config.trailingRounds;
-  const [initialCapacity, initialUserStoryChance] = useMemo(() => {
-    const initialEffects = ([] as Effect[]).concat(
-      (!firstRound.effect ? null : firstRound.effect([], 1)) || [],
-    );
 
-    return [
-      sumByProp(initialEffects, 'capacityChange'),
-      sumByProp(initialEffects, 'userStoryChange'),
-    ];
-  }, [firstRound]);
   const [tab, setTab] = useState<'play' | 'rules' | 'log'>(
     props.initialState.log.length === 0 ? 'rules' : 'play',
   );
@@ -147,7 +134,9 @@ export function App(props: Props) {
                     <Row>
                       <Status
                         {...state.currentRound}
-                        startCapacity={initialCapacity}
+                        startCapacity={
+                          props.config.initialScores.capacityChange || 0
+                        }
                       />
                     </Row>
                   </Rows>
@@ -161,7 +150,9 @@ export function App(props: Props) {
                   dispatch={dispatch}
                   closeRound={closeRound}
                   rollGremlin={rollGremlin}
-                  initialUserStoryChance={initialUserStoryChance}
+                  initialUserStoryChance={
+                    props.config.initialScores.userStoryChange || 0
+                  }
                   totalRounds={totalRounds}
                   interactiveRounds={interactiveRounds}
                 />

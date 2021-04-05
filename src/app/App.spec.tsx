@@ -31,6 +31,7 @@ const BASE_STATE: AppState = {
 };
 
 const BASE_CONFIG: GameConfig = {
+  initialScores: {},
   rounds: [emptyRound(), emptyRound(), emptyRound(), emptyRound()],
   trailingRounds: 0,
   gameEffects: {},
