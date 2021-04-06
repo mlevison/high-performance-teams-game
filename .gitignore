@@ -24,3 +24,4 @@ yarn-error.log*
 debug.log
 docs/~$am Games.docx
 *.tmp
+package-lock.json
