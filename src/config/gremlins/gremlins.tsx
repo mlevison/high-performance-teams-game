@@ -9,6 +9,7 @@ export type GremlinId =
   | 'GREMLIN_NOT_AT_DAILY_SCRUM'
   | 'GREMLIN_NEW_STORY_MID_SPRINT'
   | 'GREMLIN_UNREADABLE_CODE'
+  | 'GREMLIN_POOR_QUALITY'
   | 'GREMLIN_PRODUCT_BACKLOG_MESS'
   | 'GREMLIN_SKIP_RETRO';
 
@@ -65,7 +66,6 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
       }
 
       return {
-        // TODO Hannes - why does this have to be an assignment like the one I did above
         capacityChange: capacity,
         title:
           'We’ve had an emergency on another team, we need your best tester for a while.',
@@ -241,6 +241,52 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
       return {
         capacityChange: capacityChange,
         title: 'Retrospective skipped',
+      };
+    },
+  },
+  GREMLIN_POOR_QUALITY: {
+    probability: () => 10,
+    name: 'Poor Quality',
+    description: (
+      <p>
+        Our code base has a number of defects. As we try to add features we get
+        bogged down, in dealing with the cascade of errors. In addition the
+        quality makes it harder to build the feaures that the Product Owner has
+        asked for. &nbsp; Teams that practice TDD, BDD and/or Pair Programming
+        suffer this effect less.
+      </p>
+    ),
+    effect(age, finishedActionIds) {
+      let additionalComment = '';
+      let capacityChange = -3;
+      let userStoryChange = -15;
+      if (
+        finishedActionIds.includes('TEST_DRIVEN_DEVELOPMENT') ||
+        finishedActionIds.includes('PAIR_PROGRAMMING')
+      ) {
+        capacityChange = -2;
+        userStoryChange = -10;
+        additionalComment = '- TDD or Pair Programming Reduce the effect';
+      }
+      if (
+        finishedActionIds.includes('TEST_DRIVEN_DEVELOPMENT') &&
+        finishedActionIds.includes('PAIR_PROGRAMMING')
+      ) {
+        capacityChange = -1;
+        userStoryChange = -5;
+        additionalComment =
+          '- TDD and Pair Programming Reduce elimintate the effect';
+      }
+
+      if (finishedActionIds.includes('ADOPT_BDD')) {
+        capacityChange = -1;
+        userStoryChange = -5;
+        additionalComment = '- BDD Reduced the effect';
+      }
+      return {
+        capacityChange: capacityChange,
+        userStoryChange: userStoryChange,
+        title: 'Poor quality ' + additionalComment,
       };
     },
   },

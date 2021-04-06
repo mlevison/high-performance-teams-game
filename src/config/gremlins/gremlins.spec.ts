@@ -426,4 +426,63 @@ describe('Gremlins', () => {
       ]);
     });
   });
+
+  describe('Quality issues found - our customers think our product is unreliable', () => {
+    it('Poor quality has a -ve effect on speed since we have to spend time on fixing it. Quality also harms story completion since we try to add new features and they break existing ones.', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.nextRound('GREMLIN_POOR_QUALITY');
+      testCurrentRound(game, { capacityChange: -3, userStoryChange: -15 });
+      testFutureRounds(game, [
+        { capacityChange: -3, userStoryChange: -15 },
+        { capacityChange: -3, userStoryChange: -15 },
+        { capacityChange: -3, userStoryChange: -15 },
+      ]);
+    });
+    it('has effect reduced if Pair Programming is done', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('PAIR_PROGRAMMING');
+      game.nextRound('GREMLIN_POOR_QUALITY');
+      testCurrentRound(game, { capacityChange: -2, userStoryChange: -10 });
+      testFutureRounds(game, [
+        { capacityChange: -2, userStoryChange: -10 },
+        { capacityChange: -2, userStoryChange: -10 },
+      ]);
+    });
+    it('has effect reduced if TDD is done', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('TEST_DRIVEN_DEVELOPMENT');
+      game.nextRound('GREMLIN_POOR_QUALITY');
+      testCurrentRound(game, { capacityChange: -2, userStoryChange: -10 });
+      testFutureRounds(game, [
+        { capacityChange: -2, userStoryChange: -10 },
+        { capacityChange: -2, userStoryChange: -10 },
+      ]);
+    });
+    it('has some effect if TDD and Pair Programming is done', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('TEST_DRIVEN_DEVELOPMENT');
+      game.selectAction('PAIR_PROGRAMMING');
+      game.nextRound('GREMLIN_POOR_QUALITY');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: -5 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: -5 },
+        { capacityChange: -1, userStoryChange: -5 },
+      ]);
+    });
+    it('has some effect if TDD and Pair Programming is done', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('ADOPT_BDD');
+      game.nextRound('GREMLIN_POOR_QUALITY');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: -5 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: -5 },
+        { capacityChange: -1, userStoryChange: -5 },
+      ]);
+    });
+  });
 });
