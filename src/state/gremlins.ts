@@ -9,29 +9,38 @@ export type GremlinDescription = {
   name: string;
   description?: ReactElement;
 };
-type GremlinImplementation = GremlinDescription & {
-  probability: (state: GameState) => number;
+type GremlinImplementation<GameActionId extends string> = GremlinDescription & {
+  probability: (state: GameState<GameActionId>) => number;
   effect: (
     age: number,
-    finishedActionIds: string[],
+    finishedActionIds: GameActionId[],
   ) => null | Effect | Effect[];
 };
-export type GremlinList = {
-  [key: string]: GremlinImplementation;
+export type GremlinList<
+  GremlinId extends string,
+  GameActionId extends string
+> = {
+  [K in GremlinId]: GremlinImplementation<GameActionId>;
 };
 
-export function rollGremlin(
-  state: GameState,
-  config: GameConfig,
-): string | null {
+export function rollGremlin<
+  GameActionId extends string,
+  GremlinId extends string
+>(
+  state: GameState<GameActionId, GremlinId>,
+  config: GameConfig<GameActionId, GremlinId>,
+): GremlinId | null {
   /* No gremlins in trailing rounds */
   if (state.pastRounds.length + 1 >= config.rounds.length) {
     return null;
   }
 
-  const gremlinArray = Object.entries(config.gremlins).map(([id, gremlin]) => ({
+  const ids = Object.keys(config.gremlins) as GremlinId[];
+  const gremlinArray: (GremlinImplementation<GameActionId> & {
+    id: GremlinId;
+  })[] = ids.map((id) => ({
+    ...config.gremlins[id],
     id,
-    ...gremlin,
   }));
 
   const allEffects = getAllEffects(state, config);
@@ -74,11 +83,14 @@ export function rollGremlin(
   return gremlin?.id || null;
 }
 
-export function getGremlinEffects(
-  round: GameRound,
+export function getGremlinEffects<
+  GameActionId extends string,
+  GremlinId extends string
+>(
+  round: GameRound<GameActionId, GremlinId>,
   age: number,
-  finishedActionIds: string[],
-  gremlins: GameConfig['gremlins'],
+  finishedActionIds: GameActionId[],
+  gremlins: GremlinList<GremlinId, GameActionId>,
 ): Effect[] {
   if (round.gremlin) {
     const effect = gremlins[round.gremlin].effect(age, finishedActionIds);
@@ -93,10 +105,13 @@ export function getGremlinEffects(
   return [];
 }
 
-export function getGremlin(
-  round: GameRound,
-  gremlins: GameConfig['gremlins'],
-): (GremlinDescription & GremlinImplementation) | undefined {
+export function getGremlin<
+  GameActionId extends string,
+  GremlinId extends string
+>(
+  round: GameRound<GameActionId, GremlinId>,
+  gremlins: GremlinList<GremlinId, GameActionId>,
+): (GremlinDescription & GremlinImplementation<GameActionId>) | undefined {
   if (!round.gremlin) {
     return;
   }

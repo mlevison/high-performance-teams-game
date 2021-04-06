@@ -5,10 +5,7 @@ import Button from '../Button';
 import CapStoryChart from '../CapStoryChart';
 import styles from './Round.module.css';
 
-type Props = {
-  ui: AppState['ui'];
-  pastRounds: AppState['pastRounds'];
-  currentRound: AppState['currentRound'];
+type Props = Pick<AppState, 'ui' | 'pastRounds' | 'currentRound'> & {
   closeRound: () => ClosedRound;
   rollGremlin: () => string | null;
   dispatch: GameDispatch;

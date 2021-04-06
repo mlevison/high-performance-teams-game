@@ -1,26 +1,24 @@
+import { rounds } from './index';
 import {
   getGame,
   testFutureRounds,
   testCurrentRound,
   advanceGameToRound,
+  config,
+  defuseRounds,
 } from '../../lib/testHelpers';
 
-/* disable irrelevant other rounds */
-jest.mock('./index', () => ({
+const testConfig = config({
   rounds: [
-    require('./round1').round1,
-    require('../../lib/testHelpers').emptyRound(),
-    require('./round3').round3,
+    ...defuseRounds(rounds.slice(0, 2)),
+    rounds[2],
+    ...defuseRounds(rounds.slice(3)),
   ],
-}));
-/* disable game effect to only tests single actions */
-jest.mock('../gameEffects', () => ({
-  gameEffects: [],
-}));
+});
 
 describe('round 3', () => {
   it('increases gremlinChance to 50', () => {
-    const game = getGame();
+    const game = getGame(testConfig);
 
     game.nextRound();
     testFutureRounds(game, [
@@ -36,7 +34,7 @@ describe('round 3', () => {
 describe('round 3 Actions', () => {
   describe('Refactoring', () => {
     it('is only available if the BuildServer was implemented', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 3);
       expect(game.state.currentRound.number).toEqual(3);
 
@@ -48,7 +46,7 @@ describe('round 3 Actions', () => {
     });
 
     it('increases capacity , but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 3);
       expect(game.state.currentRound.number).toEqual(3);
 
@@ -66,7 +64,7 @@ describe('round 3 Actions', () => {
   });
   describe('Story Mapping or other Strategic tools', () => {
     it('is only available if the Clarify Product Vision was implemented', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
 
       expect(game.availableActionIds).not.toContain('');
 
@@ -82,28 +80,26 @@ describe('round 3 Actions', () => {
     });
 
     it('has an effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       game.selectAction('CLARIFY_PRODUCT_VISION');
       game.nextRound();
       game.selectAction('STORY_MAPPING_OR_OTHER');
 
       // StoryMapping Improves by 10% and the change is permanent.
-      //   Test is for +20% since we account for CLARIFY_PRODUCT_VISION as well
-      testCurrentRound(game, { capacityChange: 0, userStoryChange: 20 });
-
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 10 });
       testFutureRounds(game, [
-        { capacityChange: 0, userStoryChange: 20 },
-        { capacityChange: 0, userStoryChange: 20 },
-        { capacityChange: 0, userStoryChange: 20 },
-        { capacityChange: 0, userStoryChange: 20 },
-        { capacityChange: 0, userStoryChange: 20 },
+        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 0, userStoryChange: 10 },
+        { capacityChange: 0, userStoryChange: 10 },
       ]);
     });
   });
 
   describe('Observe People + Relationships', () => {
     it('increases capacity, but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 3);
       expect(game.state.currentRound.number).toEqual(3);
 
@@ -122,7 +118,7 @@ describe('round 3 Actions', () => {
 
   describe('One on Ones', () => {
     it('no effect on capacity or User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 3);
       expect(game.state.currentRound.number).toEqual(3);
 
@@ -141,7 +137,7 @@ describe('round 3 Actions', () => {
 
   describe('Pair Programming', () => {
     it('increases capacity, but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 3);
       expect(game.state.currentRound.number).toEqual(3);
 
@@ -158,7 +154,7 @@ describe('round 3 Actions', () => {
   });
   describe('Improve Retrospective', () => {
     it('increases capacity', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 3);
       expect(game.state.currentRound.number).toEqual(3);
 

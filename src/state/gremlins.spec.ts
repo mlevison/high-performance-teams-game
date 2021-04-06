@@ -1,5 +1,5 @@
-import { INITIAL_STATE } from '../lib';
-import { emptyRound } from '../lib/testHelpers';
+import { createInitialState } from '../lib';
+import { round } from '../lib/testHelpers';
 import { rollGremlin } from './gremlins';
 import { reset, addRolls } from '../lib/notRandom';
 import type { GameConfig } from './game';
@@ -7,19 +7,13 @@ import type { GameConfig } from './game';
 jest.mock('../lib/random', () => require('../lib/notRandom'));
 
 describe('rollGremlin', () => {
+  const INITIAL_STATE = createInitialState();
   let config: GameConfig;
   beforeEach(() => {
     reset();
     config = {
-      rounds: [
-        {
-          title: 'FirstRound',
-          description: null,
-          actions: {},
-          effect: () => ({ title: false, gremlinChange: 50 }),
-        },
-        emptyRound(),
-      ],
+      initialScores: { gremlinChange: 50, userStoryChange: 30 },
+      rounds: [round(), round()],
       trailingRounds: 0,
       gameEffects: {},
       gremlins: {

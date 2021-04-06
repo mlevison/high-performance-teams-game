@@ -5,22 +5,32 @@ import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
 import { rollGremlin } from './gremlins';
 import { AppRound, ClosedGameRound, closeRound, deriveAppRound } from './round';
 
-type PastRound = AppRound & {
+type PastRound<GameActionId extends string> = AppRound<GameActionId> & {
   storiesCompleted: number;
 };
 
-export type AppState = {
-  availableGameActions: GameActionWithStatus[];
-  currentRound: AppRound;
-  pastRounds: PastRound[];
-  ui: GameState['ui'];
-  log: GameState['log'];
+export type AppState<
+  GameActionId extends string = string,
+  GremlinId extends string = string
+> = {
+  availableGameActions: GameActionWithStatus<GameActionId>[];
+  currentRound: AppRound<GameActionId>;
+  pastRounds: PastRound<GameActionId>[];
+  ui: GameState<GameActionId, GremlinId>['ui'];
+  log: GameState<GameActionId, GremlinId>['log'];
 };
 
-export function deriveAppState(
-  state: GameState,
-  config: GameConfig,
-): [AppState, () => ClosedGameRound, () => string | null] {
+export function deriveAppState<
+  GameActionId extends string,
+  GremlinId extends string
+>(
+  state: GameState<GameActionId, GremlinId>,
+  config: GameConfig<GameActionId, GremlinId>,
+): [
+  AppState<GameActionId, GremlinId>,
+  () => ClosedGameRound<GameActionId, GremlinId>,
+  () => GremlinId | null,
+] {
   const availableGameActions = getAvailableGameActions(
     state.pastRounds.length,
     concatByProp(state.pastRounds, 'selectedGameActionIds'),

@@ -19,43 +19,48 @@ type Image = {
   image: string;
 };
 
-type Icon = {
+export type Icon = {
   /**
    * Unicode Character to be displayed instead of image
    * can be emoji or any other char
    */
   icon: string;
 };
-// export function isGameActionWithIcon(
-//   action: GameAction,
-// ): action is FullGameAction & Icon {
-//   return Object.getOwnPropertyNames(action).includes('icon');
-// }
+
 type ImageOrIcon = Image | Icon;
 
-export type GameActionWithImage = FullGameAction & Image;
-export type GameActionWithIcon = FullGameAction & Icon;
+export type GameActionWithImage<GameActionId extends string> = FullGameAction<
+  GameActionId
+> &
+  Image;
+export type GameActionWithIcon<GameActionId extends string> = FullGameAction<
+  GameActionId
+> &
+  Icon;
 
-type GameActionImplementation = {
+export type GameActionImplementation<GameActionId extends string> = {
   type?: string;
   available?: {
-    requires?: string[] | string;
+    requires?: GameActionId[] | GameActionId;
     unique?: false;
   };
   effect?: (
     age: number,
-    finishedActionIds: string[],
+    finishedActionIds: GameActionId[],
   ) => Effect[] | EffectWithOptionalTitle | null;
   name: string;
   description: ReactNode;
   cost: number;
 };
-type FullGameAction = GameActionImplementation & {
-  id: string;
+type FullGameAction<GameActionId extends string> = GameActionImplementation<
+  GameActionId
+> & {
+  id: GameActionId;
   round: number;
 };
-export type GameActionList = {
-  [key: string]: ImageOrIcon & GameActionImplementation;
+export type GameActionList<Key extends string, GameActionId extends string> = {
+  [K in Key]: ImageOrIcon & GameActionImplementation<GameActionId>;
 };
 
-export type GameAction = ImageOrIcon & FullGameAction;
+export type GameAction<GameActionId extends string = string> = ImageOrIcon &
+  FullGameAction<GameActionId>;

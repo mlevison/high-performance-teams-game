@@ -1,29 +1,25 @@
+import { rounds } from './index';
 import {
   advanceGameToRound,
   getGame,
   testCurrentRound,
   testFutureRounds,
+  config,
+  defuseRounds,
 } from '../../lib/testHelpers';
 
-/* disable irrelevant other rounds */
-jest.mock('./index', () => ({
+const testConfig = config({
   rounds: [
-    require('./round1').round1,
-    require('../../lib/testHelpers').emptyRound(),
-    require('./round3').round3,
-    require('./round4').round4,
+    ...defuseRounds(rounds.slice(0, 3)),
+    rounds[3],
+    ...defuseRounds(rounds.slice(4)),
   ],
-}));
-
-/* disable game effect to only tests single actions */
-jest.mock('../gameEffects', () => ({
-  gameEffects: [],
-}));
+});
 
 describe('round 4', () => {
   describe('Test Driven Development', () => {
     it('is only available if refactoring was implemented', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
 
       advanceGameToRound(game, 4);
       expect(game.state.currentRound.number).toEqual(4);
@@ -36,7 +32,7 @@ describe('round 4', () => {
     });
 
     it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 4);
       expect(game.state.currentRound.number).toEqual(4);
 
@@ -44,21 +40,20 @@ describe('round 4', () => {
       game.nextRound();
       game.selectAction('TEST_DRIVEN_DEVELOPMENT');
 
-      // all these tests need to take into account that Refactoring already had +1 effect
-      testCurrentRound(game, { capacityChange: 1, userStoryChange: 0 });
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
         { capacityChange: 1, userStoryChange: 0 },
         { capacityChange: 2, userStoryChange: 0 },
         { capacityChange: 3, userStoryChange: 0 },
-        { capacityChange: 4, userStoryChange: 0 },
-        { capacityChange: 4, userStoryChange: 0 },
+        { capacityChange: 3, userStoryChange: 0 },
       ]);
     });
   });
   describe('Cross Skilling', () => {
     it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 4);
       expect(game.state.currentRound.number).toEqual(4);
 
@@ -78,7 +73,7 @@ describe('round 4', () => {
 
   describe('New Tester', () => {
     it('sometimes helps speed up a team', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 4);
       expect(game.state.currentRound.number).toEqual(4);
 
@@ -98,7 +93,7 @@ describe('round 4', () => {
 
   describe('Outside Course to learn testing', () => {
     it('is hard to learn but increases capacity later, but have no effect on User Story Success', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 4);
       expect(game.state.currentRound.number).toEqual(4);
 
@@ -117,7 +112,7 @@ describe('round 4', () => {
 
   describe('Personal Productivity Bonus', () => {
     it('increases User Story Success now harms Capacity later.', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 4);
       expect(game.state.currentRound.number).toEqual(4);
 
@@ -139,7 +134,7 @@ describe('round 4', () => {
 
   describe('Limit WIP', () => {
     it('Slows us down at first but eventually speeds us up', () => {
-      const game = getGame();
+      const game = getGame(testConfig);
       advanceGameToRound(game, 4);
       game.selectAction('LIMIT_WIP');
 

@@ -1,8 +1,16 @@
 import React from 'react';
-import type { RoundDescription } from '../../state';
+import type { RoundDescription } from './index';
 import example from './images/example.jpg';
 
-export const round3: RoundDescription = {
+export type Round3ActionId =
+  | 'IMPROVE_RETROSPECTIVES_CHANGE_AGENDA'
+  | 'OBSERVE_PEOPLE_AND_RELATIONSHIPS'
+  | 'ONE_ON_ONES'
+  | 'PAIR_PROGRAMMING'
+  | 'STORY_MAPPING_OR_OTHER'
+  | 'REFACTORING';
+
+export const round3: RoundDescription<Round3ActionId> = {
   title: 'Work Harder',
   description: (
     <p>

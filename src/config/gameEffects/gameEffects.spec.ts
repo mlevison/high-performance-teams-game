@@ -1,44 +1,28 @@
-import { gameEffects as gameEffectsMock } from './gameEffects';
-import { getGame, testFutureRounds } from '../../lib/testHelpers';
-
-jest.mock('../../state/rounds/getRoundEffects', () => ({
-  getRoundEffects: () => [{ capacityChange: 10, userStoryChange: 30 }],
-}));
-const { gameEffects } = jest.requireActual('./gameEffects');
-jest.mock('./gameEffects', () => ({ gameEffects: [] }));
-jest.mock('../rounds', () => {
-  return {
-    rounds: [
-      {
-        actions: {
-          BUILD_SERVER: {
-            type: 'ENGINEERING',
-            cost: 2,
-          },
-          WORKING_AGREEMENTS: {
-            type: 'COMMUNICATION',
-            cost: 2,
-          },
-        },
-        effect: () => ({ capacityChange: 10 }),
-      },
-    ],
-  };
-});
+import { gameEffects } from './gameEffects';
+import {
+  round,
+  getGame,
+  testFutureRounds,
+  action,
+  config,
+} from '../../lib/testHelpers';
 
 describe('game effects', () => {
-  beforeEach(() => {
-    Object.keys(gameEffectsMock).forEach((key) => {
-      delete gameEffectsMock[key];
-    });
-  });
   describe('Drag Effect if the team makes no engineering improvement', () => {
-    beforeEach(() => {
-      gameEffectsMock.technicalDebtDrag = gameEffects.technicalDebtDrag;
-    });
+    const dragEffectConfig = config(
+      {
+        rounds: [
+          round({ actions: { BUILD_SERVER: action({ type: 'ENGINEERING' }) } }),
+        ],
+        gameEffects: {
+          technicalDebtDrag: gameEffects.technicalDebtDrag,
+        },
+      },
+      6,
+    );
 
     it('reduces capacity', () => {
-      const game = getGame();
+      const game = getGame(dragEffectConfig);
 
       // Precondition
       expect(game.state.currentRound.number).toEqual(1);
@@ -53,7 +37,7 @@ describe('game effects', () => {
     });
 
     it('stops reducing capacity when team added a BuildServer', () => {
-      const game = getGame();
+      const game = getGame(dragEffectConfig);
       // precondition
       expect(game.state.currentRound.number).toEqual(1);
 
@@ -68,12 +52,22 @@ describe('game effects', () => {
   });
 
   describe('Drag Effect if the team makes no Communication improvement', () => {
-    beforeEach(() => {
-      gameEffectsMock.communicationDebtDrag = gameEffects.communicationDebtDrag;
-    });
+    const dragEffectConfig = config(
+      {
+        rounds: [
+          round({
+            actions: { WORKING_AGREEMENTS: action({ type: 'COMMUNICATION' }) },
+          }),
+        ],
+        gameEffects: {
+          communicationDebtDrag: gameEffects.communicationDebtDrag,
+        },
+      },
+      6,
+    );
 
     it('reduces capacity', () => {
-      const game = getGame();
+      const game = getGame(dragEffectConfig);
 
       // Precondition
       expect(game.state.currentRound.number).toEqual(1);
@@ -88,7 +82,7 @@ describe('game effects', () => {
     });
 
     it('stops reducing capacity when team added a Working Agreement', () => {
-      const game = getGame();
+      const game = getGame(dragEffectConfig);
 
       // Ideally Stated as a precondition
       expect(game.state.currentRound.number).toEqual(1);
