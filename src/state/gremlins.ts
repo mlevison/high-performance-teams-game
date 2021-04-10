@@ -9,18 +9,24 @@ export type GremlinDescription = {
   name: string;
   description?: ReactElement;
 };
-type GremlinImplementation<GameActionId extends string> = GremlinDescription & {
-  probability: (state: GameState<GameActionId>) => number;
+type GremlinImplementation<
+  GameActionId extends string,
+  GremlinId extends string
+> = GremlinDescription & {
+  probability: (state: GameState<GameActionId, GremlinId>) => number;
   effect: (
     age: number,
-    finishedActionIds: GameActionId[],
+    state: Pick<
+      GameState<GameActionId, GremlinId>,
+      'currentRound' | 'pastRounds'
+    >,
   ) => null | Effect | Effect[];
 };
 export type GremlinList<
   GremlinId extends string,
   GameActionId extends string
 > = {
-  [K in GremlinId]: GremlinImplementation<GameActionId>;
+  [K in GremlinId]: GremlinImplementation<GameActionId, GremlinId>;
 };
 
 export function rollGremlin<
@@ -36,7 +42,7 @@ export function rollGremlin<
   }
 
   const ids = Object.keys(config.gremlins) as GremlinId[];
-  const gremlinArray: (GremlinImplementation<GameActionId> & {
+  const gremlinArray: (GremlinImplementation<GameActionId, GremlinId> & {
     id: GremlinId;
   })[] = ids.map((id) => ({
     ...config.gremlins[id],
@@ -89,11 +95,14 @@ export function getGremlinEffects<
 >(
   round: GameRound<GameActionId, GremlinId>,
   age: number,
-  finishedActionIds: GameActionId[],
   gremlins: GremlinList<GremlinId, GameActionId>,
+  state: Pick<
+    GameState<GameActionId, GremlinId>,
+    'currentRound' | 'pastRounds'
+  >,
 ): Effect[] {
   if (round.gremlin) {
-    const effect = gremlins[round.gremlin].effect(age, finishedActionIds);
+    const effect = gremlins[round.gremlin].effect(age, state);
     if (Array.isArray(effect)) {
       return effect;
     }
@@ -111,7 +120,9 @@ export function getGremlin<
 >(
   round: GameRound<GameActionId, GremlinId>,
   gremlins: GremlinList<GremlinId, GameActionId>,
-): (GremlinDescription & GremlinImplementation<GameActionId>) | undefined {
+):
+  | (GremlinDescription & GremlinImplementation<GameActionId, GremlinId>)
+  | undefined {
   if (!round.gremlin) {
     return;
   }

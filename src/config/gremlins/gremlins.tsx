@@ -1,6 +1,7 @@
 import React from 'react';
 import type { GameActionId } from '../rounds';
 import type { GremlinList } from '../../state';
+import { selectedActionIds } from '../../lib';
 
 export type GremlinId =
   | 'GREMLIN_MANAGEMENT_YELLS'
@@ -26,9 +27,15 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         eliminate the effect.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const preparations = selectedActionIds(
+        state,
+        /* before this gremlin ocurred */ (round) =>
+          round.gremlin === 'GREMLIN_MANAGEMENT_YELLS',
+      );
+
       let name = 'Management yells at a team member in public';
-      if (finishedActionIds.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION')) {
+      if (preparations.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION')) {
         return { capacityChange: -1, title: name };
       }
       return {
@@ -47,10 +54,16 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         Protection from Outside Distraction, they will reduce effects.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const preparations = selectedActionIds(
+        state,
+        /* before this gremlin ocurred */ (round) =>
+          round.gremlin === 'GREMLIN_EMERGENCY_ON_OTHER_TEAM',
+      );
+
       if (
         age >= 3 ||
-        (finishedActionIds.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION') &&
+        (preparations.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION') &&
           age >= 2)
       ) {
         return null;
@@ -58,10 +71,10 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
 
       let capacity = -3;
 
-      if (finishedActionIds.includes('CROSS_SKILLING')) {
+      if (preparations.includes('CROSS_SKILLING')) {
         capacity += 1;
       }
-      if (finishedActionIds.includes('EXTERNAL_CROSS_TRAINING')) {
+      if (preparations.includes('EXTERNAL_CROSS_TRAINING')) {
         capacity += 1;
       }
 
@@ -86,11 +99,17 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         because they see others and learn from them.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const preparations = selectedActionIds(
+        state,
+        /* before this gremlin ocurred */ (round) =>
+          round.gremlin === 'GREMLIN_NOT_PULLING_THEIR_WEIGHT',
+      );
+
       let capacityChange = -2;
       if (
-        finishedActionIds.includes('ONE_ON_ONES') ||
-        finishedActionIds.includes('CROSS_SKILLING')
+        preparations.includes('ONE_ON_ONES') ||
+        preparations.includes('CROSS_SKILLING')
       ) {
         capacityChange = -1;
       }
@@ -112,11 +131,17 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         team members to raise the issue.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const preparations = selectedActionIds(
+        state,
+        /* before this gremlin ocurred */ (round) =>
+          round.gremlin === 'GREMLIN_NOT_AT_DAILY_SCRUM',
+      );
+
       let capacityChange = -1;
       if (
-        finishedActionIds.includes('ONE_ON_ONES') ||
-        finishedActionIds.includes('WORKING_AGREEMENTS')
+        preparations.includes('ONE_ON_ONES') ||
+        preparations.includes('WORKING_AGREEMENTS')
       ) {
         capacityChange = 0;
       }
@@ -138,10 +163,16 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         continually stay up to date on the Product Owners needs
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const preparations = selectedActionIds(
+        state,
+        /* before this gremlin ocurred */ (round) =>
+          round.gremlin === 'GREMLIN_NEW_STORY_MID_SPRINT',
+      );
+
       if (
-        finishedActionIds.includes('BACKLOG_REFINEMENT') &&
-        finishedActionIds.includes('STORY_MAPPING_OR_OTHER')
+        preparations.includes('BACKLOG_REFINEMENT') &&
+        preparations.includes('STORY_MAPPING_OR_OTHER')
       ) {
         return {
           capacityChange: 0,
@@ -150,10 +181,11 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
             'Emergency Story Mid-Sprint effect avoided by the combined effect of Ongoing Backlog Refinement and good Strategic work with the Product Owner',
         };
       }
+
       if (age === 0) {
         if (
-          finishedActionIds.includes('BACKLOG_REFINEMENT') ||
-          finishedActionIds.includes('STORY_MAPPING_OR_OTHER')
+          preparations.includes('BACKLOG_REFINEMENT') ||
+          preparations.includes('STORY_MAPPING_OR_OTHER')
         ) {
           return {
             capacityChange: -1,
@@ -169,6 +201,7 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
           title: 'Emergency Story Mid-Sprint is hurting',
         };
       }
+
       return {
         capacityChange: 0,
         userStoryChange: 0,
@@ -188,19 +221,25 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         Backlog size avoid this problem altogether.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const preparations = selectedActionIds(
+        state,
+        /* before this gremlin ocurred */ (round) =>
+          round.gremlin === 'GREMLIN_PRODUCT_BACKLOG_MESS',
+      );
+
       let additionalComment = '';
       let capacityChange = -1;
       let userStoryChange = -20;
       if (
-        finishedActionIds.includes('STORY_MAPPING_OR_OTHER') ||
-        finishedActionIds.includes('BACKLOG_REFINEMENT')
+        preparations.includes('STORY_MAPPING_OR_OTHER') ||
+        preparations.includes('BACKLOG_REFINEMENT')
       ) {
         userStoryChange = -10;
         additionalComment =
           '- Story Mapping or Backlog Refinement reduce the effect';
       }
-      if (finishedActionIds.includes('WORK_WITH_PO_LIMIT_PB_SIZE')) {
+      if (preparations.includes('WORK_WITH_PO_LIMIT_PB_SIZE')) {
         capacityChange = 0;
         userStoryChange = 0;
         additionalComment =
@@ -224,7 +263,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         the problem
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
       if (
         finishedActionIds.includes('IMPROVE_RETROSPECTIVES_CHANGE_AGENDA') ||
         finishedActionIds.includes('IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS')
@@ -256,21 +297,27 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         suffer this effect less.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const preparations = selectedActionIds(
+        state,
+        /* before this gremlin ocurred */ (round) =>
+          round.gremlin === 'GREMLIN_POOR_QUALITY',
+      );
+
       let additionalComment = '';
       let capacityChange = -3;
       let userStoryChange = -15;
       if (
-        finishedActionIds.includes('TEST_DRIVEN_DEVELOPMENT') ||
-        finishedActionIds.includes('PAIR_PROGRAMMING')
+        preparations.includes('TEST_DRIVEN_DEVELOPMENT') ||
+        preparations.includes('PAIR_PROGRAMMING')
       ) {
         capacityChange = -2;
         userStoryChange = -10;
         additionalComment = '- TDD or Pair Programming Reduce the effect';
       }
       if (
-        finishedActionIds.includes('TEST_DRIVEN_DEVELOPMENT') &&
-        finishedActionIds.includes('PAIR_PROGRAMMING')
+        preparations.includes('TEST_DRIVEN_DEVELOPMENT') &&
+        preparations.includes('PAIR_PROGRAMMING')
       ) {
         capacityChange = -1;
         userStoryChange = -5;
@@ -278,7 +325,7 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
           '- TDD and Pair Programming Reduce elimintate the effect';
       }
 
-      if (finishedActionIds.includes('ADOPT_BDD')) {
+      if (preparations.includes('ADOPT_BDD')) {
         capacityChange = -1;
         userStoryChange = -5;
         additionalComment = '- BDD Reduced the effect';
@@ -301,19 +348,25 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         Programming suffer this effect less.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const preparations = selectedActionIds(
+        state,
+        /* before this gremlin ocurred */ (round) =>
+          round.gremlin === 'GREMLIN_UNREADABLE_CODE',
+      );
+
       let additionalComment = '';
       let capacityChange = -2;
       if (
-        finishedActionIds.includes('TEST_DRIVEN_DEVELOPMENT') ||
-        finishedActionIds.includes('PAIR_PROGRAMMING')
+        preparations.includes('TEST_DRIVEN_DEVELOPMENT') ||
+        preparations.includes('PAIR_PROGRAMMING')
       ) {
         capacityChange = -1;
         additionalComment = '- TDD or Pair Programming Reduce the effect';
       }
       if (
-        finishedActionIds.includes('TEST_DRIVEN_DEVELOPMENT') &&
-        finishedActionIds.includes('PAIR_PROGRAMMING')
+        preparations.includes('TEST_DRIVEN_DEVELOPMENT') &&
+        preparations.includes('PAIR_PROGRAMMING')
       ) {
         capacityChange = 0;
         additionalComment =

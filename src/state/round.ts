@@ -128,7 +128,7 @@ export function deriveAppRound<
   const currentRoundTitle = config.rounds[currentRoundIndex]?.title;
   const currentRoundDescription = config.rounds[currentRoundIndex]?.description;
   const gremlin = getGremlin(state.currentRound, config.gremlins);
-  const gremlinEffect = gremlin?.effect(0, finishedActionIds) || null;
+  const gremlinEffect = gremlin?.effect(0, state) || null;
   const visibleGremlinEffects = (Array.isArray(gremlinEffect)
     ? gremlinEffect
     : [gremlinEffect]
