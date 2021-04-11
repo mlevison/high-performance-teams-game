@@ -1,5 +1,4 @@
-import { sumByProp } from 'lib';
-import { random } from 'lib/random';
+import { sumByProp, random } from '../lib';
 import { ReactElement } from 'react';
 import { Effect } from './effects';
 import { GameConfig, GameState, getAllEffects } from './game';
