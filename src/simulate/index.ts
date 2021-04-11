@@ -1,11 +1,13 @@
+import fs from 'fs';
 import progress from 'cli-progress';
 import { config, GameActionId, GremlinId } from '../config';
-import { createInitialState, concatByProp } from '../lib';
+import { createInitialState, concatByProp, sumByProp } from '../lib';
 import {
   AppRound,
   createGameReducer,
   closeRound,
   deriveAppRound,
+  deriveAppState,
   getAvailableGameActions,
   rollGremlin,
   GameState,
@@ -29,8 +31,25 @@ const simulationsToRun: number =
     ? simulationsInput
     : 100;
 
+console.log(
+  `Simulating ${simulationsToRun} game${simulationsToRun > 1 ? 's' : ''}...\n`,
+);
 const bar = new progress.SingleBar({}, progress.Presets.shades_classic);
 bar.start(simulationsToRun, 0);
+
+const sims: {
+  state: GameState<GameActionId, GremlinId>;
+  finished: number;
+  final: [
+    capacity: number,
+    gremlinChance: number,
+    userStoryChance: number,
+    selectedActions: number,
+    ocurredGremlins: number,
+    storiesAttempted: number,
+    storiesCompleted: number,
+  ];
+}[] = [];
 
 for (let index = 0; index < simulationsToRun; index++) {
   let state: GameState<GameActionId, GremlinId> = createInitialState();
@@ -76,7 +95,72 @@ for (let index = 0; index < simulationsToRun; index++) {
         });
   }
 
+  const [appState] = deriveAppState(
+    { ...state, ui: { review: false, view: 'welcome' } },
+    config,
+  );
+
+  const storiesAttempted = sumByProp(
+    appState.pastRounds.map((round) => ({
+      storiesAttempted: round.capacity.available,
+    })),
+    'storiesAttempted',
+  );
+  const storiesCompleted = sumByProp(appState.pastRounds, 'storiesCompleted');
+
+  sims.push({
+    state,
+    finished: new Date().getTime(),
+    final: [
+      appState.currentRound.capacity.total,
+      appState.currentRound.gremlinChance,
+      appState.currentRound.userStoryChance,
+      state.pastRounds.reduce(
+        (i, { selectedGameActionIds }) => i + selectedGameActionIds.length,
+        0,
+      ),
+      state.pastRounds.filter(({ gremlin }) => gremlin !== null).length,
+      storiesAttempted,
+      storiesCompleted,
+    ],
+  });
   bar.update(index + 1);
 }
 
 bar.stop();
+
+/* Find Top and Flop games */
+const topFlop: [value: number, id: number][] = [];
+sims.forEach(({ final }, id) => {
+  final.forEach((val, i) => {
+    const t = i * 2;
+    const f = t + 1;
+    if (!topFlop[t] || topFlop[t][0] < val) {
+      topFlop[t] = [val, id];
+    }
+
+    if (!topFlop[f] || topFlop[f][0] > val) {
+      topFlop[f] = [val, id];
+    }
+  });
+});
+const relevantGameIndexes = Array.from(new Set(topFlop.map(([_, i]) => i)));
+
+/* Create and wrote Results file */
+const results = {
+  relevantSims: Object.fromEntries(
+    relevantGameIndexes.map((i) => [
+      i,
+      { state: sims[i].state, finished: sims[i].finished },
+    ]),
+  ),
+  data: sims.map(({ final }) => final),
+};
+
+export type Results = typeof results;
+
+fs.writeFileSync(__dirname + '/results.json', JSON.stringify(results));
+
+console.log(
+  '\nDone!\n\nTo inspect results start the dev-server with\n  npm start\n\nand open\n  http://localhost:3000/results',
+);

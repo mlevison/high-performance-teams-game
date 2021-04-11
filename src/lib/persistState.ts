@@ -94,14 +94,17 @@ export function useVersion() {
   return version;
 }
 
-export function useStateLink(state: AppBaseState) {
+export function useStateLink(
+  state: AppBaseState,
+  from: number = new Date().getTime(),
+) {
   const version = useVersion();
 
-  return `${window.location.href}?restore=${encodeURIComponent(
+  return `${window.location.origin}?restore=${encodeURIComponent(
     btoa(JSON.stringify(state)),
   )}${
     version ? `&version=${encodeURIComponent(version)}` : ''
-  }&from=${encodeURIComponent(new Date().getTime())}`;
+  }&from=${encodeURIComponent(from)}`;
 }
 
 export function saveToLocalStorage(state: AppBaseState, version: string) {
