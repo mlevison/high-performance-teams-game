@@ -1,6 +1,5 @@
 import React from 'react';
 import type { RoundDescription } from './index';
-import example from './images/example.jpg';
 
 export type Round6ActionId =
   | 'IMPROVE_FORECASTING'
@@ -40,7 +39,7 @@ export const round6: RoundDescription<Round6ActionId> = {
   },
   actions: {
     IMPROVE_FORECASTING: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Improve Forecasting',
       description: (
         <p>Switch from a simple velocity model to probablistic forecasts.</p>
@@ -48,7 +47,7 @@ export const round6: RoundDescription<Round6ActionId> = {
       cost: 1,
     },
     IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Make Retrospective Action Items Concrete',
       type: 'COMMUNICATION',
       description: (
@@ -74,7 +73,7 @@ export const round6: RoundDescription<Round6ActionId> = {
       },
     },
     LEARNING_TIME: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Learning time',
       description: (
         <>
@@ -119,7 +118,7 @@ export const round6: RoundDescription<Round6ActionId> = {
       },
     },
     SPRINT_BACKLOG_IMPROVEMENT: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Improve Sprint Backlog',
       type: 'COMMUNICATION',
       description: <p>Team takes ownership of their Sprint Backlog</p>,
@@ -135,7 +134,7 @@ export const round6: RoundDescription<Round6ActionId> = {
       },
     },
     DAILY_SCRUM_MORE_EFFECTIVE: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Make Daily Scrum more Effective',
       type: 'COMMUNICATION',
       description: (

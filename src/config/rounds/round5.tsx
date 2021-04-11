@@ -1,6 +1,5 @@
 import React from 'react';
 import type { RoundDescription } from './index';
-import example from './images/example.jpg';
 
 export type Round5ActionId =
   | 'BYPASS_DEFINITION_OF_DONE'
@@ -21,7 +20,7 @@ export const round5: RoundDescription<Round5ActionId> = {
   ),
   actions: {
     BYPASS_DEFINITION_OF_DONE: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Bypass the Definition of Done',
       description: (
         <p>
@@ -41,7 +40,7 @@ export const round5: RoundDescription<Round5ActionId> = {
       },
     },
     INCLUDE_STAKEHOLDERS_IN_VISION_UPDATE: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Include Stakeholders in updating Vision',
       description: (
         <p>
@@ -61,7 +60,7 @@ export const round5: RoundDescription<Round5ActionId> = {
       },
     },
     ADOPT_BDD: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Adopt Behaviour Driven Development',
       description: (
         <>
@@ -103,7 +102,7 @@ export const round5: RoundDescription<Round5ActionId> = {
       },
     },
     WORK_WITH_PO_LIMIT_PB_SIZE: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Limit the Size of the Product Backlog',
       description: (
         <>
@@ -133,7 +132,7 @@ export const round5: RoundDescription<Round5ActionId> = {
       },
     },
     ESTABLISH_SPRINT_GOALS: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Establish Sprint Goals',
       available: { requires: 'BACKLOG_REFINEMENT' },
       description: (
@@ -170,7 +169,7 @@ export const round5: RoundDescription<Round5ActionId> = {
       },
     },
     MAKE_IMPEDIMENTS_LIST_PUBLIC: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Post a List of the Teams Impediments',
       type: 'COMMUNICATION',
       description: (
