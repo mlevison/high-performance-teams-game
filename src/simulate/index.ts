@@ -11,56 +11,78 @@ import {
   getAvailableGameActions,
   rollGremlin,
   GameState,
+  GameAction,
 } from '../state';
 
-/**
- * Return a whole number describing the amount of "go to next round"-Actions
- * that will be mixed with the actual actions selectable
- */
-function restForFeaturesChance<GameActionId extends string>(
-  selectableGameActionIds: GameActionId[],
+type ActionSelector = (
+  selectableGameActions: GameAction<GameActionId>[],
   round: AppRound<GameActionId>,
   state: GameState<GameActionId>,
-) {
-  return 1;
-}
+) => GameAction<GameActionId> | null;
 
-/**
- * Select 3 random actions each round when possible
- */
-function select3<GameActionId extends string>(
-  selectableGameActionIds: GameActionId[],
-  round: AppRound<GameActionId>,
-  state: GameState<GameActionId>,
-): GameActionId | null {
-  if (round.selectedGameActions.length < 3 && selectableGameActionIds.length) {
-    return selectableGameActionIds[
-      Math.floor(Math.random() * selectableGameActionIds.length)
+const actionSelectors: {
+  [Key: string]: ActionSelector;
+} = {
+  /**
+   * Select 3 random actions each round when possible
+   */
+  always3(selectableGameActions, round) {
+    if (round.selectedGameActions.length < 3 && selectableGameActions.length) {
+      return selectableGameActions[
+        Math.floor(Math.random() * selectableGameActions.length)
+      ];
+    }
+
+    return null;
+  },
+  /**
+   * Select actions when possible and move to next round with
+   * the same chance of selecting a single action
+   */
+  greedy(selectableGameActions, round) {
+    return (
+      selectableGameActions[
+        Math.floor(Math.random() * (selectableGameActions.length + 1))
+      ] || null
+    );
+  },
+  /**
+   * Always spend 30% of capacity on improvements
+   */
+  byPercent(selectableGameActions, round) {
+    const targetPercent = 0.3;
+    const targetPointsForActions = Math.round(
+      round.capacity.total * targetPercent,
+    );
+    const spendOnActions = round.capacity.total - round.capacity.available;
+    const availableForActions = targetPointsForActions - spendOnActions;
+
+    const potentialActions = selectableGameActions.filter(
+      ({ cost }) => cost <= availableForActions,
+    );
+
+    if (!potentialActions.length) {
+      return null;
+    }
+
+    return potentialActions[
+      Math.floor(Math.random() * potentialActions.length)
     ];
-  }
+  },
+  /**
+   * 30% chance to to to next round with each decision
+   */
+  byChance(selectableGameActions) {
+    if (Math.random() > 0.35 && selectableGameActions.length) {
+      return selectableGameActions[
+        Math.floor(Math.random() * selectableGameActions.length)
+      ];
+    }
+    return null;
+  },
+};
 
-  return null;
-}
-
-/**
- * Select actions when possible and move to next round with
- * the same chance of selecting a single action
- */
-function greedySelect<GameActionId extends string>(
-  selectableGameActionIds: GameActionId[],
-  round: AppRound<GameActionId>,
-  state: GameState<GameActionId>,
-): GameActionId | null {
-  const amountOfOptions =
-    selectableGameActionIds.length +
-    restForFeaturesChance(selectableGameActionIds, round, state);
-
-  return (
-    selectableGameActionIds[Math.floor(Math.random() * amountOfOptions)] || null
-  );
-}
-
-const selectGameAction = select3;
+const selectGameAction = actionSelectors.byChance;
 
 const simulationsInput = parseInt(process.argv[2], 10);
 const simulationsToRun: number =
@@ -101,7 +123,7 @@ for (let index = 0; index < simulationsToRun; index++) {
   ) {
     const round = deriveAppRound(state, config);
 
-    const selectableGameActionIds = getAvailableGameActions(
+    const selectableGameActions = getAvailableGameActions(
       state.pastRounds.length,
       concatByProp(state.pastRounds, 'selectedGameActionIds'),
       state.currentRound.selectedGameActionIds,
@@ -112,12 +134,12 @@ for (let index = 0; index < simulationsToRun; index++) {
           status.type === 'AVAILABLE' &&
           gameAction.cost <= round.capacity.available,
       )
-      .map(({ gameAction }) => gameAction.id);
+      .map(({ gameAction }) => gameAction);
 
-    const action = selectGameAction(selectableGameActionIds, round, state);
+    const action = selectGameAction(selectableGameActions, round, state);
 
     state = action
-      ? reducer(state, { type: 'SELECT_GAME_ACTION', payload: action })
+      ? reducer(state, { type: 'SELECT_GAME_ACTION', payload: action.id })
       : reducer(state, {
           type: 'NEXT_ROUND',
           payload: {
