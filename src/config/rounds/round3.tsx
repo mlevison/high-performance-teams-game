@@ -1,6 +1,5 @@
 import React from 'react';
 import type { RoundDescription } from './index';
-import example from './images/example.jpg';
 
 export type Round3ActionId =
   | 'IMPROVE_RETROSPECTIVES_CHANGE_AGENDA'
@@ -21,7 +20,7 @@ export const round3: RoundDescription<Round3ActionId> = {
   effect: () => ({ title: false, gremlinChange: 50 }),
   actions: {
     IMPROVE_RETROSPECTIVES_CHANGE_AGENDA: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'COMMUNICATION',
       name: 'Change Retrospective Style',
       description: (
@@ -67,7 +66,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       },
     },
     OBSERVE_PEOPLE_AND_RELATIONSHIPS: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'COMMUNICATION',
       name: 'Observe People + Relationships',
       description: (
@@ -83,7 +82,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       }),
     },
     ONE_ON_ONES: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'COMMUNICATION',
       name: 'One on One',
       description: (
@@ -97,7 +96,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       cost: 1,
     },
     PAIR_PROGRAMMING: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'ENGINEERING',
       name: 'Pair Programming',
       description: <p>Two team members – one computer</p>,
@@ -109,7 +108,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       }),
     },
     STORY_MAPPING_OR_OTHER: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'COMMUNICATION',
       name: 'Story Mapping',
       available: { requires: 'CLARIFY_PRODUCT_VISION' },
@@ -124,7 +123,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       effect: () => ({ userStoryChange: 10 }),
     },
     REFACTORING: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'ENGINEERING',
       name: 'Refactoring',
       available: { requires: 'BUILD_SERVER' },

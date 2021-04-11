@@ -1,6 +1,5 @@
 import React from 'react';
 import type { RoundDescription } from './index';
-import example from './images/example.jpg';
 
 export type Round7ActionId =
   | 'PREALLOCATE_CAPACITY_FOR_PRODUCTION_SUPPORT'
@@ -17,7 +16,7 @@ export const round7: RoundDescription<Round7ActionId> = {
   ),
   actions: {
     ONE_PERSON_DEALS_WITH_DEFECTS: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'One Person Deals with Defects',
       description: (
         <>
@@ -37,7 +36,7 @@ export const round7: RoundDescription<Round7ActionId> = {
       cost: 3,
     },
     PREALLOCATE_CAPACITY_FOR_PRODUCTION_SUPPORT: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Allocate Capacity for bugs',
       description: (
         <>

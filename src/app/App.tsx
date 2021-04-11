@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { GameState, GameConfig } from '../state';
+import type { GameConfig } from '../state';
 import {
   Results,
   FinalResults,
@@ -19,6 +19,7 @@ import {
   Log,
 } from './components';
 import {
+  AppBaseState,
   createInitialState,
   GAME_STATE_OK,
   InitialStateWithStatus,
@@ -28,7 +29,7 @@ import {
   useAppState,
 } from '../lib';
 
-type Props = { initialState: GameState; config: GameConfig };
+type Props = { initialState: AppBaseState; config: GameConfig };
 export function App(props: Props) {
   const [state, closeRound, rollGremlin, link, dispatch] = useAppState(
     props.config,

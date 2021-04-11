@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { GameState } from '../state/game';
+import type { AppBaseState } from '../lib';
 import { createInitialState } from './initialState';
 import versionP from './version';
 
@@ -7,7 +7,7 @@ const LOCAL_STATE_KEY = 'TEAM_GAME_STATE';
 export const GAME_STATE_OUTDATED = Symbol('GAME_STATE_OUTDATED');
 export const GAME_STATE_OK = Symbol('GAME_STATE_OK');
 export type InitialStateWithStatus = {
-  state: GameState;
+  state: AppBaseState;
   restored?: Date;
   status: typeof GAME_STATE_OUTDATED | typeof GAME_STATE_OK;
 };
@@ -94,7 +94,7 @@ export function useVersion() {
   return version;
 }
 
-export function useStateLink(state: GameState) {
+export function useStateLink(state: AppBaseState) {
   const version = useVersion();
 
   return `${window.location.href}?restore=${encodeURIComponent(
@@ -104,11 +104,11 @@ export function useStateLink(state: GameState) {
   }&from=${encodeURIComponent(new Date().getTime())}`;
 }
 
-export function saveToLocalStorage(state: GameState, version: string) {
+export function saveToLocalStorage(state: AppBaseState, version: string) {
   localStorage.setItem(LOCAL_STATE_KEY, JSON.stringify({ version, state }));
 }
 
-export function usePersistState(state: GameState) {
+export function usePersistState(state: AppBaseState) {
   const version = useVersion();
   useEffect(() => {
     if (version) {

@@ -1,6 +1,5 @@
 import React from 'react';
 import type { RoundDescription } from './index';
-import example from './images/example.jpg';
 
 export type Round1ActionId =
   | 'PROTECTED_FROM_OUTSIDE_DISTRACTION'
@@ -68,7 +67,7 @@ export const round1: RoundDescription<Round1ActionId> = {
     },
 
     WORKING_AGREEMENTS: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'COMMUNICATION',
       name: 'Working Agreements',
       description: (
@@ -95,7 +94,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       effect: () => ({ capacityChange: 1 }),
     },
     BUILD_SERVER: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'ENGINEERING',
       name: 'Build Server',
       description: (
@@ -115,7 +114,7 @@ export const round1: RoundDescription<Round1ActionId> = {
       cost: 2,
     },
     TEAMS_ON_SAME_FLOOR: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Team Members on Same Floor',
       type: 'COMMUNICATION',
       description:

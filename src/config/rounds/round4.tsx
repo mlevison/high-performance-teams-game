@@ -1,6 +1,5 @@
 import React from 'react';
 import type { RoundDescription } from './index';
-import example from './images/example.jpg';
 
 export type Round4ActionId =
   | 'CROSS_SKILLING'
@@ -20,7 +19,7 @@ export const round4: RoundDescription<Round4ActionId> = {
   ),
   actions: {
     CROSS_SKILLING: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Informal Cross-Skilling',
       description: (
         <>
@@ -49,7 +48,7 @@ export const round4: RoundDescription<Round4ActionId> = {
       },
     },
     EXTERNAL_CROSS_TRAINING: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Send Team Members on a Testing Course',
       description: (
         <p>
@@ -70,7 +69,7 @@ export const round4: RoundDescription<Round4ActionId> = {
       },
     },
     NEW_TESTER: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Hiring a new Tester',
       description: (
         <p>
@@ -107,7 +106,7 @@ export const round4: RoundDescription<Round4ActionId> = {
       },
     },
     LIMIT_WIP: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Limit Work In Progress',
       description: (
         <p>
@@ -133,7 +132,7 @@ export const round4: RoundDescription<Round4ActionId> = {
       },
     },
     TEST_DRIVEN_DEVELOPMENT: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'ENGINEERING',
       name: 'Test Driven Development',
       available: { requires: 'REFACTORING' },
@@ -159,7 +158,7 @@ export const round4: RoundDescription<Round4ActionId> = {
       },
     },
     PERSONAL_PRODUCTIVITY_BONUS: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Personal Productivity Bonus',
       description: (
         <p>

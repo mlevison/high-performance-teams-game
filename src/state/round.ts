@@ -108,10 +108,7 @@ export function deriveAppRound<
   GameActionId extends string,
   GremlinId extends string
 >(
-  state: Pick<
-    GameState<GameActionId, GremlinId>,
-    'currentRound' | 'pastRounds'
-  >,
+  state: GameState<GameActionId, GremlinId>,
   config: GameConfig<GameActionId, GremlinId>,
 ): AppRound<GameActionId> {
   const finishedActionIds = concatByProp(

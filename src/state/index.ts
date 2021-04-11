@@ -1,6 +1,11 @@
 export type { Action } from './game';
 export type { ClosedGameRound as ClosedRound, AppRound } from './round';
-export type { GameState, GameActionAction, GameConfig } from './game';
+export type {
+  GameState,
+  GameActionAction,
+  GameConfig,
+  NextRoundAction,
+} from './game';
 export type { AppState } from './deriveAppState';
 export type {
   GameActionWithStatus,

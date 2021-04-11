@@ -1,6 +1,5 @@
 import React from 'react';
 import type { RoundDescription } from './index';
-import example from './images/example.jpg';
 
 export type Round2ActionId =
   | 'REMOTE_TEAM_AVATARS'
@@ -41,7 +40,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       effect: () => ({ capacityChange: 1 }),
     },
     ELIMINATE_LONG_LIVED_FEATURE_BRANCHES: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'ENGINEERING',
       name: 'All Work is Done on Main or Trunk',
       description: (
@@ -70,7 +69,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       effect: () => ({ capacityChange: 1 }),
     },
     SOCIAL_TIME: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'COMMUNICATION',
       name: 'Social Time',
       description: (
@@ -87,7 +86,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       }),
     },
     PROBLEM_SOLVING_BONUS: {
-      image: example,
+      image: '/images/example.jpg',
       name: 'Problem Solving Award',
       description: (
         <p>
@@ -112,7 +111,7 @@ export const round2: RoundDescription<Round2ActionId> = {
       },
     },
     BACKLOG_REFINEMENT: {
-      image: example,
+      image: '/images/example.jpg',
       type: 'COMMUNICATION',
       name: 'Backlog Refinement',
       description: (
