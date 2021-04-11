@@ -13,6 +13,11 @@ function hashCode(string: string) {
 }
 
 export default new Promise<string>(async (resolve, reject) => {
+  if (process.env.TEAM_GAME_VERSION) {
+    resolve(process.env.TEAM_GAME_VERSION);
+    return;
+  }
+
   if (process.env.NODE_ENV === 'test') {
     resolve('test');
     return;
