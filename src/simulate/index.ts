@@ -18,12 +18,49 @@ import {
  * that will be mixed with the actual actions selectable
  */
 function restForFeaturesChance<GameActionId extends string>(
-  selectableGameActionIds: string[],
+  selectableGameActionIds: GameActionId[],
   round: AppRound<GameActionId>,
   state: GameState<GameActionId>,
 ) {
   return 1;
 }
+
+/**
+ * Select 3 random actions each round when possible
+ */
+function select3<GameActionId extends string>(
+  selectableGameActionIds: GameActionId[],
+  round: AppRound<GameActionId>,
+  state: GameState<GameActionId>,
+): GameActionId | null {
+  if (round.selectedGameActions.length < 3 && selectableGameActionIds.length) {
+    return selectableGameActionIds[
+      Math.floor(Math.random() * selectableGameActionIds.length)
+    ];
+  }
+
+  return null;
+}
+
+/**
+ * Select actions when possible and move to next round with
+ * the same chance of selecting a single action
+ */
+function greedySelect<GameActionId extends string>(
+  selectableGameActionIds: GameActionId[],
+  round: AppRound<GameActionId>,
+  state: GameState<GameActionId>,
+): GameActionId | null {
+  const amountOfOptions =
+    selectableGameActionIds.length +
+    restForFeaturesChance(selectableGameActionIds, round, state);
+
+  return (
+    selectableGameActionIds[Math.floor(Math.random() * amountOfOptions)] || null
+  );
+}
+
+const selectGameAction = select3;
 
 const simulationsInput = parseInt(process.argv[2], 10);
 const simulationsToRun: number =
@@ -77,12 +114,7 @@ for (let index = 0; index < simulationsToRun; index++) {
       )
       .map(({ gameAction }) => gameAction.id);
 
-    const amountOfOptions =
-      selectableGameActionIds.length +
-      restForFeaturesChance(selectableGameActionIds, round, state);
-
-    const action =
-      selectableGameActionIds[Math.floor(Math.random() * amountOfOptions)];
+    const action = selectGameAction(selectableGameActionIds, round, state);
 
     state = action
       ? reducer(state, { type: 'SELECT_GAME_ACTION', payload: action })
