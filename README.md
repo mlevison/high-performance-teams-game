@@ -62,6 +62,15 @@ In the project directory, run:
 npm test
 ```
 
+### Simulate games
+
+In the project directory, run:
+
+```shell
+# Simulate 300 runs
+npm run simulate 300
+```
+
 This will open a [jest](https://jestjs.io/) session in the terminal.
 
 ## Good resources to learn about everything used here:
