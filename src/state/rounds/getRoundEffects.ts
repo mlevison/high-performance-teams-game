@@ -5,10 +5,7 @@ export function getRoundEffects<
   GameActionId extends string,
   GremlinId extends string
 >(
-  state: Pick<
-    GameState<GameActionId, GremlinId>,
-    'currentRound' | 'pastRounds'
-  >,
+  state: GameState<GameActionId, GremlinId>,
   rounds: GameConfig<GameActionId, GremlinId>['rounds'],
 ): Effect[] {
   const currentRoundIndex = state.pastRounds.length;

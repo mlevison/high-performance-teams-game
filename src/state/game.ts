@@ -19,31 +19,11 @@ export type GameState<
 > = {
   currentRound: GameRound<GameActionId, GremlinId>;
   pastRounds: ClosedGameRound<GameActionId, GremlinId>[];
-  ui: {
-    review: false | number;
-    view: 'welcome' | 'actions' | 'results';
-    closedRound?: ClosedGameRound<GameActionId, GremlinId>;
-  };
   log: RunningGameAction<GameActionId, GremlinId>[];
 };
 
 export type RestartGameAction = {
   type: 'RESTART_GAME';
-};
-export type SetUiReviewAction = {
-  type: 'SET_UI_REVIEW_ACTION';
-  payload: GameState['ui']['review'];
-};
-export type SetUiViewAction = {
-  type: 'SET_UI_VIEW_ACTION';
-  payload: GameState['ui']['view'];
-};
-export type SetUiClosedRoundAction<
-  GameActionId extends string,
-  GremlinId extends string
-> = {
-  type: 'SET_UI_CLOSED_ROUND_ACTION';
-  payload: ClosedGameRound<GameActionId, GremlinId>;
 };
 export type SelectGameActionAction<GameActionId extends string> = {
   type: 'SELECT_GAME_ACTION';
@@ -78,16 +58,11 @@ export type GameActionAction<GameActionId extends string = string> =
 type RunningGameAction<GameActionId extends string, GremlinId extends string> =
   | GameActionAction<GameActionId>
   | NextRoundAction<GameActionId, GremlinId>;
-type UiAction<GameActionId extends string, GremlinId extends string> =
-  | SetUiViewAction
-  | SetUiClosedRoundAction<GameActionId, GremlinId>
-  | SetUiReviewAction;
 
 export type Action<GameActionId extends string, GremlinId extends string> =
   | RunningGameAction<GameActionId, GremlinId>
   | RestartGameAction
-  | FinishGameAction<GameActionId, GremlinId>
-  | UiAction<GameActionId, GremlinId>;
+  | FinishGameAction<GameActionId, GremlinId>;
 
 export type GameConfig<
   GameActionId extends string = string,
@@ -104,10 +79,7 @@ export function getAllEffects<
   GameActionId extends string,
   GremlinId extends string
 >(
-  state: Pick<
-    GameState<GameActionId, GremlinId>,
-    'currentRound' | 'pastRounds'
-  >,
+  state: GameState<GameActionId, GremlinId>,
   config: GameConfig<GameActionId, GremlinId>,
   finishedActionIds: GameActionId[] = concatByProp(
     state.pastRounds,
@@ -189,10 +161,6 @@ function nextRound<GameActionId extends string, GremlinId extends string>(
 ): GameState<GameActionId, GremlinId> {
   return {
     ...state,
-    ui: {
-      review: false,
-      view: 'welcome',
-    },
     pastRounds: [...state.pastRounds, action.payload.closedRound],
     currentRound: createRound<GameActionId, GremlinId>(action.payload.gremlin),
     log: state.log.concat(action),
@@ -268,32 +236,6 @@ export function createGameReducer<
           [state, action.payload.closedRound],
         )[0];
       }
-      case 'SET_UI_VIEW_ACTION':
-        return {
-          ...state,
-          ui: {
-            ...state.ui,
-            view: action.payload,
-          },
-        };
-      case 'SET_UI_CLOSED_ROUND_ACTION':
-        return {
-          ...state,
-          ui: {
-            ...state.ui,
-            view: 'results',
-            closedRound: action.payload,
-          },
-        };
-      case 'SET_UI_REVIEW_ACTION':
-        return {
-          ...state,
-          ui: {
-            ...state.ui,
-            view: 'welcome',
-            review: action.payload,
-          },
-        };
       case 'RESTART_GAME':
         return initialState;
     }

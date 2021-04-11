@@ -1,4 +1,4 @@
-import { concatByProp } from '../lib';
+import { concatByProp, UIState, AppBaseState } from '../lib';
 import { GameConfig, GameState } from './game';
 import { getAvailableGameActions } from './gameActions';
 import { GameActionWithStatus } from './gameActions/getAvailableGameActions';
@@ -16,7 +16,7 @@ export type AppState<
   availableGameActions: GameActionWithStatus<GameActionId>[];
   currentRound: AppRound<GameActionId>;
   pastRounds: PastRound<GameActionId>[];
-  ui: GameState<GameActionId, GremlinId>['ui'];
+  ui: UIState<GameActionId, GremlinId>;
   log: GameState<GameActionId, GremlinId>['log'];
 };
 
@@ -24,7 +24,7 @@ export function deriveAppState<
   GameActionId extends string,
   GremlinId extends string
 >(
-  state: GameState<GameActionId, GremlinId>,
+  state: AppBaseState<GameActionId, GremlinId>,
   config: GameConfig<GameActionId, GremlinId>,
 ): [
   AppState<GameActionId, GremlinId>,
@@ -51,6 +51,7 @@ export function deriveAppState<
             {
               pastRounds,
               currentRound,
+              log: state.log,
             },
             config,
           ),

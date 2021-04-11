@@ -7,3 +7,4 @@ export * from './getAllGameActions';
 export * from './isGameActionWithImage';
 export * from './initialState';
 export * from './useAppState';
+export * from './uiState';
