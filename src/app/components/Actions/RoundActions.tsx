@@ -15,7 +15,19 @@ type Props = {
 };
 
 export default function RoundActions(props: Props) {
-  const [visible, setVisible] = useState(props.initialVisible);
+  const [visible, setVisible] = useState(
+    () =>
+      /* Always show selected actions in review */
+      (props.review &&
+        props.actionsWithStatus.find(
+          ({ status: { type } }) => type === 'SELECTED',
+        )) ||
+      props.initialVisible,
+  );
+  const selected = props.actionsWithStatus.filter(
+    ({ status: { type } }) => type === 'FINISHED' || type === 'SELECTED',
+  ).length;
+
   return (
     <>
       <li>
@@ -23,7 +35,10 @@ export default function RoundActions(props: Props) {
           className={styles.roundVisibleToggle}
           onClick={() => setVisible(!visible)}
         >
-          Round {props.round} {visible ? '▲' : '▼'}
+          Round {props.round} {visible ? '▲' : '▼'}{' '}
+          <small>
+            ({selected}/{props.actionsWithStatus.length} actions selected)
+          </small>
         </button>
         {visible && (
           <ul className={styles.roundActionList}>
