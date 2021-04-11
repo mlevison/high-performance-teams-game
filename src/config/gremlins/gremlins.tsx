@@ -1,6 +1,7 @@
 import React from 'react';
 import type { GameActionId } from '../rounds';
 import type { GremlinList } from '../../state';
+import { selectedActionIds } from '../../lib';
 
 export type GremlinId =
   | 'GREMLIN_MANAGEMENT_YELLS'
@@ -26,9 +27,15 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         eliminate the effect.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const preparations = selectedActionIds(
+        state,
+        /* before this gremlin ocurred */ (round) =>
+          round.gremlin === 'GREMLIN_MANAGEMENT_YELLS',
+      );
+
       let name = 'Management yells at a team member in public';
-      if (finishedActionIds.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION')) {
+      if (preparations.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION')) {
         return { capacityChange: -1, title: name };
       }
       return {
@@ -47,7 +54,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         Protection from Outside Distraction, they will reduce effects.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
       if (
         age >= 3 ||
         (finishedActionIds.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION') &&
@@ -86,7 +95,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         because they see others and learn from them.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
       let capacityChange = -2;
       if (
         finishedActionIds.includes('ONE_ON_ONES') ||
@@ -112,7 +123,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         team members to raise the issue.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
       let capacityChange = -1;
       if (
         finishedActionIds.includes('ONE_ON_ONES') ||
@@ -138,7 +151,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         continually stay up to date on the Product Owners needs
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
       if (
         finishedActionIds.includes('BACKLOG_REFINEMENT') &&
         finishedActionIds.includes('STORY_MAPPING_OR_OTHER')
@@ -150,6 +165,7 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
             'Emergency Story Mid-Sprint effect avoided by the combined effect of Ongoing Backlog Refinement and good Strategic work with the Product Owner',
         };
       }
+
       if (age === 0) {
         if (
           finishedActionIds.includes('BACKLOG_REFINEMENT') ||
@@ -169,6 +185,7 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
           title: 'Emergency Story Mid-Sprint is hurting',
         };
       }
+
       return {
         capacityChange: 0,
         userStoryChange: 0,
@@ -188,7 +205,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         Backlog size avoid this problem altogether.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
       let additionalComment = '';
       let capacityChange = -1;
       let userStoryChange = -20;
@@ -224,7 +243,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         the problem
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
       if (
         finishedActionIds.includes('IMPROVE_RETROSPECTIVES_CHANGE_AGENDA') ||
         finishedActionIds.includes('IMPROVE_RETROSPECTIVES_CONCRETE_ACTIONS')
@@ -256,7 +277,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         suffer this effect less.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
       let additionalComment = '';
       let capacityChange = -3;
       let userStoryChange = -15;
@@ -301,7 +324,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         Programming suffer this effect less.
       </p>
     ),
-    effect(age, finishedActionIds) {
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
       let additionalComment = '';
       let capacityChange = -2;
       if (

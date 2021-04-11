@@ -1,5 +1,9 @@
 export type { Action } from './game';
-export type { ClosedGameRound as ClosedRound, AppRound } from './round';
+export type {
+  ClosedGameRound as ClosedRound,
+  GameRound,
+  AppRound,
+} from './round';
 export type {
   GameState,
   GameActionAction,

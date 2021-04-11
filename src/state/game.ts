@@ -113,12 +113,7 @@ export function getAllEffects<
 
   /* current rounds gremlin */
   effects.push(
-    ...getGremlinEffects(
-      state.currentRound,
-      0,
-      finishedActionIds,
-      config.gremlins,
-    ),
+    ...getGremlinEffects(state.currentRound, 0, config.gremlins, state),
   );
 
   /* Get action and gremlin effects from past rounds */
@@ -128,7 +123,7 @@ export function getAllEffects<
 
     effects.push(
       /* gremlins occur on current round, so they're at age +1 in next */
-      ...getGremlinEffects(round, age, finishedActionIds, config.gremlins),
+      ...getGremlinEffects(round, age, config.gremlins, state),
       /* actions get active in next */
       ...getActionEffects(round, age, finishedActionIds, config.rounds).filter(
         isEffect,

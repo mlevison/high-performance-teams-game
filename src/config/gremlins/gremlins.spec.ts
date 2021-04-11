@@ -108,19 +108,19 @@ describe('Gremlins', () => {
       ]);
     });
 
-    // it('adding protected by outside distractions after the fact has no effect', () => {
-    //   const game = getGame();
+    it('adding protected by outside distractions after the fact has no effect', () => {
+      const game = getGame(gremlinTestConfig);
 
-    //   game.nextRound('GREMLIN_MANAGEMENT_YELLS');
-    //   testCurrentRound(game, { capacityChange: -2, userStoryChange: 0 });
-    //   game.nextRound();
-    //   game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
+      game.nextRound('GREMLIN_MANAGEMENT_YELLS');
+      testCurrentRound(game, { capacityChange: -2, userStoryChange: 0 });
+      game.nextRound();
+      game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
 
-    //   testFutureRounds(game, [
-    //     { capacityChange: -2, userStoryChange: 0 },
-    //     { capacityChange: -2, userStoryChange: 0 },
-    //   ]);
-    // });
+      testFutureRounds(game, [
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+      ]);
+    });
   });
 
   describe('Team Member not pulling their weight', () => {
