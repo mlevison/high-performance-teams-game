@@ -169,6 +169,7 @@ export default function Results(props: Props) {
           </Button>
         ) : null}
       </div>
+      <h3>Summary of all rounds</h3>
       <CapStoryChart
         rounds={[
           ...props.pastRounds,
