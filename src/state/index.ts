@@ -19,7 +19,8 @@ export type {
 export type { RoundDescription } from './rounds';
 export type { GremlinList } from './gremlins';
 export type { GameEffect, VisibleEffect, BaseEffect, Effect } from './effects';
-export { getCosts, closeRound } from './round';
+export { getCosts, closeRound, deriveAppRound } from './round';
 export { getAvailableGameActions, UNIQUE_ACTION } from './gameActions';
 export { deriveAppState } from './deriveAppState';
 export { createGameReducer } from './game';
+export { rollGremlin } from './gremlins';

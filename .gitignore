@@ -11,6 +11,9 @@
 # production
 /build
 
+# simulation results
+/src/simulate/results.json
+
 # misc
 .DS_Store
 .env.local
