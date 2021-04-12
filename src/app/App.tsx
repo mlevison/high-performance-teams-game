@@ -60,11 +60,11 @@ export function App(props: Props) {
           <Tab active={tab === 'play'} onClick={() => setTab('play')}>
             Play
           </Tab>
-          <Tab active={tab === 'rules'} onClick={() => setTab('rules')}>
-            Rules
-          </Tab>
           <Tab active={tab === 'log'} onClick={() => setTab('log')}>
             Log
+          </Tab>
+          <Tab active={tab === 'rules'} onClick={() => setTab('rules')}>
+            Rules
           </Tab>
         </Tabs>
       </Header>
