@@ -5,16 +5,16 @@ export default function Rules() {
     <>
       <h2>Welcome</h2>
       <p>
-        Reading about improvements rarely sparks the deeper changes that teams need
-        to be effective. This game exists so you can start to see the choices a
-        team has to improve.
+        Reading about improvements rarely sparks the deeper changes that teams
+        need to be effective. This game exists so you can start to see the
+        choices a team has to improve.
       </p>
       <p>
-        In the longer term, the game is here to spark a discussion among your real team
-        about improvements they can make. To that end, the game is best played
-        in a single web browser where everyone can see what is happening and
-        discuss the options.<br></br>Some people have fun playing the game by
-        themselves.
+        In the longer term, the game is here to spark a discussion among your
+        real team about improvements they can make. To that end, the game is
+        best played in a single web browser where everyone can see what is
+        happening and discuss the options.<br></br>Some people have fun playing
+        the game by themselves.
       </p>
       <h3>Background</h3>
       <p>
@@ -41,6 +41,12 @@ export default function Rules() {
         team. Each round represents a month of work.
       </p>
       <h2>Rules</h2>
+      <p>
+        <em>
+          You can come back and review the rules at any point without losing
+          game progress
+        </em>
+      </p>
       <ul>
         <li>The game lasts 10 rounds.</li>
         <li>Your team starts with a working capacity of 10 points.</li>
@@ -58,8 +64,8 @@ export default function Rules() {
           Improvements fall into three categories:
           <ul>Engineering Practices - improve the quality of your code</ul>
           <ul>
-            Communication Practices - improve the ability of team members to work
-            together
+            Communication Practices - improve the ability of team members to
+            work together
           </ul>
           <ul>
             Product Ownership Practices - make it more likely that the team will
@@ -85,9 +91,9 @@ export default function Rules() {
           software that our customers will love.
         </li>
         <li>
-          And while your goal is to deliver features, the leaders of this company
-          have decided to give you a chance to get the team started on the right
-          foot. They've agreed to allow you to consider some possible
+          And while your goal is to deliver features, the leaders of this
+          company have decided to give you a chance to get the team started on
+          the right foot. They've agreed to allow you to consider some possible
           Improvements even before you've delivered one Story. But, they do
           remind you that every improvement that you want to implement needs to
           be done by the team, so will reduce their capacity to deliver
@@ -105,8 +111,8 @@ export default function Rules() {
           Select Improvements or Actions that will affect the team.{' '}
           <ul>
             <li>
-              Once selected, the cost of the Action will be deducted from
-              the team's Capacity.
+              Once selected, the cost of the Action will be deducted from the
+              team's Capacity.
             </li>
             <li>
               You can see your capacity reduce every time you select an Action
@@ -173,9 +179,9 @@ export default function Rules() {
       <h2>Limitations</h2>
       <p>
         If you play well you could improve your teams effectiveness by four to
-        five times. In reality, that would take more than the year implied in the
-        game. In addition, in reality many improvements would have an ongoing
-        cost that is longer than the game simulates.
+        five times. In reality, that would take more than the year implied in
+        the game. In addition, in reality many improvements would have an
+        ongoing cost that is longer than the game simulates.
       </p>
     </>
   );

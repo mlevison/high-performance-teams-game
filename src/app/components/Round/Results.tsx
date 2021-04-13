@@ -20,11 +20,16 @@ export default function Results(props: Props) {
 
   return (
     <>
-      <p>What is the chance that each User Story will successfully be built?</p>
       <p>
-        When you're ready to see the results click: "Roll for User Stories".
+        What is the chance that each User Story will successfully be built?Life
+        is unpredictable but, based on the choices that you made for
+        Actions/Improvements, this is what we calculate your chances are for
+        successfully completing a user story.
       </p>
-      <p>When you have reviewed the results click: "Next Round"</p>
+      <p>
+        Roll the dice to see how many User Stories you actually complete. When
+        you have reviewed the results click: “Begin Next Round".
+      </p>
       <h3>Calculation</h3>
       <ul className={styles.userStoryChanceList}>
         <li>&nbsp;&nbsp;&nbsp;{props.initialUserStoryChance}% base chance</li>
@@ -170,6 +175,7 @@ export default function Results(props: Props) {
         ) : null}
       </div>
       <h3>Summary of all rounds</h3>
+      <p>The graph will make more sense and show the overall results of choices made, as more rounds get completed and are shown.</p>
       <CapStoryChart
         rounds={[
           ...props.pastRounds,
