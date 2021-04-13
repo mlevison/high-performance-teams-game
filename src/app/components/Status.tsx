@@ -109,7 +109,7 @@ export default function Status(props: Props) {
           )}
         >
           <span className={styles.cap}>
-            <span className={styles.sign}>-</span> {props.capacity.available}
+            <span className={styles.sign}>=</span> {props.capacity.available}
           </span>{' '}
           spent on User Stories
         </li>
