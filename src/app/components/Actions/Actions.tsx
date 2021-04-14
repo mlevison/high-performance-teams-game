@@ -24,10 +24,12 @@ export default function Actions(props: Props) {
     <>
       <h2>Available Actions</h2>
       <p>
-        <em>
-          Previous rounds actions are still available, click the &#9658; to open
-          prior rounds.
-        </em>
+        {props.currentRound > 1 ? (
+          <em>
+            Previous rounds actions are still available, click the &#9658; to
+            open prior rounds.
+          </em>
+        ) : null}
       </p>
       <p>
         Select Improvements or Actions that will affect the team. Once selected,
