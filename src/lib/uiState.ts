@@ -61,6 +61,7 @@ export function uiStateReducer<
         ...state,
         review: false,
         view: 'welcome',
+        closedRound: undefined,
       };
   }
 }
