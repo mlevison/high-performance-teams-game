@@ -124,6 +124,7 @@ export function App(props: Props) {
                     <Row>
                       <Actions
                         ui={state.ui}
+                        rounds={props.config.rounds}
                         currentRound={state.currentRound.number}
                         availableCapacity={
                           state.currentRound.capacity.available

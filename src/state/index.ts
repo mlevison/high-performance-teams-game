@@ -9,6 +9,7 @@ export type {
   GameActionAction,
   GameConfig,
   NextRoundAction,
+  RestartGameAction,
 } from './game';
 export type { AppState } from './deriveAppState';
 export type {
