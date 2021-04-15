@@ -40,7 +40,7 @@ describe('round 5', () => {
       testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
 
       testFutureRounds(game, [
-        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 10 },
         { capacityChange: 0, userStoryChange: 10 },
         { capacityChange: 0, userStoryChange: 10 },
         { capacityChange: 0, userStoryChange: 10 },

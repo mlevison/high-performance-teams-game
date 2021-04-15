@@ -51,11 +51,16 @@ export const round5: RoundDescription<Round5ActionId> = {
       ),
       cost: 1,
       effect(age) {
-        if (age <= 1) {
-          return { userStoryChange: 0 };
+        if (age < 1) {
+          return {
+            userStoryChange: 0,
+            title: "Include Stakeholders in updating Vision hasn't helped yet",
+          };
         }
         return {
           userStoryChange: 10,
+          title:
+            'Include Stakeholders in updating Vision after a delay this eventually helped ',
         };
       },
     },
