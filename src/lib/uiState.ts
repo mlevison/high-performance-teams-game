@@ -1,4 +1,4 @@
-import type { ClosedRound, NextRoundAction } from '../state';
+import type { ClosedRound, NextRoundAction, RestartGameAction } from '../state';
 
 export type UIState<
   GameActionId extends string = string,
@@ -36,7 +36,8 @@ export function uiStateReducer<
   state: UIState<GameActionId, GremlinId>,
   action:
     | UiAction<GameActionId, GremlinId>
-    | NextRoundAction<GameActionId, GremlinId>,
+    | NextRoundAction<GameActionId, GremlinId>
+    | RestartGameAction,
 ): UIState<GameActionId, GremlinId> {
   switch (action.type) {
     case 'SET_UI_VIEW_ACTION':
@@ -59,6 +60,12 @@ export function uiStateReducer<
     case 'NEXT_ROUND':
       return {
         ...state,
+        review: false,
+        view: 'welcome',
+        closedRound: undefined,
+      };
+    case 'RESTART_GAME':
+      return {
         review: false,
         view: 'welcome',
         closedRound: undefined,
