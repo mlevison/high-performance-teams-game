@@ -44,11 +44,19 @@ export const round2: RoundDescription<Round2ActionId> = {
       type: 'ENGINEERING',
       name: 'All Work is Done on Main or Trunk',
       description: (
-        <p>
-          When teams use Feature Branches – then they’re not really using
-          Continuous Integration. Feature branching optimizes for the individual
-          while harming the Team.
-        </p>
+        <>
+          <p>
+            When teams use Feature Branches – then they’re not really using
+            Continuous Integration. Feature branching optimizes for the
+            individual while harming the Team.
+          </p>
+          <p>
+            For a deeper understanding see Agile Glossary and Reference Library:{' '}
+            <a href="https://agilepainrelief.com/glossary/branching-strategies">
+              Branching Strategies in Source Control
+            </a>
+          </p>
+        </>
       ),
       cost: 2,
       effect: () => ({ capacityChange: 1 }),
@@ -59,11 +67,19 @@ export const round2: RoundDescription<Round2ActionId> = {
       name: 'Unit Testing',
       available: { requires: 'BUILD_SERVER' },
       description: (
-        <p>
-          Unit Testing is the approach of testing the smallest possible fragment
-          of code. It ensures that the code does what the developer expected it
-          do.
-        </p>
+        <>
+          <p>
+            Unit Testing is the approach of testing the smallest possible
+            fragment of code. It ensures that the code does what the developer
+            expected it do.
+          </p>
+          <p>
+            For a deeper understanding see Agile Glossary and Reference Library:{' '}
+            <a href="https://agilepainrelief.com/glossary/unit-testing">
+              Unit Testing
+            </a>
+          </p>
+        </>
       ),
       cost: 2,
       effect: () => ({ capacityChange: 1 }),

@@ -113,11 +113,22 @@ export const round3: RoundDescription<Round3ActionId> = {
       name: 'Story Mapping',
       available: { requires: 'CLARIFY_PRODUCT_VISION' },
       description: (
-        <p>
-          Story Mapping is a strategic tool that gets Developers and the Product
-          Owner to discuss strategy. Story mapping helps link understanding of
-          Product Vision with the individual User Stories.
-        </p>
+        <>
+          <p>
+            Story Mapping is a strategic tool that gets Developers and the
+            Product Owner to discuss strategy. Story mapping helps link
+            understanding of Product Vision with the individual User Stories.
+          </p>
+          <p>
+            For a deeper understanding see Agile Glossary and Reference Library:{' '}
+            <a href="https://agilepainrelief.com/glossary/story-mapping">
+              Story Mapping
+            </a>
+            <a href="https://agilepainrelief.com/glossary/roadmaps-and-strategy">
+              Roadmaps and Strategy
+            </a>
+          </p>
+        </>
       ),
       cost: 2,
       effect: () => ({ userStoryChange: 10 }),
