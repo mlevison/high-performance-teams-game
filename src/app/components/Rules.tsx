@@ -183,7 +183,11 @@ export default function Rules() {
         the game. In addition, in reality many improvements would have an
         ongoing cost that is longer than the game simulates.
       </p>
-      <p>Copyright: https://agilepainrelief.com 2021</p>
+      <p>
+        Copyright:{' '}
+        <a href="https://agilepainrelief.com">https://agilepainrelief.com</a>{' '}
+        2021
+      </p>
     </>
   );
 }
