@@ -92,7 +92,7 @@ const actionSelectors: {
   },
 };
 
-const selectGameAction = actionSelectors.byChance;
+const selectGameAction = actionSelectors.always3;
 
 const simulationsInput = parseInt(process.argv[2], 10);
 const simulationsToRun: number =
