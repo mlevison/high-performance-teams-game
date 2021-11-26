@@ -1,9 +1,5 @@
-import type { GameConfig } from 'state';
+import type { OverwritableConfig } from 'state';
 
-export const simulateConfig: Pick<
-  GameConfig,
-  'initialScores' | 'trailingRounds'
-> = {
-  initialScores: {},
+export const simulateConfig: OverwritableConfig = {
   trailingRounds: 22,
 };
