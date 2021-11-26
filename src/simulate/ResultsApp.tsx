@@ -90,7 +90,7 @@ function GameLink({
     () => ({ ...state, ui: { view: 'actions', review: 0 } }),
     [state],
   );
-  const href = useStateLink(baseState, finished);
+  const href = useStateLink(baseState, finished, results.simulateConfig);
   return (
     <a href={href} target="_blank" rel="noreferrer">
       {children}

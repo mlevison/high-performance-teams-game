@@ -10,6 +10,7 @@ export type {
   GameConfig,
   NextRoundAction,
   RestartGameAction,
+  OverwritableConfig,
 } from './game';
 export type { AppState } from './deriveAppState';
 export type {

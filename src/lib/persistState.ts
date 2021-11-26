@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { OverwritableConfig } from '../state';
 import type { AppBaseState } from '../lib';
 import { createInitialState } from './initialState';
 import versionP from './version';
@@ -8,6 +9,7 @@ export const GAME_STATE_OUTDATED = Symbol('GAME_STATE_OUTDATED');
 export const GAME_STATE_OK = Symbol('GAME_STATE_OK');
 export type InitialStateWithStatus = {
   state: AppBaseState;
+  config: OverwritableConfig;
   restored?: Date;
   status: typeof GAME_STATE_OUTDATED | typeof GAME_STATE_OK;
 };
@@ -33,8 +35,11 @@ export async function getInitialState(): Promise<InitialStateWithStatus> {
     try {
       const data = JSON.parse(atob(restoreData));
       const version = await versionP;
+      const state = typeof data.state === 'object' ? data.state : data;
+      const config = typeof data.config === 'object' ? data.config : {};
       return {
-        state: data,
+        state,
+        config,
         restored: new Date(parseInt(search.from, 10)),
         status:
           search.version !== version ? GAME_STATE_OUTDATED : GAME_STATE_OK,
@@ -45,20 +50,22 @@ export async function getInitialState(): Promise<InitialStateWithStatus> {
   }
 
   if (localStateData === null) {
-    return { state: createInitialState(), status: GAME_STATE_OK };
+    return { state: createInitialState(), config: {}, status: GAME_STATE_OK };
   }
 
   try {
     const localState = JSON.parse(localStateData);
     const version = await versionP;
+
     return {
       state: localState.state,
+      config: typeof localState.config === 'object' ? localState.config : {},
       status:
         localState.version !== version ? GAME_STATE_OUTDATED : GAME_STATE_OK,
     };
   } catch (err) {
     console.warn(err);
-    return { state: createInitialState(), status: GAME_STATE_OK };
+    return { state: createInitialState(), config: {}, status: GAME_STATE_OK };
   }
 }
 
@@ -97,18 +104,26 @@ export function useVersion() {
 export function useStateLink(
   state: AppBaseState,
   from: number = new Date().getTime(),
+  config: OverwritableConfig = {},
 ) {
   const version = useVersion();
 
   return `${window.location.origin}?restore=${encodeURIComponent(
-    btoa(JSON.stringify(state)),
+    btoa(JSON.stringify({ state, config })),
   )}${
     version ? `&version=${encodeURIComponent(version)}` : ''
   }&from=${encodeURIComponent(from)}`;
 }
 
-export function saveToLocalStorage(state: AppBaseState, version: string) {
-  localStorage.setItem(LOCAL_STATE_KEY, JSON.stringify({ version, state }));
+export function saveToLocalStorage(
+  state: AppBaseState,
+  version: string,
+  config: OverwritableConfig = {},
+) {
+  localStorage.setItem(
+    LOCAL_STATE_KEY,
+    JSON.stringify({ version, state, config }),
+  );
 }
 
 export function usePersistState(state: AppBaseState) {

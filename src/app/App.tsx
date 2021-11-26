@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import type { GameConfig } from '../state';
 import {
   Results,
@@ -182,6 +182,19 @@ export default function OutdatedStateWarning(props: {
 }) {
   const version = useVersion();
   const [initialState, setInitialState] = useState(props.initialState);
+  const configOverwrites = initialState.config;
+  const config = props.config;
+  const mergedConfig = useMemo(
+    () => ({
+      ...config,
+      ...configOverwrites,
+      initialScores: {
+        ...config.initialScores,
+        ...configOverwrites.initialScores,
+      },
+    }),
+    [config, configOverwrites],
+  );
   if (!version) {
     return null;
   }
@@ -211,7 +224,11 @@ export default function OutdatedStateWarning(props: {
           </Button>
           <Button
             onClick={() => {
-              saveToLocalStorage(initialState.state, version);
+              saveToLocalStorage(
+                initialState.state,
+                version,
+                initialState.config,
+              );
               window.location.href = window.location.href.split('?')[0];
             }}
             primary
@@ -224,7 +241,7 @@ export default function OutdatedStateWarning(props: {
   }
 
   if (initialState.status === GAME_STATE_OK) {
-    return <App initialState={initialState.state} config={props.config} />;
+    return <App initialState={initialState.state} config={mergedConfig} />;
   }
 
   return (
@@ -240,6 +257,7 @@ export default function OutdatedStateWarning(props: {
           onClick={() =>
             setInitialState({
               state: initialState.state,
+              config: props.initialState.config,
               status: GAME_STATE_OK,
             })
           }
@@ -250,6 +268,7 @@ export default function OutdatedStateWarning(props: {
           onClick={() =>
             setInitialState({
               state: createInitialState(),
+              config: props.initialState.config,
               status: GAME_STATE_OK,
             })
           }

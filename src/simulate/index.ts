@@ -1,6 +1,7 @@
 import fs from 'fs';
 import progress from 'cli-progress';
-import { config, GameActionId, GremlinId } from '../config';
+import { config as originalConfig, GameActionId, GremlinId } from '../config';
+import { simulateConfig } from './simulateConfig';
 import { createInitialState, concatByProp, sumByProp } from '../lib';
 import {
   AppRound,
@@ -13,6 +14,15 @@ import {
   GameState,
   GameAction,
 } from '../state';
+
+const config: typeof originalConfig = {
+  ...originalConfig,
+  ...simulateConfig,
+  initialScores: {
+    ...originalConfig.initialScores,
+    ...simulateConfig.initialScores,
+  },
+};
 
 type ActionSelector = (
   selectableGameActions: GameAction<GameActionId>[],
@@ -208,6 +218,7 @@ const results = {
       { state: sims[i].state, finished: sims[i].finished },
     ]),
   ),
+  simulateConfig,
   data: sims.map(({ final }) => final),
 };
 
