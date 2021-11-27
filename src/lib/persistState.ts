@@ -101,6 +101,20 @@ export function useVersion() {
   return version;
 }
 
+export function stateLink(
+  origin: string,
+  version: string | null,
+  state: AppBaseState,
+  from: number = new Date().getTime(),
+  config: OverwritableConfig = {},
+) {
+  return `${origin}?restore=${encodeURIComponent(
+    btoa(JSON.stringify({ state, config })),
+  )}${
+    version ? `&version=${encodeURIComponent(version)}` : ''
+  }&from=${encodeURIComponent(from)}`;
+}
+
 export function useStateLink(
   state: AppBaseState,
   from: number = new Date().getTime(),
@@ -108,11 +122,7 @@ export function useStateLink(
 ) {
   const version = useVersion();
 
-  return `${window.location.origin}?restore=${encodeURIComponent(
-    btoa(JSON.stringify({ state, config })),
-  )}${
-    version ? `&version=${encodeURIComponent(version)}` : ''
-  }&from=${encodeURIComponent(from)}`;
+  return stateLink(window.location.origin, version, state, from, config);
 }
 
 export function saveToLocalStorage(

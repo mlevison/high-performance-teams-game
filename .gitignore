@@ -13,6 +13,8 @@
 
 # simulation results
 /src/simulate/results.json
+/src/simulate/results/*
+!/src/simulate/results/.gitkeep
 
 # misc
 .DS_Store

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import progress from 'cli-progress';
+import { stringify } from 'csv-stringify/sync';
 import { config as originalConfig, GameActionId, GremlinId } from '../config';
 import {
   simulateConfig,
@@ -8,7 +9,7 @@ import {
   STORE_BEST,
   STORE_WORST,
 } from './simulateConfig';
-import { createInitialState, concatByProp, sumByProp } from '../lib';
+import { createInitialState, concatByProp, sumByProp, stateLink } from '../lib';
 import {
   createGameReducer,
   closeRound,
@@ -86,7 +87,7 @@ const reducer = createGameReducer(
   config,
   createInitialState<GameActionId, GremlinId>(),
 );
-
+let maxSelectedActions = 0;
 for (let index = 0; index < simulationsToRun; index++) {
   let state: GameState<GameActionId, GremlinId> = createInitialState();
 
@@ -111,15 +112,24 @@ for (let index = 0; index < simulationsToRun; index++) {
 
     const action = actionSelector(selectableGameActions, round, state);
 
-    state = action
-      ? reducer(state, { type: 'SELECT_GAME_ACTION', payload: action.id })
-      : reducer(state, {
-          type: 'NEXT_ROUND',
-          payload: {
-            closedRound: closeRound(state, config),
-            gremlin: rollGremlin(state, config),
-          },
-        });
+    if (action) {
+      state = reducer(state, {
+        type: 'SELECT_GAME_ACTION',
+        payload: action.id,
+      });
+    } else {
+      maxSelectedActions = Math.max(
+        maxSelectedActions,
+        state.currentRound.selectedGameActionIds.length,
+      );
+      state = reducer(state, {
+        type: 'NEXT_ROUND',
+        payload: {
+          closedRound: closeRound(state, config),
+          gremlin: rollGremlin(state, config),
+        },
+      });
+    }
   }
 
   const [appState] = deriveAppState(
@@ -185,14 +195,16 @@ function registerGame(sim: Simulation, i: number) {
             final: { [key]: b, combinedScore: cb },
           } = relevantSims[ib];
           if (a !== b) {
-            return b - a;
+            return a - b;
           } else if (cb !== ca) {
-            return cb - ca;
+            return ca - cb;
           }
-          return ib - ia;
+          return ia - ib;
         })
         .splice(0, topFlop[key].top.length - STORE_BEST),
     );
+    topFlop[key].top.reverse();
+
     topFlop[key].flop.push(i);
     outruled.push(
       ...topFlop[key].flop
@@ -204,11 +216,11 @@ function registerGame(sim: Simulation, i: number) {
             final: { [key]: b, combinedScore: cb },
           } = relevantSims[ib];
           if (a !== b) {
-            return a - b;
+            return b - a;
           } else if (cb !== ca) {
-            return ca - cb;
+            return cb - ca;
           }
-          return ia - ib;
+          return ib - ia;
         })
         .splice(0, topFlop[key].flop.length - STORE_WORST),
     );
@@ -233,7 +245,63 @@ const results = {
 
 export type Results = typeof results;
 
+console.log('\n\nWriting results...');
+
 fs.writeFileSync(__dirname + '/results.json', JSON.stringify(results));
+
+FINAL_KEYS.forEach((key) => {
+  const best = getLines(topFlop[key].top);
+  const worst = getLines(topFlop[key].flop);
+
+  fs.writeFileSync(
+    `${__dirname}/results/${key}.csv`,
+    stringify([
+      Object.keys(best[0]),
+      ...best.map((d) => Object.values(d)),
+      ...worst.map((d) => Object.values(d)),
+    ]),
+  );
+});
+
+function getLines(simIds: number[]) {
+  return simIds.map((id, i) => {
+    const game: Record<string, string | number> = { '#': i };
+
+    const { state, finished, final } = relevantSims[id];
+
+    game['Combined Score'] = final.combinedScore;
+    game['Total capacity'] = final.capacity;
+    game['Final chance of completing user stories'] = final.userStoryChance;
+    game['Total user stories attempted'] = final.storiesAttempted;
+    game['Final gremlin chance'] = final.gremlinChance;
+    game['Total user stories completed'] = final.storiesCompleted;
+    game['Actions selected throughout game'] = final.selectedActions;
+    game['Gremlins ocurred throughout game'] = final.ocurredGremlins;
+
+    state.pastRounds.forEach((round, roundI) => {
+      for (let actionI = 0; actionI < maxSelectedActions; actionI++) {
+        game[`Round ${roundI + 1} Action ${actionI + 1}`] =
+          round.selectedGameActionIds[actionI] || '';
+      }
+      game[`Round ${roundI + 1} Gremlin`] = round.gremlin || '';
+      game[`Round ${roundI + 1} Stories Completed`] = round.storiesCompleted;
+    });
+
+    game.simulationId = id;
+    game.simulationTime = new Date(finished).toISOString();
+    game.link = stateLink(
+      'https://teamsgame.agilepainrelief.com',
+      null,
+      {
+        ...state,
+        ui: { view: 'actions', review: 0 },
+      },
+      finished,
+      simulateConfig,
+    );
+    return game;
+  });
+}
 
 console.log(
   '\nDone!\n\nTo inspect results start the dev-server with\n  npm start\n\nand open\n  http://localhost:3000/results',
