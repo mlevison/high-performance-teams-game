@@ -7,6 +7,7 @@ import {
   actionSelector,
   calculateCombinedScore,
   STORE_BEST,
+  INCLUDE_LINK,
   STORE_WORST,
 } from './simulateConfig';
 import { createInitialState, concatByProp, sumByProp, stateLink } from '../lib';
@@ -289,16 +290,18 @@ function getLines(simIds: number[]) {
 
     game.simulationId = id;
     game.simulationTime = new Date(finished).toISOString();
-    game.link = stateLink(
-      'https://teamsgame.agilepainrelief.com',
-      null,
-      {
-        ...state,
-        ui: { view: 'actions', review: 0 },
-      },
-      finished,
-      simulateConfig,
-    );
+    if (INCLUDE_LINK) {
+      game.link = stateLink(
+        'https://teamsgame.agilepainrelief.com',
+        null,
+        {
+          ...state,
+          ui: { view: 'actions', review: 0 },
+        },
+        finished,
+        simulateConfig,
+      );
+    }
     return game;
   });
 }

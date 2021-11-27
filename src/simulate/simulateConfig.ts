@@ -1,8 +1,9 @@
 import type { OverwritableConfig } from '../state';
 import type { SimulationWithoutCombinedScore } from './index';
 
-export const STORE_BEST = 5;
-export const STORE_WORST = 5;
+export const INCLUDE_LINK = true;
+export const STORE_BEST = 300;
+export const STORE_WORST = 300;
 
 export const simulateConfig: OverwritableConfig = {
   trailingRounds: 22,
