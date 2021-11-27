@@ -23,6 +23,7 @@ const SELECTED_ACTIONS = 'Actions selected throughout game';
 const OCURRED_GREMLINS = 'Gremlins ocurred throughout game';
 const STORIES_ATTEMPTED = 'Total user stories attempted';
 const STORIES_COMPLETED = 'Total user stories completed';
+const COMBINED_SCORE = 'Combined Score';
 
 type ScoreKey =
   | typeof TOTAL_CAPACITY
@@ -31,7 +32,8 @@ type ScoreKey =
   | typeof SELECTED_ACTIONS
   | typeof OCURRED_GREMLINS
   | typeof STORIES_ATTEMPTED
-  | typeof STORIES_COMPLETED;
+  | typeof STORIES_COMPLETED
+  | typeof COMBINED_SCORE;
 const SCOREKEY_MAP: ScoreKey[] = [
   TOTAL_CAPACITY,
   FINAL_GREMLIN_CHANCE,
@@ -40,6 +42,7 @@ const SCOREKEY_MAP: ScoreKey[] = [
   OCURRED_GREMLINS,
   STORIES_ATTEMPTED,
   STORIES_COMPLETED,
+  COMBINED_SCORE,
 ];
 const OPTIONS: { [K in ScoreKey]: Partial<LineProps> } = {
   [TOTAL_CAPACITY]: {
@@ -71,6 +74,10 @@ const OPTIONS: { [K in ScoreKey]: Partial<LineProps> } = {
   [STORIES_COMPLETED]: {
     yAxisId: 'stories',
     stroke: '#1be400',
+  },
+  [COMBINED_SCORE]: {
+    yAxisId: 'combinedScore',
+    stroke: '#7600e4',
   },
 };
 const yAxis = Array.from(
@@ -108,11 +115,16 @@ export default function ResultsApp() {
     return results.data
       .map((data, id) => ({ id, data }))
       .sort((a, b) => {
-        const val = a.data[sortIndex] - b.data[sortIndex];
-        if (val === 0) {
-          return a.id - b.id;
+        const sort = a.data[sortIndex] - b.data[sortIndex];
+        const scombinedScoreSort = a.data[7] - b.data[7];
+        switch (true) {
+          case sort !== 0:
+            return sort;
+          case scombinedScoreSort !== 0:
+            return scombinedScoreSort;
+          default:
+            return a.id - b.id;
         }
-        return val;
       })
       .filter((_, i) => {
         const t = i / showQuota;
@@ -127,6 +139,7 @@ export default function ResultsApp() {
         [OCURRED_GREMLINS]: data[4],
         [STORIES_ATTEMPTED]: data[5],
         [STORIES_COMPLETED]: data[6],
+        [COMBINED_SCORE]: data[7],
       }));
   }, [showAmount, sortBy]);
 
