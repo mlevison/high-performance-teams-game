@@ -3,7 +3,7 @@ import type { GameAction, GameConfig } from '../state/game';
 
 export function findGameActionById<
   GameActionId extends string,
-  GremlinId extends string
+  GremlinId extends string,
 >(
   gameActionId: GameActionId,
   rounds: GameConfig<GameActionId, GremlinId>['rounds'],

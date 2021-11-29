@@ -175,7 +175,10 @@ export default function Results(props: Props) {
         ) : null}
       </div>
       <h3>Summary of all rounds</h3>
-      <p>The graph will make more sense and show the overall results of choices made, as more rounds get completed and are shown.</p>
+      <p>
+        The graph will make more sense and show the overall results of choices
+        made, as more rounds get completed and are shown.
+      </p>
       <CapStoryChart
         rounds={[
           ...props.pastRounds,
