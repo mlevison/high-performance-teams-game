@@ -9,7 +9,7 @@
 ### System Requirements
 
 - [git][git] v2.13 or greater
-- [NodeJS][node] `^14`
+- [NodeJS][node] v14 or greater
 - [npm][npm] v7 or greater
 
 All of these must be available in your `PATH`. To verify things are set up
