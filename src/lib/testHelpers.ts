@@ -108,7 +108,7 @@ export function getGame<GameActionId extends string, GremlinId extends string>(
 
 export function defuseRounds<
   GameActionId extends string,
-  GremlinId extends string
+  GremlinId extends string,
 >(
   rounds: RoundDescription<string, GameActionId, GremlinId>[],
 ): RoundDescription<string, GameActionId, GremlinId>[] {
@@ -125,7 +125,7 @@ export function defuseRounds<
 
 export function advanceGameToRound<
   GameActionId extends string,
-  GremlinId extends string
+  GremlinId extends string,
 >(game: GameHelper<GameActionId, GremlinId>, desiredRound: number) {
   while (game.state.currentRound.number < desiredRound) {
     game.nextRound();
@@ -133,7 +133,7 @@ export function advanceGameToRound<
 }
 export function testCurrentRound<
   GameActionId extends string,
-  GremlinId extends string
+  GremlinId extends string,
 >(game: GameHelper<GameActionId, GremlinId>, round: BaseEffect) {
   if (round.userStoryChange !== undefined) {
     expect(game.state.currentRound).toHaveUserStoryChance(
@@ -152,7 +152,7 @@ export function testCurrentRound<
 
 export function testFutureRounds<
   GameActionId extends string,
-  GremlinId extends string
+  GremlinId extends string,
 >(game: GameHelper<GameActionId, GremlinId>, futureRounds: BaseEffect[]) {
   futureRounds.forEach((round) => {
     game.nextRound();
@@ -183,7 +183,7 @@ function matchRound(
       }
       var pass = actual === expected;
     } catch (err) {
-      if (err.name === 'TypeError') {
+      if (err instanceof Error && err.name === 'TypeError') {
         return {
           pass: false,
           message: () =>

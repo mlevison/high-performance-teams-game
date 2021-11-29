@@ -6,7 +6,6 @@ import { createInitialState, useAppState } from '../lib';
 import { round } from '../lib/testHelpers';
 
 jest.mock('../lib/useAppState');
-jest.mock('recharts');
 
 const INITIAL_STATE = createInitialState();
 const BASE_STATE: AppState = {

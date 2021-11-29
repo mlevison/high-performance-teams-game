@@ -44,7 +44,7 @@ const SCOREKEY_MAP: ScoreKey[] = [
   STORIES_COMPLETED,
   COMBINED_SCORE,
 ];
-const OPTIONS: { [K in ScoreKey]: Partial<LineProps> } = {
+const OPTIONS: { [K in ScoreKey]: Partial<Omit<LineProps, 'ref'>> } = {
   [TOTAL_CAPACITY]: {
     yAxisId: 'capacity',
     stroke: '#0c79df',

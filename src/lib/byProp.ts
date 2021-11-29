@@ -23,7 +23,7 @@ export function concatByProp<T extends object, K extends ArrayKeys<T>>(
 ): T[K] {
   const all: any = [];
   objects.forEach((obj) => {
-    all.push(...obj[key]);
+    all.push(...(obj[key] as any));
   });
   return all;
 }

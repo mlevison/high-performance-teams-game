@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   ComposedChart,
   Line,
@@ -32,6 +32,10 @@ type Props = {
 };
 
 export default function CapStoryChart({ rounds }: Props) {
+  const [showChart, setShowChart] = useState<boolean>(false);
+  useEffect(() => {
+    setShowChart(true);
+  }, []);
   const [data, userStorySteps] = useMemo(() => {
     const data: Data[] = [];
     let maxUserStoryChance = 100;
@@ -55,7 +59,7 @@ export default function CapStoryChart({ rounds }: Props) {
     ];
   }, [rounds]);
 
-  return (
+  return showChart ? (
     <ResponsiveContainer className={styles.chart} height={300} width="100%">
       <ComposedChart
         data={data}
@@ -96,5 +100,5 @@ export default function CapStoryChart({ rounds }: Props) {
         <Line yAxisId="right" type="monotone" dataKey={SC} stroke="#1be400" />
       </ComposedChart>
     </ResponsiveContainer>
-  );
+  ) : null;
 }
