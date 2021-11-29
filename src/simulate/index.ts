@@ -1,9 +1,17 @@
 import fs from 'fs';
 import progress from 'cli-progress';
-import { config, GameActionId, GremlinId } from '../config';
-import { createInitialState, concatByProp, sumByProp } from '../lib';
+import { stringify } from 'csv-stringify/sync';
+import { config as originalConfig, GameActionId, GremlinId } from '../config';
 import {
-  AppRound,
+  simulateConfig,
+  actionSelector,
+  calculateCombinedScore,
+  STORE_BEST,
+  INCLUDE_LINK,
+  STORE_WORST,
+} from './simulateConfig';
+import { createInitialState, concatByProp, sumByProp, stateLink } from '../lib';
+import {
   createGameReducer,
   closeRound,
   deriveAppRound,
@@ -11,78 +19,16 @@ import {
   getAvailableGameActions,
   rollGremlin,
   GameState,
-  GameAction,
 } from '../state';
 
-type ActionSelector = (
-  selectableGameActions: GameAction<GameActionId>[],
-  round: AppRound<GameActionId>,
-  state: GameState<GameActionId>,
-) => GameAction<GameActionId> | null;
-
-const actionSelectors: {
-  [Key: string]: ActionSelector;
-} = {
-  /**
-   * Select 3 random actions each round when possible
-   */
-  always3(selectableGameActions, round) {
-    if (round.selectedGameActions.length < 3 && selectableGameActions.length) {
-      return selectableGameActions[
-        Math.floor(Math.random() * selectableGameActions.length)
-      ];
-    }
-
-    return null;
-  },
-  /**
-   * Select actions when possible and move to next round with
-   * the same chance of selecting a single action
-   */
-  greedy(selectableGameActions, round) {
-    return (
-      selectableGameActions[
-        Math.floor(Math.random() * (selectableGameActions.length + 1))
-      ] || null
-    );
-  },
-  /**
-   * Always spend 30% of capacity on improvements
-   */
-  byPercent(selectableGameActions, round) {
-    const targetPercent = 0.3;
-    const targetPointsForActions = Math.round(
-      round.capacity.total * targetPercent,
-    );
-    const spendOnActions = round.capacity.total - round.capacity.available;
-    const availableForActions = targetPointsForActions - spendOnActions;
-
-    const potentialActions = selectableGameActions.filter(
-      ({ cost }) => cost <= availableForActions,
-    );
-
-    if (!potentialActions.length) {
-      return null;
-    }
-
-    return potentialActions[
-      Math.floor(Math.random() * potentialActions.length)
-    ];
-  },
-  /**
-   * 30% chance to to to next round with each decision
-   */
-  byChance(selectableGameActions) {
-    if (Math.random() > 0.35 && selectableGameActions.length) {
-      return selectableGameActions[
-        Math.floor(Math.random() * selectableGameActions.length)
-      ];
-    }
-    return null;
+const config: typeof originalConfig = {
+  ...originalConfig,
+  ...simulateConfig,
+  initialScores: {
+    ...originalConfig.initialScores,
+    ...simulateConfig.initialScores,
   },
 };
-
-const selectGameAction = actionSelectors.byChance;
 
 const simulationsInput = parseInt(process.argv[2], 10);
 const simulationsToRun: number =
@@ -96,26 +42,55 @@ console.log(
 const bar = new progress.SingleBar({}, progress.Presets.shades_classic);
 bar.start(simulationsToRun, 0);
 
-const sims: {
+const FINAL_KEYS = [
+  'capacity' as const,
+  'gremlinChance' as const,
+  'userStoryChance' as const,
+  'selectedActions' as const,
+  'ocurredGremlins' as const,
+  'storiesAttempted' as const,
+  'storiesCompleted' as const,
+  'combinedScore' as const,
+];
+type FinalKeys = typeof FINAL_KEYS;
+
+type Simulation = {
   state: GameState<GameActionId, GremlinId>;
   finished: number;
-  final: [
-    capacity: number,
-    gremlinChance: number,
-    userStoryChance: number,
-    selectedActions: number,
-    ocurredGremlins: number,
-    storiesAttempted: number,
-    storiesCompleted: number,
-  ];
-}[] = [];
+  final: {
+    [K in FinalKeys[0]]: number;
+  };
+};
 
+export type SimulationWithoutCombinedScore = Omit<Simulation, 'final'> & {
+  final: Omit<Simulation['final'], 'combinedScore'>;
+};
+
+const relevantSims: { [K: number]: Simulation } = {};
+const data: number[][] = [];
+const topFlop: {
+  [K in FinalKeys[0]]: {
+    top: number[];
+    flop: number[];
+  };
+} = {
+  capacity: { top: [], flop: [] },
+  gremlinChance: { top: [], flop: [] },
+  userStoryChance: { top: [], flop: [] },
+  selectedActions: { top: [], flop: [] },
+  ocurredGremlins: { top: [], flop: [] },
+  storiesAttempted: { top: [], flop: [] },
+  storiesCompleted: { top: [], flop: [] },
+  combinedScore: { top: [], flop: [] },
+};
+
+const reducer = createGameReducer(
+  config,
+  createInitialState<GameActionId, GremlinId>(),
+);
+let maxSelectedActions = 0;
 for (let index = 0; index < simulationsToRun; index++) {
   let state: GameState<GameActionId, GremlinId> = createInitialState();
-  const reducer = createGameReducer(
-    config,
-    createInitialState<GameActionId, GremlinId>(),
-  );
 
   while (
     state.pastRounds.length <
@@ -136,17 +111,26 @@ for (let index = 0; index < simulationsToRun; index++) {
       )
       .map(({ gameAction }) => gameAction);
 
-    const action = selectGameAction(selectableGameActions, round, state);
+    const action = actionSelector(selectableGameActions, round, state);
 
-    state = action
-      ? reducer(state, { type: 'SELECT_GAME_ACTION', payload: action.id })
-      : reducer(state, {
-          type: 'NEXT_ROUND',
-          payload: {
-            closedRound: closeRound(state, config),
-            gremlin: rollGremlin(state, config),
-          },
-        });
+    if (action) {
+      state = reducer(state, {
+        type: 'SELECT_GAME_ACTION',
+        payload: action.id,
+      });
+    } else {
+      maxSelectedActions = Math.max(
+        maxSelectedActions,
+        state.currentRound.selectedGameActionIds.length,
+      );
+      state = reducer(state, {
+        type: 'NEXT_ROUND',
+        payload: {
+          closedRound: closeRound(state, config),
+          gremlin: rollGremlin(state, config),
+        },
+      });
+    }
   }
 
   const [appState] = deriveAppState(
@@ -162,58 +146,165 @@ for (let index = 0; index < simulationsToRun; index++) {
   );
   const storiesCompleted = sumByProp(appState.pastRounds, 'storiesCompleted');
 
-  sims.push({
+  const simWithoutCombined: SimulationWithoutCombinedScore = {
     state,
     finished: new Date().getTime(),
-    final: [
-      appState.currentRound.capacity.total,
-      appState.currentRound.gremlinChance,
-      appState.currentRound.userStoryChance,
-      state.pastRounds.reduce(
+    final: {
+      capacity: appState.currentRound.capacity.total,
+      gremlinChance: appState.currentRound.gremlinChance,
+      userStoryChance: appState.currentRound.userStoryChance,
+      selectedActions: state.pastRounds.reduce(
         (i, { selectedGameActionIds }) => i + selectedGameActionIds.length,
         0,
       ),
-      state.pastRounds.filter(({ gremlin }) => gremlin !== null).length,
-      storiesAttempted,
-      storiesCompleted,
-    ],
-  });
+      ocurredGremlins: state.pastRounds.filter(
+        ({ gremlin }) => gremlin !== null,
+      ).length,
+      storiesAttempted: storiesAttempted,
+      storiesCompleted: storiesCompleted,
+    },
+  };
+  registerGame(
+    {
+      ...simWithoutCombined,
+      final: {
+        ...simWithoutCombined.final,
+        combinedScore: calculateCombinedScore(simWithoutCombined),
+      },
+    },
+    index,
+  );
   bar.update(index + 1);
 }
 
 bar.stop();
 
-/* Find Top and Flop games */
-const topFlop: [value: number, id: number][] = [];
-sims.forEach(({ final }, id) => {
-  final.forEach((val, i) => {
-    const t = i * 2;
-    const f = t + 1;
-    if (!topFlop[t] || topFlop[t][0] < val) {
-      topFlop[t] = [val, id];
-    }
+function registerGame(sim: Simulation, i: number) {
+  const outruled: number[] = [];
+  data.push(Object.values(sim.final));
+  FINAL_KEYS.forEach((key) => {
+    relevantSims[i] = sim;
 
-    if (!topFlop[f] || topFlop[f][0] > val) {
-      topFlop[f] = [val, id];
+    topFlop[key].top.push(i);
+    outruled.push(
+      ...topFlop[key].top
+        .sort((ia, ib) => {
+          const {
+            final: { [key]: a, combinedScore: ca },
+          } = relevantSims[ia];
+          const {
+            final: { [key]: b, combinedScore: cb },
+          } = relevantSims[ib];
+          if (a !== b) {
+            return a - b;
+          } else if (cb !== ca) {
+            return ca - cb;
+          }
+          return ia - ib;
+        })
+        .splice(0, topFlop[key].top.length - STORE_BEST),
+    );
+    topFlop[key].top.reverse();
+
+    topFlop[key].flop.push(i);
+    outruled.push(
+      ...topFlop[key].flop
+        .sort((ia, ib) => {
+          const {
+            final: { [key]: a, combinedScore: ca },
+          } = relevantSims[ia];
+          const {
+            final: { [key]: b, combinedScore: cb },
+          } = relevantSims[ib];
+          if (a !== b) {
+            return b - a;
+          } else if (cb !== ca) {
+            return cb - ca;
+          }
+          return ib - ia;
+        })
+        .splice(0, topFlop[key].flop.length - STORE_WORST),
+    );
+  });
+  Array.from(new Set(outruled)).forEach((out) => {
+    const someoneLikesMe = FINAL_KEYS.some(
+      (key) =>
+        topFlop[key].top.includes(out) || topFlop[key].flop.includes(out),
+    );
+    if (!someoneLikesMe) {
+      delete relevantSims[out];
     }
   });
-});
-const relevantGameIndexes = Array.from(new Set(topFlop.map(([_, i]) => i)));
+}
 
 /* Create and wrote Results file */
 const results = {
-  relevantSims: Object.fromEntries(
-    relevantGameIndexes.map((i) => [
-      i,
-      { state: sims[i].state, finished: sims[i].finished },
-    ]),
-  ),
-  data: sims.map(({ final }) => final),
+  relevantSims,
+  data,
+  simulateConfig,
 };
 
 export type Results = typeof results;
 
+console.log('\n\nWriting results...');
+
 fs.writeFileSync(__dirname + '/results.json', JSON.stringify(results));
+
+FINAL_KEYS.forEach((key) => {
+  const best = getLines(topFlop[key].top);
+  const worst = getLines(topFlop[key].flop);
+
+  fs.writeFileSync(
+    `${__dirname}/results/${key}.csv`,
+    stringify([
+      Object.keys(best[0]),
+      ...best.map((d) => Object.values(d)),
+      ...worst.map((d) => Object.values(d)),
+    ]),
+  );
+});
+
+function getLines(simIds: number[]) {
+  return simIds.map((id, i) => {
+    const game: Record<string, string | number> = { '#': i };
+
+    const { state, finished, final } = relevantSims[id];
+
+    game['Combined Score'] = final.combinedScore;
+    game['Total capacity'] = final.capacity;
+    game['Final chance of completing user stories'] = final.userStoryChance;
+    game['Total user stories attempted'] = final.storiesAttempted;
+    game['Final gremlin chance'] = final.gremlinChance;
+    game['Total user stories completed'] = final.storiesCompleted;
+    game['Actions selected throughout game'] = final.selectedActions;
+    game['Gremlins ocurred throughout game'] = final.ocurredGremlins;
+
+    state.pastRounds.forEach((round, roundI) => {
+      for (let actionI = 0; actionI < maxSelectedActions; actionI++) {
+        game[`Round ${roundI + 1} Action ${actionI + 1}`] =
+          round.selectedGameActionIds[actionI] || '';
+      }
+      game[`Round ${roundI + 1} Gremlin`] = round.gremlin || '';
+      game[`Round ${roundI + 1} Stories Completed`] = round.storiesCompleted;
+    });
+
+    game.simulationId = id;
+    game.simulationTime = new Date(finished).toISOString();
+    if (INCLUDE_LINK) {
+      game.link = stateLink(
+        'https://teamsgame.agilepainrelief.com',
+        null,
+        {
+          ...state,
+          ui: { view: 'actions', review: 0 },
+        },
+        finished,
+        simulateConfig,
+      );
+    }
+    return game;
+  });
+}
 
 console.log(
   '\nDone!\n\nTo inspect results start the dev-server with\n  npm start\n\nand open\n  http://localhost:3000/results',

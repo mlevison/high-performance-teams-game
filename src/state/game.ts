@@ -75,6 +75,10 @@ export type GameConfig<
   gameEffects: { [key: string]: GameEffect<GameActionId, GremlinId> };
 };
 
+export type OverwritableConfig = Partial<
+  Pick<GameConfig, 'initialScores' | 'trailingRounds'>
+>;
+
 export function getAllEffects<
   GameActionId extends string,
   GremlinId extends string
