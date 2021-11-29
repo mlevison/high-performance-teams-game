@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "https://teamsgame.agilepainrelief.com/static/css/main.33082838.chunk.css",
-    "main.js": "https://teamsgame.agilepainrelief.com/static/js/main.431cee01.chunk.js",
-    "main.js.map": "https://teamsgame.agilepainrelief.com/static/js/main.431cee01.chunk.js.map",
-    "runtime-main.js": "https://teamsgame.agilepainrelief.com/static/js/runtime-main.e2711f29.js",
-    "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/static/js/runtime-main.e2711f29.js.map",
-    "static/js/2.f4d5d473.chunk.js": "https://teamsgame.agilepainrelief.com/static/js/2.f4d5d473.chunk.js",
-    "static/js/2.f4d5d473.chunk.js.map": "https://teamsgame.agilepainrelief.com/static/js/2.f4d5d473.chunk.js.map",
+    "main.css": "https://teamsgame.agilepainrelief.com/static/css/main.c9f68960.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.com/static/js/main.f5f7beda.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/static/js/main.f5f7beda.chunk.js.map",
+    "runtime-main.js": "https://teamsgame.agilepainrelief.com/static/js/runtime-main.daca88f6.js",
+    "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/static/js/runtime-main.daca88f6.js.map",
+    "static/js/2.f1379d03.chunk.js": "https://teamsgame.agilepainrelief.com/static/js/2.f1379d03.chunk.js",
+    "static/js/2.f1379d03.chunk.js.map": "https://teamsgame.agilepainrelief.com/static/js/2.f1379d03.chunk.js.map",
     "index.html": "https://teamsgame.agilepainrelief.com/index.html",
-    "static/css/main.33082838.chunk.css.map": "https://teamsgame.agilepainrelief.com/static/css/main.33082838.chunk.css.map",
-    "static/js/2.f4d5d473.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/static/js/2.f4d5d473.chunk.js.LICENSE.txt"
+    "static/css/main.c9f68960.chunk.css.map": "https://teamsgame.agilepainrelief.com/static/css/main.c9f68960.chunk.css.map",
+    "static/js/2.f1379d03.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/static/js/2.f1379d03.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.e2711f29.js",
-    "static/js/2.f4d5d473.chunk.js",
-    "static/css/main.33082838.chunk.css",
-    "static/js/main.431cee01.chunk.js"
+    "static/js/runtime-main.daca88f6.js",
+    "static/js/2.f1379d03.chunk.js",
+    "static/css/main.c9f68960.chunk.css",
+    "static/js/main.f5f7beda.chunk.js"
   ]
 }
