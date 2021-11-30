@@ -279,12 +279,23 @@ function getLines(simIds: number[]) {
     game['Actions selected throughout game'] = final.selectedActions;
     game['Gremlins ocurred throughout game'] = final.ocurredGremlins;
 
+    // Need each of the Actions, Gremlins and Stories complete in their own CSV block, so each will get its own loop.
+
+    // Actions Block
     state.pastRounds.forEach((round, roundI) => {
       for (let actionI = 0; actionI < maxSelectedActions; actionI++) {
         game[`Round ${roundI + 1} Action ${actionI + 1}`] =
           round.selectedGameActionIds[actionI] || '';
       }
+    });
+
+    // Gremlins Blo
+    state.pastRounds.forEach((round, roundI) => {
       game[`Round ${roundI + 1} Gremlin`] = round.gremlin || '';
+    });
+
+    // Stories complete block
+    state.pastRounds.forEach((round, roundI) => {
       game[`Round ${roundI + 1} Stories Completed`] = round.storiesCompleted;
     });
 
