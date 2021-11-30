@@ -34,6 +34,29 @@ export const atMost3: ActionSelector = (selectableGameActions, round) => {
   return null;
 };
 
+export const atLeast1andAtMost3: ActionSelector = (
+  selectableGameActions,
+  round,
+) => {
+  if (round.selectedGameActions.length >= 3) {
+    return null;
+  }
+
+  if (round.selectedGameActions.length == 0) {
+    return selectableGameActions[
+      Math.floor(Math.random() * selectableGameActions.length)
+    ];
+  }
+
+  if (Math.random() > 0.35 && selectableGameActions.length) {
+    return selectableGameActions[
+      Math.floor(Math.random() * selectableGameActions.length)
+    ];
+  }
+
+  return null;
+};
+
 /**
  * Select actions when possible and move to next round with
  * the same chance of selecting a single action
