@@ -5,12 +5,16 @@ import { config as originalConfig, GameActionId, GremlinId } from '../config';
 import {
   simulateConfig,
   actionSelector,
-  calculateCombinedScore,
+  scorings,
+  createCSVFor,
+  defaultSort,
+  customSort,
+  considerGame,
   STORE_BEST,
   INCLUDE_LINK,
   STORE_WORST,
 } from './simulateConfig';
-import { createInitialState, concatByProp, sumByProp, stateLink } from '../lib';
+import { createInitialState, concatByProp, stateLink } from '../lib';
 import {
   createGameReducer,
   closeRound,
@@ -31,10 +35,17 @@ const config: typeof originalConfig = {
 };
 
 const simulationsInput = parseInt(process.argv[2], 10);
-const simulationsToRun: number =
+let simulationsToRun: number =
   !isNaN(simulationsInput) && String(simulationsInput) === process.argv[2]
     ? simulationsInput
     : 100;
+
+if (simulationsToRun < STORE_BEST + STORE_WORST) {
+  simulationsToRun = STORE_BEST + STORE_WORST;
+  console.log(
+    'WARNING: increased simulations to prevent duplicates in results',
+  );
+}
 
 console.log(
   `Simulating ${simulationsToRun} game${simulationsToRun > 1 ? 's' : ''}...\n`,
@@ -42,53 +53,31 @@ console.log(
 const bar = new progress.SingleBar({}, progress.Presets.shades_classic);
 bar.start(simulationsToRun, 0);
 
-const FINAL_KEYS = [
-  'capacity' as const,
-  'gremlinChance' as const,
-  'userStoryChance' as const,
-  'selectedActions' as const,
-  'ocurredGremlins' as const,
-  'storiesAttempted' as const,
-  'storiesCompleted' as const,
-  'combinedScore' as const,
-];
-type FinalKeys = typeof FINAL_KEYS;
+type FinalKeys = keyof typeof scorings;
+const scoringKeys = Object.keys(scorings) as FinalKeys[];
 
 type Simulation = {
   state: GameState<GameActionId, GremlinId>;
   finished: number;
-  final: {
-    [K in FinalKeys[0]]: number;
-  };
-};
-
-export type SimulationWithoutCombinedScore = Omit<Simulation, 'final'> & {
-  final: Omit<Simulation['final'], 'combinedScore'>;
+  scores: Record<string, number>;
 };
 
 const relevantSims: { [K: number]: Simulation } = {};
-const data: number[][] = [];
-const topFlop: {
-  [K in FinalKeys[0]]: {
-    top: number[];
-    flop: number[];
-  };
-} = {
-  capacity: { top: [], flop: [] },
-  gremlinChance: { top: [], flop: [] },
-  userStoryChance: { top: [], flop: [] },
-  selectedActions: { top: [], flop: [] },
-  ocurredGremlins: { top: [], flop: [] },
-  storiesAttempted: { top: [], flop: [] },
-  storiesCompleted: { top: [], flop: [] },
-  combinedScore: { top: [], flop: [] },
-};
+const allScores: number[][] = [];
+const bestGames: Record<string, number[]> = {};
+const worstGames: Record<string, number[]> = {};
+let maxSelectedActions = 0;
+
+scoringKeys.forEach((key) => {
+  bestGames[key] = [];
+  worstGames[key] = [];
+});
 
 const reducer = createGameReducer(
   config,
   createInitialState<GameActionId, GremlinId>(),
 );
-let maxSelectedActions = 0;
+
 for (let index = 0; index < simulationsToRun; index++) {
   let state: GameState<GameActionId, GremlinId> = createInitialState();
 
@@ -138,98 +127,99 @@ for (let index = 0; index < simulationsToRun; index++) {
     config,
   );
 
-  const storiesAttempted = sumByProp(
-    appState.pastRounds.map((round) => ({
-      storiesAttempted: round.capacity.available,
-    })),
-    'storiesAttempted',
-  );
-  const storiesCompleted = sumByProp(appState.pastRounds, 'storiesCompleted');
+  const scores: Record<string, number> = {};
+  Object.entries(scorings).forEach(([key, scoring]) => {
+    scores[key] = scoring.get(appState, state);
+  });
 
-  const simWithoutCombined: SimulationWithoutCombinedScore = {
-    state,
-    finished: new Date().getTime(),
-    final: {
-      capacity: appState.currentRound.capacity.total,
-      gremlinChance: appState.currentRound.gremlinChance,
-      userStoryChance: appState.currentRound.userStoryChance,
-      selectedActions: state.pastRounds.reduce(
-        (i, { selectedGameActionIds }) => i + selectedGameActionIds.length,
-        0,
-      ),
-      ocurredGremlins: state.pastRounds.filter(
-        ({ gremlin }) => gremlin !== null,
-      ).length,
-      storiesAttempted: storiesAttempted,
-      storiesCompleted: storiesCompleted,
-    },
-  };
-  registerGame(
-    {
-      ...simWithoutCombined,
-      final: {
-        ...simWithoutCombined.final,
-        combinedScore: calculateCombinedScore(simWithoutCombined),
+  if (considerGame(appState, state)) {
+    registerGame(
+      {
+        state,
+        finished: new Date().getTime(),
+        scores,
       },
-    },
-    index,
-  );
+      index,
+    );
+  }
+
   bar.update(index + 1);
 }
 
 bar.stop();
 
 function registerGame(sim: Simulation, i: number) {
-  const outruled: number[] = [];
-  data.push(Object.values(sim.final));
-  FINAL_KEYS.forEach((key) => {
+  const irrelevant: number[] = [];
+  allScores.push(Object.values(sim.scores));
+  scoringKeys.forEach((key) => {
     relevantSims[i] = sim;
 
-    topFlop[key].top.push(i);
-    outruled.push(
-      ...topFlop[key].top
-        .sort((ia, ib) => {
-          const {
-            final: { [key]: a, combinedScore: ca },
-          } = relevantSims[ia];
-          const {
-            final: { [key]: b, combinedScore: cb },
-          } = relevantSims[ib];
-          if (a !== b) {
-            return a - b;
-          } else if (cb !== ca) {
-            return ca - cb;
-          }
-          return ia - ib;
-        })
-        .splice(0, topFlop[key].top.length - STORE_BEST),
-    );
-    topFlop[key].top.reverse();
+    const sort = { ...(customSort[key] || defaultSort) };
+    const sortKeys = [
+      key,
+      ...(Object.keys(sort) as (keyof typeof sort)[]).filter((k) => k !== key),
+    ];
+    sort[key] = 'desc';
 
-    topFlop[key].flop.push(i);
-    outruled.push(
-      ...topFlop[key].flop
-        .sort((ia, ib) => {
-          const {
-            final: { [key]: a, combinedScore: ca },
-          } = relevantSims[ia];
-          const {
-            final: { [key]: b, combinedScore: cb },
-          } = relevantSims[ib];
-          if (a !== b) {
-            return b - a;
-          } else if (cb !== ca) {
-            return cb - ca;
-          }
-          return ib - ia;
-        })
-        .splice(0, topFlop[key].flop.length - STORE_WORST),
-    );
+    bestGames[key].push(i);
+    bestGames[key].sort((a, b) => {
+      const simA = relevantSims[a];
+      const simB = relevantSims[b];
+
+      for (let i = 0; i < sortKeys.length; i++) {
+        const sortKey = sortKeys[i];
+        const scoreA = simA.scores[sortKey];
+        const scoreB = simB.scores[sortKey];
+        if (scoreA === scoreB) {
+          /* scores are same, use next key */
+          continue;
+        }
+
+        return sort[sortKey] === 'desc' ? scoreA - scoreB : scoreB - scoreA;
+      }
+
+      /* If all scores are same, fall back to id */
+      return a - b;
+    });
+    if (bestGames[key].length > (createCSVFor.includes(key) ? STORE_BEST : 1)) {
+      /* cut of worst of the best games */
+      const removed = bestGames[key].splice(0, 1);
+      irrelevant.push(...removed);
+    }
+
+    worstGames[key].push(i);
+    worstGames[key].sort((a, b) => {
+      const simA = relevantSims[a];
+      const simB = relevantSims[b];
+
+      for (let i = 0; i < sortKeys.length; i++) {
+        const sortKey = sortKeys[i];
+        const scoreA = simA.scores[sortKey];
+        const scoreB = simB.scores[sortKey];
+        if (scoreA === scoreB) {
+          /* scores are same, use next key */
+          continue;
+        }
+
+        return sort[sortKey] === 'asc' ? scoreA - scoreB : scoreB - scoreA;
+      }
+
+      /* If all scores are same, fall back to id */
+      return b - a;
+    });
+    if (
+      worstGames[key].length > (createCSVFor.includes(key) ? STORE_WORST : 1)
+    ) {
+      /* cut of worst of the best games */
+      const removed = worstGames[key].splice(0, 1);
+      irrelevant.push(...removed);
+    }
   });
-  Array.from(new Set(outruled)).forEach((out) => {
-    const someoneLikesMe = FINAL_KEYS.some(
-      (key) =>
-        topFlop[key].top.includes(out) || topFlop[key].flop.includes(out),
+
+  /* Remove simulations that are not relevant for any score to free up memory */
+  Array.from(new Set(irrelevant)).forEach((out) => {
+    const someoneLikesMe = scoringKeys.some(
+      (key) => bestGames[key].includes(out) || worstGames[key].includes(out),
     );
     if (!someoneLikesMe) {
       delete relevantSims[out];
@@ -240,8 +230,11 @@ function registerGame(sim: Simulation, i: number) {
 /* Create and wrote Results file */
 const results = {
   relevantSims,
-  data,
+  data: allScores,
   simulateConfig,
+  defaultSort,
+  customSort,
+  scoringConfig: scorings,
 };
 
 export type Results = typeof results;
@@ -250,9 +243,12 @@ console.log('\n\nWriting results...');
 
 fs.writeFileSync(__dirname + '/results.json', JSON.stringify(results));
 
-FINAL_KEYS.forEach((key) => {
-  const best = getLines(topFlop[key].top);
-  const worst = getLines(topFlop[key].flop);
+createCSVFor.forEach((key) => {
+  const best = getLines(bestGames[key].reverse());
+  const worst = getLines(
+    worstGames[key],
+    simulationsToRun - worstGames[key].length,
+  );
 
   fs.writeFileSync(
     `${__dirname}/results/${key}.csv`,
@@ -264,20 +260,15 @@ FINAL_KEYS.forEach((key) => {
   );
 });
 
-function getLines(simIds: number[]) {
+function getLines(simIds: number[], offset: number = 0) {
   return simIds.map((id, i) => {
-    const game: Record<string, string | number> = { '#': i };
+    const game: Record<string, string | number> = { '#': i + offset + 1 };
 
-    const { state, finished, final } = relevantSims[id];
+    const { state, finished, scores } = relevantSims[id];
 
-    game['Combined Score'] = final.combinedScore;
-    game['Total capacity'] = final.capacity;
-    game['Final chance of completing user stories'] = final.userStoryChance;
-    game['Total user stories attempted'] = final.storiesAttempted;
-    game['Final gremlin chance'] = final.gremlinChance;
-    game['Total user stories completed'] = final.storiesCompleted;
-    game['Actions selected throughout game'] = final.selectedActions;
-    game['Gremlins ocurred throughout game'] = final.ocurredGremlins;
+    scoringKeys.forEach((key) => {
+      game[scorings[key].name] = scores[key];
+    });
 
     // Need each of the Actions, Gremlins and Stories complete in their own CSV block, so each will get its own loop.
 

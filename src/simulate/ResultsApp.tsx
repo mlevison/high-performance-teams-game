@@ -1,4 +1,4 @@
-import React, { useMemo, useState, ReactNode } from 'react';
+import { useMemo, useState, ReactNode } from 'react';
 import {
   ComposedChart,
   Line,
@@ -8,81 +8,14 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  LineProps,
 } from 'recharts';
 import { GameState } from '../state';
 import { AppBaseState, useStateLink } from '../lib';
 import type { Results } from './index';
 
 const results: Results = require('./results.json');
-
-const TOTAL_CAPACITY = 'Total capacity';
-const FINAL_GREMLIN_CHANCE = 'Final gremlin chance';
-const FINAL_USER_STORY_CHANCE = 'Final chance of completing user stories';
-const SELECTED_ACTIONS = 'Actions selected throughout game';
-const OCURRED_GREMLINS = 'Gremlins ocurred throughout game';
-const STORIES_ATTEMPTED = 'Total user stories attempted';
-const STORIES_COMPLETED = 'Total user stories completed';
-const COMBINED_SCORE = 'Combined Score';
-
-type ScoreKey =
-  | typeof TOTAL_CAPACITY
-  | typeof FINAL_GREMLIN_CHANCE
-  | typeof FINAL_USER_STORY_CHANCE
-  | typeof SELECTED_ACTIONS
-  | typeof OCURRED_GREMLINS
-  | typeof STORIES_ATTEMPTED
-  | typeof STORIES_COMPLETED
-  | typeof COMBINED_SCORE;
-const SCOREKEY_MAP: ScoreKey[] = [
-  TOTAL_CAPACITY,
-  FINAL_GREMLIN_CHANCE,
-  FINAL_USER_STORY_CHANCE,
-  SELECTED_ACTIONS,
-  OCURRED_GREMLINS,
-  STORIES_ATTEMPTED,
-  STORIES_COMPLETED,
-  COMBINED_SCORE,
-];
-const OPTIONS: { [K in ScoreKey]: Partial<Omit<LineProps, 'ref'>> } = {
-  [TOTAL_CAPACITY]: {
-    yAxisId: 'capacity',
-    stroke: '#0c79df',
-  },
-  [FINAL_GREMLIN_CHANCE]: {
-    yAxisId: 'chances',
-    stroke: '#df2c0c',
-    unit: '%',
-  },
-  [FINAL_USER_STORY_CHANCE]: {
-    yAxisId: 'chances',
-    stroke: '#e2d02f',
-    unit: '%',
-  },
-  [SELECTED_ACTIONS]: {
-    yAxisId: 'actons',
-    stroke: '#0cdfc3',
-  },
-  [OCURRED_GREMLINS]: {
-    yAxisId: 'gremlins',
-    stroke: '#df8b0c',
-  },
-  [STORIES_ATTEMPTED]: {
-    yAxisId: 'stories',
-    stroke: '#cd66e7',
-  },
-  [STORIES_COMPLETED]: {
-    yAxisId: 'stories',
-    stroke: '#1be400',
-  },
-  [COMBINED_SCORE]: {
-    yAxisId: 'combinedScore',
-    stroke: '#7600e4',
-  },
-};
-const yAxis = Array.from(
-  new Set(Object.values(OPTIONS).map(({ yAxisId }) => yAxisId)),
-);
+type ScoringKey = keyof typeof results.scoringConfig;
+const yAxis = Object.keys(results.scoringConfig) as ScoringKey[];
 
 function GameLink({
   state,
@@ -99,7 +32,7 @@ function GameLink({
   );
   const href = useStateLink(baseState, finished, results.simulateConfig);
   return (
-    <a href={href} target="_blank" rel="noreferrer">
+    <a href={href} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
   );
@@ -107,24 +40,37 @@ function GameLink({
 
 export default function ResultsApp() {
   const [showAmount, setShowAmount] = useState<number>(50);
-  const [sortBy, setSortBy] = useState<ScoreKey>(STORIES_COMPLETED);
+  const [sortBy, setSortBy] = useState<ScoringKey>(yAxis[0]);
 
   const data = useMemo(() => {
     const showQuota = Math.round(results.data.length / (showAmount - 1));
-    const sortIndex = SCOREKEY_MAP.indexOf(sortBy);
+
+    const sort = { ...(results.customSort[sortBy] || results.defaultSort) };
+    const sortKeys = [
+      sortBy,
+      ...(Object.keys(sort) as (keyof typeof sort)[]).filter(
+        (k) => k !== sortBy,
+      ),
+    ];
+    sort[sortBy] = 'desc';
+    const sortIndexes = sortKeys.map((key) => yAxis.indexOf(key));
+
     return results.data
       .map((data, id) => ({ id, data }))
       .sort((a, b) => {
-        const sort = a.data[sortIndex] - b.data[sortIndex];
-        const scombinedScoreSort = a.data[7] - b.data[7];
-        switch (true) {
-          case sort !== 0:
-            return sort;
-          case scombinedScoreSort !== 0:
-            return scombinedScoreSort;
-          default:
-            return a.id - b.id;
+        for (let i = 0; i < sortIndexes.length; i++) {
+          const sortIndex = sortIndexes[i];
+          const sortKey = sortKeys[i];
+          const scoreA = a.data[sortIndex];
+          const scoreB = b.data[sortIndex];
+          if (scoreA === scoreB) {
+            /* scores are same, use next key */
+            continue;
+          }
+
+          return sort[sortKey] === 'desc' ? scoreA - scoreB : scoreB - scoreA;
         }
+        return a.id - b.id;
       })
       .filter((_, i) => {
         const t = i / showQuota;
@@ -132,14 +78,12 @@ export default function ResultsApp() {
       })
       .map(({ id, data }) => ({
         id,
-        [TOTAL_CAPACITY]: data[0],
-        [FINAL_GREMLIN_CHANCE]: data[1],
-        [FINAL_USER_STORY_CHANCE]: data[2],
-        [SELECTED_ACTIONS]: data[3],
-        [OCURRED_GREMLINS]: data[4],
-        [STORIES_ATTEMPTED]: data[5],
-        [STORIES_COMPLETED]: data[6],
-        [COMBINED_SCORE]: data[7],
+        ...Object.fromEntries(
+          sortKeys.map((key, i) => [
+            results.scoringConfig[key].name,
+            data[sortIndexes[i]],
+          ]),
+        ),
       }));
   }, [showAmount, sortBy]);
 
@@ -163,19 +107,19 @@ export default function ResultsApp() {
         Sort By:
         <select
           value={sortBy}
-          onChange={(ev) => setSortBy(ev.target.value as ScoreKey)}
+          onChange={(ev) => setSortBy(ev.target.value as ScoringKey)}
         >
-          {SCOREKEY_MAP.map((key) => (
+          {Object.entries(results.scoringConfig).map(([key, { name }]) => (
             <option key={key} value={key}>
-              {key}
+              {name}
             </option>
           ))}
         </select>
       </label>{' '}
       <GameLink {...results.relevantSims[data[data.length - 1].id]}>
-        Open Top Game
+        Open Best
       </GameLink>{' '}
-      <GameLink {...results.relevantSims[data[0].id]}>Open Flop Game</GameLink>
+      <GameLink {...results.relevantSims[data[0].id]}>Open Worst</GameLink>
       <ResponsiveContainer height={600} width="100%">
         <ComposedChart
           data={data}
@@ -188,21 +132,24 @@ export default function ResultsApp() {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="id" />
-          {yAxis.map((id) => (
-            <YAxis key={id} yAxisId={id} hide />
+          {Object.entries(results.scoringConfig).map(([key, { name }]) => (
+            <YAxis key={key} yAxisId={name} hide />
           ))}
 
           <Tooltip />
           <Legend layout="vertical" />
-          {SCOREKEY_MAP.map((key) => (
-            <Line
-              key={key}
-              dot={false}
-              type="monotone"
-              {...OPTIONS[key]}
-              dataKey={key}
-            />
-          ))}
+          {Object.entries(results.scoringConfig).map(
+            ([key, { name, config }]) => (
+              <Line
+                key={key}
+                dot={false}
+                type="monotone"
+                yAxisId={name}
+                {...config}
+                dataKey={name}
+              />
+            ),
+          )}
         </ComposedChart>
       </ResponsiveContainer>
     </>
