@@ -190,6 +190,19 @@ describe('Gremlins', () => {
         { capacityChange: -1, userStoryChange: 0 },
       ]);
     });
+
+    it('is made worse in teams with Problem solving bouns since people are more likely to act as individuals ', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('PROBLEM_SOLVING_BONUS');
+      game.nextRound('GREMLIN_NOT_AT_DAILY_SCRUM');
+      testCurrentRound(game, { capacityChange: -2, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: -2, userStoryChange: 0 },
+      ]);
+    });
     it('has effect reduced to 0 if ScrumMaster conducts one on ones', () => {
       const game = getGame(gremlinTestConfig);
 
@@ -441,6 +454,17 @@ describe('Gremlins', () => {
         { capacityChange: -3, userStoryChange: -15 },
       ]);
     });
+    it('has effect made worse if theyve bypassed Definition of Done', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('BYPASS_DEFINITION_OF_DONE');
+      game.nextRound('GREMLIN_POOR_QUALITY');
+      testCurrentRound(game, { capacityChange: -5, userStoryChange: -20 });
+      testFutureRounds(game, [
+        { capacityChange: -5, userStoryChange: -20 },
+        { capacityChange: -5, userStoryChange: -20 },
+      ]);
+    });
     it('has effect reduced if Pair Programming is done', () => {
       const game = getGame(gremlinTestConfig);
 
@@ -475,7 +499,18 @@ describe('Gremlins', () => {
         { capacityChange: -1, userStoryChange: -5 },
       ]);
     });
-    it('has some effect if TDD and Pair Programming is done', () => {
+    it('has some effect if BDD is done', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('ADOPT_BDD');
+      game.nextRound('GREMLIN_POOR_QUALITY');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: -5 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: -5 },
+        { capacityChange: -1, userStoryChange: -5 },
+      ]);
+    });
+    it('BYPASS Definition of done still hurts evem with eng practices', () => {
       const game = getGame(gremlinTestConfig);
 
       game.selectAction('ADOPT_BDD');

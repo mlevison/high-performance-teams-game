@@ -121,7 +121,8 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         signal disrespect to their team. Other team members are annoyed that
         this person does that to them. &nbsp; ScrumMaster Conducts One on Ones -
         you will become aware of the problem early; Working Agreements - empower
-        team members to raise the issue.
+        team members to raise the issue. Problem Solving Bonus makes the issue
+        worse, as team members feel acting as independants is ok.
       </p>
     ),
     effect(age, state) {
@@ -133,6 +134,9 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         finishedActionIds.includes('WORKING_AGREEMENTS')
       ) {
         capacityChange = 0;
+      }
+      if (finishedActionIds.includes('PROBLEM_SOLVING_BONUS')) {
+        capacityChange -= 1;
       }
       return {
         capacityChange: capacityChange,
@@ -275,7 +279,8 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         bogged down, in dealing with the cascade of errors. In addition the
         quality makes it harder to build the feaures that the Product Owner has
         asked for. &nbsp; Teams that practice TDD, BDD and/or Pair Programming
-        suffer this effect less.
+        suffer this effect less. Teams that Bypass Definition of Done suffer
+        more.
       </p>
     ),
     effect(age, state) {
@@ -305,6 +310,11 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
       if (finishedActionIds.includes('ADOPT_BDD')) {
         capacityChange = -1;
         userStoryChange = -5;
+        additionalComment = '- BDD Reduced the effect';
+      }
+      if (finishedActionIds.includes('BYPASS_DEFINITION_OF_DONE')) {
+        capacityChange -= 2;
+        userStoryChange -= 5;
         additionalComment = '- BDD Reduced the effect';
       }
       return {
