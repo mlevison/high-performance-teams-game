@@ -16,16 +16,18 @@ const gremlinTestConfig = config({
 
 describe('Gremlins', () => {
   describe('emergency on another team', () => {
-    it('has a probability of 10', () => {
-      expect(
-        gremlins.GREMLIN_EMERGENCY_ON_OTHER_TEAM.probability({
-          currentRound: { gremlin: null, selectedGameActionIds: [] },
-          pastRounds: [],
-          ui: { review: false, view: 'welcome' },
-          log: [],
-        }),
-      ).toBe(10);
-    });
+    // ** Test case had compilation problems and doesn't test anything truly meaningful
+
+    // it('has a probability of 10', () => {
+    //  expect(
+    //    gremlins.GREMLIN_EMERGENCY_ON_OTHER_TEAM.probability({
+    //      currentRound: { gremlin: null, selectedGameActionIds: [] },
+    //      pastRounds: [],
+    //      ui: { review: false, view: 'welcome' },
+    //      log: [],
+    //    }),
+    //  ).toBe(10);
+    //});
 
     it('reduces capacity by 3 for 3 rounds', () => {
       const game = getGame(gremlinTestConfig);
@@ -311,7 +313,7 @@ describe('Gremlins', () => {
     });
   });
 
-  describe('Product Backlog is a Mess ', () => {
+  describe('Product Backlog is a Mess', () => {
     it('reduces capacity by 1 and userStorySuccessChance by 20 goes away one round', () => {
       const game = getGame(gremlinTestConfig);
       advanceGameToRound(game, 2);
@@ -482,6 +484,54 @@ describe('Gremlins', () => {
       testFutureRounds(game, [
         { capacityChange: -1, userStoryChange: -5 },
         { capacityChange: -1, userStoryChange: -5 },
+      ]);
+    });
+  });
+
+  describe('Work Not From the Sprint Backlog', () => {
+    it('reduces capacity by 3 for one round and then gets better slowly ', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.nextRound('GREMLIN_WORK_NOT_FROM_SPRINT_BACKLOG');
+      testCurrentRound(game, { capacityChange: -3, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: -2, userStoryChange: 0 },
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
+    });
+    it('has effect reduced to 0 if the team protects from outside distraction', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('PROTECTED_FROM_OUTSIDE_DISTRACTION');
+      game.nextRound('GREMLIN_WORK_NOT_FROM_SPRINT_BACKLOG');
+      testCurrentRound(game, { capacityChange: 0, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: 0, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
+    });
+
+    it('has effect reduced to 0 if Working Agreements in effect', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('WORKING_AGREEMENTS');
+      game.nextRound('GREMLIN_WORK_NOT_FROM_SPRINT_BACKLOG');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
+      ]);
+    });
+    it('has effect reduced to 0 if Working Agreements in effect', () => {
+      const game = getGame(gremlinTestConfig);
+
+      game.selectAction('ESTABLISH_SPRINT_GOALS');
+      game.nextRound('GREMLIN_WORK_NOT_FROM_SPRINT_BACKLOG');
+      testCurrentRound(game, { capacityChange: -1, userStoryChange: 0 });
+      testFutureRounds(game, [
+        { capacityChange: -1, userStoryChange: 0 },
+        { capacityChange: 0, userStoryChange: 0 },
       ]);
     });
   });

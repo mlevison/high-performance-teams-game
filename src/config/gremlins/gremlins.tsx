@@ -12,7 +12,8 @@ export type GremlinId =
   | 'GREMLIN_UNREADABLE_CODE'
   | 'GREMLIN_POOR_QUALITY'
   | 'GREMLIN_PRODUCT_BACKLOG_MESS'
-  | 'GREMLIN_SKIP_RETRO';
+  | 'GREMLIN_SKIP_RETRO'
+  | 'GREMLIN_WORK_NOT_FROM_SPRINT_BACKLOG';
 
 export const gremlins: GremlinList<GremlinId, GameActionId> = {
   GREMLIN_MANAGEMENT_YELLS: {
@@ -343,6 +344,51 @@ export const gremlins: GremlinList<GremlinId, GameActionId> = {
         capacityChange = 0;
         additionalComment =
           '- TDD and Pair Programming Reduce elimintate the effect';
+      }
+      return {
+        capacityChange: capacityChange,
+        title: 'Unreadable code ' + additionalComment,
+      };
+    },
+  },
+  GREMLIN_WORK_NOT_FROM_SPRINT_BACKLOG: {
+    probability: () => 10,
+    name: 'Work Not From the Sprint Backlog',
+    description: (
+      <p>
+        The team is spending a noticeable amount of time every Spring dealing
+        with unplanned work. For more depth:{' '}
+        <a href="https://agilepainrelief.com/blog/scrum-master-tales-more-interruptions.html">
+          Scrum by Example – More Interruptions
+        </a>{' '}
+        &nbsp; Teams that Protect from Outside Distraction avoid completely.
+        Teams that set Sprint Goals or Working Agreements avoid partially.
+      </p>
+    ),
+    effect(age, state) {
+      const finishedActionIds = selectedActionIds(state);
+
+      let additionalComment = '';
+      let capacityChange = -3 + age; // the damage goes away over time
+      if (age >= 3) {
+        capacityChange = 0;
+      }
+
+      if (
+        finishedActionIds.includes('WORKING_AGREEMENTS') ||
+        finishedActionIds.includes('ESTABLISH_SPRINT_GOALS')
+      ) {
+        capacityChange = -1;
+        if (age >= 2) {
+          capacityChange = 0;
+        }
+        additionalComment =
+          '- Working Agreements or Sprint Goals Reduce the effect';
+      }
+      if (finishedActionIds.includes('PROTECTED_FROM_OUTSIDE_DISTRACTION')) {
+        capacityChange = 0;
+        additionalComment =
+          '- Protect from Outside Distraction avoid the effect';
       }
       return {
         capacityChange: capacityChange,
