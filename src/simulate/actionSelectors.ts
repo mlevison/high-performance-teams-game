@@ -1,5 +1,6 @@
 import { GameActionId } from '../config';
 import { AppRound, GameState, GameAction } from '../state';
+import { ACTION_CHANCE } from './simulateConfig';
 
 type ActionSelector = (
   selectableGameActions: GameAction<GameActionId>[],
@@ -42,13 +43,13 @@ export const atLeast1andAtMost3: ActionSelector = (
     return null;
   }
 
-  if (round.selectedGameActions.length == 0) {
+  if (round.selectedGameActions.length === 0) {
     return selectableGameActions[
       Math.floor(Math.random() * selectableGameActions.length)
     ];
   }
 
-  if (Math.random() > 0.35 && selectableGameActions.length) {
+  if (Math.random() > ACTION_CHANCE && selectableGameActions.length) {
     return selectableGameActions[
       Math.floor(Math.random() * selectableGameActions.length)
     ];

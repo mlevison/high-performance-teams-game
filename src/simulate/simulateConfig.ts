@@ -14,6 +14,8 @@ import {
 export const INCLUDE_LINK = true;
 export const STORE_BEST = 600;
 export const STORE_WORST = 600;
+export const ACTION_CHANCE = 0.25;
+const MIN_GREMLINS = 5;
 
 export const simulateConfig: OverwritableConfig = {
   trailingRounds: 7,
@@ -25,7 +27,7 @@ export function considerGame(
   gameState: GameState<GameActionId, GremlinId>,
 ): boolean {
   /* Ignore games with 0 or 1 gremlin */
-  if (ocurredGremlins.get(appState, gameState) < 2) {
+  if (ocurredGremlins.get(appState, gameState) < MIN_GREMLINS) {
     return false;
   }
 
