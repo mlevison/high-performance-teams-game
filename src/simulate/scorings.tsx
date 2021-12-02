@@ -1,7 +1,7 @@
 import type { AppState, GameState } from '../state';
+import type { GameActionId, GremlinId } from '../config';
 import type { LineProps } from 'recharts';
 import { sumByProp } from '../lib';
-import { GameActionId, GremlinId } from '../config';
 
 interface Scoring {
   name: string;
