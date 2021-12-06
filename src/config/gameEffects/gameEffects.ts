@@ -7,6 +7,15 @@ import { findGameActionById } from '../../lib';
 export const gameEffects: {
   [key: string]: GameEffect<GameActionId, GremlinId>;
 } = {
+  lesserGremlinChanceInTrailingRounds(rounds) {
+    if (rounds.length >= roundConfigs.length) {
+      return {
+        title: false,
+        gremlinChange: -25,
+      };
+    }
+    return null;
+  },
   technicalDebtDrag(rounds) {
     let roundsWithoutEngAction = 0;
 

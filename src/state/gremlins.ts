@@ -35,11 +35,6 @@ export function rollGremlin<
   state: GameState<GameActionId, GremlinId>,
   config: GameConfig<GameActionId, GremlinId>,
 ): GremlinId | null {
-  /* No gremlins in trailing rounds */
-  if (state.pastRounds.length + 1 >= config.rounds.length) {
-    return null;
-  }
-
   const ids = Object.keys(config.gremlins) as GremlinId[];
   const gremlinArray: (GremlinImplementation<GameActionId, GremlinId> & {
     id: GremlinId;
