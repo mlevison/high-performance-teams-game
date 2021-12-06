@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/static/css/main.c9f68960.chunk.css",
+    "main.js": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/static/js/main.8c60f8ed.chunk.js",
+    "main.js.map": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/static/js/main.8c60f8ed.chunk.js.map",
+    "runtime-main.js": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/static/js/runtime-main.b8b3ead0.js",
+    "runtime-main.js.map": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/static/js/runtime-main.b8b3ead0.js.map",
+    "static/js/2.76c60c15.chunk.js": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/static/js/2.76c60c15.chunk.js",
+    "static/js/2.76c60c15.chunk.js.map": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/static/js/2.76c60c15.chunk.js.map",
+    "index.html": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/index.html",
+    "static/css/main.c9f68960.chunk.css.map": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/static/css/main.c9f68960.chunk.css.map",
+    "static/js/2.76c60c15.chunk.js.LICENSE.txt": "https://teamsgame.agilepainrelief.com/preview/gremlins-in-trailing-rounds/static/js/2.76c60c15.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b8b3ead0.js",
+    "static/js/2.76c60c15.chunk.js",
+    "static/css/main.c9f68960.chunk.css",
+    "static/js/main.8c60f8ed.chunk.js"
+  ]
+}
