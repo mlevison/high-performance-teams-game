@@ -10,7 +10,7 @@ export type GremlinDescription = {
 };
 type GremlinImplementation<
   GameActionId extends string,
-  GremlinId extends string
+  GremlinId extends string,
 > = GremlinDescription & {
   probability: (state: GameState<GameActionId, GremlinId>) => number;
   effect: (
@@ -23,23 +23,18 @@ type GremlinImplementation<
 };
 export type GremlinList<
   GremlinId extends string,
-  GameActionId extends string
+  GameActionId extends string,
 > = {
   [K in GremlinId]: GremlinImplementation<GameActionId, GremlinId>;
 };
 
 export function rollGremlin<
   GameActionId extends string,
-  GremlinId extends string
+  GremlinId extends string,
 >(
   state: GameState<GameActionId, GremlinId>,
   config: GameConfig<GameActionId, GremlinId>,
 ): GremlinId | null {
-  /* No gremlins in trailing rounds */
-  if (state.pastRounds.length + 1 >= config.rounds.length) {
-    return null;
-  }
-
   const ids = Object.keys(config.gremlins) as GremlinId[];
   const gremlinArray: (GremlinImplementation<GameActionId, GremlinId> & {
     id: GremlinId;
@@ -90,7 +85,7 @@ export function rollGremlin<
 
 export function getGremlinEffects<
   GameActionId extends string,
-  GremlinId extends string
+  GremlinId extends string,
 >(
   round: GameRound<GameActionId, GremlinId>,
   age: number,
@@ -115,7 +110,7 @@ export function getGremlinEffects<
 
 export function getGremlin<
   GameActionId extends string,
-  GremlinId extends string
+  GremlinId extends string,
 >(
   round: GameRound<GameActionId, GremlinId>,
   gremlins: GremlinList<GremlinId, GameActionId>,

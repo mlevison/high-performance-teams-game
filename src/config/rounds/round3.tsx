@@ -1,5 +1,6 @@
 import React from 'react';
 import type { RoundDescription } from './index';
+import { ROUND3_GREMLIN_CHANCE } from '../../config';
 
 export type Round3ActionId =
   | 'IMPROVE_RETROSPECTIVES_CHANGE_AGENDA'
@@ -17,7 +18,7 @@ export const round3: RoundDescription<Round3ActionId> = {
       in the next Sprint.
     </p>
   ),
-  effect: () => ({ title: false, gremlinChange: 50 }),
+  effect: () => ({ title: false, gremlinChange: ROUND3_GREMLIN_CHANCE }),
   actions: {
     IMPROVE_RETROSPECTIVES_CHANGE_AGENDA: {
       image: '/images/example.jpg',

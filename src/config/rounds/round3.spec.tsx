@@ -7,6 +7,7 @@ import {
   config,
   defuseRounds,
 } from '../../lib/testHelpers';
+import { ROUND3_GREMLIN_CHANCE } from 'config';
 
 const testConfig = config({
   rounds: [
@@ -17,16 +18,36 @@ const testConfig = config({
 });
 
 describe('round 3', () => {
-  it('increases gremlinChance to 50', () => {
+  it('increases gremlinChance to ROUND3_GREMLIN_CHANCE', () => {
     const game = getGame(testConfig);
 
     game.nextRound();
     testFutureRounds(game, [
-      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
-      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
-      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
-      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
-      { capacityChange: 0, gremlinChange: 50, userStoryChange: 0 },
+      {
+        capacityChange: 0,
+        gremlinChange: ROUND3_GREMLIN_CHANCE,
+        userStoryChange: 0,
+      },
+      {
+        capacityChange: 0,
+        gremlinChange: ROUND3_GREMLIN_CHANCE,
+        userStoryChange: 0,
+      },
+      {
+        capacityChange: 0,
+        gremlinChange: ROUND3_GREMLIN_CHANCE,
+        userStoryChange: 0,
+      },
+      {
+        capacityChange: 0,
+        gremlinChange: ROUND3_GREMLIN_CHANCE,
+        userStoryChange: 0,
+      },
+      {
+        capacityChange: 0,
+        gremlinChange: ROUND3_GREMLIN_CHANCE,
+        userStoryChange: 0,
+      },
     ]);
   });
 });

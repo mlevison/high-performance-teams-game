@@ -11,7 +11,7 @@ type VisibleEffectProps = {
 export type EffectDescription = InvisibleEffectProps | VisibleEffectProps;
 export type BaseEffect = {
   userStoryChange?: number;
-  gremlinChange?: number;
+gremlinChange?: number;
   capacityChange?: number;
   /** @deprecated this prop does not exist, use userStoryChange */
   userStoryChance?: never;

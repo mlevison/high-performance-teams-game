@@ -14,11 +14,12 @@ import {
 export const INCLUDE_LINK = true;
 export const STORE_BEST = 600;
 export const STORE_WORST = 600;
-export const ACTION_CHANCE = 0.25;
-const MIN_GREMLINS = 5;
+export const ACTION_CHANCE = 0.3;
+const MIN_GREMLINS = 10;
+const MIN_ACTIONS = 10;
 
 export const simulateConfig: OverwritableConfig = {
-  trailingRounds: 7,
+  trailingRounds: 18,
 };
 
 /* Return false to not completely ignore that game regardless of other scores */
@@ -28,6 +29,10 @@ export function considerGame(
 ): boolean {
   /* Ignore games with 0 or 1 gremlin */
   if (ocurredGremlins.get(appState, gameState) < MIN_GREMLINS) {
+    return false;
+  }
+
+  if (selectedActions.get(appState, gameState) < MIN_ACTIONS) {
     return false;
   }
 

@@ -11,6 +11,7 @@ export type { GremlinId } from './gremlins';
 const INITIAL_CAPACITY = 10;
 const INITIAL_USER_STORY_CHANCE = 30;
 const INITIAL_GREMLIN_CHANCE = 0;
+export const ROUND3_GREMLIN_CHANCE = 40;
 const TRAILING_ROUNDS = 6;
 
 export const config: GameConfig<GameActionId, GremlinId> = {
